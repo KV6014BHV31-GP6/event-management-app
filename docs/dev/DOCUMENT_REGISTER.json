@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.1.0",
-  "reviewed_at": "2026-10-12T17:03:15.238450+00:00",
-  "reason": "保留 LF 換行並記錄本地 CLI 執行狀態",
+  "reviewed_at": "2026-10-12T17:05:41.054725+00:00",
+  "reason": "記錄 GitHub Draft PR 1、正常 Push 及 Fetch 回讀成功",
   "document_count": 48,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -195,7 +195,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 10,
+      "revision": 11,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -231,6 +231,13 @@
           "size_bytes": 2458,
           "superseded_at": "2026-10-12T17:03:15.238450+00:00",
           "reason": "保留 LF 換行並記錄本地 CLI 執行狀態"
+        },
+        {
+          "revision": 10,
+          "sha256": "93e0c6426286f437e8134df405aebdbb65250202c40a0fe521d9cd20107a5022",
+          "size_bytes": 2431,
+          "superseded_at": "2026-10-12T17:05:41.054725+00:00",
+          "reason": "記錄 GitHub Draft PR 1、正常 Push 及 Fetch 回讀成功"
         }
       ],
       "import_lineage": {
@@ -241,8 +248,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "93e0c6426286f437e8134df405aebdbb65250202c40a0fe521d9cd20107a5022",
-      "size_bytes": 2431
+      "sha256": "624e8de55c39d05c4a0048efc7a8439d484afb6410d196a9d26cd922fac6cc18",
+      "size_bytes": 2662
     },
     {
       "document_id": "DOC-11",
@@ -708,7 +715,7 @@
     {
       "document_id": "PUB-DOC-026",
       "path": "docs/dev/tasks/PR-PREP-20261013.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -725,13 +732,20 @@
           "size_bytes": 2789,
           "superseded_at": "2026-10-12T17:03:15.238450+00:00",
           "reason": "保留 LF 換行並記錄本地 CLI 執行狀態"
+        },
+        {
+          "revision": 3,
+          "sha256": "7339671f6de608813d90b16e3e0df340436aa952fa107720c5e4f8c04f090a5d",
+          "size_bytes": 2759,
+          "superseded_at": "2026-10-12T17:05:41.054725+00:00",
+          "reason": "記錄 GitHub Draft PR 1、正常 Push 及 Fetch 回讀成功"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "7339671f6de608813d90b16e3e0df340436aa952fa107720c5e4f8c04f090a5d",
-      "size_bytes": 2759
+      "sha256": "85d7ac248024bc13df6fbc1c6a9b446a1d7b032aa644698e9076fc0ccfd102d9",
+      "size_bytes": 3674
     },
     {
       "document_id": "DOC-24",
