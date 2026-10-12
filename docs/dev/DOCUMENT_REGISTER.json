@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.1.0",
-  "reviewed_at": "2026-10-12T16:19:34.757399+00:00",
-  "reason": "Record executed document-only validation and 12 passing regression tests",
+  "reviewed_at": "2026-10-12T17:03:15.238450+00:00",
+  "reason": "保留 LF 換行並記錄本地 CLI 執行狀態",
   "document_count": 48,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -195,7 +195,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 8,
+      "revision": 10,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -217,6 +217,20 @@
           "size_bytes": 2045,
           "superseded_at": "2026-10-12T16:15:43.702002+00:00",
           "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        },
+        {
+          "revision": 8,
+          "sha256": "a919a40ccf25736a9cf7e0a15b1da107f84a111ddfa64597a9a3c7899ea50445",
+          "size_bytes": 2308,
+          "superseded_at": "2026-10-12T17:02:54.892016+00:00",
+          "reason": "記錄本地 beeawanegd CLI 授權、Bundle 與 manifest 核對及待發佈狀態"
+        },
+        {
+          "revision": 9,
+          "sha256": "a640b31146214b9de63240be490f2827357c8266b2ba9add3c1254f305d947ab",
+          "size_bytes": 2458,
+          "superseded_at": "2026-10-12T17:03:15.238450+00:00",
+          "reason": "保留 LF 換行並記錄本地 CLI 執行狀態"
         }
       ],
       "import_lineage": {
@@ -227,8 +241,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a919a40ccf25736a9cf7e0a15b1da107f84a111ddfa64597a9a3c7899ea50445",
-      "size_bytes": 2308
+      "sha256": "93e0c6426286f437e8134df405aebdbb65250202c40a0fe521d9cd20107a5022",
+      "size_bytes": 2431
     },
     {
       "document_id": "DOC-11",
@@ -694,15 +708,30 @@
     {
       "document_id": "PUB-DOC-026",
       "path": "docs/dev/tasks/PR-PREP-20261013.md",
-      "revision": 1,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0d3eb8af3659fc7f09ea17c75ff77f13754c2113b953a9c53eb4779fc238bd75",
+          "size_bytes": 1704,
+          "superseded_at": "2026-10-12T17:02:54.892016+00:00",
+          "reason": "記錄本地 beeawanegd CLI 授權、Bundle 與 manifest 核對及待發佈狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "c1d874d7c1fa95cebf2bf841b4dd1eb1ee1e1ffd80ea6a57063d811759e669a8",
+          "size_bytes": 2789,
+          "superseded_at": "2026-10-12T17:03:15.238450+00:00",
+          "reason": "保留 LF 換行並記錄本地 CLI 執行狀態"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0d3eb8af3659fc7f09ea17c75ff77f13754c2113b953a9c53eb4779fc238bd75",
-      "size_bytes": 1704
+      "sha256": "7339671f6de608813d90b16e3e0df340436aa952fa107720c5e4f8c04f090a5d",
+      "size_bytes": 2759
     },
     {
       "document_id": "DOC-24",

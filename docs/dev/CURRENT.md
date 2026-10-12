@@ -13,7 +13,7 @@
 | Screenshot 證據 | HISTORICAL_LOCAL_MOCK | 原有 12 個 UI checks、六張圖及 HTML source；本次只核對檔案與展示來源 |
 | v1.2.1 工程完整原包 | BLOCKED | 文件庫回報不能取得授權 raw bytes，沒有重建或偷偷以 v1.2.0 代替 |
 | Target repo | OBSERVED_EMPTY | 本次 API 讀取 public repo，branches=[]、pull requests=[]；角色 metadata push=true |
-| Remote write | BLOCKED | Contents create 與 Git blob create 均回 `403 Resource not accessible by integration` |
+| Remote write | AUTH_VERIFIED / PUSH_PENDING | 2026-10-13 本地 gh 已確認 beeawanegd、WRITE 權限及 main default branch；歷史 connector 403 保留為歷史，未以權限 metadata 冒稱成功 push |
 | Branch / push / PR | REMOTE_NOT_CREATED | 交付包提供本地 branch 與 Git bundle；遠端 SHA、PR number/URL 尚不存在 |
 | 真實 backend / DB / offline / SMS | NOT_RUN | 沒有核對到可執行 backend source 或 runtime contract |
 | Team scope / production acceptance | NOT_ACCEPTED | 無 PM、Designer 或 Security sign-off |
@@ -22,6 +22,6 @@
 
 ## 下一步
 
-1. 解決此 repo 的 connector 寫入授權，再讀取最新 remote；仍為空才建立最小 base commit，之後只推獨立 Dev branch 及開 PR。
+1. 本地 CLI 已核對 beeawanegd 授權；Push 前再次檢查 Remote 為空，再重用 Bundle main 及 Developer history，正常 Push 並建立 Draft PR，最後 Fetch 核實。
 2. PM/Dev 確認新舊 Feature 對照、未決政策及該版本的使用範圍，不沿用裸 A-ID。
 3. 取得 backend full SHA、setup、seed 及 request/response/auth contract，才開始真實報名→回條→取消→名額驗收。
