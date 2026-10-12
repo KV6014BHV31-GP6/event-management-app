@@ -1,0 +1,72 @@
+[
+  {
+    "source": "participant_mobile_confirmed_390px.png",
+    "crop_box": [
+      0,
+      505,
+      390,
+      1290
+    ],
+    "label": "A. CONFIRMED (DEMO-B)"
+  },
+  {
+    "source": "participant_mobile_waitlist_390px.png",
+    "crop_box": [
+      0,
+      505,
+      390,
+      1270
+    ],
+    "label": "B. WAITLISTED (DEMO-C)"
+  },
+  {
+    "source": "coordinator_desktop_dashboard_1440px.png",
+    "crop_box": [
+      365,
+      137,
+      1326,
+      997
+    ],
+    "label": "A. SHARED COUNTS AND CAPACITY"
+  },
+  {
+    "source": "coordinator_desktop_dashboard_1440px.png",
+    "crop_box": [
+      365,
+      1476,
+      1326,
+      1701
+    ],
+    "label": "B. SELF-REPORTED OUTREACH"
+  },
+  {
+    "source": "field_desktop_pending_1440px.png",
+    "crop_box": [
+      365,
+      552,
+      1326,
+      1017
+    ],
+    "label": "BEFORE: PENDING SYNC IN DEMO"
+  },
+  {
+    "source": "field_desktop_synced_1440px.png",
+    "crop_box": [
+      365,
+      552,
+      1326,
+      1016
+    ],
+    "label": "AFTER: MANUAL DEMO SYNC"
+  },
+  {
+    "source": "leader_desktop_proxy_outreach_1440px.png",
+    "crop_box": [
+      365,
+      282,
+      1326,
+      1300
+    ],
+    "label": "COMMUNITY LEADER: PROXY AND OUTREACH"
+  }
+]

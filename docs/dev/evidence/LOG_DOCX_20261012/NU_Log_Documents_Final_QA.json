@@ -1,0 +1,67 @@
+{
+  "verified_at_utc": "2026-10-12T14:34:05.527224+00:00",
+  "status": "PASS",
+  "scope": "English coursework contributions, not production acceptance",
+  "source_sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
+  "documents": [
+    {
+      "filename": "NU_Log_Task_1_Developer_Contribution_EN.docx",
+      "size_bytes": 280807,
+      "sha256": "26cb7f091761c20a9ebc17a9cd3e159a5454580104b1b5dd5bfc3ca0e9138434",
+      "pages": 7,
+      "embedded_figures": 4,
+      "checks": {
+        "english_only_no_han": true,
+        "no_em_dash": true,
+        "no_raw_tool_citations": true,
+        "no_external_images": true,
+        "zip_integrity": true,
+        "embedded_figure_count_matches": true,
+        "figures_have_alt_text": true,
+        "page_count_matches": true,
+        "no_blank_pages": true
+      },
+      "page_text_lengths": [
+        2428,
+        2052,
+        2715,
+        1117,
+        897,
+        541,
+        2330
+      ]
+    },
+    {
+      "filename": "NU_Log_Task_2_Developer_Technical_Spec_EN.docx",
+      "size_bytes": 407928,
+      "sha256": "49856d555b257638a5676881c8bee6a5ffd23a361d980a282814b6389338e1f7",
+      "pages": 9,
+      "embedded_figures": 6,
+      "checks": {
+        "english_only_no_han": true,
+        "no_em_dash": true,
+        "no_raw_tool_citations": true,
+        "no_external_images": true,
+        "zip_integrity": true,
+        "embedded_figure_count_matches": true,
+        "figures_have_alt_text": true,
+        "page_count_matches": true,
+        "no_blank_pages": true
+      },
+      "page_text_lengths": [
+        2843,
+        2339,
+        2247,
+        1089,
+        740,
+        501,
+        3233,
+        2291,
+        2176
+      ]
+    }
+  ],
+  "screenshot_capture_report": "NU_v1.2.1_Browser_Capture_Evidence.json",
+  "visual_review": "Every page was rendered and reviewed. Only pages 3 and 4 of Task 2 changed in the final diagram correction; all other Task 2 pages are pixel-identical to reviewed pages.",
+  "diagram_correction": "Parallel request arrows no longer cross boxes. Offline submission enters server validation before idempotent write and result. Actual frontend screenshots were not edited."
+}

@@ -1,0 +1,81 @@
+{
+  "scope": "repo-docs/0.1.0 selective import; no backend or production acceptance",
+  "checked_at_utc": "2026-10-12T16:19:27.856526+00:00",
+  "intake_v120_controlled_file_hashes": {
+    "checked": 70,
+    "mismatches": [],
+    "result": "PASS"
+  },
+  "preserved_word_sha256": {
+    "checked": 2,
+    "result": "PASS"
+  },
+  "word_render_review": {
+    "task1_pages": 7,
+    "task2_pages": 9,
+    "method": "render_docx.py plus all 16 page images visually inspected",
+    "result": "PASS",
+    "changes_to_source_bytes": false
+  },
+  "source_capture_sha256": {
+    "html": 1,
+    "screenshots": 6,
+    "result": "PASS",
+    "historical_tests_rerun": false
+  },
+  "syntax": {
+    "python_ast": "PASS",
+    "standalone_html_inline_js_node_check": "PASS",
+    "javascript_runtime_tested": false
+  },
+  "document_control": {
+    "status": "PASS",
+    "controlled_file_count": 48,
+    "payload_file_count": 49,
+    "relative_links_checked": 59,
+    "errors": [],
+    "scope": "File integrity, metadata, local link targets and selected sensitive-pattern checks only. Not comprehensive security or product acceptance."
+  },
+  "document_control_regression_tests": {
+    "status": "PASS",
+    "passed": 12,
+    "total": 12,
+    "command": "python -m unittest discover -s tests -v",
+    "scope": "document tooling only"
+  },
+  "product_tests": {
+    "node_v121": "NOT_RERUN",
+    "python_v121": "NOT_RERUN",
+    "browser_navigation": "NOT_RUN",
+    "backend_DB": "NOT_RUN",
+    "real_offline_sync": "NOT_RUN",
+    "SMS": "NOT_RUN",
+    "human_acceptance": "NOT_RUN"
+  },
+  "remote": {
+    "status": "BLOCKED",
+    "observed_branches": [],
+    "observed_pull_requests": [],
+    "write_attempts": [
+      {
+        "method": "create_file README.md",
+        "http_status": 403,
+        "message": "Resource not accessible by integration"
+      },
+      {
+        "method": "create_blob README",
+        "http_status": 403,
+        "message": "Resource not accessible by integration"
+      }
+    ],
+    "remote_changes": false,
+    "pr_url": null
+  },
+  "limits": [
+    "Selected sensitive-pattern and metadata checks are not comprehensive secret detection or legal/security review.",
+    "No full v1.2.1 source ZIP was available as authorized raw bytes.",
+    "Source screenshots and 12 original UI checks are historical, not rerun here."
+  ],
+  "checks_scope_status": "PASS",
+  "publication_status": "BLOCKED"
+}
