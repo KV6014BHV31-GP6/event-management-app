@@ -1,0 +1,902 @@
+{
+  "schema": "nu-public-document-register/1",
+  "package_version": "repo-docs/0.1.0",
+  "reviewed_at": "2026-10-12T16:19:34.757399+00:00",
+  "reason": "Record executed document-only validation and 12 passing regression tests",
+  "document_count": 48,
+  "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
+  "documents": [
+    {
+      "document_id": "PUB-DOC-001",
+      "path": ".gitattributes",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "538eb80d1c4833b4371b7e990e6dc650f9b4a2d6dadd2719b0d09d69ad40e147",
+      "size_bytes": 125
+    },
+    {
+      "document_id": "PUB-DOC-002",
+      "path": ".github/pull_request_template.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "76c724badde12c87168fbb88579417ca56135ff916f08071767985894c5784cc",
+      "size_bytes": 473
+    },
+    {
+      "document_id": "DOC-39",
+      "path": ".gitignore",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "392f3c96135ea47713d4f29189f95106bcb634addf34f1a943beaafd36331bdf",
+          "size_bytes": 99,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "392f3c96135ea47713d4f29189f95106bcb634addf34f1a943beaafd36331bdf",
+        "source_size_bytes": 99
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "29ad92b6b0488b9766225cfcb5f371984fe2f1140baa1809447033991d29395e",
+      "size_bytes": 219
+    },
+    {
+      "document_id": "DOC-03",
+      "path": "AGENTS.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e8013d4bd49cbec34aca28813b13625104b08ca57169450c8946a74600361ffb",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 2,
+          "sha256": "0a8226416a49a3af6a39c5df4266ff4f4a51a73df6b8e4bc52199785a92f1123",
+          "size_bytes": 4201,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "0a8226416a49a3af6a39c5df4266ff4f4a51a73df6b8e4bc52199785a92f1123",
+        "source_size_bytes": 4201
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8526ecd1575b781990d5b55f2bafe597e71704dce148b798b6407ad00ada7f83",
+      "size_bytes": 2594
+    },
+    {
+      "document_id": "DOC-40",
+      "path": "README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f6ab2efb279c3e436ca8ddd0addcfa5f7dbc90e8b0901f3726b56bf2f117fa34",
+          "size_bytes": 1402,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "f6ab2efb279c3e436ca8ddd0addcfa5f7dbc90e8b0901f3726b56bf2f117fa34",
+        "source_size_bytes": 1402
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "1c6821ce5a511cd4e10a0d7165139e62062b125af7231a2b8cb0a558f8dc5c50",
+      "size_bytes": 1524
+    },
+    {
+      "document_id": "PUB-DOC-003",
+      "path": "docs/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "7081ac80a7160754c41e2b412e2abe8439926528d392f4e6322d8124f4c01177",
+      "size_bytes": 944
+    },
+    {
+      "document_id": "DOC-06",
+      "path": "docs/api/CONTRACT_EXAMPLE.template.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "df9ae4fa2b78309fa50e6923d4d4ebb028c76678bc18b460c1cadf18c76878f5",
+        "source_size_bytes": 408
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "df9ae4fa2b78309fa50e6923d4d4ebb028c76678bc18b460c1cadf18c76878f5",
+      "size_bytes": 408
+    },
+    {
+      "document_id": "DOC-07",
+      "path": "docs/api/INTEGRATION.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "8c7ec3cfc11c0edd39f2f1a490e53ede6a8d54119f8ed898ed05e5bafd3d7e2a",
+          "size_bytes": 7313,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "8c7ec3cfc11c0edd39f2f1a490e53ede6a8d54119f8ed898ed05e5bafd3d7e2a",
+        "source_size_bytes": 7313
+      },
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "SRC-API-HANDOFF-V120"
+      ],
+      "sha256": "cffd638feba816198a9f58cd827522e9c8b22307b5af20b5b7ef87877e9f4723",
+      "size_bytes": 7762
+    },
+    {
+      "document_id": "DOC-08",
+      "path": "docs/dev/AUSTIN_HANDOFF_REQUEST.txt",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "729e9dd0b1838f205aa63012a77954002c7338196750f29943b0c196b0bbc38d",
+        "source_size_bytes": 1202
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "729e9dd0b1838f205aa63012a77954002c7338196750f29943b0c196b0bbc38d",
+      "size_bytes": 1202
+    },
+    {
+      "document_id": "DOC-01",
+      "path": "docs/dev/CURRENT.md",
+      "revision": 8,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 5,
+          "sha256": "f1176c644e946c2d5306a2856f996fd3ee82e4a4232d13ceb1b140443a0604d6",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 6,
+          "sha256": "56762ac23a9b5109bbe8ccac4801eaffbe96cdabccd7f97b00f0f8da8a703983",
+          "superseded_at": "2026-10-12T10:56:27.214277+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 7,
+          "sha256": "e2e69ec8dfa6b9e224da7173deba59a9a8501a7f3dace34bca0b4bea6d8dbc67",
+          "size_bytes": 2045,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "e2e69ec8dfa6b9e224da7173deba59a9a8501a7f3dace34bca0b4bea6d8dbc67",
+        "source_size_bytes": 2045
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a919a40ccf25736a9cf7e0a15b1da107f84a111ddfa64597a9a3c7899ea50445",
+      "size_bytes": 2308
+    },
+    {
+      "document_id": "DOC-11",
+      "path": "docs/dev/DECISIONS.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e1875b4a0f3c5d8d87297793a687f8c34599941dca5eae8099e1b4b7fb05a35c",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 2,
+          "sha256": "e8c51ab26ee47aade398a9c89cbeeea2ab7dadabcd1b5a55ed12ba4a0c86dccd",
+          "size_bytes": 4586,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "e8c51ab26ee47aade398a9c89cbeeea2ab7dadabcd1b5a55ed12ba4a0c86dccd",
+        "source_size_bytes": 4586
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "fdd3989e3d3768402ff787740c243bb3b88f0538cf8c8f7991b7c04c39257c51",
+      "size_bytes": 1543
+    },
+    {
+      "document_id": "DOC-12",
+      "path": "docs/dev/DEV_FLOW.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "19759a4f93249d0ae29a057bd4bdc7c78c7360e1a3ec2e24aaaf1f9c78fe2d51",
+        "source_size_bytes": 6061
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "19759a4f93249d0ae29a057bd4bdc7c78c7360e1a3ec2e24aaaf1f9c78fe2d51",
+      "size_bytes": 6061
+    },
+    {
+      "document_id": "DOC-13",
+      "path": "docs/dev/DOCUMENT_CONTROL.md",
+      "revision": 4,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 2,
+          "sha256": "be03e63f853dcb2887a3705dd92c0c01cd0c894bd24fd4ec1164f3c776080ab0",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 3,
+          "sha256": "a23852551bb4935382e2aa38643715bb4a0a66fce6b1e379f6d9153e67957033",
+          "size_bytes": 4579,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "a23852551bb4935382e2aa38643715bb4a0a66fce6b1e379f6d9153e67957033",
+        "source_size_bytes": 4579
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9bfd6eac6f8bb73915d7adf5f2398a8ea6da7e84a98438d54aaf2f33d6458d43",
+      "size_bytes": 3364
+    },
+    {
+      "document_id": "PUB-DOC-004",
+      "path": "docs/dev/FEATURE_ID_CROSSWALK.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "SP-FEATURES-20261012",
+        "SP-US-20261012",
+        "SRC04"
+      ],
+      "sha256": "790f47aef164f6814711ef600c337dab761ace37067b6ec70c51e8c3bf0c9a80",
+      "size_bytes": 3784
+    },
+    {
+      "document_id": "PUB-DOC-005",
+      "path": "docs/dev/FILE_SELECTION.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "cbd2cef6fc4e617953e5cffad8254ab040031e15c87fc4cbecb0e7730c1d1053",
+      "size_bytes": 1909
+    },
+    {
+      "document_id": "PUB-DOC-006",
+      "path": "docs/dev/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e2ad39ca37314e0a68f4fce223fe34fd5a1b7b7fb1de658be559ccbd69fd82c1",
+      "size_bytes": 1042
+    },
+    {
+      "document_id": "DOC-18",
+      "path": "docs/dev/REQUIREMENTS.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "01ee1309978231fa954930726e5fc8137ae984c74768025530a4a21610ee7a4f",
+          "size_bytes": 7423,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "01ee1309978231fa954930726e5fc8137ae984c74768025530a4a21610ee7a4f",
+        "source_size_bytes": 7423
+      },
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "SP-FEATURES-20261012",
+        "SP-US-20261012",
+        "SRC04"
+      ],
+      "sha256": "6e69b35ccb9e4098bb2f6cc5587ee9713cb8927c153a721cf17878d8063718c0",
+      "size_bytes": 3600
+    },
+    {
+      "document_id": "DOC-19",
+      "path": "docs/dev/SOURCE_REGISTER.json",
+      "revision": 7,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 4,
+          "sha256": "9b32fe899a7d300a28940e1cd65d59acfe230d0b61db41cefa30dc99b20229dd",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 5,
+          "sha256": "217e2dfa6f87ccbffcd1d40b39ee85ee05eb651e3be660b8837b88c2fd284733",
+          "superseded_at": "2026-10-12T11:00:09.602551+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 6,
+          "sha256": "3ec4305b613d7388ab6ae091afd65252a92c218781db2d8c6217751c704f8757",
+          "size_bytes": 14255,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "3ec4305b613d7388ab6ae091afd65252a92c218781db2d8c6217751c704f8757",
+        "source_size_bytes": 14255
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e2a082613c70c5e75c6ba35b81671ffce5cc12b4ecef78bc49dcda995f68f6f8",
+      "size_bytes": 8011
+    },
+    {
+      "document_id": "PUB-DOC-007",
+      "path": "docs/dev/TEST_PLAN.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8b13f047a8034ef92025c14fb3c250c24653917bcab48e257a02681ff560e038",
+      "size_bytes": 1993
+    },
+    {
+      "document_id": "PUB-DOC-008",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/NU_Log_Documents_Final_QA.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "db4b9a838a4450c625ba47a3f0e44b38b52711ee72152a240eaf0d2a5135a02c",
+      "size_bytes": 2198
+    },
+    {
+      "document_id": "PUB-DOC-009",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/NU_v1.2.1_Browser_Capture_Evidence.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "35cac595455674a0623a3efb7242feb6f4744d24159035cc972bbbc755e91620",
+      "size_bytes": 6263
+    },
+    {
+      "document_id": "PUB-DOC-010",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "62e9b847135ba5880960a109fd251a77af36c2924ce38d11640a6e8d5a2a0c56",
+      "size_bytes": 1095
+    },
+    {
+      "document_id": "PUB-DOC-011",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
+      "size_bytes": 50708
+    },
+    {
+      "document_id": "PUB-DOC-012",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/coordinator_desktop_dashboard_1440px.png",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "0600e0fc11a4954891d68a2a2fe6bcd5d1ef5767f1f86662d80c7753126042f5",
+      "size_bytes": 157234
+    },
+    {
+      "document_id": "PUB-DOC-013",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/crop_provenance.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "8a3dfeea3172e54ea321a12ae0b31ac9e63bfde51dc9f431d0209496cbc5c832",
+      "size_bytes": 1229
+    },
+    {
+      "document_id": "PUB-DOC-014",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/field_desktop_pending_1440px.png",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "ff9d2a1cda88e255eca8187ca3b6b66f763734de772d43493052b612e5866da0",
+      "size_bytes": 150225
+    },
+    {
+      "document_id": "PUB-DOC-015",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/field_desktop_synced_1440px.png",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "2f2eb9c4adf3a169eee4cf05f0e9f6e639cc61539cc8a8670119825e6d2d9e1c",
+      "size_bytes": 149839
+    },
+    {
+      "document_id": "PUB-DOC-016",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/first_attempt_selector_mismatch.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "cdfecd4a438a3aed4e28a07fa79dfa92709c38633d6be79dc39566a5a802fcf8",
+      "size_bytes": 6774
+    },
+    {
+      "document_id": "PUB-DOC-017",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/leader_desktop_proxy_outreach_1440px.png",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "d0aff0845658820e0a7b1f39aa60da7b131b17ad0414d0312b131aa86f9a8243",
+      "size_bytes": 150041
+    },
+    {
+      "document_id": "PUB-DOC-018",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/participant_mobile_confirmed_390px.png",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "acf51f349c7ac59847a2e73ad5d2a4a8ec3ba39c0c7661bd7cff741478cd1c61",
+      "size_bytes": 91028
+    },
+    {
+      "document_id": "PUB-DOC-019",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/participant_mobile_waitlist_390px.png",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "2cc3c0776f243d6072f30fe95ab85217f4c9ed5cb10a797b0c4aca226faba5bf",
+      "size_bytes": 90753
+    },
+    {
+      "document_id": "PUB-DOC-020",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/run_source.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "bc9529fe55732752870861f416240b963c314fec5a94946224160cbc8137e88e",
+      "size_bytes": 5955
+    },
+    {
+      "document_id": "PUB-DOC-021",
+      "path": "docs/dev/evidence/PR-PREP-20261013/VALIDATION.json",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "bb15e2a56d186f804056e30b739e34bda779ac59b31391f88712f512bf04108e",
+          "size_bytes": 1985,
+          "superseded_at": "2026-10-12T16:19:34.757399+00:00",
+          "reason": "Record executed document-only validation and 12 passing regression tests"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a6ed614c2af56e2c7a6332254322d5f104499a7550cf872451a292fd857de1b6",
+      "size_bytes": 2402
+    },
+    {
+      "document_id": "PUB-DOC-022",
+      "path": "docs/dev/evidence/V121_HISTORICAL_SUMMARY.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "f84459faabc7a954e84d764b62c14c853de1acaa54fd44040af712862ed4ee18",
+      "size_bytes": 1045
+    },
+    {
+      "document_id": "PUB-DOC-023",
+      "path": "docs/dev/log-tasks/NU_Log_Task_1_Developer_Contribution_EN.docx",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "LOG1-20261012"
+      ],
+      "sha256": "26cb7f091761c20a9ebc17a9cd3e159a5454580104b1b5dd5bfc3ca0e9138434",
+      "size_bytes": 280807
+    },
+    {
+      "document_id": "PUB-DOC-024",
+      "path": "docs/dev/log-tasks/NU_Log_Task_2_Developer_Technical_Spec_EN.docx",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "LOG2-20261012"
+      ],
+      "sha256": "49856d555b257638a5676881c8bee6a5ffd23a361d980a282814b6389338e1f7",
+      "size_bytes": 407928
+    },
+    {
+      "document_id": "PUB-DOC-025",
+      "path": "docs/dev/log-tasks/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8e81df3f65eee0e534e190c200807a9a37ceaaa31af0ff2a0f40ec7724d80b4c",
+      "size_bytes": 1341
+    },
+    {
+      "document_id": "PUB-DOC-026",
+      "path": "docs/dev/tasks/PR-PREP-20261013.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0d3eb8af3659fc7f09ea17c75ff77f13754c2113b953a9c53eb4779fc238bd75",
+      "size_bytes": 1704
+    },
+    {
+      "document_id": "DOC-24",
+      "path": "docs/dev/tasks/TEMPLATE.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e17a8940440968fe42f166d541443106a43ef052d963ecc845db39f1b1c9decf",
+          "size_bytes": 553,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "e17a8940440968fe42f166d541443106a43ef052d963ecc845db39f1b1c9decf",
+        "source_size_bytes": 553
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0aab754bb4aeb475bf135e0ac8ff716d4f6a3915f116a58bf5b879a52ee19328",
+      "size_bytes": 596
+    },
+    {
+      "document_id": "PUB-DOC-027",
+      "path": "docs/pm/README.md",
+      "revision": 1,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "3f0209b515fcc412b1044b070cb66cc4d240c9551555af919447df6c1ed8a0d7",
+      "size_bytes": 508
+    },
+    {
+      "document_id": "PUB-DOC-028",
+      "path": "docs/qa/README.md",
+      "revision": 1,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "4ba1b27c7d8edfe4dcf6b191a7127df8a4f2537a31050fb5df00f46588fa481d",
+      "size_bytes": 523
+    },
+    {
+      "document_id": "PUB-DOC-029",
+      "path": "docs/security/README.md",
+      "revision": 1,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "1f4b7886980f0a8c7fddbacc260d4ace496d1ce7b25a962f80bae62b0fb14690",
+      "size_bytes": 554
+    },
+    {
+      "document_id": "PUB-DOC-030",
+      "path": "docs/submissions/README.md",
+      "revision": 1,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a6fde1d1e3e04f3f99eb9d3de37534010d254d1b2a17268b25c9d85053eeeec1",
+      "size_bytes": 548
+    },
+    {
+      "document_id": "PUB-DOC-031",
+      "path": "docs/ui-ux/README.md",
+      "revision": 1,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d4e77c7abea8f37f05c6237b555617a2207e966116d4a73d8ad5fe5c59dcdbda",
+      "size_bytes": 528
+    },
+    {
+      "document_id": "DOC-25",
+      "path": "integration/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4abe1d7ca7ab4ca36ad11a724c50343660760ec43841489ca2d28bef371e0970",
+          "size_bytes": 8778,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "4abe1d7ca7ab4ca36ad11a724c50343660760ec43841489ca2d28bef371e0970",
+        "source_size_bytes": 8778
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d770d3a418769863c042d248e8f47d3669acda3a5045988fd120e84ced61619d",
+      "size_bytes": 994
+    },
+    {
+      "document_id": "DOC-35",
+      "path": "scripts/check_dev_control.py",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b39e71bdf9d68104e686d97757f235a9ed63a76165fff2ff2058a318b94659ac",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 2,
+          "sha256": "b50a2f7d8499b867101b635aa3d2573e881ed3c82d5a8cd0d0c13af940a746cb",
+          "size_bytes": 4803,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "b50a2f7d8499b867101b635aa3d2573e881ed3c82d5a8cd0d0c13af940a746cb",
+        "source_size_bytes": 4803
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "acc33616d16fb1f45132f0893e048fc0cdf28e3873709b25f3c133efc4268a8e",
+      "size_bytes": 7136
+    },
+    {
+      "document_id": "DOC-36",
+      "path": "scripts/refresh_document_register.py",
+      "revision": 4,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 2,
+          "sha256": "1d07ef8f48eed131783a43c42b312b5f64e1ede9220779a7d1ebabde3bd91fb6",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 3,
+          "sha256": "ccbf4f936cec8c703de35496facfac5d8aa30e435f533f0987356a80476adf2b",
+          "size_bytes": 2587,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "ccbf4f936cec8c703de35496facfac5d8aa30e435f533f0987356a80476adf2b",
+        "source_size_bytes": 2587
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "f67ebda7b5ebfafd9f16dde29b553afc29b3a9d8c6fc8c154cbe06cc3b6bfd10",
+      "size_bytes": 2329
+    },
+    {
+      "document_id": "PUB-DOC-032",
+      "path": "tests/test_document_control.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "3b3f637a7771a0fbf6abd7416575cf233a9de97e1e7fd7070724151828f8f7be",
+      "size_bytes": 4204
+    }
+  ]
+}

@@ -1,0 +1,6 @@
+# Preserve fingerprints of reviewed artifacts across platforms.
+* -text
+*.docx binary
+*.png binary
+*.jpg binary
+*.pdf binary

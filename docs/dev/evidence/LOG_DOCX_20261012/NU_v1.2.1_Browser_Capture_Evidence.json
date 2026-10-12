@@ -1,0 +1,256 @@
+{
+  "source": "/mnt/data/nu_assets/ROSE_DEMO_English_v1.2.1_SOURCE.html",
+  "source_sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
+  "source_method": "Files text materialization of original standalone HTML; no UI/source rewriting",
+  "started_utc": "2026-10-12T14:20:20.560783+00:00",
+  "method": "Chromium sandbox enabled; about:blank + page.set_content; no storage fixture",
+  "checks": [
+    {
+      "name": "01 source UI loads with synthetic demo banner",
+      "status": "PASS"
+    },
+    {
+      "name": "02 four existing role views switch",
+      "status": "PASS"
+    },
+    {
+      "name": "03 DEMO-B has confirmed local receipt",
+      "status": "PASS"
+    },
+    {
+      "name": "04 public quota full yields waitlisted DEMO-C",
+      "status": "PASS"
+    },
+    {
+      "name": "05 leader-assisted reserved-pool registration",
+      "status": "PASS"
+    },
+    {
+      "name": "06 outreach self-report saved in demo",
+      "status": "PASS"
+    },
+    {
+      "name": "07 dashboard reflects shared demo counts",
+      "status": "PASS"
+    },
+    {
+      "name": "08 excessive quota rejected visibly",
+      "status": "PASS"
+    },
+    {
+      "name": "09 simulated offline check-in stays pending",
+      "status": "PASS"
+    },
+    {
+      "name": "10 manual DEMO sync changes pending to synced",
+      "status": "PASS"
+    },
+    {
+      "name": "11 cancellation promotes same-pool waitlist in demo",
+      "status": "PASS"
+    },
+    {
+      "name": "12 unapproved walk-in allocation remains blocked",
+      "status": "PASS"
+    }
+  ],
+  "captures": [
+    {
+      "name": "participant_mobile_confirmed_390px.png",
+      "sha256": "acf51f349c7ac59847a2e73ad5d2a4a8ec3ba39c0c7661bd7cff741478cd1c61",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "regions": [
+        {
+          "tag": "SECTION",
+          "cls": "card event-card",
+          "x": 16,
+          "y": 514.6875,
+          "width": 358,
+          "height": 495.1875
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card receipt-card",
+          "x": 16,
+          "y": 1027.875,
+          "width": 358,
+          "height": 249.96875
+        }
+      ]
+    },
+    {
+      "name": "participant_mobile_waitlist_390px.png",
+      "sha256": "2cc3c0776f243d6072f30fe95ab85217f4c9ed5cb10a797b0c4aca226faba5bf",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "regions": [
+        {
+          "tag": "SECTION",
+          "cls": "card event-card",
+          "x": 16,
+          "y": 514.6875,
+          "width": 358,
+          "height": 495.1875
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card receipt-card",
+          "x": 16,
+          "y": 1027.875,
+          "width": 358,
+          "height": 230.171875
+        }
+      ]
+    },
+    {
+      "name": "leader_desktop_proxy_outreach_1440px.png",
+      "sha256": "d0aff0845658820e0a7b1f39aa60da7b131b17ad0414d0312b131aa86f9a8243",
+      "viewport": {
+        "width": 1440,
+        "height": 1050
+      },
+      "regions": [
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 352.78125,
+          "width": 932,
+          "height": 336.734375
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 707.515625,
+          "width": 932,
+          "height": 582.40625
+        }
+      ]
+    },
+    {
+      "name": "coordinator_desktop_dashboard_1440px.png",
+      "sha256": "0600e0fc11a4954891d68a2a2fe6bcd5d1ef5767f1f86662d80c7753126042f5",
+      "viewport": {
+        "width": 1440,
+        "height": 1050
+      },
+      "regions": [
+        {
+          "tag": "DIV",
+          "cls": "stats",
+          "x": 380,
+          "y": 377.53125,
+          "width": 932,
+          "height": 107
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 502.53125,
+          "width": 932,
+          "height": 486.71875
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 1007.25,
+          "width": 932,
+          "height": 459.140625
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 1484.390625,
+          "width": 932,
+          "height": 206.78125
+        }
+      ]
+    },
+    {
+      "name": "field_desktop_pending_1440px.png",
+      "sha256": "ff9d2a1cda88e255eca8187ca3b6b66f763734de772d43493052b612e5866da0",
+      "viewport": {
+        "width": 1440,
+        "height": 1050
+      },
+      "regions": [
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 352.78125,
+          "width": 932,
+          "height": 363.109375
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 733.890625,
+          "width": 932,
+          "height": 275.78125
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card policy-card",
+          "x": 380,
+          "y": 1027.671875,
+          "width": 932,
+          "height": 235.625
+        }
+      ]
+    },
+    {
+      "name": "field_desktop_synced_1440px.png",
+      "sha256": "2f2eb9c4adf3a169eee4cf05f0e9f6e639cc61539cc8a8670119825e6d2d9e1c",
+      "viewport": {
+        "width": 1440,
+        "height": 1050
+      },
+      "regions": [
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 352.78125,
+          "width": 932,
+          "height": 363.109375
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card",
+          "x": 380,
+          "y": 733.890625,
+          "width": 932,
+          "height": 273.375
+        },
+        {
+          "tag": "SECTION",
+          "cls": "card policy-card",
+          "x": 380,
+          "y": 1025.265625,
+          "width": 932,
+          "height": 235.625
+        }
+      ]
+    }
+  ],
+  "network_requests": [],
+  "page_errors": [],
+  "backend_tested": false,
+  "real_offline_sync_tested": false,
+  "browser_version": "144.0.7559.96",
+  "page_url": "about:blank",
+  "storage_state": "Memory only. Reloading resets this demo.",
+  "status": "PASS",
+  "ended_utc": "2026-10-12T14:20:23.813303+00:00"
+}

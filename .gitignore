@@ -1,0 +1,18 @@
+# Private inputs and local runtime files are not public deliverables.
+.env
+.env.*
+!.env.example
+private_control/
+private/
+__pycache__/
+*.py[cod]
+node_modules/
+.venv/
+var/
+dist/
+logs/
+.DS_Store
+Thumbs.db
+~$*
+*.pem
+*.key

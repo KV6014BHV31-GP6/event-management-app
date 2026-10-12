@@ -1,0 +1,16 @@
+{
+  "status": "TEMPLATE_NOT_AN_API_SCHEMA",
+  "operation_id": "REPLACE_WITH_EXISTING_OPERATION",
+  "method": "UNCONFIRMED",
+  "path": "UNCONFIRMED",
+  "backend_full_sha": null,
+  "contract_version": null,
+  "auth_policy": null,
+  "request_schema": null,
+  "response_schemas": null,
+  "content_type": null,
+  "error_codes": null,
+  "identifier_mapping": null,
+  "idempotency_policy": null,
+  "evidence": []
+}

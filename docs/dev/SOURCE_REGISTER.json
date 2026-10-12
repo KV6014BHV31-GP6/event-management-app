@@ -1,0 +1,211 @@
+{
+  "schema": "nu-public-source-register/1",
+  "package_version": "repo-docs/0.1.0",
+  "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
+  "source_count": 20,
+  "sources": [
+    {
+      "source_id": "SP-OVERVIEW-20261012",
+      "title": "Overview on the Challenge 5.docx",
+      "classification": "problem_context",
+      "raw_bytes_verified": true,
+      "sha256": "20202e235e310e1929e39bf06ca6dfe8d64efac1862b50ba9df9ba6e75296baf",
+      "size_bytes": 13087,
+      "raw_in_repository": false,
+      "content_status": "not_team_approved",
+      "locator": "NU imported SharePoint snapshot; retained privately"
+    },
+    {
+      "source_id": "SP-US-20261012",
+      "title": "User Stories & Mapping.docx",
+      "classification": "working_team_story_draft",
+      "raw_bytes_verified": true,
+      "sha256": "517ad61f435c60f5a4adb2dd2632d7d88ae9149ee4a792ec70b4446d76a6755a",
+      "size_bytes": 150682,
+      "raw_in_repository": false,
+      "content_status": "not_team_approved",
+      "locator": "NU imported SharePoint snapshot; retained privately"
+    },
+    {
+      "source_id": "SP-FEATURES-20261012",
+      "title": "Features Review.docx",
+      "classification": "working_feature_draft",
+      "raw_bytes_verified": true,
+      "sha256": "1f4c3132eab3aff91b621a46f1011c4002ba0b597fae446cb00560395a21dba0",
+      "size_bytes": 20968,
+      "raw_in_repository": false,
+      "content_status": "not_team_approved",
+      "locator": "NU imported SharePoint snapshot; retained privately"
+    },
+    {
+      "source_id": "SRC01",
+      "title": "Challenge 5.pdf",
+      "sha256": "e6c34a58f8c2bc84bf4441dd2af74da834c87a117911036cafb57aa303f78700",
+      "size_bytes": 108022,
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "hash_status": "recorded_in_v1.2.0_register_not_rehashed_this_run",
+      "classification": "historical_source_reference"
+    },
+    {
+      "source_id": "SRC02",
+      "title": "Challenge 5 - Event Management.mp4",
+      "sha256": "62bb7351f44591a16b61fa9459dc7fbf9a86b6914ee7ac8c14f0c6ff0b24103a",
+      "size_bytes": 40447717,
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "hash_status": "recorded_in_v1.2.0_register_not_rehashed_this_run",
+      "classification": "historical_source_reference"
+    },
+    {
+      "source_id": "SRC03",
+      "title": "Challenge 5 Event Management_video_script.txt",
+      "sha256": "7b4e9114fdcb3477a9f813a4ca85e4609f69bc0bc1456042ac121c6a33b672f0",
+      "size_bytes": 9336,
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "hash_status": "recorded_in_v1.2.0_register_not_rehashed_this_run",
+      "classification": "historical_source_reference"
+    },
+    {
+      "source_id": "SRC04",
+      "title": "Computing Project - GP 6.docx",
+      "sha256": "10f8bd53739518b2a49733c580640b15d1dfee40c79915ea6d6e2631dda18b5e",
+      "size_bytes": 33421,
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "hash_status": "recorded_in_v1.2.0_register_not_rehashed_this_run",
+      "classification": "historical_source_reference"
+    },
+    {
+      "source_id": "SRC06",
+      "title": "Log Task 1 26_27.docx",
+      "sha256": "e2da66c0e6a62644ed2feaff7c9942373cfa649cabe197420106826e2d4cb963",
+      "size_bytes": 267799,
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "hash_status": "recorded_in_v1.2.0_register_not_rehashed_this_run",
+      "classification": "historical_source_reference"
+    },
+    {
+      "source_id": "SRC08",
+      "title": "Log Task 2 26_27.docx",
+      "sha256": "ca1435051dec8b1cd2c0841cb04cad6e850c0947aa717b12662389ec350c0217",
+      "size_bytes": 101692,
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "hash_status": "recorded_in_v1.2.0_register_not_rehashed_this_run",
+      "classification": "historical_source_reference"
+    },
+    {
+      "source_id": "SRC09",
+      "title": "Private backend handoff reference (original excluded)",
+      "raw_in_repository": false,
+      "raw_bytes_verified": false,
+      "classification": "reported_claims_only",
+      "public_summary": "docs/api/INTEGRATION.md"
+    },
+    {
+      "source_id": "SRC10",
+      "title": "Private backend handoff reference (original excluded)",
+      "raw_in_repository": false,
+      "raw_bytes_verified": false,
+      "classification": "reported_claims_only",
+      "public_summary": "docs/api/INTEGRATION.md"
+    },
+    {
+      "source_id": "SRC-DEVFLOW-V120",
+      "title": "DEV_FLOW.md",
+      "sha256": "19759a4f93249d0ae29a057bd4bdc7c78c7360e1a3ec2e24aaaf1f9c78fe2d51",
+      "raw_bytes_verified": true,
+      "classification": "derived_workspace_record",
+      "raw_in_repository": true,
+      "original_path": "docs/dev/DEV_FLOW.md",
+      "source_workspace_version": "1.2.0"
+    },
+    {
+      "source_id": "SRC-API-HANDOFF-V120",
+      "title": "INTEGRATION.md",
+      "sha256": "8c7ec3cfc11c0edd39f2f1a490e53ede6a8d54119f8ed898ed05e5bafd3d7e2a",
+      "raw_bytes_verified": true,
+      "classification": "derived_workspace_record",
+      "raw_in_repository": false,
+      "original_path": "docs/api/INTEGRATION.md",
+      "source_workspace_version": "1.2.0"
+    },
+    {
+      "source_id": "V120-CONTROL",
+      "title": "NU_Dev_Workspace_v1.2.0.zip",
+      "sha256": "197921e18d5ee56bb4e23ae7ff224aeac01e3d60e62de86ee284cec0c502a4d7",
+      "raw_bytes_verified": true,
+      "raw_in_repository": false,
+      "classification": "verified_intake_archive",
+      "controlled_file_count_verified": 70
+    },
+    {
+      "source_id": "LOG1-20261012",
+      "title": "NU_Log_Task_1_Developer_Contribution_EN.docx",
+      "sha256": "26cb7f091761c20a9ebc17a9cd3e159a5454580104b1b5dd5bfc3ca0e9138434",
+      "raw_bytes_verified": true,
+      "raw_in_repository": true,
+      "repository_path": "docs/dev/log-tasks/NU_Log_Task_1_Developer_Contribution_EN.docx",
+      "classification": "preserved_developer_draft"
+    },
+    {
+      "source_id": "LOG2-20261012",
+      "title": "NU_Log_Task_2_Developer_Technical_Spec_EN.docx",
+      "sha256": "49856d555b257638a5676881c8bee6a5ffd23a361d980a282814b6389338e1f7",
+      "raw_bytes_verified": true,
+      "raw_in_repository": true,
+      "repository_path": "docs/dev/log-tasks/NU_Log_Task_2_Developer_Technical_Spec_EN.docx",
+      "classification": "preserved_developer_draft"
+    },
+    {
+      "source_id": "CAPTURE-20261012",
+      "title": "LOG_DOCX source capture set",
+      "raw_bytes_verified": true,
+      "raw_in_repository": true,
+      "repository_directory": "docs/dev/evidence/LOG_DOCX_20261012",
+      "source_sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
+      "classification": "historical_mock_evidence_not_rerun"
+    },
+    {
+      "source_id": "V121-VERIFY-READ",
+      "title": "NU_Verification_v1.2.1.json",
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "availability": "retrieved_text_only; raw materialization denied",
+      "classification": "historical_report_not_rerun",
+      "derived_summary": "docs/dev/evidence/V121_HISTORICAL_SUMMARY.md"
+    },
+    {
+      "source_id": "V121-COVERAGE-READ",
+      "title": "NU_Feature_Coverage_v1.2.1.md",
+      "raw_bytes_verified": false,
+      "raw_in_repository": false,
+      "availability": "retrieved_text_only; raw materialization denied",
+      "classification": "historical_report_not_rerun",
+      "derived_summary": "docs/dev/evidence/V121_HISTORICAL_SUMMARY.md"
+    },
+    {
+      "source_id": "USER-PR-SCOPE",
+      "title": "Current user request: selective Developer branch, push and PR",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "permissions": [
+        "select_dev_documents",
+        "propose_role_directories",
+        "create_branch",
+        "push",
+        "open_pr"
+      ],
+      "not_authorized": [
+        "merge",
+        "force_push",
+        "deploy",
+        "change_visibility",
+        "send_messages"
+      ]
+    }
+  ]
+}

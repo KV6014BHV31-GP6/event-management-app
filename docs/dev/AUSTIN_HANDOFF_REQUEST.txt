@@ -1,0 +1,11 @@
+Hi Austin, I am preparing the frontend integration. Please send:
+
+1. The backend repo branch and full commit SHA, plus the setup/start command and synthetic seed data.
+2. The API base URL and environment variable names. Please do not send secrets in the group chat.
+3. OpenAPI/Postman or request and response examples for the 11 HTTP operations in your list, including error responses.
+4. Login/auth method, staff roles, guest registration rules, CORS settings and how public_id, eventId and id map to each other.
+5. How online/offline quotas, duplicate requests, waiting-list promotion and cancellation work on the server.
+6. Which APIs support event lists, timeslots, referral tracking, outreach reports and offline check-in, if these are already implemented.
+7. The SMS scheduler/provider, brochure generation and OCR status, plus runnable tests or a short reproducible demo.
+
+I can use mock data while these details are confirmed. We can then test one complete flow: open event, register without an account, see the confirmed/waiting result, cancel, and check the capacity and waiting list. Please identify any functions that are still planned so our demo and Task2 spec describe the actual state.
