@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
-  "package_version": "repo-docs/0.2.0",
-  "reviewed_at": "2026-10-13T01:42:12.307720+00:00",
-  "reason": "Record observed DEV-SPLIT docs-only local validation in active task",
-  "document_count": 56,
+  "package_version": "repo-docs/0.2.1",
+  "reviewed_at": "2026-10-13T02:08:04.460297+00:00",
+  "reason": "FE-SHELL: record native browser navigation blocked by environment; retain successful static HTTP tests",
+  "document_count": 60,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -61,7 +61,7 @@
     {
       "document_id": "DOC-03",
       "path": "AGENTS.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -84,6 +84,13 @@
           "size_bytes": 2594,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 4,
+          "sha256": "72670398f89b9425aa61b20eeaa7605a9e6392a30117b86bb0aeb5f1d96c4530",
+          "size_bytes": 3091,
+          "superseded_at": "2026-10-13T02:07:09.131039+00:00",
+          "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
         }
       ],
       "import_lineage": {
@@ -94,8 +101,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "72670398f89b9425aa61b20eeaa7605a9e6392a30117b86bb0aeb5f1d96c4530",
-      "size_bytes": 3091
+      "sha256": "bc0411b123a03c34686df34f2a6cb5e6d8311d1872d9a138e3f908f5c564d8e8",
+      "size_bytes": 3803
     },
     {
       "document_id": "PUB-DOC-SPLIT-002",
@@ -207,9 +214,23 @@
       "size_bytes": 1417
     },
     {
+      "document_id": "FE-SHELL-002",
+      "path": "docs/dev/BRANCHING.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "22d527e540958c1cc4b63d957c6cca947d2a362f316e96f566170ee9e7238665",
+      "size_bytes": 2265,
+      "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
+    },
+    {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 12,
+      "revision": 13,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -259,6 +280,13 @@
           "size_bytes": 2662,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 12,
+          "sha256": "bd5dbeba3f2babd2017fed6d03dcc88c967d86112174584162853c06d388f7b9",
+          "size_bytes": 2342,
+          "superseded_at": "2026-10-13T02:07:09.131039+00:00",
+          "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
         }
       ],
       "import_lineage": {
@@ -269,8 +297,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "bd5dbeba3f2babd2017fed6d03dcc88c967d86112174584162853c06d388f7b9",
-      "size_bytes": 2342
+      "sha256": "0ebd6eaf80f1dcf2062212fe8e3181d100754c118b8f6945db48802037ad2b8f",
+      "size_bytes": 2234
     },
     {
       "document_id": "DOC-11",
@@ -798,6 +826,28 @@
       "size_bytes": 2464
     },
     {
+      "document_id": "FE-SHELL-003",
+      "path": "docs/dev/tasks/FE-SHELL-20261013.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f7fb84addf49ce7e65af84aec210eac98a5fd38d5f64a4b83e1c49448b504451",
+          "size_bytes": 2658,
+          "superseded_at": "2026-10-13T02:08:04.460297+00:00",
+          "reason": "FE-SHELL: record native browser navigation blocked by environment; retain successful static HTTP tests"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "754541a3294ffbc4249a05324c22f391b57b326e791b686014e2d2ece2d76a2f",
+      "size_bytes": 3090,
+      "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
+    },
+    {
       "document_id": "PUB-DOC-026",
       "path": "docs/dev/tasks/PR-PREP-20261013.md",
       "revision": 4,
@@ -958,8 +1008,8 @@
       "size_bytes": 528
     },
     {
-      "document_id": "PUB-DOC-SPLIT-001",
-      "path": "frontend/README.md",
+      "document_id": "FE-SHELL-001",
+      "path": "frontend/index.html",
       "revision": 1,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
@@ -967,8 +1017,30 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "fca7241ebd3344c4b5b395764c379e8a5824b3861888289791ef8c0829e487ab",
-      "size_bytes": 899
+      "sha256": "0aea98946baad096f3061e678cd077b1dd748baf7399977d70697f2a41ebc55a",
+      "size_bytes": 2511,
+      "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
+    },
+    {
+      "document_id": "PUB-DOC-SPLIT-001",
+      "path": "frontend/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "fca7241ebd3344c4b5b395764c379e8a5824b3861888289791ef8c0829e487ab",
+          "size_bytes": 899,
+          "superseded_at": "2026-10-13T02:07:09.131039+00:00",
+          "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d25d1c98f470bf791b4aa9a32a4f9574367f298ab924612d95d72851e514234b",
+      "size_bytes": 1956
     },
     {
       "document_id": "DOC-25",
@@ -1125,6 +1197,20 @@
       ],
       "sha256": "3b3f637a7771a0fbf6abd7416575cf233a9de97e1e7fd7070724151828f8f7be",
       "size_bytes": 4204
+    },
+    {
+      "document_id": "FE-SHELL-004",
+      "path": "tests/test_frontend_shell.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8a9b1c82969b6be7a4d12d1623226bcbd09ffd2f9954828302b24c8355acf3b8",
+      "size_bytes": 3485,
+      "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
     }
   ]
 }
