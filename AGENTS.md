@@ -27,3 +27,7 @@ Guest 報名保留無帳戶設計。Server 對身份授權、名額、取消、�
 使用者已授權必要 Dev 文件的獨立 branch、push 及 PR。這個授權取代 TASK-004 歷史上的 local-only 限制，**只適用本次文件整理**。沒有 merge、force push、部署、修改 repo visibility、付費服務或發送組員訊息的授權。
 空 repo 建 PR 前可能需要最小 README base commit；執行前重新核對 remote 仍然為空。非空 repo 要保留其所有內容、root instructions 和現有 default branch，先 review 差異再導入。
 遠端成功必須有重新讀取的 branch SHA 及 PR URL。沒有這些證據，不得說已 push 或已開 PR。
+
+## Developer directory split, 2026-10-13
+
+`frontend/` and `backend/` are README-only workspace boundaries until authentic source and stack are verified. Responsibility and reviewer proposal: `docs/dev/OWNERSHIP.md`; task: `docs/dev/tasks/DEV-SPLIT-20261013.md`. Keep `docs/dev/CURRENT.md` as the only repository-functional status. `integration/` remains frozen synthetic evidence. Never treat placeholder folders, unconfirmed API claims or historical document tests as functional implementation.

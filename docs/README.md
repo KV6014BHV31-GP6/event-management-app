@@ -1,13 +1,15 @@
 # 團隊文件目錄
 
-| 分類 | 入口 | 本 PR 實際交付 |
+| 分類 | 入口 | 說明 |
 |---|---|---|
-| Developer | [Dev](dev/README.md) | 主要內容，需求對照、API 準備、流程、Log Task 及證據 |
-| PM | [PM](pm/README.md) | 分類與待確認項目，沒有代寫 PM 批准 |
-| UI/UX | [UI/UX](ui-ux/README.md) | 分類與交接規則，沒有覆蓋 Designer 原件 |
-| Security | [Security](security/README.md) | 分類與待 review 項目，沒有宣稱已通過審核 |
-| QA | [QA](qa/README.md) | 區分本機文件檢查、Mock、真實 API 和人工驗收 |
-| Submission | [Submission](submissions/README.md) | PM 組裝入口，不是已提交的課程 ZIP |
-| API | [Integration](api/INTEGRATION.md) | 已收到聲明與缺少的合約資料，沒有偽造 endpoints |
+| Developer | [Dev](dev/README.md) | Developer 總入口、要求、document control |
+| Frontend | [Developer / Frontend](dev/frontend/README.md) | Benjamin，UI 與 API client，source 尚未導入 |
+| Backend | [Developer / Backend](dev/backend/README.md) | Austin 交接待確認，source 尚未導入 |
+| API | [Handoff checklist](api/HANDOFF_CHECKLIST.md)、[existing record](api/INTEGRATION.md) | 交接要求與待核實 API |
+| PM | [PM](pm/README.md) | 沿用既有入口，不代寫或批准 PM 工作 |
+| UI/UX | [UI/UX](ui-ux/README.md) | 保留他人交付與設計審核界線 |
+| Security | [Security](security/README.md) | 私隱與權限要求待專責 review |
+| QA | [QA](qa/README.md) | 文件檢查、Mock 與真實驗收分開 |
+| Submission | [Submission](submissions/README.md) | PM 組裝入口，不代表正式提交 |
 
-路徑只表示內容分類。人員安排、reviewer、實際接受狀態仍由團隊確認。所有原始 SharePoint 文件及私人資料繼續留在原來受控空間。
+原始 SharePoint 文件及其他組員來源仍留原有受控位置；文件路徑分類不自動建立團隊批准或轉移所有權。

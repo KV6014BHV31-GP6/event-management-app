@@ -13,4 +13,15 @@
 | IMPORT-007 | CONDITIONAL | 若 remote 重核仍空，只加最小 README 作 main 基線，再分支提交 | 發現任何現有 commit 時先 reconcile，不覆寫 |
 | IMPORT-008 | PROPOSED | 每個角色一個 primary writer，reviewer 依內容決定 | 團隊明確人員安排 |
 
-日期：2026-10-13。兩次 GitHub 寫入均為403，沒有任何 remote commit/branch/PR 成功紀錄。Backend 不在此分支被宣稱存在、完成或被接管。
+歷史紀錄（2026-10-13 初次雲端連線）：兩次 GitHub 寫入均為403，當時未有 remote commit/branch/PR；其後本地 CLI 成功及 PR #1 已合併。這條舊紀錄只描述當時狀態。Backend 不在本次結構 PR 被宣稱存在、完成或被接管。
+
+## Successor decisions, 2026-10-13
+
+| ID | State | Scope and reason | Reopen condition |
+|---|---|---|---|
+| IMPORT-009 | OBSERVED_SUCCESS | [PR #1](https://github.com/KV6014BHV31-GP6/event-management-app/pull/1) merged; main at `aac3d3af...`. Supersedes `IMPORT-006` REMOTE_BLOCKED and the empty-remote assumption in `IMPORT-007`; historic rows remain for audit. | New remote evidence |
+| STRUCT-001 | OWNER_REQUESTED / DOCS_ONLY | Add `frontend/` and `backend/` README-only landing zones. Keep original `integration/` frozen evidence; do not import unverified source or choose a framework. | Authentic source/lockfile and approved implementation PR |
+| STRUCT-002 | WORKING_BASELINE / TEAM_REVIEW_PENDING | Separate FE/BE responsibilities under `docs/dev/` and add [ownership](OWNERSHIP.md), [API checklist](../api/HANDOFF_CHECKLIST.md), and E2E entry. Austin role is reported, not reassigned. | PM / contributor confirms accountable owner and API contract |
+| STRUCT-003 | LOCAL_CONTROL | Register all new Markdown files and changed revisions; historical task and source registers remain unchanged. | Approved public scope or document-control policy change |
+
+No merge, deployment, source-code move, backend takeover or role sign-off is authorized by this documentation PR.
