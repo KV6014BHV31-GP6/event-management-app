@@ -1,6 +1,6 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.2.1`，2026-10-13（香港）。Active task: [FE-SHELL-20261013](tasks/FE-SHELL-20261013.md). This file describes the current feature checkout; NU cloud is a separate workspace.
+版本：`repo-docs/0.2.2`，2026-10-13（香港）。Active task: [FE-MOCK-V120-20261013](tasks/FE-MOCK-V120-20261013.md). This file describes the current feature checkout; NU cloud is a separate workspace.
 
 | Area | State | Evidence boundary |
 |---|---|---|
@@ -22,3 +22,7 @@ Flow: [feature → dev → uat → main](BRANCHING.md). The earlier PR-PREP/DEV-
 3. Agree the versioned API contract and PM policies, then perform the first real guest request → persisted receipt → cancellation E2E through separately authorized PRs.
 
 Validation commands and boundaries are in the [feature task](tasks/FE-SHELL-20261013.md). Local document and static HTTP checks are not backend, native browser or human acceptance.
+
+## Source import successor 1/2 · v1.2.0
+
+On `dev_fe_shell`, imported the verified original module-based synthetic Frontend v1.2.0 under `frontend/mock/v1.2.0/`; local Node tests 41/41 PASS. This supersedes the earlier statement that the feature branch contained only a static launcher. Full v1.2.1 engineering source and the Austin backend remain NOT_VERIFIED; no API/DB/UAT acceptance.

@@ -1,6 +1,6 @@
 # Frontend workspace
 
-**State: STATIC_PREVIEW_ENTRY / NO PRODUCTION APP.** The `dev_fe_shell` branch adds [index.html](index.html), a small navigation page linking to the already tracked four-role synthetic demo. It does not import the complete v1.2.1 engineering source or choose a frontend framework.
+**State: VERSIONED_MOCK_SOURCE / NO PRODUCTION APP.** The `dev_fe_shell` branch adds [index.html](index.html), a small navigation page linking to the already tracked four-role synthetic demo. It does not import the complete v1.2.1 engineering source or choose a frontend framework.
 
 Working owner: Benjamin. Scope: [Frontend responsibilities](../docs/dev/frontend/README.md). Shared contract: [API handoff](../docs/api/HANDOFF_CHECKLIST.md). Workflow: [BRANCHING](../docs/dev/BRANCHING.md).
 
@@ -28,3 +28,10 @@ python -m unittest discover -s tests -v
 ```
 
 The added shell tests cover HTML/link structure, frozen-source identity and loopback static HTTP readback, not product E2E. See [feature task](../docs/dev/tasks/FE-SHELL-20261013.md) for boundaries. Commit/push to `dev_fe_shell` then stop; no feature promotion is authorized in this task.
+
+## Versioned source commits
+
+- [v1.2.0 module-based runnable mock](mock/v1.2.0/README.md) has been imported as a historical baseline, with `npm test` passing 41/41 locally.
+- The frozen [v1.2.1 evidence](../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html) is unchanged; the separate upgrade commit will provide a versioned runnable location.
+
+No real backend connection, production authentication or DB state is implied by these mocks.

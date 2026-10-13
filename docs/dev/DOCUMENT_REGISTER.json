@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
-  "package_version": "repo-docs/0.2.1",
-  "reviewed_at": "2026-10-13T02:08:04.460297+00:00",
-  "reason": "FE-SHELL: record native browser navigation blocked by environment; retain successful static HTTP tests",
-  "document_count": 60,
+  "package_version": "repo-docs/0.2.2",
+  "reviewed_at": "2026-10-13T04:36:01.697Z",
+  "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)",
+  "document_count": 72,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -230,7 +230,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 13,
+      "revision": 14,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -287,6 +287,13 @@
           "size_bytes": 2342,
           "superseded_at": "2026-10-13T02:07:09.131039+00:00",
           "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
+        },
+        {
+          "revision": 13,
+          "sha256": "0ebd6eaf80f1dcf2062212fe8e3181d100754c118b8f6945db48802037ad2b8f",
+          "size_bytes": 2234,
+          "superseded_at": "2026-10-13T04:36:01.697Z",
+          "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)"
         }
       ],
       "import_lineage": {
@@ -297,8 +304,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0ebd6eaf80f1dcf2062212fe8e3181d100754c118b8f6945db48802037ad2b8f",
-      "size_bytes": 2234
+      "sha256": "b0f17feaca1d4a84e6a0469dfd19b021e6d61e702ecfd7d0f284598d369f30b8",
+      "size_bytes": 2631
     },
     {
       "document_id": "DOC-11",
@@ -1024,7 +1031,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1034,13 +1041,20 @@
           "size_bytes": 899,
           "superseded_at": "2026-10-13T02:07:09.131039+00:00",
           "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
+        },
+        {
+          "revision": 2,
+          "sha256": "d25d1c98f470bf791b4aa9a32a4f9574367f298ab924612d95d72851e514234b",
+          "size_bytes": 1956,
+          "superseded_at": "2026-10-13T04:36:01.697Z",
+          "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d25d1c98f470bf791b4aa9a32a4f9574367f298ab924612d95d72851e514234b",
-      "size_bytes": 1956
+      "sha256": "061b43b26967b9b1adc2b1352e6a313484f6773ef47b583b827dbc08817e8815",
+      "size_bytes": 2419
     },
     {
       "document_id": "DOC-25",
@@ -1211,6 +1225,162 @@
       "sha256": "8a9b1c82969b6be7a4d12d1623226bcbd09ffd2f9954828302b24c8355acf3b8",
       "size_bytes": 3485,
       "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
+    },
+    {
+      "document_id": "FE-V120-001",
+      "path": "frontend/mock/v1.2.0/index.html",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "95a8dec3dfb475dc48d9ce55e61de3755936f59f38a2a38e489b744ff1975920",
+      "size_bytes": 2574
+    },
+    {
+      "document_id": "FE-V120-002",
+      "path": "frontend/mock/v1.2.0/package.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "081db8f4f43e1d9e55812b6bf1e4dbe46a4a752d802d6435a8b561ca468b2a9c",
+      "size_bytes": 141
+    },
+    {
+      "document_id": "FE-V120-003",
+      "path": "frontend/mock/v1.2.0/src/app.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "16e249b2b18180695b3b82cabd910b8268bbaa485ec858c864a4749422e7f418",
+      "size_bytes": 11665
+    },
+    {
+      "document_id": "FE-V120-004",
+      "path": "frontend/mock/v1.2.0/src/http-adapter.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d7b1df37e184414ba3eae5eda9f7ec9905074530ca551541cd3ae15c0829fc50",
+      "size_bytes": 6069
+    },
+    {
+      "document_id": "FE-V120-005",
+      "path": "frontend/mock/v1.2.0/src/mock-service.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "672dc4079e0d5b8bd7156af8ec6ac3b285f065a5c53052fb5c87ed742b471ef0",
+      "size_bytes": 7627
+    },
+    {
+      "document_id": "FE-V120-006",
+      "path": "frontend/mock/v1.2.0/src/operations.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "3c3cbb550fdbbb74a4d6890d004a24472e2e935724ebd533931d57df3d73cb82",
+      "size_bytes": 1453
+    },
+    {
+      "document_id": "FE-V120-007",
+      "path": "frontend/mock/v1.2.0/style.css",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "447f7347ffe49eca8027fd53eee7f9cf61692f17a9a95281a4861120ad879178",
+      "size_bytes": 6780
+    },
+    {
+      "document_id": "FE-V120-008",
+      "path": "frontend/mock/v1.2.0/tests/http-adapter.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5834d68b3854b405c8f30e8638735311382986e848f29bd3b189b9a4a7930c21",
+      "size_bytes": 8813
+    },
+    {
+      "document_id": "FE-V120-009",
+      "path": "frontend/mock/v1.2.0/tests/mock-service.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "27f705b20452ccd70352f6d3d701aa175487b9d2e6a22ef8a225f9fcc8693b13",
+      "size_bytes": 5740
+    },
+    {
+      "document_id": "FE-V120-010",
+      "path": "frontend/mock/v1.2.0/tests/task004.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e5550c9e898d5a3469f8ae8fc173a3e27237002e373f0d3f19b6416c4b88d0fd",
+      "size_bytes": 3540
+    },
+    {
+      "document_id": "FE-V120-011",
+      "path": "frontend/mock/v1.2.0/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c14efaf376b58769ca21f438cf9efd48c5cb636aa16d6f0d1efe215faa99df2e",
+      "size_bytes": 1175
+    },
+    {
+      "document_id": "FE-V120-012",
+      "path": "docs/dev/tasks/FE-MOCK-V120-20261013.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d03b0e1bb1506e6a2948a26cbcddc75d1a6b904b628252a37471990439961c05",
+      "size_bytes": 1026
     }
   ]
 }
