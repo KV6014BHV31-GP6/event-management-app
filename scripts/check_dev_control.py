@@ -41,7 +41,10 @@ def text_chunks(path: Path) -> list[str]:
                     chunks.append(data.decode('utf-8'))
             return chunks
     if path.suffix.lower() in TEXT_SUFFIXES or path.name in {'.gitignore', '.gitattributes'}:
-        return [path.read_text(encoding='utf-8')]
+        data = path.read_bytes()
+        # Preserve Austin's Windows-generated UTF-16 requirements byte-for-byte.
+        encoding = 'utf-16' if data.startswith((b'\xff\xfe', b'\xfe\xff')) else 'utf-8'
+        return [data.decode(encoding)]
     return []
 
 def validate(root: Path) -> dict:

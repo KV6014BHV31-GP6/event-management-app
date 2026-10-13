@@ -1,6 +1,6 @@
 # Frontend ↔ Backend API handoff checklist
 
-**Status: OPEN / CONTRACT_NOT_VERIFIED.** This is an intake and acceptance checklist, not a new API specification. The source-of-record for the **15 reported claims / 11 distinct method+path pairs** is [INTEGRATION.md](INTEGRATION.md). Do not promote reported endpoints into implemented ones.
+**Status: PARTIAL / LIVE-SLICE_SOURCE_INSPECTED.** The current index/login contract is recorded at the top of [INTEGRATION.md](INTEGRATION.md), with runtime evidence in [CURRENT](../dev/CURRENT.md). The broader intake remains open. The preserved historical **15 reported claims / 11 distinct method+path pairs** do not become implemented merely because the new slice works.
 
 ## Required for each operation
 
@@ -15,7 +15,7 @@
 | Transactions | Last-place race, idempotency key reuse, cancellation, waitlist promotion, rollback |
 | Proof | Sanitised actual HTTP response, persisted DB or readback evidence, exact test command |
 
-## Priority integration slice
+## Broader guest-booking integration, deferred beyond FE-LIVE-20261014
 
 1. Guest submits a request without creating an account.
 2. Server decides confirmed/waiting/rejected within approved capacity and quota policy.

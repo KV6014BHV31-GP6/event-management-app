@@ -1,32 +1,27 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.2.3`，2026-10-13（香港）。Active task: [FE-MOCK-V121-20261013](tasks/FE-MOCK-V121-20261013.md). This file describes the current feature checkout; NU cloud is a separate workspace.
+版本：`repo-docs/0.3.0`，2026-10-14（香港）。Active task: [FE-LIVE-20261014](tasks/FE-LIVE-20261014.md). This file describes `dev_fe_events_login`; it does not claim promotion of shared branches. Source baselines and ownership are in the task.
 
 | Area | State | Evidence boundary |
 |---|---|---|
-| Main directory shell | MERGED | PR #2 merged as `cabb6a6a2cfede5ceacec47620eb1fa95c4da3a1`; frontend/backend and Dev/API/E2E entries exist |
-| dev / uat | CREATED | Initialized from that structure merge, not a claim of product UAT |
-| Frontend feature | VERSIONED_MOCK | [Static launcher](../../frontend/index.html) offers current v1.2.1 English Demo and preserved v1.2.0 modular source, under dev_fe_shell |
-| Backend / real API / DB / SMS | NOT_RUN | No verified backend source, auth/schema or live integration; [handoff checklist](../api/HANDOFF_CHECKLIST.md) remains open |
-| Complete v1.2.1 frontend | NOT_IMPORTED | Exact standalone Demo HTML is versioned; full engineering source ZIP remains unavailable |
-| Existing Word / capture set | PRESERVED | Original bytes and historical test boundaries retained |
-| PM / Security / product acceptance | NOT_ACCEPTED | This structure merge and static entry do not approve all features or policies |
-| CI / deployment | NOT_CONFIGURED | Local tests only; no new workflows or protection settings |
+| Public event index + Login | LOCAL_VERIFIED | `frontend/live/`, source-backed API validation, full pagination, session/profile verification, errors and mobile layout |
+| Backend business source | OBSERVED / PRESERVED | Austin `79804aa67508de23d3f3c613e65cf375e9ded2a3`; `backend/src/` and requirements bytes unchanged |
+| Setup | IMPLEMENTED | Explicit additive dev schema/seed command, .env example, loopback API proxy and Windows instructions |
+| Unit/component checks | LOCAL_VERIFIED | 30 frontend tests, 4 proxy tests, 2 backend SQLite tests after correcting two stale expectations |
+| SQL HTTP + browser integration | INTEGRATION_VERIFIED, ALTERNATIVE_ENGINE_ONLY | Python3.14.8, exact imported pins, PGlite0.5.9/PostgreSQL18.6 WASM/socket0.2.12 and a documented test-only transport wrapper; 8 HTTP scenario groups and 22 browser checks including separately labeled fault injection |
+| Persisted readback | LOCAL_VERIFIED, ALTERNATIVE_ENGINE_ONLY | Created event remains after actual API and file-backed PGlite restart |
+| Native PostgreSQL17 | NOT_RUN / ENVIRONMENT_BLOCKED | PostgreSQL17.11 initdb refuses root; sandbox cannot run a non-root user. Alternative engine does not clear this gate. |
+| Bootstrap clean shutdown | BLOCKED_ON_ALTERNATIVE_ADAPTER | Writes and idempotent repeats verified; PGlite socket disconnect hangs, so test process terminated after commit. Not attributed to native PostgreSQL. |
+| Historical mocks / captures / Word | PRESERVED | v1.2.0/v1.2.1, frozen screenshots/source and Log Task files retain their bytes |
+| Production permissions / team UAT | NOT_ACCEPTED | Existing API allows any logged-in user to create events and accepts caller-selected signup roles. No policy change made; no production readiness claim. |
+| Deployment / shared-branch merge | NOT_RUN | Reviewable feature PR only, no deployment or dev/uat/main merge |
 
-Flow: [feature → dev → uat → main](BRANCHING.md). The earlier PR-PREP/DEV-SPLIT no-merge instructions describe their original scope; the latest user explicitly authorized only the completed main structure merge and subsequent feature commit/push-and-stop.
+Detailed [validation receipt](evidence/FE-LIVE-20261014/VALIDATION.json), [browser report](evidence/FE-LIVE-20261014/browser-report.json), and [screenshots/limitations](evidence/FE-LIVE-20261014/README.md). Real primary browser flow uses no intercepted responses; five controlled failure/XSS scenarios are explicitly synthetic.
 
-## Next three actions
+## Next steps
 
-1. Confirm remote dev_fe_shell matches the tested feature commit and main/dev/uat retain the structure merge SHA; then stop without feature promotion.
-2. Obtain authentic frontend source and Austin backend full SHA/setup/seed/auth/schema before a new implementation task.
-3. Agree the versioned API contract and PM policies, then perform the first real guest request → persisted receipt → cancellation E2E through separately authorized PRs.
+1. Run the documented backend/bootstrap/HTTP/browser checks on native PostgreSQL17 with Python3.14; retain source SHA and actual results.
+2. Review the feature PR into `dev`, including the two preserved source histories. Confirm organizer/account authorization policy with the backend owner before broader privileged workflows.
+3. Proceed through reviewed `dev → uat → main` promotion only when separately authorized. Create Event UI and the broader guest-booking/dashboard scope remain later tasks.
 
-Validation commands and boundaries are in the [feature task](tasks/FE-SHELL-20261013.md). Local document and static HTTP checks are not backend, native browser or human acceptance.
-
-## Source import successor 1/2 · v1.2.0
-
-On `dev_fe_shell`, imported the verified original module-based synthetic Frontend v1.2.0 under `frontend/mock/v1.2.0/`; local Node tests 41/41 PASS. This supersedes the earlier statement that the feature branch contained only a static launcher. Full v1.2.1 engineering source and the Austin backend remain NOT_VERIFIED; no API/DB/UAT acceptance.
-
-## Source import successor 2/2 · v1.2.1
-
-Verified English standalone four-role Demo at `frontend/mock/v1.2.1/index.html` as CURRENT_DEMO, using the original frozen Git blob with SHA256 `3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e`. The previous v1.2.0 module+Node tests remain intact at `frontend/mock/v1.2.0/`. This is a documented Demo upgrade, not a claim of full v1.2.1 engineering archive, real backend integration or product acceptance. No PR/merge/deploy.
+The former static-shell stop point is historical. The latest user authorized this implementation and a PR, not remote merge or deployment. Environment limitations and human acceptance remain distinct from automated test results.

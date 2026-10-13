@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
-  "package_version": "repo-docs/0.2.3",
-  "reviewed_at": "2026-10-13T04:39:43.923Z",
-  "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)",
-  "document_count": 77,
+  "package_version": "repo-docs/0.3.0",
+  "reviewed_at": "2026-10-13T16:52:43.154181+00:00",
+  "reason": "Record final 34 Node, 23 repository, 2 backend, 8 HTTP and 22 browser checks with native PostgreSQL gate retained",
+  "document_count": 135,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,15 +107,23 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f3106ee937e9e1b498f967f8ed65b4c557309b84b621dbd0b8cea9eb70716c89",
+          "size_bytes": 890,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f3106ee937e9e1b498f967f8ed65b4c557309b84b621dbd0b8cea9eb70716c89",
-      "size_bytes": 890
+      "sha256": "63ce6f75e9fa389c774964e5929f72b9346791870c11cd226b2c8fb681d0c6b5",
+      "size_bytes": 6070
     },
     {
       "document_id": "DOC-06",
@@ -138,20 +146,28 @@
     {
       "document_id": "PUB-DOC-SPLIT-006",
       "path": "docs/api/HANDOFF_CHECKLIST.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "34383ab74de3a9898fff1cbd83157b213d9a243f4c1a556dbfb88c52198abf55",
+          "size_bytes": 1876,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "34383ab74de3a9898fff1cbd83157b213d9a243f4c1a556dbfb88c52198abf55",
-      "size_bytes": 1876
+      "sha256": "85359a3fb3824f28206c486618c8239c1d30b5e31c899075a28cb83a1206fe55",
+      "size_bytes": 1998
     },
     {
       "document_id": "DOC-07",
       "path": "docs/api/INTEGRATION.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -168,6 +184,13 @@
           "size_bytes": 7762,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 3,
+          "sha256": "22ab024ff76aeb2d1cc7a26b125a5322689d1240fbb5e410362746f0966c8cf3",
+          "size_bytes": 8154,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "import_lineage": {
@@ -179,8 +202,8 @@
         "USER-PR-SCOPE",
         "SRC-API-HANDOFF-V120"
       ],
-      "sha256": "22ab024ff76aeb2d1cc7a26b125a5322689d1240fbb5e410362746f0966c8cf3",
-      "size_bytes": 8154
+      "sha256": "898731671d2ad577e029128b9c97cc75624db65438b29e9cf2c51e6a845c8023",
+      "size_bytes": 11217
     },
     {
       "document_id": "DOC-08",
@@ -230,7 +253,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 15,
+      "revision": 16,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -301,6 +324,13 @@
           "size_bytes": 2631,
           "superseded_at": "2026-10-13T04:39:43.923Z",
           "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
+        },
+        {
+          "revision": 15,
+          "sha256": "6928df314992e468bcfc00174c29125d5f3aa5c2cba75d1a7f037dea15026f04",
+          "size_bytes": 3125,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "import_lineage": {
@@ -311,8 +341,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6928df314992e468bcfc00174c29125d5f3aa5c2cba75d1a7f037dea15026f04",
-      "size_bytes": 3125
+      "sha256": "9710f8a2d9a4bdb2c341e36c9e07d8c21e2fbf0845bf5fedc8da17cec18f027b",
+      "size_bytes": 3284
     },
     {
       "document_id": "DOC-11",
@@ -666,15 +696,23 @@
     {
       "document_id": "PUB-DOC-SPLIT-003",
       "path": "docs/dev/frontend/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a3fa72b72d5709a6c4ec4b072aec7cf6901bd8f6e43b2f38ac83727745405d51",
+          "size_bytes": 1736,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a3fa72b72d5709a6c4ec4b072aec7cf6901bd8f6e43b2f38ac83727745405d51",
-      "size_bytes": 1736
+      "sha256": "ceaa5f0a0809f5746d0ee03fc34378c14e705753796debf86da436833bf1677b",
+      "size_bytes": 1934
     },
     {
       "document_id": "PUB-DOC-023",
@@ -783,7 +821,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 7,
+      "revision": 8,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -805,6 +843,13 @@
           "size_bytes": 14255,
           "superseded_at": "2026-10-12T16:15:43.702002+00:00",
           "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        },
+        {
+          "revision": 7,
+          "sha256": "e2a082613c70c5e75c6ba35b81671ffce5cc12b4ecef78bc49dcda995f68f6f8",
+          "size_bytes": 8011,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "import_lineage": {
@@ -815,8 +860,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e2a082613c70c5e75c6ba35b81671ffce5cc12b4ecef78bc49dcda995f68f6f8",
-      "size_bytes": 8011
+      "sha256": "d7ce86ee2440e45cf2d488200bb90ab4cbb747ac9dd9bd173d84fb17237057b6",
+      "size_bytes": 8795
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -1024,7 +1069,7 @@
     {
       "document_id": "FE-SHELL-001",
       "path": "frontend/index.html",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1034,19 +1079,26 @@
           "size_bytes": 2511,
           "superseded_at": "2026-10-13T04:39:43.923Z",
           "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
+        },
+        {
+          "revision": 2,
+          "sha256": "88ad284664758691fc10132530c12096e16a8bfd36ba0cc975d4fe6d21d8e6b9",
+          "size_bytes": 2650,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "88ad284664758691fc10132530c12096e16a8bfd36ba0cc975d4fe6d21d8e6b9",
-      "size_bytes": 2650,
+      "sha256": "907f0a1bb697e2e245f110d4d03995793da226ae9256bbb48ff1e08f8febbb64",
+      "size_bytes": 2728,
       "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
     },
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1070,13 +1122,20 @@
           "size_bytes": 2419,
           "superseded_at": "2026-10-13T04:39:43.923Z",
           "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
+        },
+        {
+          "revision": 4,
+          "sha256": "6ad148fe7480adf824891855219e4310f65dfe8d53a46e2c95dc35d6f664549a",
+          "size_bytes": 2723,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6ad148fe7480adf824891855219e4310f65dfe8d53a46e2c95dc35d6f664549a",
-      "size_bytes": 2723
+      "sha256": "7fc09794e707cafc957a1cb9e1c24650530dfeeeb648c6ecd69c7d4d5fc2bac8",
+      "size_bytes": 3595
     },
     {
       "document_id": "DOC-25",
@@ -1114,7 +1173,7 @@
     {
       "document_id": "DOC-40",
       "path": "README.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1131,6 +1190,13 @@
           "size_bytes": 1524,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 3,
+          "sha256": "8c505a9d4edc994db8c2a44553c6b5d3b64d78a1f0101bc24c9a4fee2e5c18a5",
+          "size_bytes": 1671,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "import_lineage": {
@@ -1141,13 +1207,13 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8c505a9d4edc994db8c2a44553c6b5d3b64d78a1f0101bc24c9a4fee2e5c18a5",
-      "size_bytes": 1671
+      "sha256": "298d866182955d9d92b17a706bb75639c213d2ea15237e040b6edddf19deb4da",
+      "size_bytes": 2030
     },
     {
       "document_id": "DOC-35",
       "path": "scripts/check_dev_control.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1163,6 +1229,13 @@
           "size_bytes": 4803,
           "superseded_at": "2026-10-12T16:15:43.702002+00:00",
           "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        },
+        {
+          "revision": 3,
+          "sha256": "acc33616d16fb1f45132f0893e048fc0cdf28e3873709b25f3c133efc4268a8e",
+          "size_bytes": 7136,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
         }
       ],
       "import_lineage": {
@@ -1173,8 +1246,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "acc33616d16fb1f45132f0893e048fc0cdf28e3873709b25f3c133efc4268a8e",
-      "size_bytes": 7136
+      "sha256": "65c814a0af64b1d7d7049178b348dfa912e74b8b2d73a75f27918e04324b1ac1",
+      "size_bytes": 7327
     },
     {
       "document_id": "DOC-36",
@@ -1211,28 +1284,44 @@
     {
       "document_id": "PUB-DOC-SPLIT-007",
       "path": "tests/e2e/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "993f3f484550f56accdb48328d5709c76632387cd713730d6f863ecd4e65db37",
+          "size_bytes": 1494,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "993f3f484550f56accdb48328d5709c76632387cd713730d6f863ecd4e65db37",
-      "size_bytes": 1494
+      "sha256": "afdbd0526fdd7abb131070504de71fe28376c43b7b12d1ec56bec85efd7b5aa4",
+      "size_bytes": 3536
     },
     {
       "document_id": "PUB-DOC-032",
       "path": "tests/test_document_control.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3b3f637a7771a0fbf6abd7416575cf233a9de97e1e7fd7070724151828f8f7be",
+          "size_bytes": 4204,
+          "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+          "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "3b3f637a7771a0fbf6abd7416575cf233a9de97e1e7fd7070724151828f8f7be",
-      "size_bytes": 4204
+      "sha256": "1e9e11641f18693a537902753a336b60473ffe8fda4ad8be3e6f8e7c1b3d1488",
+      "size_bytes": 4458
     },
     {
       "document_id": "FE-SHELL-004",
@@ -1468,6 +1557,823 @@
       ],
       "sha256": "83de026d188356209c32e3f99d774bed70a2f0a9349ac61f783baab06dafe850",
       "size_bytes": 2592
+    },
+    {
+      "document_id": "FE-LIVE-20261014-001",
+      "path": "backend/.env.example",
+      "revision": 1,
+      "owner": "Benjamin integration setup; Austin backend review",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "1b37bab237c047c7ffb7254fc0a2063b21ce983aaf120e667073adc55f579a4d",
+      "size_bytes": 590
+    },
+    {
+      "document_id": "FE-LIVE-20261014-002",
+      "path": "backend/pytest.ini",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "4c969334a7230771719b46d212468249566ca47df10a56f2d527f5cf2bb60bda",
+      "size_bytes": 76
+    },
+    {
+      "document_id": "FE-LIVE-20261014-003",
+      "path": "backend/requirements.txt",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "2155406e9138779cf645dfffc5a23f8ce1876aa1f4f66bf1e0c4c296fa162c5f",
+      "size_bytes": 3124
+    },
+    {
+      "document_id": "FE-LIVE-20261014-004",
+      "path": "backend/scripts/__init__.py",
+      "revision": 1,
+      "owner": "Benjamin integration setup; Austin backend review",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "da16406026eac47da4ba0614698c5a6db429c8554f4fb670716cce189dbe7aca",
+      "size_bytes": 82
+    },
+    {
+      "document_id": "FE-LIVE-20261014-005",
+      "path": "backend/scripts/dev_bootstrap.py",
+      "revision": 1,
+      "owner": "Benjamin integration setup; Austin backend review",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "a77e1917069653e917ba283d54a53a23789aada36186c3877463b3ab69df2483",
+      "size_bytes": 8546
+    },
+    {
+      "document_id": "FE-LIVE-20261014-006",
+      "path": "backend/src/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-007",
+      "path": "backend/src/auth/deps.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "0d4f77b85753c00a4af907f1caffce1bac638ee107daf230ac351b1353f339a2",
+      "size_bytes": 2507
+    },
+    {
+      "document_id": "FE-LIVE-20261014-008",
+      "path": "backend/src/auth/router.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e09e7c165306b3dd23b90395438d604508f0f31a6360cea80fe1db67797c8225",
+      "size_bytes": 2640
+    },
+    {
+      "document_id": "FE-LIVE-20261014-009",
+      "path": "backend/src/auth/schemas.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "deee3faa53d0b7bac2d6f6a9c5105fa570a69c6500267329d59392449b2e5eb2",
+      "size_bytes": 410
+    },
+    {
+      "document_id": "FE-LIVE-20261014-010",
+      "path": "backend/src/core/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-011",
+      "path": "backend/src/core/config.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "19985de5472e6b3fb44eef0fc4c2753570534284595261299578d4e97e643e4d",
+      "size_bytes": 660
+    },
+    {
+      "document_id": "FE-LIVE-20261014-012",
+      "path": "backend/src/core/database.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "aaa31efa05100e09d63b94f9f8b4da86985dcec894c87cf9eedcde511eb6dc10",
+      "size_bytes": 1015
+    },
+    {
+      "document_id": "FE-LIVE-20261014-013",
+      "path": "backend/src/core/security.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "30899f98db4eaa01828da5e829c1e00247a26f952f45870b0e1ff8c9e1a876b4",
+      "size_bytes": 1252
+    },
+    {
+      "document_id": "FE-LIVE-20261014-014",
+      "path": "backend/src/events/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-015",
+      "path": "backend/src/events/models.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "6c0acdf00b1e8a014aa14d98da5ff4df61351238f215fb4dc5f5dc4aad49a7e5",
+      "size_bytes": 1617
+    },
+    {
+      "document_id": "FE-LIVE-20261014-016",
+      "path": "backend/src/events/router.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "090647f069fa2716c0866ed7910e3bcccf5b4a61c90081b3d7bc360233cb2f37",
+      "size_bytes": 3010
+    },
+    {
+      "document_id": "FE-LIVE-20261014-017",
+      "path": "backend/src/events/schemas.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "ad7e06d6790a2251a4f0f079fb47d6753312861751d26508660a9647cb94d2d6",
+      "size_bytes": 1448
+    },
+    {
+      "document_id": "FE-LIVE-20261014-018",
+      "path": "backend/src/events/service.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "0cd31e2cb6288076e4b0fa02693709dc3e43ccea2b357a1ec706d3e792e148d2",
+      "size_bytes": 2943
+    },
+    {
+      "document_id": "FE-LIVE-20261014-019",
+      "path": "backend/src/main.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "fa49841ee121e5724a971235cce91dd8f570784833226a70201d81446cc12d71",
+      "size_bytes": 830
+    },
+    {
+      "document_id": "FE-LIVE-20261014-020",
+      "path": "backend/src/participants/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-021",
+      "path": "backend/src/participants/models.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "f659c4fceeb3296c0b4aa50f30e18b2cb4e1b06160aa56146d595b7bd364c2a4",
+      "size_bytes": 1684
+    },
+    {
+      "document_id": "FE-LIVE-20261014-022",
+      "path": "backend/src/participants/router.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "163b1b9702ce58f2f96fb8dff4873bd29a142f2e1fbfcbedb559fa17b6389fb7",
+      "size_bytes": 884
+    },
+    {
+      "document_id": "FE-LIVE-20261014-023",
+      "path": "backend/src/participants/schemas.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "a033618672048771f0ff19d435e691156abbdd4054fc6570dcb404a9a59ac6ce",
+      "size_bytes": 985
+    },
+    {
+      "document_id": "FE-LIVE-20261014-024",
+      "path": "backend/src/participants/service.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "11c7d875663480a8579e3558d71aa95deeaa39e91ca77937414b2e4808ab2ca2",
+      "size_bytes": 2860
+    },
+    {
+      "document_id": "FE-LIVE-20261014-025",
+      "path": "backend/src/users/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-026",
+      "path": "backend/src/users/models.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "acbcf30bd45698b6694ffc9f63d99e8b29f7d3787506a99a2bf094896b94e0ce",
+      "size_bytes": 1119
+    },
+    {
+      "document_id": "FE-LIVE-20261014-027",
+      "path": "backend/src/users/router.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "6cf0195555a9044487f5df550bde3b2ba1f72dd5844e3f5a750b35bc44403708",
+      "size_bytes": 1098
+    },
+    {
+      "document_id": "FE-LIVE-20261014-028",
+      "path": "backend/src/users/schemas.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "1014826b9c9bad6e706ee0c97868ad1cce9321050f66bd00eb106a38465cee1a",
+      "size_bytes": 566
+    },
+    {
+      "document_id": "FE-LIVE-20261014-029",
+      "path": "backend/src/users/service.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "83d3c139791662793a92447bb344c7abe877ffce8e60c2392529b3d74a00f05d",
+      "size_bytes": 1241
+    },
+    {
+      "document_id": "FE-LIVE-20261014-030",
+      "path": "backend/tests/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-031",
+      "path": "backend/tests/conftest.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "4a642c7e37bbce4f37152ce361aa44cb3979346bcad67ab8bfea1b5d607ad74e",
+      "size_bytes": 2027
+    },
+    {
+      "document_id": "FE-LIVE-20261014-032",
+      "path": "backend/tests/users/__init__.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "FE-LIVE-20261014-033",
+      "path": "backend/tests/users/test_create_user.py",
+      "revision": 1,
+      "owner": "Austin backend source; Benjamin contract-test correction",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013",
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "02694fae74e2b5b8cc34adbe5f8851233191e9e8a0bcbf0458dd5bf5b2a1f17a",
+      "size_bytes": 2405
+    },
+    {
+      "document_id": "FE-LIVE-20261014-034",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "21addd549afbc421ced99de41d9c304575de2ee0362b81edc48d501b2ec7d1be",
+      "size_bytes": 3251
+    },
+    {
+      "document_id": "FE-LIVE-20261014-035",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/VALIDATION.json",
+      "revision": 2,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "892b92b2ecc68597ca4056d83bf02b88f575a24a20ef6a1cc3ee03ab9ef28514",
+          "size_bytes": 2348,
+          "superseded_at": "2026-10-13T16:52:43.154181+00:00",
+          "reason": "Record final 34 Node, 23 repository, 2 backend, 8 HTTP and 22 browser checks with native PostgreSQL gate retained"
+        }
+      ],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "41c4610c0af007503ae6c7564af506a27abc892a11d6750a23c845a3ef278480",
+      "size_bytes": 2926
+    },
+    {
+      "document_id": "FE-LIVE-20261014-036",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/browser-report.json",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "ea5d2ce687425c9fb22f9a7ac1f80875b34656e25d0e60830c66249b121b2af1",
+      "size_bytes": 2854
+    },
+    {
+      "document_id": "FE-LIVE-20261014-037",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/events-desktop-1440.png",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "acc345375885eb8401bff4f67998199c920f961f706fdced1ab02e5d14f47ebc",
+      "size_bytes": 152141
+    },
+    {
+      "document_id": "FE-LIVE-20261014-038",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/events-mobile-390.png",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "e162760319060bebdf842df246755f8073d4c9170c3ad82edb645443c5a26356",
+      "size_bytes": 199209
+    },
+    {
+      "document_id": "FE-LIVE-20261014-039",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/login-desktop-1440.png",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "7194447bb20101368f29a20c2f9a49d1ac69768c7243359d7090d5bdaf4fc85d",
+      "size_bytes": 73207
+    },
+    {
+      "document_id": "FE-LIVE-20261014-040",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/login-mobile-390.png",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "7fa8780b4a4259af11a5e0db72a7565886a299b99bfb053586860e6abaa57b3f",
+      "size_bytes": 55265
+    },
+    {
+      "document_id": "FE-LIVE-20261014-041",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/pglite_test_transport.py",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "3cb7e5cddf541345c09d68e609cf826c84c37701574447c5637e3ce7aecaef7a",
+      "size_bytes": 1164
+    },
+    {
+      "document_id": "FE-LIVE-20261014-042",
+      "path": "docs/dev/tasks/FE-LIVE-20261014.md",
+      "revision": 2,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9789804f832070c4d41a6bfcbd54168f91dc985abe74083aab7201b406df9cba",
+          "size_bytes": 3977,
+          "superseded_at": "2026-10-13T16:52:43.154181+00:00",
+          "reason": "Record final 34 Node, 23 repository, 2 backend, 8 HTTP and 22 browser checks with native PostgreSQL gate retained"
+        }
+      ],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "5d06ccf20b4fbb9508d837448df9aa751e23709622693ad959fc00d72890eec5",
+      "size_bytes": 4346
+    },
+    {
+      "document_id": "FE-LIVE-20261014-043",
+      "path": "frontend/dev-server.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "7fdbf327db5e166733c4f099a795a04f7c6ffd0c232dd2493b2621e2aa4b8899",
+      "size_bytes": 5515
+    },
+    {
+      "document_id": "FE-LIVE-20261014-044",
+      "path": "frontend/dev-server.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "c105b7e9b1f1e0b543d3473ada1c2f58e6bc6d6b5f7b80a7984296d4d0ceee3e",
+      "size_bytes": 3229
+    },
+    {
+      "document_id": "FE-LIVE-20261014-045",
+      "path": "frontend/live/api.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "3ad3b58deb16cc7d66545afc215551482005cbb53d82dc2ecf5d48babc56418c",
+      "size_bytes": 5101
+    },
+    {
+      "document_id": "FE-LIVE-20261014-046",
+      "path": "frontend/live/events-state.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "bd463402817a62ed3283eeb9eb6d5c9a86dd19cec77c4df040734180486e7fd9",
+      "size_bytes": 1804
+    },
+    {
+      "document_id": "FE-LIVE-20261014-047",
+      "path": "frontend/live/events.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "1dd2914cdc496a895855148203218a490dfc992d74e178849abbab3232ba0f62",
+      "size_bytes": 7602
+    },
+    {
+      "document_id": "FE-LIVE-20261014-048",
+      "path": "frontend/live/index.html",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "4360568b17dd7931b92f6edc67ea740a890710b09f8b151ce094673da5092882",
+      "size_bytes": 4016
+    },
+    {
+      "document_id": "FE-LIVE-20261014-049",
+      "path": "frontend/live/login.html",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "3c15b99504c7efb8af6ceb8be3917fd3db6fd5c584b82fff3e1075b6b2a9fba5",
+      "size_bytes": 3851
+    },
+    {
+      "document_id": "FE-LIVE-20261014-050",
+      "path": "frontend/live/login.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "2e009a3a539850c314da2d0a70f250c7d6fbe5401488a4f7e7d7a1ecb332cd37",
+      "size_bytes": 2600
+    },
+    {
+      "document_id": "FE-LIVE-20261014-051",
+      "path": "frontend/live/session.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "83dd172eecc21bf766c89272c9e99e41ff3656392faf08a1255f6cc41bd3b9dc",
+      "size_bytes": 1860
+    },
+    {
+      "document_id": "FE-LIVE-20261014-052",
+      "path": "frontend/live/styles.css",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "62080c01128f3c4eeb2c1fcce07d4f1cd8304663a03c7c5974945491afd9ff6d",
+      "size_bytes": 12954
+    },
+    {
+      "document_id": "FE-LIVE-20261014-053",
+      "path": "frontend/live/tests/api.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "a4df42e17db1d008eda80921a6744176deef1c12d20e27314cc7f5378e851073",
+      "size_bytes": 6823
+    },
+    {
+      "document_id": "FE-LIVE-20261014-054",
+      "path": "frontend/live/tests/events-state.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "ed392270a68507f302d643b3feef9dbf5ee17c4a0137c3746d8eef8d3c3bc801",
+      "size_bytes": 3746
+    },
+    {
+      "document_id": "FE-LIVE-20261014-055",
+      "path": "frontend/live/tests/session.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "32c68863a8bdd2091117de7045f7500d0852b46ee8dd69fcd9c1f87787114144",
+      "size_bytes": 5406
+    },
+    {
+      "document_id": "FE-LIVE-20261014-056",
+      "path": "frontend/live/ui.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014",
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "812d7dcbde474b027493aafcf58ad2ff090555fd26024b682721a876d68a9883",
+      "size_bytes": 2692
+    },
+    {
+      "document_id": "FE-LIVE-20261014-057",
+      "path": "tests/e2e/live_api_smoke.py",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "ba980a3922ff15714436f65d238a0c5d20b90e6515d8d28d543e51720745c5fd",
+      "size_bytes": 4945
+    },
+    {
+      "document_id": "FE-LIVE-20261014-058",
+      "path": "tests/e2e/live_browser.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-LIVE-20261014"
+      ],
+      "sha256": "9164b9b7094651690f2cd1974072ed039b71a0d1a91fb75da85a51dc4a53886c",
+      "size_bytes": 14401
     }
   ]
 }

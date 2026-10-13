@@ -1,9 +1,79 @@
-# Backend workspace
+# Backend development setup
 
-**State: RESERVED / NO RUNNABLE BACKEND.** No server source, migrations, database seed, configuration or live API is claimed in this folder.
+This folder contains Austin's imported FastAPI backend at source baseline `79804aa`, plus additive development setup. Python 3.14 and PostgreSQL 17 are **REPORTED** as Austin's environment. The imported `src/` and dependency pins remain unchanged; two stale user-test assertions were aligned with the existing ULID/error contract; setup instructions are not product, security or UAT acceptance. See [current status](../docs/dev/CURRENT.md) for the latest verification evidence.
 
-**Reported contributor:** Austin; actual backend ownership, source location and handoff status require confirmation. This directory does not transfer ownership. See [backend handoff](../docs/dev/backend/README.md), [API checklist](../docs/api/HANDOFF_CHECKLIST.md) and [ownership](../docs/dev/OWNERSHIP.md).
+Run the commands below from `backend/`. Use a dedicated local database and synthetic data only.
 
-Before adding code: inspect the source commit, existing stack and lockfiles; obtain setup instructions, environment variable names, synthetic seed, auth rules, schemas, transaction/idempotency evidence and relevant tests. Never commit secrets or real screening/participant data.
+## Install the imported dependencies
 
-Do not create a speculative API implementation just to populate this folder. Keep routes that have only been reported clearly unverified.
+```bash
+cd backend
+python3.14 -m venv .venv
+source .venv/bin/activate
+python -m pip install -r requirements.txt
+```
+
+On Windows PowerShell, use `py -3.14 -m venv .venv` and `.venv\Scripts\Activate.ps1`. `requirements.txt` is the original UTF-16 file with a BOM; do not silently re-pin or replace it. If the requested runtime or an exact package version is unavailable, stop and record the failed command/version with the backend contributor. A different runtime or dependency set is an experiment, not verification of the imported environment.
+
+## Create a local database and configuration
+
+PostgreSQL must already be running. As your local PostgreSQL administrator, create a dedicated non-superuser login and database, for example inside `psql`:
+
+```sql
+CREATE ROLE nu_event_dev LOGIN;
+\password nu_event_dev
+CREATE DATABASE nu_event_dev OWNER nu_event_dev;
+```
+
+`\password` prompts for a local password. Database creation is separate from application startup and from the bootstrap command. For an existing development database, verify its owner and contents instead of recreating it.
+
+Copy `.env.example` to `.env` only if `.env` does not already exist, then edit it locally. Set `DATABASE_URL` to the database above, URL-encoding special characters in its password. The existing driver accepts `postgresql://` and converts it to `postgresql+asyncpg://`. Keep `ENVIRONMENT=development` and `API_V1_STR=/api/v1` for this integration.
+
+Generate a JWT signing secret locally and place the result in `JWT_SECRET_KEY`:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"
+```
+
+The exact backend names are `DATABASE_URL` and `JWT_SECRET_KEY`. Settings load `.env` from the working directory, with exported environment variables taking precedence. `.env` and `.env.seed` are ignored; never share them, commit them or include their contents in screenshots/test evidence.
+
+## Initialize missing tables and synthetic demo records
+
+Verify `DATABASE_URL` points to your dedicated development database, then explicitly run:
+
+```bash
+python -m scripts.dev_bootstrap --acknowledge-development
+```
+
+This command refuses staging/production and requires the acknowledgement before database access. It imports all three model modules and calls `Base.metadata.create_all` to create missing tables; it never drops or resets tables and is not a schema migration tool. It does not run automatically when the server starts.
+
+The seed adds the synthetic `demo_organizer` account and three `ACTIVE` events, with UTC dates one, two and three weeks after the first run. It creates no participant, phone, identity or medical records. Stable seed identifiers make repeat runs idempotent: existing records, passwords and event dates are preserved; conflicting account/event identifiers stop the command. Run one bootstrap process at a time.
+
+Choose either credential path before the first run:
+
+- Set `SEED_PASSWORD` in your environment or `.env` to a locally chosen 12–72 UTF-8 byte password.
+- Leave it blank and open the generated, ignored `backend/.env.seed` locally after bootstrap to read the `SEED_PASSWORD` value. On POSIX the file is created with mode `0600`; check equivalent access permissions on Windows. The password is never printed by bootstrap.
+
+If the account already exists, changing `SEED_PASSWORD` does not reset it. Keep the original local credential; deleting `.env.seed` cannot recover or replace an existing account password. A failed database transaction may leave a generated `.env.seed` for a safe retry. A later schema change requires a separately reviewed migration; `create_all` will not alter existing columns.
+
+## Start and check the API
+
+From `backend/`, with the virtual environment active:
+
+```bash
+python -m uvicorn src.main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+- Health: `http://127.0.0.1:8000/` (process/configuration response; not a database readiness check).
+- Swagger UI: `http://127.0.0.1:8000/api/v1/docs` in development.
+- Public event list: `GET /api/v1/events?page=1&pageSize=20`.
+- JSON login: `POST /api/v1/auth/login` with `{"username":"demo_organizer","password":"<your local seed password>"}`.
+- Current user: `GET /api/v1/users/me` with the returned bearer token.
+
+The live frontend uses a same-origin development proxy; follow [frontend setup](../frontend/README.md). No backend CORS change is needed for that path. API/network errors must remain visible; they are not permission to switch to mock data.
+
+## Verification and authorization boundaries
+
+The imported user tests can be invoked with `python -m pytest` from `backend/` after configuration and dependencies are available. They use an isolated SQLite test engine and do not prove PostgreSQL behavior or real browser integration. The new bootstrap is PostgreSQL-only; document evidence from the actual runtime/database separately.
+
+In the imported source, event creation requires a logged-in user but does not check for the organizer role. Public user creation also accepts the supplied role. Production authorization policy and role escalation controls remain **UNVERIFIED**; the synthetic organizer account does not establish that those controls exist. This setup leaves the imported policy unchanged. Event creation/publication relates to `SP-FEATURES-20261012:A-01`; event index/login integration alone does not complete that feature, guest registration, quotas, cancellation, SMS or the full 18-feature scope.

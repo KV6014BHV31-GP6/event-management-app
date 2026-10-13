@@ -1,41 +1,56 @@
 # Frontend workspace
 
-**State: VERSIONED_MOCK_SOURCE / NO PRODUCTION APP.** The `dev_fe_shell` branch adds [index.html](index.html), a small navigation page linking to the already tracked four-role synthetic demo. It does not import the complete v1.2.1 engineering source or choose a frontend framework.
+**Current slice:** public event index and Login, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. See [FE-LIVE-20261014](../docs/dev/tasks/FE-LIVE-20261014.md) and [CURRENT](../docs/dev/CURRENT.md) for exact validation and limits. This does not implement bookings, event creation UI or the full ROSE Dashboard.
 
-Working owner: Benjamin. Scope: [Frontend responsibilities](../docs/dev/frontend/README.md). Shared contract: [API handoff](../docs/api/HANDOFF_CHECKLIST.md). Workflow: [BRANCHING](../docs/dev/BRANCHING.md).
+## Run the live frontend
 
-## Run locally
-
-From the repository root, with Python available:
+Follow [backend setup](../backend/README.md) to initialize synthetic data and start FastAPI on `127.0.0.1:8000`. Then, from the repository root with Node.js installed:
 
 ```bash
-python -m http.server 8000 --bind 127.0.0.1
+node frontend/dev-server.mjs
 ```
 
-Open `http://127.0.0.1:8000/frontend/`, then select **Open four-role demo**. Stop the server with Ctrl+C. This serves static files on loopback only; it is not the backend or a deployment. No dependency installation is required for the navigation page.
+Open `http://127.0.0.1:5173/live/`. No npm install or build is required for the app or development server. The browser uses relative `/api/v1/` URLs; the server proxies them to the loopback backend. It binds only `127.0.0.1`, rejects cross-site origins and does not serve private dotfiles. This is a local development server, not a deployment server.
 
-## Evidence and limits
+Optional variables: `PORT` changes the frontend port; `BACKEND_URL` changes the loopback HTTP API origin. Example in PowerShell:
 
-The linked [frozen HTML](../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html) is unchanged, SHA256 `3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e`. Do not move it, rewrite it or treat it as the complete production app. Synthetic role switching is not authentication. Browser storage in the demonstration is not verified multi-device offline persistence.
+```powershell
+$env:PORT = "5173"
+$env:BACKEND_URL = "http://127.0.0.1:8000"
+node frontend/dev-server.mjs
+```
 
-The new navigation page has no JavaScript, external assets, input form or API calls. Backend source and runtime contract are still unverified. Future implementation must inspect authentic source, existing stack and lockfiles before import.
+Stop with Ctrl+C. Opening HTML using `file://` cannot provide the same-origin API proxy.
 
-## Checks and stop point
+## Implemented behavior
+
+- Public event cards, total count, first/previous/next/last navigation, page-size selection and page jump. Dates use the viewer's browser timezone, stated on screen.
+- Loading, empty, malformed response, timeout and server/network errors. Failed requests never switch silently to Mock.
+- JSON Login followed by authenticated `/users/me`; incorrect credentials remain visible. Identity is verified on reload before it appears.
+- Only the bearer token is kept in tab-scoped `sessionStorage`, never the password/profile. If storage is unavailable, Login works only on that page and explains that navigation ends the session.
+- Logout clears the local token; history-cache restoration reloads and checks the session. The backend has no revocation endpoint; existing tokens remain valid until expiry. Production/shared-device session policy requires review.
+- No inferred remaining places or coordinator permissions. Event status comes from the API; signup and Create Event UI are outside this slice.
+
+## Checks
+
+From the repository root:
 
 ```bash
-python scripts/check_dev_control.py
-python -m unittest discover -s tests -v
+node --test frontend/dev-server.test.mjs frontend/live/tests/*.test.mjs
 ```
 
-The added shell tests cover HTML/link structure, frozen-source identity and loopback static HTTP readback, not product E2E. See [feature task](../docs/dev/tasks/FE-SHELL-20261013.md) for boundaries. Commit/push to `dev_fe_shell` then stop; no feature promotion is authorized in this task.
+Use [E2E instructions](../tests/e2e/README.md) for HTTP/browser checks. Browser tests require Playwright installed separately and a browser binary. Fault injection is reported separately from real API calls. The app itself has no third-party JavaScript dependencies.
 
-## Versioned source commits
+## Preserved demos and history
 
-- [v1.2.0 module-based runnable mock](mock/v1.2.0/README.md) has been imported as a historical baseline, with `npm test` passing 41/41 locally.
-- **Current:** [v1.2.1 verified standalone English demo](mock/v1.2.1/README.md), with exact original source bytes and history retained. Full v1.2.1 engineering ZIP remains unimported.
+[index.html](index.html) preserves demo navigation and adds the live-app link. [Version history](mock/README.md), [v1.2.0 modular mock](mock/v1.2.0/README.md) and [v1.2.1 English demo](mock/v1.2.1/README.md) remain unchanged. The full v1.2.1 engineering archive is still unimported; this slice is new code against inspected backend source.
 
-No real backend connection, production authentication or DB state is implied by these mocks.
+To serve historical repository-root URLs exactly as before:
 
-## Upgrade: v1.2.0 → v1.2.1
+```bash
+python -m http.server 8080 --bind 127.0.0.1
+```
 
-Browse [version history](mock/README.md), run the [v1.2.1 English Mock](mock/v1.2.1/index.html), or test the [v1.2.0 modular baseline](mock/v1.2.0/README.md). Two separate commits keep the progression auditable. These are demos, not a functioning backend or deployable application.
+Open `http://127.0.0.1:8080/frontend/`. This historical static server does not proxy APIs; use port 5173 for the live slice.
+
+The frozen [v1.2.1 source](../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html) retains SHA256 `3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e`. Original v1.2.0 modules/tests remain intact. Historical role selection is not authentication.

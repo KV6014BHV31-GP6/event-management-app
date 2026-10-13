@@ -1,6 +1,6 @@
 # Frontend responsibilities and handoff
 
-**Owner for this workstream:** Benjamin. **Status:** working-baseline for responsibilities; real application source NOT_IMPORTED. See [frontend workspace](../../../frontend/README.md) and [CURRENT](../CURRENT.md).
+**Owner for this workstream:** Benjamin. **Status:** working-baseline; the current task implements a live event index and Login in `frontend/live/` using the existing vanilla HTML/CSS/ES-module approach. The historical mocks remain frozen. See [frontend workspace](../../../frontend/README.md), [current task](../tasks/FE-LIVE-20261014.md) and [CURRENT](../CURRENT.md).
 
 ## Scope
 
@@ -9,7 +9,7 @@
 - Typed or validated API client and adapter against an actual agreed contract. Screen state must not manufacture a confirmed booking.
 - Mock fixtures, UI/component tests, and documented evidence separated from live API acceptance.
 
-## Before implementation
+## Broader implementation roadmap after the current two-page slice
 
 1. Obtain complete frontend source, full SHA, package manager, lockfile, build/test steps and approved design scope; do not infer source from a frozen HTML capture.
 2. Map screens to [US01–US10](../REQUIREMENTS.md) and version-qualified feature IDs from the [crosswalk](../FEATURE_ID_CROSSWALK.md).
