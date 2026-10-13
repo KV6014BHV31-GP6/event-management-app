@@ -63,3 +63,7 @@ For live cookies, review origins, credentials, CSRF and cookie attributes. CORS 
 | Result/reviewer/time | PASS/FAIL/BLOCKED/NOT_RUN, named reviewer and timestamp |
 
 A screenshot of a mock success is G2 evidence only. G4 requires the real frontend/backend pair, persistence and failure cases. Obtain the inputs in `../dev/AUSTIN_HANDOFF_REQUEST.txt` before enabling any actual operation.
+
+## DEV-SPLIT-20261013 handoff location
+
+For the proposed Frontend/Backend workspace split, use [HANDOFF_CHECKLIST.md](HANDOFF_CHECKLIST.md) as the intake form and [Developer ownership](../dev/OWNERSHIP.md) to identify the contributor and reviewer. This document remains the sole inventory of reported operations; none of these routes became verified merely by adding directory entry points.

@@ -10,3 +10,7 @@
 真正 integration 入口由 [API record](../docs/api/INTEGRATION.md) 開始。先取得 backend branch/full SHA、setup、seed、auth、schemas，再依現有 stack 接 adapter。不要以未提供的 endpoint 或 demo role switch 代替正式授權。
 
 既有 NU v1.2.0 `integration/src/` 保留在原 workspace；本 PR 不將它誤標為最新 v1.2.1 source。待完整 source 可用時另開 code PR，保留這次文件 PR 的邊界。
+
+## Directory successor
+
+The real Frontend source landing zone is [frontend/](../frontend/README.md), with scope documented in [docs/dev/frontend](../docs/dev/frontend/README.md). `integration/` remains the unchanged frozen synthetic evidence entry for this documentation-only PR. No code is moved or rebuilt.

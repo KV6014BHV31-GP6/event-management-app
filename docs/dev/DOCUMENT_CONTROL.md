@@ -1,6 +1,6 @@
 # Document control
 
-版本：`repo-docs/0.1.0`，working-baseline。這是現有 NU 控制制度的 public repo 子集，不取代原始檔庫或批准整體產品。
+版本：`repo-docs/0.2.0`，working-baseline。這是現有 NU 控制制度的 public repo 子集，不取代原始檔庫或批准整體產品。
 
 ## 記錄的權威範圍
 
@@ -41,3 +41,9 @@ DOCX 保留指定原件，不合併整隊的課程稿。圖片與 embedded figur
 ## Remote 工作
 
 只開獨立 branch、push、PR；不 merge、不 force push、不部署。最小 README 初始化只適用重新核對為空的 repo。收到他人新 commit 時先比較；不得覆寫現有 branch 或把本機基線當成真正 remote HEAD。
+
+## DEV-SPLIT-20261013 successor
+
+Root `frontend/` and `backend/` contain README-only source landing zones. The actual Developer workstream notes are `docs/dev/frontend/README.md`, `docs/dev/backend/README.md` and `docs/dev/OWNERSHIP.md`; API and E2E receipt requirements are linked rather than copied into competing CURRENT files. New files require explicit document IDs, working owners, `draft`/`working-baseline` status and checked SHA256. Old PR-PREP remains a historical task, while `CURRENT.md` describes PR #1 as merged.
+
+Document-control PASS proves file/metadata/link consistency only. The absence of backend source means app, HTTP, DB, SMS and offline E2E remain NOT_RUN. See [active task](tasks/DEV-SPLIT-20261013.md).

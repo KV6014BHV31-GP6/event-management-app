@@ -71,3 +71,7 @@ All below remain NOT_RUN until an actual environment exists:
 ## Definition of done
 
 Record requirement/operation IDs, frontend SHA, backend SHA, contract version, environment, command/evidence, date, result and reviewer. Any unexecuted item stays NOT_RUN. Any missing input stays BLOCKED. Final report states achieved gates and next action, never a blanket “all done”.
+
+## Workspace paths (documentation-only split)
+
+Frontend code will be placed under [frontend](../../frontend/README.md) after authenticated source review; backend code under [backend](../../backend/README.md) only after equivalent handoff. Consult [OWNERSHIP](OWNERSHIP.md) and [API checklist](../api/HANDOFF_CHECKLIST.md). The G0–G6 gates above remain unchanged; the split does not advance a gate.
