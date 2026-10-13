@@ -1,0 +1,515 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="ROSE community event prototype. Synthetic data only. No real bookings.">
+  <title>ROSE | Community event demo</title>
+  <style>:root{font-family:Arial,Helvetica,sans-serif;color:#203b36;background:#f3f5f1;font-synthesis:none;--green:#22604d;--border:#d7dfd7;--muted:#65746e}*{box-sizing:border-box}body{margin:0}button,input,select{font:inherit}button{cursor:pointer}button:focus-visible,select:focus-visible,input:focus-visible{outline:3px solid #ab7320;outline-offset:3px}button:disabled{opacity:.5;cursor:not-allowed}.shell{max-width:1160px;margin:auto;padding-left:28px;padding-right:28px}.mock-banner{position:sticky;top:0;z-index:5;display:flex;justify-content:center;gap:20px;padding:12px 24px;background:#eddfb6;color:#554213;font-size:12px;line-height:1.5}.mock-banner strong{letter-spacing:1px;white-space:nowrap}.masthead{display:flex;align-items:center;justify-content:space-between;padding-top:28px;padding-bottom:28px}.brand{display:flex;align-items:center;gap:12px;font-size:12px;letter-spacing:1px;font-weight:700}.brand small{display:block;margin-top:6px;font-size:11px;letter-spacing:0;color:var(--muted);font-weight:400}.brand-mark{width:40px;height:40px;border-radius:12px;background:var(--green);color:white;display:grid;place-items:center;font-family:Georgia,serif;font-size:24px}.quiet{background:white;color:var(--green);border:1px solid var(--border);border-radius:7px;padding:10px 14px;font-size:12px}.intro{padding:25px 0 38px;max-width:690px}.eyebrow{font-size:10px;letter-spacing:2px;color:var(--green);font-weight:700}h1{font-family:Georgia,serif;font-weight:400;font-size:46px;line-height:1.12;margin:17px 0}p{line-height:1.65}.intro>p:last-child{color:var(--muted);font-size:14px;max-width:560px}.workspace{display:grid;grid-template-columns:205px minmax(0,1fr);gap:34px;align-items:start}aside{padding-top:6px}.nav-label{font-size:10px;letter-spacing:1.5px;color:var(--muted);margin-top:0}nav{display:grid;gap:8px}nav button{border:1px solid transparent;padding:14px 12px;text-align:left;background:transparent;color:#354d42;border-radius:9px;font-size:13px;font-weight:700}nav button span{display:block;margin-top:7px;font-size:11px;font-weight:400;color:var(--muted)}nav button[aria-current]{background:#e3ebe1;border-color:#c6d6c3}nav button:hover{background:#e8ede6}.role-note{font-size:11px;color:var(--muted);margin:24px 10px;max-width:172px}.network-state{border-top:1px solid var(--border);padding-top:16px;margin:0 10px;color:var(--green);font-size:11px}.feedback{font-size:12px;margin:0 0 18px;border-left:3px solid #b3c9b5;padding:8px 14px;background:#eaf0e7;color:#3b5949}.feedback.error{border-color:#b57842;background:#fff1df;color:#734a22}.card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:25px;margin-bottom:18px}.card h2{font-family:Georgia,serif;font-size:26px;font-weight:400;margin:0 0 9px}.card h3{font-size:14px;margin:0 0 14px}.card>p{font-size:13px;color:var(--muted);margin:8px 0 20px}.card-label{font-size:10px;letter-spacing:1.2px;color:var(--green);font-weight:700;margin-bottom:12px;display:block}.event-meta{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0}.pill{padding:6px 10px;background:#f0f3ed;border-radius:5px;font-size:11px;color:#51644f}.form-grid{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:end;margin:20px 0}label{display:grid;gap:8px;font-size:12px;font-weight:700}select,input{background:white;border:1px solid #cbd6cb;color:#243e34;border-radius:7px;padding:12px;width:100%;min-width:0}.primary{background:var(--green);color:#fff;border:0;border-radius:7px;padding:13px 18px;font-size:12px;font-weight:700}.secondary{background:#edf2eb;color:#315443;border:1px solid var(--border);border-radius:7px;padding:10px 13px;font-size:11px}.secondary.danger{color:#8e4938;background:#faf0eb}.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}.hint{font-size:11px!important;color:var(--muted);line-height:1.65}.rows{display:grid;gap:9px}.row{display:flex;justify-content:space-between;gap:16px;align-items:center;border-top:1px solid #e6ebe3;padding:14px 0 4px}.row strong{display:block;font-size:13px}.row small{display:block;font-size:10px;color:var(--muted);margin-top:7px;line-height:1.6}.row-actions{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}.badge{display:inline-block;padding:5px 8px;border-radius:4px;font-size:10px;background:#e6efe5;color:#2e593d;white-space:nowrap}.badge.waiting,.badge.pending{background:#f4eaca;color:#775c20}.badge.cancelled,.badge.conflict{background:#f4e3dc;color:#854c38}.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}.stat{background:#fff;border:1px solid var(--border);border-radius:10px;padding:20px 14px}.stat strong{font-family:Georgia,serif;font-size:30px;font-weight:400;display:block;margin:0 0 8px}.stat span{font-size:10px;color:var(--muted)}.quota{margin:18px 0}.quota>div{display:flex;justify-content:space-between;font-size:12px;margin-bottom:9px}progress{accent-color:var(--green);width:100%;height:11px}.promo{padding:18px;border:1px dashed #b7c7b5;background:#f5f7f1;border-radius:7px;font-size:13px;line-height:1.8;white-space:pre-wrap;overflow-wrap:anywhere}.empty{padding:16px 0;color:var(--muted);font-size:12px}footer{font-size:10px;color:var(--muted);padding-top:30px;padding-bottom:25px}a{color:var(--green)}@media(max-width:780px){.shell{padding-left:18px;padding-right:18px}.workspace{grid-template-columns:1fr;gap:16px}aside{padding:0}nav{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}nav button{font-size:10px;padding:11px 6px}nav button span{display:none}.role-note{max-width:none;margin:10px 0}.network-state{margin:0;padding:10px 0}.nav-label{display:none}.intro{padding:10px 0 20px}h1{font-size:35px}.mock-banner{gap:9px;padding:9px 12px;font-size:10px}.masthead{padding-top:18px;padding-bottom:18px}.brand small{max-width:155px;line-height:1.5}.card{padding:20px}.stats{grid-template-columns:repeat(2,1fr)}.form-grid{grid-template-columns:1fr}.row{align-items:flex-start}.row-actions{max-width:55%}.card h2{font-size:24px}}
+
+/* TASK-004 accessibility and responsive additions, preserving the original visual system. */
+button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible { outline:3px solid #b3862b;outline-offset:3px; }
+button:disabled{opacity:.55;cursor:not-allowed} .brand strong{display:block;font-size:22px}.brand small{display:block;margin-top:7px}
+#feedback {padding:14px 16px;background:#eaf3e8;border:1px solid #cedfc9;border-radius:9px;margin:0 0 18px;font-size:14px;line-height:1.7;overflow-wrap:anywhere}
+#feedback.error{background:#fff0eb;border-color:#dfb7a8;color:#713b2a}
+#storage-state{line-height:1.8} #field-search{margin-bottom:15px} .row small{overflow-wrap:anywhere}
+dialog{border:1px solid #cad5c8;border-radius:15px;padding:26px;max-width:430px;width:calc(100% - 36px);color:#243e34}dialog::backdrop{background:#17291fb0}
+@media(max-width:780px){h1{font-size:30px;line-height:1.35}.masthead{gap:12px}.masthead a{font-size:12px}nav button{font-size:12px}#view .row{flex-wrap:wrap}#view .row-actions{max-width:100%;justify-content:flex-start}.mock-banner{line-height:1.6}.intro>p{line-height:1.75}.card-label{line-height:1.7}.card h2{font-size:23px;line-height:1.5}}
+@media print{body *{visibility:hidden}#promo,#promo *{visibility:visible}#promo{position:absolute;left:0;top:0;width:100%;font-size:22px;padding:30px;border:0}}
+
+/* TASK-005: English-first readability, compact demo controls and predictable focus. */
+:root{--green:#1f5547;--muted:#51645c}
+.shell{max-width:1240px}.masthead{padding-top:24px;padding-bottom:24px}.brand{gap:12px}.brand strong{font-size:23px;letter-spacing:1.5px}.brand small{font-size:12px;margin-top:4px}.brand-mark{border-radius:50%;width:44px;height:44px;font-size:27px}.version-tag{font-size:12px;color:var(--muted);line-height:1.6;text-align:right}.version-tag b{display:block;font-weight:500}
+.workspace{grid-template-columns:210px minmax(0,1fr);gap:42px}main{min-width:0}.intro{padding:5px 0 23px;max-width:760px}.intro h1{font-size:44px;line-height:1.15;letter-spacing:-1px;margin:14px 0}.intro>p:last-child{font-size:15px;line-height:1.65;max-width:640px;margin-bottom:0}
+.nav-label{margin-bottom:12px}nav button{font-size:14px;min-height:68px;padding:14px}nav button span{font-size:11px;line-height:1.45}.role-note{font-size:12px;line-height:1.65;margin:18px 10px;max-width:190px}
+.demo-tools{margin-top:20px;border:1px solid var(--border);border-radius:10px;background:#fff;padding:0 13px}.demo-tools summary{padding:14px 0;cursor:pointer;font-size:13px;font-weight:700;min-height:48px}.demo-tools .network-state{margin:0 0 12px;font-size:12px;line-height:1.5}.demo-tools button{width:100%;margin-bottom:5px}.demo-tools .hint{font-size:12px!important}.storage-warning{color:#8a4029!important;font-weight:600}
+.card{padding:26px;border-radius:14px;box-shadow:0 2px 5px #263a2804}.card h2{font-size:27px;line-height:1.25}.card h3{font-size:16px;line-height:1.4}.section-top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;flex-wrap:wrap}.section-top h3,.section-top .card-label{margin:0}.card-label{font-size:11px;letter-spacing:1px}.event-time{font-size:14px!important;line-height:1.6;color:var(--muted)}.pill{font-size:12px;padding:7px 11px;line-height:1.4}.capacity-full{background:#f4eaca;color:#745518}.form-grid{margin:23px 0 14px}label{font-size:13px;line-height:1.4}input,select{font-size:16px;min-height:48px}.primary,.secondary{min-height:44px;min-width:44px;font-size:13px;font-weight:600;line-height:1.4}.primary{padding:13px 18px}.secondary{padding:10px 14px}.hint{font-size:12px!important;line-height:1.65!important}.card>p{margin-bottom:14px}.row{padding:16px 0;align-items:center}.row strong{font-size:15px}.row small{font-size:11px}.row-actions{gap:10px}.badge{font-size:12px;padding:7px 10px;border-radius:20px;line-height:1.4}.empty{font-size:14px;line-height:1.7;padding:20px;background:#f6f8f3;border:1px dashed var(--border);border-radius:9px;color:#52674f}.journey{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 0 3px}.journey span{display:flex;align-items:center;gap:8px;font-size:12px;line-height:1.5;color:var(--muted)}.journey b{font-family:Arial,sans-serif;display:grid;place-items:center;border:1px solid #ccd8cc;border-radius:50%;width:26px;height:26px;flex-shrink:0;font-size:11px}.journey .current{color:var(--green);font-weight:700}.journey .current b{color:#fff;background:var(--green);border-color:var(--green)}
+#feedback{font-size:13px;line-height:1.65;margin-bottom:20px;padding:12px 16px}.quota-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px}.quota small{display:block;font-size:12px;color:var(--muted);margin-top:6px}.quota>div{font-size:13px;gap:12px}.quota-inputs{grid-template-columns:1fr 1fr}.allocation-note{font-size:12px!important;background:#f0f4ed;border-radius:7px;padding:12px}.stats{gap:12px}.stat{padding:20px 16px}.stat strong{font-size:34px}.stat span{font-size:12px;line-height:1.5}.subsection{border-top:1px solid var(--border);padding-top:22px;margin-top:24px}.promo{font-size:14px;line-height:1.85;background:#f8faf4}.policy-card{border-left:4px solid #c8a360}.skip-link{position:fixed;left:16px;top:-100px;background:#fff;padding:14px;z-index:100}.skip-link:focus{top:12px}.demo-tools summary:focus-visible{outline:3px solid #ab7320;outline-offset:3px}main:focus{outline:none}footer{font-size:12px;line-height:1.7}dialog h2{font-size:23px}dialog p{font-size:15px}
+@media(max-width:780px){.shell{padding-left:16px;padding-right:16px}.workspace{grid-template-columns:1fr;gap:16px}.masthead{padding-top:16px;padding-bottom:16px}.brand small{font-size:11px}.version-tag{font-size:11px}.mock-banner{font-size:11px;padding:8px 12px}.mock-banner strong{letter-spacing:.5px}nav{grid-template-columns:repeat(4,minmax(0,1fr));gap:4px}nav button{padding:10px 3px;font-size:12px;min-height:48px;overflow-wrap:normal}.role-note{margin:8px 0;font-size:11px;max-width:none}.demo-tools{margin-top:8px;padding:0 12px}.demo-tools summary{padding:10px 0;min-height:44px}.intro{padding:8px 0 16px}.intro h1{font-size:32px;line-height:1.15;letter-spacing:-.6px;margin:11px 0}.intro>p:last-child{font-size:14px}.eyebrow{font-size:10px;line-height:1.6;letter-spacing:1.2px}.card{padding:20px}.card h2{font-size:25px;line-height:1.25}.card h3{font-size:16px}.form-grid{grid-template-columns:1fr}.quota-inputs,.quota-grid{grid-template-columns:1fr}.quota-grid{gap:0}.journey{gap:6px}.journey span{font-size:11px;gap:6px}.journey b{width:22px;height:22px}.stats{grid-template-columns:1fr 1fr}.stat{padding:18px 14px}.row{gap:12px}#view .row-actions{justify-content:flex-start;max-width:100%}.card-label{line-height:1.6}.section-top{align-items:flex-start}footer{font-size:11px}.version-tag b{display:inline}.actions .primary,.actions .secondary{flex:1 1 auto}}
+@media(max-width:359px){nav{grid-template-columns:repeat(2,1fr)}.journey{grid-template-columns:1fr}.section-top{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+@media print{#promo{font-size:18px;max-width:100%;color:#111;background:#fff}dialog{display:none}}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <div class="mock-banner"><strong>DEMO ONLY</strong><span>Synthetic data. No real appointments. Backend not connected.</span></div>
+  <header class="masthead shell">
+    <div class="brand"><span class="brand-mark" aria-hidden="true">R</span><div><strong>ROSE</strong><small>Community event access</small></div></div>
+    <span class="version-tag">Frontend preview <b>v1.2.1</b></span>
+  </header>
+  <div class="workspace shell">
+    <aside>
+      <p class="nav-label">PREVIEW A ROLE</p>
+      <nav aria-label="Demo roles">
+        <button type="button" data-role="participant">Participant<span>Request &amp; manage a place</span></button>
+        <button type="button" data-role="leader">Leader<span>Help your community</span></button>
+        <button type="button" data-role="coordinator">Coordinator<span>Manage capacity &amp; outreach</span></button>
+        <button type="button" data-role="field">Field staff<span>Check arrivals &amp; sync</span></button>
+      </nav>
+      <p class="role-note">Preview switch only. Not sign-in or access control.</p>
+      <details class="demo-tools" id="demo-controls">
+        <summary>Demo controls</summary>
+        <div class="network-state" id="network-state"></div>
+        <button type="button" class="secondary" id="network" aria-pressed="false">Simulate offline</button>
+        <p class="hint" id="storage-state"></p>
+        <button type="button" class="secondary danger" id="reset-demo">Reset demo</button>
+        <p class="hint">Reset changes only this demo. DEMO-A starts with one public place.</p>
+      </details>
+    </aside>
+    <main id="main" tabindex="-1">
+      <section class="intro"><span class="eyebrow" id="role-eyebrow">PARTICIPANT / REQUEST A PLACE</span><h1 id="role-heading">A clear path to your place.</h1><p id="role-description">Try a simple request, check the result, and release your place when plans change.</p></section>
+      <div id="feedback" role="status" aria-live="polite" aria-atomic="true">DEMO: Choose a sample participant to begin. No account needed.</div>
+      <div id="view"></div>
+    </main>
+  </div>
+  <footer class="shell">ROSE prototype · One sample session · Local synthetic data only · No SMS, clinical checks or real reservations</footer>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title" aria-describedby="confirm-text"><h2 id="confirm-title">Confirm action</h2><p id="confirm-text"></p><div class="actions"><button type="button" class="secondary" data-action="dismiss" autofocus>Go back</button><button type="button" class="primary" data-action="confirm">Confirm</button></div></dialog>
+  <script type="module">class IntegrationError extends Error {
+  constructor(kind, message, details = {}) {
+    super(message);
+    this.name = 'IntegrationError';
+    this.kind = kind;
+    Object.assign(this, details);
+  }
+}
+
+/** Proposed demo settings only. They do not approve a production policy. */
+const DEMO_POLICY = Object.freeze({
+  version: 1,
+  storageKey: 'nu.rose.demo.v2',
+  totalCapacity: 4,
+  waitlist: 'same-quota FIFO auto-promote in mock only',
+  noShowReleaseMinutes: null,
+  walkInAllowed: false,
+  acceptedTeamPolicy: false,
+  dataClass: 'synthetic-only'
+});
+
+
+const DEMO_PEOPLE = Object.freeze(Array.from({ length: 8 }, (_, index) => `DEMO-${String.fromCharCode(65 + index)}`));
+const error = (kind, text) => new IntegrationError(kind, `MOCK: ${text}`);
+const clone = value => JSON.parse(JSON.stringify(value));
+
+/** In-memory synthetic model. These shapes and quota rules are proposals, not API contracts. */
+class MockEventService {
+  constructor() {
+    this.mode = 'mock';
+    this.online = true;
+    this.event = { id: 'demo-event', title: 'Community screening preview', slot: 'Demo session · 09:00 to 10:00', publicQuota: 2, leaderQuota: 2 };
+    this.bookings = [];
+    this.reports = [];
+    this.queue = [];
+    this.receipts = new Map();
+    this.sequence = 0;
+    this.register({ person: 'DEMO-A', channel: 'public', key: 'seed-a' });
+  }
+  result(data) { return { mode: 'mock', data: clone(data) }; }
+  assertOnline() { if (!this.online) throw error('offline', 'Reconnect the simulation before submitting.'); }
+  assertOperationKey(key, signature) {
+    if (typeof key !== 'string' || !key.trim()) throw error('validation', 'A demo operation key is required.');
+    const cached = this.receipts.get(key);
+    const queued = this.queue.find(item => item.key === key);
+    if ((cached && cached.signature !== signature) || (queued && JSON.stringify(['checkIn', queued.id]) !== signature)) {
+      throw error('idempotency_conflict', 'Operation key reused for different input.');
+    }
+    return cached;
+  }
+  once(key, signature, action) {
+    const cached = this.assertOperationKey(key, signature);
+    if (cached) {
+      return clone(cached.result);
+    }
+    const result = action();
+    this.receipts.set(key, { signature, result: clone(result) });
+    return result;
+  }
+  register({ person, channel, key }) {
+    this.assertOnline();
+    if (!DEMO_PEOPLE.includes(person) || !['public', 'leader'].includes(channel)) throw error('validation', 'Use a listed demo participant and channel.');
+    return this.once(key, JSON.stringify(['register', person, channel]), () => {
+      if (this.bookings.some(b => b.person === person && b.status !== 'cancelled')) throw error('duplicate', 'This demo participant already has an active request.');
+      const quota = channel === 'public' ? this.event.publicQuota : this.event.leaderQuota;
+      const used = this.bookings.filter(b => b.channel === channel && b.status === 'confirmed').length;
+      const booking = { id: `demo-registration-${++this.sequence}`, person, channel, status: used < quota ? 'confirmed' : 'waiting', checkedIn: false, version: 1 };
+      this.bookings.push(booking);
+      return this.result(booking);
+    });
+  }
+  cancel(id) {
+    this.assertOnline();
+    const booking = this.bookings.find(b => b.id === id);
+    if (!booking) throw error('not_found', 'Registration not found.');
+    if (booking.checkedIn) throw error('conflict', 'Checked-in registrations need a reviewed staff process.');
+    if (booking.status === 'cancelled') return this.result(booking);
+    const freed = booking.status === 'confirmed';
+    booking.status = 'cancelled';
+    booking.version++;
+    if (freed) {
+      const next = this.bookings.find(b => b.channel === booking.channel && b.status === 'waiting');
+      if (next) { next.status = 'confirmed'; next.version++; }
+    }
+    return this.result(booking);
+  }
+  report({ count, key }) {
+    this.assertOnline();
+    if (!Number.isInteger(count) || count < 1 || count > 500) throw error('validation', 'Choose a count from 1 to 500.');
+    return this.once(key, JSON.stringify(['report', count]), () => {
+      const report = { id: `demo-report-${++this.sequence}`, channel: 'printed flyers', count, leader: 'DEMO-LEADER' };
+      this.reports.push(report);
+      return this.result(report);
+    });
+  }
+  checkIn(id, key) {
+    const signature = JSON.stringify(['checkIn', id]);
+    const cached = this.assertOperationKey(key, signature);
+    if (cached) return clone(cached.result);
+    const booking = this.bookings.find(b => b.id === id);
+    if (!booking || booking.status !== 'confirmed') throw error('conflict', 'Only a confirmed demo registration can be checked in.');
+    const known = this.queue.find(q => q.key === key);
+    if (known && known.id !== id) throw error('idempotency_conflict', 'Queue key already belongs to another registration.');
+    if (known) return this.result(known);
+    if (booking.checkedIn) return this.result({ id, status: 'already_checked_in' });
+    const pending = this.queue.find(q => q.id === id && ['pending', 'conflict'].includes(q.status));
+    if (pending) return this.result(pending);
+    if (!this.online) {
+      const queued = { id, key, version: booking.version, status: 'pending', attempts: 0 };
+      this.queue.push(queued);
+      return this.result(queued);
+    }
+    return this.once(key, signature, () => {
+      booking.checkedIn = true;
+      booking.version++;
+      return this.result({ id, status: 'checked_in' });
+    });
+  }
+  retry({ failFirst = false } = {}) {
+    this.assertOnline();
+    let shouldFail = failFirst;
+    for (const item of this.queue.filter(q => q.status === 'pending')) {
+      item.attempts++;
+      if (shouldFail) { item.lastError = 'Simulated network failure; still pending'; shouldFail = false; continue; }
+      const booking = this.bookings.find(b => b.id === item.id);
+      if (!booking || booking.status !== 'confirmed' || booking.version !== item.version) {
+        item.status = 'conflict'; item.lastError = 'Registration changed; review required'; continue;
+      }
+      booking.checkedIn = true;
+      booking.version++;
+      item.status = 'synced';
+      delete item.lastError;
+    }
+    return this.result(this.queue);
+  }
+  snapshot() {
+    const confirmed = this.bookings.filter(b => b.status === 'confirmed');
+    return this.result({ event: this.event, online: this.online, bookings: this.bookings, reports: this.reports, queue: this.queue,
+      summary: { confirmed: confirmed.length, waiting: this.bookings.filter(b => b.status === 'waiting').length,
+        checkedIn: confirmed.filter(b => b.checkedIn).length, publicUsed: confirmed.filter(b => b.channel === 'public').length,
+        leaderUsed: confirmed.filter(b => b.channel === 'leader').length,
+        reportedFlyers: this.reports.reduce((total, r) => total + r.count, 0) } });
+  }
+}
+
+
+
+const copy = value => JSON.parse(JSON.stringify(value));
+const fail = message => { throw new Error(`DEMO_STATE: ${message}`); };
+const plain = x => x !== null && typeof x === 'object' && !Array.isArray(x);
+const onlyKeys = (obj, allowed) => Object.keys(obj).every(k => allowed.includes(k));
+const integer = (x, min, max) => Number.isInteger(x) && x >= min && x <= max;
+
+function validateState(state) {
+  if (!plain(state) || !onlyKeys(state,['schema','event','bookings','reports','queue','sequence','receipts']) || state.schema !== 2 || !plain(state.event)) fail('Unsupported saved state.');
+  if (!onlyKeys(state.event,['id','title','slot','publicQuota','leaderQuota'])) fail('Unexpected event data.');
+  if (!integer(state.sequence, 0, 100000) || state.event.id !== 'demo-event') fail('Invalid event or sequence.');
+  if (state.event.title !== 'Community screening preview' || state.event.slot !== 'Demo session · 09:00 to 10:00') fail('Only the synthetic event is allowed.');
+  if (!integer(state.event.publicQuota, 0, 4) || !integer(state.event.leaderQuota, 0, 4) || state.event.publicQuota + state.event.leaderQuota > DEMO_POLICY.totalCapacity) fail('Invalid demo allocation.');
+  for (const k of ['bookings', 'reports', 'queue', 'receipts']) if (!Array.isArray(state[k]) || state[k].length > 1000) fail(`Invalid ${k}.`);
+  const ids = new Set(), activePeople = new Set();
+  let maxSequence = 0;
+  for (const b of state.bookings) {
+    if (!plain(b) || !onlyKeys(b,['id','person','channel','status','checkedIn','version']) || typeof b.id !== 'string' || !/^demo-registration-\d+$/.test(b.id) || ids.has(b.id)) fail('Invalid registration ID.');
+    ids.add(b.id); maxSequence = Math.max(maxSequence, Number(b.id.split('-').at(-1)));
+    if (!DEMO_PEOPLE.includes(b.person) || !['public', 'leader'].includes(b.channel) || !['confirmed', 'waiting', 'cancelled'].includes(b.status)) fail('Only synthetic participants are allowed.');
+    if (typeof b.checkedIn !== 'boolean' || !integer(b.version, 1, 100000) || (b.checkedIn && b.status !== 'confirmed')) fail('Invalid attendance state.');
+    if (b.status !== 'cancelled') { if (activePeople.has(b.person)) fail('Duplicate active participant.'); activePeople.add(b.person); }
+  }
+  for (const channel of ['public', 'leader']) if (state.bookings.filter(b => b.channel === channel && b.status === 'confirmed').length > state.event[`${channel}Quota`]) fail('Saved quota exceeded.');
+  const keys = new Set();
+  for (const q of state.queue) {
+    if (!plain(q) || !onlyKeys(q,['id','key','version','status','attempts','lastError']) || !ids.has(q.id) || typeof q.key !== 'string' || q.key.length < 1 || q.key.length > 160 || keys.has(q.key) || !['pending','synced','conflict'].includes(q.status) || !integer(q.attempts,0,100000) || !integer(q.version,1,100000)) fail('Invalid pending operation.');
+    keys.add(q.key);
+    if (q.lastError !== undefined && (typeof q.lastError !== 'string' || q.lastError.length > 200)) fail('Invalid queue message.');
+  }
+  const reportIds = new Set();
+  for (const r of state.reports) {
+    if (!plain(r) || !onlyKeys(r,['id','channel','count','leader']) || typeof r.id !== 'string' || !/^demo-report-\d+$/.test(r.id) || reportIds.has(r.id) || r.leader !== 'DEMO-LEADER' || r.channel !== 'printed flyers' || !integer(r.count,1,500)) fail('Invalid outreach report.');
+    reportIds.add(r.id); maxSequence=Math.max(maxSequence,Number(r.id.split('-').at(-1)));
+  }
+  if (maxSequence > state.sequence) fail('Sequence is behind saved records.');
+  const receiptKeys = new Set();
+  for (const item of state.receipts) {
+    if (!Array.isArray(item) || item.length !== 2 || typeof item[0] !== 'string' || !item[0].trim() || item[0].length > 160 || receiptKeys.has(item[0]) || !plain(item[1]) || typeof item[1].signature !== 'string' || !plain(item[1].result) || item[1].result.mode !== 'mock') fail('Invalid operation receipt.');
+    receiptKeys.add(item[0]);
+    if (!onlyKeys(item[1],['signature','result']) || !onlyKeys(item[1].result,['mode','data']) || !plain(item[1].result.data)) fail('Unexpected receipt data.');
+    let sig; try { sig=JSON.parse(item[1].signature); } catch { fail('Invalid receipt signature.'); }
+    if (!Array.isArray(sig) || !['register','report','checkIn'].includes(sig[0])) fail('Invalid receipt action.');
+    if (sig[0] === 'register' && (!DEMO_PEOPLE.includes(sig[1]) || !['public','leader'].includes(sig[2]))) fail('Invalid receipt participant.');
+    if (sig[0] === 'report' && !integer(sig[1],1,500)) fail('Invalid receipt count.');
+    if (sig[0] === 'checkIn' && !ids.has(sig[1])) fail('Invalid receipt check-in.');
+    const d=item[1].result.data;
+    if(sig[0]==='register' && (sig.length!==3 || !onlyKeys(d,['id','person','channel','status','checkedIn','version']) || !ids.has(d.id) || d.person!==sig[1] || d.channel!==sig[2] || !['confirmed','waiting'].includes(d.status) || d.checkedIn!==false || d.version!==1)) fail('Invalid registration receipt.');
+    if(sig[0]==='report' && (sig.length!==2 || !onlyKeys(d,['id','channel','count','leader']) || !reportIds.has(d.id) || d.count!==sig[1] || d.channel!=='printed flyers' || d.leader!=='DEMO-LEADER')) fail('Invalid report receipt.');
+    if(sig[0]==='checkIn' && (sig.length!==2 || !onlyKeys(d,['id','status']) || d.id!==sig[1] || d.status!=='checked_in')) fail('Invalid check-in receipt.');
+  }
+  return copy(state);
+}
+
+/** Browser-local synthetic persistence. Never a production datastore or auth system. */
+class LocalDemoService extends MockEventService {
+  constructor(storage = null) {
+    super(); this.storage = storage; this.storageStatus = storage ? 'ready' : 'memory-only'; this.storageError = '';
+    if (storage) {
+      try {
+        const raw = storage.getItem(DEMO_POLICY.storageKey);
+        if (raw !== null) {
+          if (typeof raw !== 'string' || raw.length > 500000) fail('Saved state is too large.');
+          const s=validateState(JSON.parse(raw));
+          this.event=s.event; this.bookings=s.bookings; this.reports=s.reports; this.queue=s.queue; this.sequence=s.sequence; this.receipts=new Map(s.receipts);
+          this.storageStatus='restored';
+        }
+      } catch (error) { this.storageStatus='invalid'; this.storageError='Saved demo data failed validation and was not overwritten. Use Reset demo to create new synthetic data.'; }
+    }
+    this.online=true;
+  }
+  exportState() {
+    return validateState({schema:2,event:this.event,bookings:this.bookings,reports:this.reports,queue:this.queue,sequence:this.sequence,receipts:[...this.receipts]});
+  }
+  persist() {
+    if (this.storageStatus==='invalid') fail('Reset invalid demo data before continuing.');
+    if (!this.storage) return false;
+    try { this.storage.setItem(DEMO_POLICY.storageKey,JSON.stringify(this.exportState()));this.storageStatus='saved';return true; }
+    catch { this.storageStatus='write-failed';this.storageError='This change exists in memory only and could not be saved. Reloading may lose it.';return false; }
+  }
+  perform(action, ...args) {
+    if (this.storageStatus==='invalid') fail('Reset invalid demo data before continuing.');
+    if (!['register','cancel','report','checkIn','retry','setQuotas','walkIn'].includes(action)) fail('Unsupported demo action.');
+    const result=this[action](...args); this.persist(); return result;
+  }
+  setQuotas(publicQuota, leaderQuota) {
+    this.assertOnline();
+    if (!integer(publicQuota,0,4) || !integer(leaderQuota,0,4) || publicQuota+leaderQuota>4) fail('Total quota must be between 0 and 4.');
+    for (const [channel,value] of [['public',publicQuota],['leader',leaderQuota]]) {
+      if (this.bookings.filter(b=>b.channel===channel&&b.status==='confirmed').length>value) fail('Quota cannot be reduced below existing confirmed places.');
+    }
+    this.event.publicQuota=publicQuota;this.event.leaderQuota=leaderQuota;
+    for(const channel of ['public','leader']) {
+      let used=this.bookings.filter(b=>b.channel===channel&&b.status==='confirmed').length;
+      for(const b of this.bookings.filter(b=>b.channel===channel&&b.status==='waiting')) {
+        if(used>=this.event[`${channel}Quota`]) break;
+        b.status='confirmed';b.version++;used++;
+      }
+    }
+    return this.result(this.event);
+  }
+  walkIn() {
+    return this.result({status:'policy_pending', confirmed:false, reason:'Walk-in and no-show policies are not approved. No place was confirmed or deducted.'});
+  }
+  reset() {
+    if(this.storage) {try{this.storage.removeItem(DEMO_POLICY.storageKey);}catch{fail('Cannot remove saved demo data.');}}
+    const clean=new MockEventService();
+    for(const p of ['event','bookings','reports','queue','sequence','receipts'])this[p]=clean[p];
+    this.online=true;this.storageStatus=this.storage?'ready':'memory-only';this.storageError='';this.persist();
+  }
+}
+
+
+
+
+let store;
+try { store = window.localStorage; } catch { store = null; }
+const service = new LocalDemoService(store);
+let role = 'participant', selected = 'DEMO-B', simulatedOffline = false, searchText = '', pendingAction = null;
+const key = () => `demo-${typeof crypto.randomUUID === 'function' ? crypto.randomUUID() : Array.from(crypto.getRandomValues(new Uint8Array(16)), n => n.toString(16).padStart(2, '0')).join('')}`;
+const esc = value => String(value).replace(/[&<>"']/g, c => ({'&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;'}[c]));
+const labels = {confirmed:'Confirmed', waiting:'Waitlisted', cancelled:'Cancelled', checked_in:'Checked in', already_checked_in:'Already checked in', pending:'Pending sync', synced:'Synced in demo', conflict:'Needs review', reported:'Self-reported'};
+const roleCopy = {
+  participant: ['PARTICIPANT / REQUEST A PLACE', 'A clear path to your place.', 'Try a simple request, check the result, and release your place when plans change.'],
+  leader: ['COMMUNITY LEADER / HELP YOUR COMMUNITY', 'More ways to take part.', 'Use a reserved place for someone who needs help. Keep outreach separate from registrations.'],
+  coordinator: ['COORDINATOR / CAPACITY & OUTREACH', 'See demand. Keep it balanced.', 'One shared demo state for places, attendance and reported outreach. No estimated reach or predictions.'],
+  field: ['FIELD STAFF / ARRIVALS & SYNC', 'Keep every arrival clear.', 'Find a confirmed participant, record arrival, and review any unsynced or conflicting changes.']
+};
+const badge = status => `<span class="badge ${esc(status)}">${esc(labels[status] || status)}</span>`;
+const people = () => `<label for="person">Sample participant<select id="person">${DEMO_PEOPLE.map(p => `<option ${p === selected ? 'selected' : ''}>${p}</option>`).join('')}</select></label>`;
+const button = (action, id, text, extra = '', label = text) => `<button type="button" class="secondary ${extra}" data-action="${action}" data-id="${esc(id)}" aria-label="${esc(label)}">${text}</button>`;
+const rows = (bookings, action, empty = 'No matching demo records yet.') => bookings.length ? bookings.map(b => `<div class="row"><div><strong>${esc(b.person)}</strong><small>${esc(b.id)}<br>${b.channel === 'leader' ? 'Leader-assisted registration' : 'Public registration'}${b.checkedIn ? ' · Checked in' : ''}</small></div><div class="row-actions">${badge(b.status)}${action(b)}</div></div>`).join('') : `<div class="empty">${empty}</div>`;
+const quota = (label, used, total) => `<div class="quota"><div><span>${label}</span><strong>${used} / ${total} used</strong></div><progress aria-label="${label}" value="${used}" max="${total || 1}"></progress><small>${total - used} remaining in this allocation</small></div>`;
+const activeBooking = bookings => bookings.find(b => b.person === selected && b.status !== 'cancelled');
+
+function numberInput(id) {
+  const raw = document.querySelector(`#${id}`).value.trim();
+  if (!raw) throw new Error('Enter a whole number. A blank field is not zero.');
+  return Number(raw);
+}
+
+function feedback(message, error = false) {
+  const el = document.querySelector('#feedback');
+  el.textContent = `DEMO: ${message}`;
+  el.classList.toggle('error', error);
+  el.setAttribute('role', error ? 'alert' : 'status');
+}
+function attendanceRows(bookings, online) {
+  return rows(bookings.filter(b => b.status === 'confirmed' && b.person.toLowerCase().includes(searchText.toLowerCase())), b => b.checkedIn ? badge('checked_in') : button('checkin', b.id, online ? 'Check in' : 'Queue check-in', '', `Check in ${b.person}`), 'No confirmed participants match this search. Try DEMO-A, or clear the search.');
+}
+function render() {
+  service.online = navigator.onLine && !simulatedOffline;
+  const {event, bookings, reports, queue, summary, online} = service.snapshot().data;
+  const copy = roleCopy[role];
+  document.querySelector('#role-eyebrow').textContent = copy[0];
+  document.querySelector('#role-heading').textContent = copy[1];
+  document.querySelector('#role-description').textContent = copy[2];
+  const network = document.querySelector('#network');
+  network.textContent = simulatedOffline ? 'End offline simulation' : 'Simulate offline';
+  network.setAttribute('aria-pressed', String(simulatedOffline));
+  document.querySelector('#network-state').textContent = !navigator.onLine ? 'Browser is offline' : simulatedOffline ? 'Simulated offline mode' : 'Demo online · No backend';
+  const storage = document.querySelector('#storage-state');
+  storage.textContent = ['invalid', 'write-failed'].includes(service.storageStatus) ? service.storageError : service.storageStatus === 'memory-only' ? 'Memory only. Reloading resets this demo.' : 'Saved in this browser only. No backend or cross-device sync.';
+  storage.classList.toggle('storage-warning', ['invalid', 'write-failed', 'memory-only'].includes(service.storageStatus));
+  document.querySelectorAll('[data-role]').forEach(el => {
+    if (el.dataset.role === role) el.setAttribute('aria-current', 'page');
+    else el.removeAttribute('aria-current');
+  });
+  const cancel = b => b.status !== 'cancelled' && !b.checkedIn ? button('cancel', b.id, 'Cancel request', 'danger', `Cancel request for ${b.person}`) : '';
+  let content = '';
+  if (role === 'participant') {
+    const current = activeBooking(bookings), free = event.publicQuota - summary.publicUsed;
+    content = `<section class="card event-card">
+      <div class="section-top"><span class="card-label">SAMPLE COMMUNITY EVENT</span><span class="pill ${free ? '' : 'capacity-full'}">${free ? `${free} public place${free === 1 ? '' : 's'} left` : 'Public allocation full'}</span></div>
+      <h2>Community screening preview</h2><p class="event-time">09:00 to 10:00 · One sample session · Demo location</p>
+      <div class="journey" aria-label="Request steps"><span class="${current ? '' : 'current'}"><b>1</b> Choose</span><span class="${current ? '' : 'current'}"><b>2</b> Request</span><span class="${current ? 'current' : ''}"><b>3</b> Check receipt</span></div>
+      <div class="form-grid">${people()}<button type="button" class="primary" data-action="${current ? 'receipt' : 'register'}">${current ? 'View demo receipt' : free ? 'Request a demo place' : 'Join demo waitlist'}</button></div>
+      <p class="hint">No account or real personal details. Full public allocation? Your request joins its waitlist. A leader reservation uses a separate allocation.</p>
+    </section>
+    <section class="card receipt-card" tabindex="-1"><div class="section-top"><h3>Your demo receipt</h3><span class="card-label">${esc(selected)}</span></div>
+      ${rows(bookings.filter(b => b.person === selected), cancel, 'No request for this participant yet. Choose a sample above, then request a place.')}
+      <p class="hint">${current?.status === 'waiting' ? 'Waitlisted is not a confirmed place. This demo promotes the next person in the same allocation after a cancellation.' : 'A confirmed demo place is not a real appointment. Only the selected sample identity is shown; this is not access control.'}</p>
+    </section>`;
+  } else if (role === 'leader') {
+    content = `<section class="card"><span class="card-label">DEMO-LEADER / RESERVED ALLOCATION</span><h2>Register on someone’s behalf</h2>${quota('Community places', summary.leaderUsed, event.leaderQuota)}
+      <div class="form-grid">${people()}<button type="button" class="primary" data-action="proxy">Register on behalf</button></div>
+      <p class="hint">Existing active participants cannot book again through another channel. Only one demo leader is modelled; real sign-in is not connected.</p>
+    </section>
+    <section class="card"><span class="card-label">OUTREACH / COPY OR PRINT</span><h3>Ready-to-share sample invitation</h3>
+      <div class="promo" id="promo">ROSE COMMUNITY EVENT · DEMO ONLY
+Community screening preview · 09:00 to 10:00
+Referral source: DEMO-LEADER
+https://example.invalid/demo-event?ref=DEMO-LEADER
+Sample invitation only. This link does not accept real bookings.</div>
+      <div class="actions"><button type="button" class="secondary" data-action="copy">Copy invitation</button><button type="button" class="secondary" data-action="print">Print sample flyer</button></div>
+      <p class="hint">Template preview only. Referral tracking, unique QR codes and messaging are not connected.</p>
+      <div class="subsection"><h3>Report printed outreach</h3><div class="form-grid"><label for="count">Flyers distributed<input id="count" type="number" min="1" max="500" step="1" value="25" inputmode="numeric"></label><button type="button" class="primary" data-action="report">Save outreach report</button></div>
+      <p class="hint">Enter a whole number from 1 to 500. Self-reported flyers are not verified people reached, registrations or attendance.</p></div>
+    </section>`;
+  } else if (role === 'coordinator') {
+    const unallocated = DEMO_POLICY.totalCapacity - event.publicQuota - event.leaderQuota;
+    content = `<div class="stats">${[[summary.confirmed, 'Confirmed places'], [summary.waiting, 'Waitlisted'], [summary.checkedIn, 'Checked in'], [summary.reportedFlyers, 'Flyers reported']].map(([v, l]) => `<div class="stat"><strong>${v}</strong><span>${l}</span></div>`).join('')}</div>
+    <section class="card"><div class="section-top"><span class="card-label">CAPACITY / ONE SAMPLE SESSION</span><span class="pill">Total capacity: 4</span></div><h2>Keep allocations within capacity</h2>
+      <div class="quota-grid">${quota('Public places', summary.publicUsed, event.publicQuota)}${quota('Community places', summary.leaderUsed, event.leaderQuota)}</div>
+      <p class="allocation-note">${unallocated} unallocated · Checked-in participants are already included in confirmed places.</p>
+      <div class="form-grid quota-inputs"><label for="public-quota">Public allocation<input id="public-quota" type="number" min="0" max="4" step="1" value="${event.publicQuota}" inputmode="numeric"></label><label for="leader-quota">Community allocation<input id="leader-quota" type="number" min="0" max="4" step="1" value="${event.leaderQuota}" inputmode="numeric"></label></div>
+      <button type="button" class="secondary" data-action="quota">Apply demo allocations</button><p class="hint">Allocation cannot fall below existing confirmed places. Same-allocation FIFO promotion is a demo policy, not an approved operating rule.</p>
+    </section>
+    <section class="card"><h3>Registrations at a glance</h3>${rows(bookings, () => '', 'No demo registrations.')}</section>
+    <section class="card"><h3>Reported outreach</h3>${reports.length ? reports.map(r => `<div class="row"><div><strong>${r.count} printed flyers</strong><small>DEMO-LEADER · Reach not independently verified</small></div>${badge('reported')}</div>`).join('') : '<div class="empty">No outreach reports. Add one from the Leader view.</div>'}<p class="hint">These totals come from the shared local demo, not a live database or a demand forecast.</p></section>`;
+  } else {
+    const pending = queue.filter(q => q.status === 'pending').length, conflicts = queue.filter(q => q.status === 'conflict').length;
+    content = `<section class="card"><div class="section-top"><span class="card-label">ARRIVALS / CONFIRMED PARTICIPANTS</span><span class="pill">${summary.checkedIn} of ${summary.confirmed} checked in</span></div><h2>Find a participant</h2>
+      <label for="field-search">Search sample identity<input id="field-search" type="search" value="${esc(searchText)}" placeholder="For example, DEMO-A" autocomplete="off"></label>
+      <div id="field-rows">${attendanceRows(bookings, online)}</div>
+      <p class="hint">Search and manual check-in only. No camera scan, SMS QR code or identity lookup is connected.</p>
+    </section>
+    <section class="card"><div class="section-top"><h3>Check-in sync queue</h3><span class="pill">${pending} pending · ${conflicts} need review</span></div>
+      ${queue.length ? queue.map(q => `<div class="row"><div><strong>${esc(q.id)}</strong><small>Attempts: ${q.attempts}${q.lastError ? `<br>${esc(q.lastError)}` : ''}</small></div><div class="row-actions">${badge(q.status)}${q.status === 'pending' ? button('change', q.id, 'Simulate cancellation', 'danger') : ''}</div></div>`).join('') : '<div class="empty">No pending check-ins. In Demo controls, simulate offline mode, then queue a check-in.</div>'}
+      <div class="actions"><button type="button" class="primary" data-action="retry">Sync demo queue</button><button type="button" class="secondary" data-action="retry-fail">Simulate one sync failure</button></div>
+      <p class="hint">Pending is not synced. Reconnect, then sync manually. Conflicts remain visible; no automatic overwrite. This is not a PWA or real multi-device sync.</p>
+    </section>
+    <section class="card policy-card"><span class="card-label">WALK-IN / POLICY PENDING</span><h3>No automatic place release</h3><p>Walk-in confirmation and no-show release need an agreed policy. Unused capacity alone does not authorise a new place.</p><button type="button" class="secondary" data-action="walkin">Check walk-in policy</button><p class="hint">This action explains the restriction. It does not issue or consume a place.</p></section>`;
+  }
+  document.querySelector('#view').innerHTML = content;
+  if (service.storageStatus === 'invalid') {
+    document.querySelectorAll('#view button, #view input, #view select').forEach(b => b.disabled = true);
+    document.querySelector('#demo-controls').open = true;
+    feedback(service.storageError, true);
+  }
+}
+function ask(action, id) {
+  pendingAction = {action, id};
+  const dialog = document.querySelector('#confirm-dialog');
+  document.querySelector('#confirm-title').textContent = action === 'reset' ? 'Reset this demo?' : 'Cancel this request?';
+  document.querySelector('#confirm-text').textContent = action === 'reset' ? 'This removes only saved ROSE demo data in this browser. The initial sample has DEMO-A registered. No real records are affected.' : 'The demo request will be cancelled. The next person in the same allocation may receive its place under the demo policy. No message will be sent.';
+  dialog.showModal();
+}
+document.addEventListener('change', e => {
+  if (e.target.id === 'person') {
+    selected = e.target.value; render(); document.querySelector('#person').focus();
+    feedback(role === 'participant' ? `Viewing ${selected}. Check the receipt area for any existing request.` : `Selected ${selected} for an assisted request.`);
+  }
+});
+document.addEventListener('input', e => {
+  if (e.target.id === 'field-search') {
+    searchText = e.target.value;
+    const {bookings, online} = service.snapshot().data;
+    document.querySelector('#field-rows').innerHTML = attendanceRows(bookings, online);
+  }
+});
+document.addEventListener('click', async e => {
+  const t = e.target.closest('button');
+  if (!t) return;
+  if (t.dataset.role) { role = t.dataset.role; render(); if (service.storageStatus !== 'invalid') feedback(`${roleCopy[role][0].split(' / ')[0]} preview. All changes stay in the local demo.`); return; }
+  if (t.id === 'network') { simulatedOffline = !simulatedOffline; render(); if (service.storageStatus !== 'invalid') feedback('Simulation mode changed. Pending check-ins require manual sync.'); return; }
+  if (t.id === 'reset-demo') { ask('reset'); return; }
+  const action = t.dataset.action;
+  if (action === 'receipt') { const receipt = document.querySelector('.receipt-card'); receipt.focus({preventScroll: true}); receipt.scrollIntoView({block: 'center'}); return; }
+  if (action === 'dismiss') { pendingAction = null; document.querySelector('#confirm-dialog').close(); return; }
+  t.disabled = true;
+  try {
+    let result;
+    if (action === 'register' || action === 'proxy') {
+      selected = document.querySelector('#person').value;
+      result = service.perform('register', {person: selected, channel: action === 'proxy' ? 'leader' : 'public', key: key()});
+      feedback(`${selected}: ${labels[result.data.status]}. This is not a real appointment.`);
+    } else if (action === 'cancel' || action === 'change') { ask('cancel', t.dataset.id); return; }
+    else if (action === 'confirm') {
+      document.querySelector('#confirm-dialog').close(); const p = pendingAction; pendingAction = null; if (!p) return;
+      if (p.action === 'reset') { service.reset(); simulatedOffline = false; selected = 'DEMO-B'; searchText = ''; feedback('Demo reset. DEMO-A has the first public place.'); }
+      else { service.perform('cancel', p.id); feedback('Request cancelled. The same-allocation waitlist was checked for promotion.'); }
+    } else if (action === 'report') {
+      result = service.perform('report', {count: numberInput('count'), key: key()}); feedback(`Saved a self-report of ${result.data.count} flyers. This is not verified reach.`);
+    } else if (action === 'checkin') {
+      result = service.perform('checkIn', t.dataset.id, key()); feedback(`Check-in result: ${labels[result.data.status] || result.data.status}.`);
+    } else if (action === 'retry' || action === 'retry-fail') {
+      service.perform('retry', {failFirst: action === 'retry-fail'}); feedback('Local demo sync attempted. Review pending and conflicting items below.');
+    } else if (action === 'quota') {
+      service.perform('setQuotas', numberInput('public-quota'), numberInput('leader-quota')); feedback('Demo allocations updated. Total capacity remains 4.');
+    } else if (action === 'walkin') { result = service.perform('walkIn'); feedback(result.data.reason); }
+    else if (action === 'copy') {
+      try { await navigator.clipboard.writeText(document.querySelector('#promo').textContent); feedback('Invitation copied. No message was sent.'); }
+      catch { feedback('Automatic copy is unavailable. Select the invitation above and copy it manually.', true); }
+      return;
+    } else if (action === 'print') { window.print(); return; }
+    else return;
+    render();
+    if (service.storageStatus === 'write-failed') feedback(service.storageError, true);
+    // Keep keyboard focus on a surviving control after rendering a replacement view.
+    const next = document.querySelector(`#view [data-action="${action}"]`);
+    if (next && !next.disabled) next.focus({preventScroll: true});
+  } catch (error) { feedback(error.message || 'The action did not complete.', true); }
+  finally { t.disabled = false; }
+});
+window.addEventListener('online', () => { render(); if (service.storageStatus !== 'invalid') feedback('Browser reconnected. No writes were synced automatically.'); });
+window.addEventListener('offline', () => { render(); if (service.storageStatus !== 'invalid') feedback('Browser offline. Check-ins stay in the local pending queue.'); });
+document.querySelector('#confirm-dialog').addEventListener('cancel', () => { pendingAction = null; });
+render();
+</script>
+</body>
+</html>

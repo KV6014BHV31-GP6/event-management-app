@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
-  "package_version": "repo-docs/0.2.2",
-  "reviewed_at": "2026-10-13T04:36:01.697Z",
-  "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)",
-  "document_count": 72,
+  "package_version": "repo-docs/0.2.3",
+  "reviewed_at": "2026-10-13T04:39:43.923Z",
+  "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)",
+  "document_count": 77,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -230,7 +230,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 14,
+      "revision": 15,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -294,6 +294,13 @@
           "size_bytes": 2234,
           "superseded_at": "2026-10-13T04:36:01.697Z",
           "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)"
+        },
+        {
+          "revision": 14,
+          "sha256": "b0f17feaca1d4a84e6a0469dfd19b021e6d61e702ecfd7d0f284598d369f30b8",
+          "size_bytes": 2631,
+          "superseded_at": "2026-10-13T04:39:43.923Z",
+          "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
         }
       ],
       "import_lineage": {
@@ -304,8 +311,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "b0f17feaca1d4a84e6a0469dfd19b021e6d61e702ecfd7d0f284598d369f30b8",
-      "size_bytes": 2631
+      "sha256": "6928df314992e468bcfc00174c29125d5f3aa5c2cba75d1a7f037dea15026f04",
+      "size_bytes": 3125
     },
     {
       "document_id": "DOC-11",
@@ -1017,21 +1024,29 @@
     {
       "document_id": "FE-SHELL-001",
       "path": "frontend/index.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0aea98946baad096f3061e678cd077b1dd748baf7399977d70697f2a41ebc55a",
+          "size_bytes": 2511,
+          "superseded_at": "2026-10-13T04:39:43.923Z",
+          "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0aea98946baad096f3061e678cd077b1dd748baf7399977d70697f2a41ebc55a",
-      "size_bytes": 2511,
+      "sha256": "88ad284664758691fc10132530c12096e16a8bfd36ba0cc975d4fe6d21d8e6b9",
+      "size_bytes": 2650,
       "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md"
     },
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1048,13 +1063,20 @@
           "size_bytes": 1956,
           "superseded_at": "2026-10-13T04:36:01.697Z",
           "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)"
+        },
+        {
+          "revision": 3,
+          "sha256": "061b43b26967b9b1adc2b1352e6a313484f6773ef47b583b827dbc08817e8815",
+          "size_bytes": 2419,
+          "superseded_at": "2026-10-13T04:39:43.923Z",
+          "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "061b43b26967b9b1adc2b1352e6a313484f6773ef47b583b827dbc08817e8815",
-      "size_bytes": 2419
+      "sha256": "6ad148fe7480adf824891855219e4310f65dfe8d53a46e2c95dc35d6f664549a",
+      "size_bytes": 2723
     },
     {
       "document_id": "DOC-25",
@@ -1381,6 +1403,71 @@
       ],
       "sha256": "d03b0e1bb1506e6a2948a26cbcddc75d1a6b904b628252a37471990439961c05",
       "size_bytes": 1026
+    },
+    {
+      "document_id": "FE-V121-001",
+      "path": "frontend/mock/v1.2.1/index.html",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
+      "size_bytes": 50708
+    },
+    {
+      "document_id": "FE-V121-002",
+      "path": "frontend/mock/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "6c8591a7aa75fa96ccf366a1108747bc81355ebd03933fa204aaacdf2a45648a",
+      "size_bytes": 747
+    },
+    {
+      "document_id": "FE-V121-003",
+      "path": "frontend/mock/v1.2.1/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ffc843752a9434401622f57acc2aacbee695b240be4ec23a55fe3d0c65ef09a5",
+      "size_bytes": 1418
+    },
+    {
+      "document_id": "FE-V121-004",
+      "path": "docs/dev/tasks/FE-MOCK-V121-20261013.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "06edff55878eec2c8543de53d045513f46c346aec691e5534d696ec4d5950619",
+      "size_bytes": 1338
+    },
+    {
+      "document_id": "FE-V121-005",
+      "path": "tests/test_mock_versions.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "83de026d188356209c32e3f99d774bed70a2f0a9349ac61f783baab06dafe850",
+      "size_bytes": 2592
     }
   ]
 }

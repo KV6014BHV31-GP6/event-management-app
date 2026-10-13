@@ -32,6 +32,10 @@ The added shell tests cover HTML/link structure, frozen-source identity and loop
 ## Versioned source commits
 
 - [v1.2.0 module-based runnable mock](mock/v1.2.0/README.md) has been imported as a historical baseline, with `npm test` passing 41/41 locally.
-- The frozen [v1.2.1 evidence](../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html) is unchanged; the separate upgrade commit will provide a versioned runnable location.
+- **Current:** [v1.2.1 verified standalone English demo](mock/v1.2.1/README.md), with exact original source bytes and history retained. Full v1.2.1 engineering ZIP remains unimported.
 
 No real backend connection, production authentication or DB state is implied by these mocks.
+
+## Upgrade: v1.2.0 → v1.2.1
+
+Browse [version history](mock/README.md), run the [v1.2.1 English Mock](mock/v1.2.1/index.html), or test the [v1.2.0 modular baseline](mock/v1.2.0/README.md). Two separate commits keep the progression auditable. These are demos, not a functioning backend or deployable application.
