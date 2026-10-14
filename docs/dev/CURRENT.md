@@ -1,6 +1,6 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.3.1`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). Create Event UI is implemented on `dev_fe_create_event_mvp`, with 44/44 Node unit/component/proxy checks passed. Native UI → HTTP 201 → refreshed/reloaded list acceptance is BLOCKED / NOT_RUN for this new slice (cloud lacks Python 3.14, native PostgreSQL and browser executables). PR #3 is merged into dev at `7a06f43dc30c8378d9f3c569635523b25ce556b0`. The following table retains PR #3 evidence and its original scope. The user authorized promotion into `dev`; the actual merge SHA/state is recorded by [PR #3](https://github.com/KV6014BHV31-GP6/event-management-app/pull/3). No `uat`/`main` promotion or deployment is authorized. Source baselines and ownership are in the task.
+版本：`repo-docs/0.3.2`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). PR #4 quota boundary repaired. Native Create Event UI acceptance: **FAIL**, [current evidence](evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md), tested `06d7cc7ea95ec22e215e7cb7b4ebaac547d9492e` on a GitHub-hosted Windows runner, not the user E: machine. This supersedes only the previous pending PR #4 UI result. PR #3 remains merged at `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its historical evidence below is unchanged. PR #4 is not merged; no uat/main promotion or deployment.
 
 | Area | State | Evidence boundary |
 |---|---|---|

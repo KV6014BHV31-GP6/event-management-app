@@ -60,3 +60,7 @@ python -m http.server 8080 --bind 127.0.0.1
 Open `http://127.0.0.1:8080/frontend/`. This historical static server does not proxy APIs; use port 5173 for the live slice.
 
 The frozen [v1.2.1 source](../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html) retains SHA256 `3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e`. Original v1.2.0 modules/tests remain intact. Historical role selection is not authentication.
+
+### PR #4 acceptance update (38557951101-1)
+
+Quota inputs and payload validation enforce `0..2147483647`, matching the existing database integer fields. Native UI acceptance on GitHub-hosted Windows: **FAIL**. This supersedes the earlier cloud-only pending status for the tested source; it does not claim execution on the user local machine. [Run evidence](../docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md). No merge or deployment.

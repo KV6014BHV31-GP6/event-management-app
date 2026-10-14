@@ -1,0 +1,56 @@
+{
+  "status": "FAIL",
+  "scope": "Real Chrome, HTTP and native PostgreSQL 17; GitHub-hosted Windows, NOT the user E: machine",
+  "run_id": "38557951101-1",
+  "checks": {
+    "A1": {
+      "status": "PASS",
+      "detail": "Anonymous Create Event page has a disabled fieldset and no POST."
+    }
+  },
+  "network": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6",
+      "status": 200
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6"
+    }
+  ],
+  "browser_errors": [],
+  "chrome": "154.0.8037.58",
+  "sandbox_enabled": true,
+  "error": "response.json: Protocol error (Network.getResponseBody): No resource with given identifier found",
+  "error_stack": "response.json: Protocol error (Network.getResponseBody): No resource with given identifier found\n    at D:\\a\\event-management-app\\event-management-app\\tests\\e2e\\create-event-native.mjs:64:46"
+}

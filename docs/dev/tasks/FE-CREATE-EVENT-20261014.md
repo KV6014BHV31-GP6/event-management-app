@@ -39,3 +39,7 @@ Prerequisite: checkout this feature commit, follow backend/frontend README using
 5. Click Refresh events, then browser Reload. Confirm fresh GET responses still contain the same public ID and no further POST. Record results; no DB restart needed. Also confirm Cancel does not POST and logged-out Create Event cannot submit.
 
 Stop after Draft PR delivery. No merge or next feature.
+
+## Authorized repair and native acceptance successor, 38557951101-1
+
+The user authorized resolving review findings and updating this PR, explicitly without merge. Quotas now match native PostgreSQL integer range 0..2147483647; both input max attributes and independent boundary tests are included. Native UI status: **FAIL**, tested `06d7cc7ea95ec22e215e7cb7b4ebaac547d9492e` on GitHub-hosted Windows, not the user local machine. [Evidence](../evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md). Historical NOT_RUN entries describe the earlier run and are retained. No backend/schema/pin changes, alternative engine, full E2E, Security, UAT or deployment.

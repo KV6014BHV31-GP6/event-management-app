@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-14T10:20:41.000630+00:00",
-  "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary",
-  "document_count": 139,
+  "reviewed_at": "2026-10-14T11:39:23.557430+00:00",
+  "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence",
+  "document_count": 146,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -253,7 +253,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 18,
+      "revision": 19,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -345,6 +345,13 @@
           "size_bytes": 4449,
           "superseded_at": "2026-10-14T10:20:41.000630+00:00",
           "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        },
+        {
+          "revision": 18,
+          "sha256": "d480ed346d7b24eecfb17fb4cdca5a6db5c02029ad3aafb6b33af0a93c7e1473",
+          "size_bytes": 4884,
+          "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
         }
       ],
       "import_lineage": {
@@ -357,8 +364,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "d480ed346d7b24eecfb17fb4cdca5a6db5c02029ad3aafb6b33af0a93c7e1473",
-      "size_bytes": 4884
+      "sha256": "8b90e7ec4e73b32fab4b4acf61c1921ca10efd01719946f3139bef41a2f66f7c",
+      "size_bytes": 4701
     },
     {
       "document_id": "DOC-11",
@@ -1121,7 +1128,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 6,
+      "revision": 7,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1159,13 +1166,20 @@
           "size_bytes": 3595,
           "superseded_at": "2026-10-14T10:20:41.000630+00:00",
           "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        },
+        {
+          "revision": 6,
+          "sha256": "8a468b37414273ae9d9e9929ce4bdc818ed59cf50883e9ee526e7af39422dce8",
+          "size_bytes": 4468,
+          "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8a468b37414273ae9d9e9929ce4bdc818ed59cf50883e9ee526e7af39422dce8",
-      "size_bytes": 4468
+      "sha256": "33d861bce13c1f60ba0a0fa2478ad27863dd69c0a1464446c3759b1e6990895b",
+      "size_bytes": 4929
     },
     {
       "document_id": "DOC-25",
@@ -2456,28 +2470,44 @@
     {
       "document_id": "FE-CREATE-EVENT-20261014-001",
       "path": "frontend/live/create-event.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c5f190c16be8b732308e24288f4a78b9934ae0252a056f38723d84e4c2bddb17",
+          "size_bytes": 3271,
+          "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "c5f190c16be8b732308e24288f4a78b9934ae0252a056f38723d84e4c2bddb17",
-      "size_bytes": 3271
+      "sha256": "daa84729bc0918189a8d04cfe51008bc9da758775554ca88f2acc5558905ef5d",
+      "size_bytes": 3305
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-002",
       "path": "frontend/live/create-event.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "22366f7aaa3a0bccf61db13215a157596379b612a3f69d475a7f7446498bfd48",
+          "size_bytes": 4885,
+          "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "22366f7aaa3a0bccf61db13215a157596379b612a3f69d475a7f7446498bfd48",
-      "size_bytes": 4885
+      "sha256": "3abb1710c927f8d5276d99a8a3862fa50167ac43d2d0901de82ad13559a02254",
+      "size_bytes": 4927
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-003",
@@ -2495,15 +2525,107 @@
     {
       "document_id": "FE-CREATE-EVENT-20261014-004",
       "path": "docs/dev/tasks/FE-CREATE-EVENT-20261014.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "44c5d0559133951f9b670fcbc3fba87067da03d7175219eec2e1445c4c7dae62",
+          "size_bytes": 5085,
+          "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "44c5d0559133951f9b670fcbc3fba87067da03d7175219eec2e1445c4c7dae62",
-      "size_bytes": 5085
+      "sha256": "743568d6fc8ebcbcb55ee86dfb55fed89846463f4f5c1081ce80cbdafbe858f7",
+      "size_bytes": 5757
+    },
+    {
+      "document_id": "PR4-968173EA4BEA32F1",
+      "path": ".github/workflows/pr4-native.yml",
+      "title": "pr4-native.yml",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "be5c619d778b3252a8120afcdd5c837e2e5682b892b5bc1a43ea1803c0a5225c",
+      "size_bytes": 1406,
+      "dependencies": [],
+      "approval_record": null
+    },
+    {
+      "document_id": "PR4-18DC8C08858C6C40",
+      "path": "scripts/pr4_native_acceptance.py",
+      "title": "pr4_native_acceptance.py",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "d3c159108f673d4b07c9745a99b7f8e4115d21c55bdc79d4b1a8146d9e827016",
+      "size_bytes": 20376,
+      "dependencies": [],
+      "approval_record": null
+    },
+    {
+      "document_id": "PR4-ED6BB4F06397139A",
+      "path": "tests/e2e/create-event-native.mjs",
+      "title": "create-event-native.mjs",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "a4b7dd111801132b7c03d58ac184f57a1eb265196677408a0c92489d332cfa15",
+      "size_bytes": 11833,
+      "dependencies": [],
+      "approval_record": null
+    },
+    {
+      "document_id": "PR4-E2CCAB8823B7789B",
+      "path": "frontend/live/tests/quota-boundary.test.mjs",
+      "title": "quota-boundary.test.mjs",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "9fd86c6f3f12283104d40334880b44497f63f32d3e98faa72a1d4d0dda6bb023",
+      "size_bytes": 1802,
+      "dependencies": [],
+      "approval_record": null
+    },
+    {
+      "document_id": "PR4-FBCF546ACFBD00A8",
+      "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/browser-result.json",
+      "title": "browser-result.json",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "ccf6ef9066e092144140694f49a6eb3702c59f1d80f752b1bce24af49397b8e5",
+      "size_bytes": 1423,
+      "dependencies": [],
+      "approval_record": null
+    },
+    {
+      "document_id": "PR4-54A287304A279FB3",
+      "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/execution-result.json",
+      "title": "execution-result.json",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "256c657cb2f1f883bffb9e96b660a5ff6903559dfc8fcc064ad259dd59ef6207",
+      "size_bytes": 8656,
+      "dependencies": [],
+      "approval_record": null
+    },
+    {
+      "document_id": "PR4-05F7C286E05E0B7B",
+      "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md",
+      "title": "README.md",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 1,
+      "sha256": "38f40a1675b005b1cf60659804ee41f5cfefb23749880c7e12ce59b64e702faa",
+      "size_bytes": 1377,
+      "dependencies": [],
+      "approval_record": null
     }
   ]
 }
