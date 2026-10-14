@@ -1,6 +1,6 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.3.2`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). PR #4 quota boundary repaired. Native Create Event UI acceptance: **FAIL**, [current evidence](evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md), tested `06d7cc7ea95ec22e215e7cb7b4ebaac547d9492e` on a GitHub-hosted Windows runner, not the user E: machine. This supersedes only the previous pending PR #4 UI result. PR #3 remains merged at `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its historical evidence below is unchanged. PR #4 is not merged; no uat/main promotion or deployment.
+版本：`repo-docs/0.3.2`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). PR #4 quota boundary repaired. Native Create Event UI acceptance: **PASS**, [current evidence](evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md), tested `0a29fde4ef8b1b76d2ba105d03ef9362ac9a8d90` on a GitHub-hosted Windows runner, not the user E: machine. This supersedes only the previous pending PR #4 UI result. PR #3 remains merged at `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its historical evidence below is unchanged. PR #4 is not merged; no uat/main promotion or deployment.
 
 | Area | State | Evidence boundary |
 |---|---|---|
