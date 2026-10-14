@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-13T16:52:43.154181+00:00",
-  "reason": "Record final 34 Node, 23 repository, 2 backend, 8 HTTP and 22 browser checks with native PostgreSQL gate retained",
+  "reviewed_at": "2026-10-14T09:55:11.230816+00:00",
+  "reason": "Label original cloud/task evidence historical alongside native acceptance successor",
   "document_count": 135,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -253,7 +253,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 16,
+      "revision": 17,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -331,6 +331,13 @@
           "size_bytes": 3125,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 16,
+          "sha256": "9710f8a2d9a4bdb2c341e36c9e07d8c21e2fbf0845bf5fedc8da17cec18f027b",
+          "size_bytes": 3284,
+          "superseded_at": "2026-10-14T09:54:48.765266+00:00",
+          "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
         }
       ],
       "import_lineage": {
@@ -339,10 +346,12 @@
         "source_size_bytes": 2045
       },
       "dependencies": [
-        "USER-PR-SCOPE"
+        "USER-PR-SCOPE",
+        "USER-NATIVE-ACCEPTANCE-20261014",
+        "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "9710f8a2d9a4bdb2c341e36c9e07d8c21e2fbf0845bf5fedc8da17cec18f027b",
-      "size_bytes": 3284
+      "sha256": "b7981ead7319595666afc8c82e8bfbb004b2b4bf082aaa98bdde3c95563253f4",
+      "size_bytes": 4449
     },
     {
       "document_id": "DOC-11",
@@ -821,7 +830,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 8,
+      "revision": 9,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -850,6 +859,13 @@
           "size_bytes": 8011,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 8,
+          "sha256": "d7ce86ee2440e45cf2d488200bb90ab4cbb747ac9dd9bd173d84fb17237057b6",
+          "size_bytes": 8795,
+          "superseded_at": "2026-10-14T09:54:48.765266+00:00",
+          "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
         }
       ],
       "import_lineage": {
@@ -860,8 +876,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d7ce86ee2440e45cf2d488200bb90ab4cbb747ac9dd9bd173d84fb17237057b6",
-      "size_bytes": 8795
+      "sha256": "cbd2461b25e089c91ede199b2080036e52cbbfc68101be3a9e77a438f6f0edab",
+      "size_bytes": 9903
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -2135,7 +2151,7 @@
     {
       "document_id": "FE-LIVE-20261014-042",
       "path": "docs/dev/tasks/FE-LIVE-20261014.md",
-      "revision": 2,
+      "revision": 4,
       "owner": "Benjamin Dev integration evidence",
       "status": "working-baseline",
       "revision_history": [
@@ -2145,13 +2161,29 @@
           "size_bytes": 3977,
           "superseded_at": "2026-10-13T16:52:43.154181+00:00",
           "reason": "Record final 34 Node, 23 repository, 2 backend, 8 HTTP and 22 browser checks with native PostgreSQL gate retained"
+        },
+        {
+          "revision": 2,
+          "sha256": "5d06ccf20b4fbb9508d837448df9aa751e23709622693ad959fc00d72890eec5",
+          "size_bytes": 4346,
+          "superseded_at": "2026-10-14T09:54:48.765266+00:00",
+          "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
+        },
+        {
+          "revision": 3,
+          "sha256": "62dc7b74ce9b0f723397dc0744a1416abb472a53234bf34700323040164de792",
+          "size_bytes": 8557,
+          "superseded_at": "2026-10-14T09:55:11.230816+00:00",
+          "reason": "Label original cloud/task evidence historical alongside native acceptance successor"
         }
       ],
       "dependencies": [
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-NATIVE-ACCEPTANCE-20261014",
+        "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "5d06ccf20b4fbb9508d837448df9aa751e23709622693ad959fc00d72890eec5",
-      "size_bytes": 4346
+      "sha256": "f857129293b946a5e47a6af2950680eb0797632597e53ced3345bbdb7f820e1d",
+      "size_bytes": 8643
     },
     {
       "document_id": "FE-LIVE-20261014-043",
