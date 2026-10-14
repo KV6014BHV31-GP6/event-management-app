@@ -22,7 +22,7 @@ export function eventPayload(values) {
   const end = localDate(values.end_time);
   if (end <= start) invalid('End date and time must be later than start date and time.');
   function quota(value) {
-    if (!/^\d+$/.test(String(value)) || !Number.isSafeInteger(Number(value))) invalid('Quotas must be non-negative whole numbers.');
+    if (!/^\d+$/.test(String(value)) || !Number.isSafeInteger(Number(value)) || Number(value) > 2147483647) invalid('Quotas must be whole numbers between 0 and 2147483647.');
     return Number(value);
   }
   return { title, overview: String(values.overview ?? '').trim() || null, location,

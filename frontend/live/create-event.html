@@ -30,8 +30,8 @@
           <div class="field"><label for="location">Location</label><input id="location" name="location" type="text" required maxlength="255"></div>
           <div class="field"><label for="start_time">Start date and time</label><input id="start_time" name="start_time" type="datetime-local" required aria-describedby="create-timezone"></div>
           <div class="field"><label for="end_time">End date and time</label><input id="end_time" name="end_time" type="datetime-local" required aria-describedby="create-timezone"></div>
-          <div class="field"><label for="online_quota">Online quota</label><input id="online_quota" name="online_quota" type="number" required min="0" step="1" value="0"></div>
-          <div class="field"><label for="offline_quota">Offline quota</label><input id="offline_quota" name="offline_quota" type="number" required min="0" step="1" value="0"></div>
+          <div class="field"><label for="online_quota">Online quota</label><input id="online_quota" name="online_quota" type="number" required min="0" max="2147483647" step="1" value="0"></div>
+          <div class="field"><label for="offline_quota">Offline quota</label><input id="offline_quota" name="offline_quota" type="number" required min="0" max="2147483647" step="1" value="0"></div>
           <button class="button" type="submit">Create event</button>
         </fieldset>
         <a class="back-link" href="./index.html">Cancel</a>

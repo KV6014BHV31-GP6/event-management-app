@@ -1,0 +1,42 @@
+name: PR4 native Create Event acceptance
+on:
+  push:
+    branches: [dev_fe_create_event_mvp]
+    paths:
+      - '.github/workflows/pr4-native.yml'
+      - 'frontend/**'
+      - 'scripts/pr4_native_acceptance.py'
+      - 'tests/e2e/create-event-native.mjs'
+permissions:
+  contents: write
+concurrency:
+  group: pr4-native-acceptance
+  cancel-in-progress: false
+jobs:
+  native:
+    if: github.repository == 'KV6014BHV31-GP6/event-management-app'
+    runs-on: windows-2025
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.14'
+      - name: Native acceptance, isolated synthetic data only
+        run: python scripts/pr4_native_acceptance.py
+      - name: Save reviewed-scope evidence and document fingerprints to PR branch
+        if: always()
+        run: python scripts/pr4_native_acceptance.py --publish
+      - name: Upload redacted evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pr4-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/nu-pr4-evidence
+          if-no-files-found: error
+          retention-days: 14
