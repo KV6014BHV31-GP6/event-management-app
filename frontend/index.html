@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>ROSE-Pulse | Frontend shell</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; color: #183d36; background: #f4f7f5; }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: clamp(1rem, 5vw, 3rem); }
+    main { max-width: 48rem; margin: 0 auto; padding: clamp(1.25rem, 4vw, 2.75rem); background: white; border: 1px solid #d6e2dc; border-radius: 1rem; }
+    .label { font-size: .875rem; font-weight: 700; letter-spacing: .05em; }
+    h1 { font-size: clamp(1.75rem, 6vw, 2.75rem); line-height: 1.15; }
+    p, li { line-height: 1.65; }
+    nav { display: flex; flex-wrap: wrap; gap: .75rem; margin: 1.5rem 0; }
+    a { color: #145649; overflow-wrap: anywhere; }
+    nav a { display: inline-block; padding: .8rem 1rem; border: 2px solid #145649; border-radius: .5rem; font-weight: 650; }
+    nav a:first-child { background: #145649; color: white; }
+    a:focus-visible { outline: 3px solid #a54700; outline-offset: 4px; }
+    aside { padding: 1rem; border-left: 4px solid #a54700; background: #fff6e9; }
+    footer { margin-top: 2rem; font-size: .875rem; }
+  </style>
+</head>
+<body>
+  <main>
+    <p class="label">ROSE-PULSE / DEVELOPER PREVIEW</p>
+    <h1>Frontend shell</h1>
+    <p>Open the existing four-role community event demo. This page is a small navigation entry, not a new application or an API integration.</p>
+    <aside aria-label="Demo scope">
+      <strong>Synthetic Mock only.</strong> No live backend, verified authentication, real booking or SMS is connected. The linked demonstration remains the original frozen evidence file.
+    </aside>
+    <nav aria-label="Preview and documentation">
+      <a id="open-live" href="live/index.html">Open live events and login</a>
+      <a id="open-demo" href="../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html">Open current v1.2.1 demo</a>
+      <a href="mock/v1.2.1/index.html">v1.2.1 versioned source</a>
+      <a href="mock/v1.2.0/index.html">v1.2.0 modular baseline</a>
+      <a href="README.md">Run and handoff guide</a>
+    </nav>
+    <h2>Workflow</h2>
+    <p>Participant, Community Leader, Coordinator and Field Staff screens are demonstration scenarios. A production booking must wait for an authorized server response.</p>
+    <p>Development flow: <code>feature → dev → uat → main</code>. This shell stays on <code>dev_fe_shell</code> for review.</p>
+    <footer>Source and integration limits: <a href="../docs/api/HANDOFF_CHECKLIST.md">API handoff checklist</a>.</footer>
+  </main>
+</body>
+</html>

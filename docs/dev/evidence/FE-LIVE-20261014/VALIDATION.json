@@ -1,0 +1,72 @@
+{
+  "native_postgresql17": "NOT_RUN: root-only sandbox",
+  "python": "3.14.8",
+  "database": "PGlite 0.5.9 / PostgreSQL18.6 WASM, socket0.2.12",
+  "test_transport": "Single connection, UUID prepared names and disabled caches in scratch wrapper; imported backend unchanged.",
+  "api_smoke": {
+    "status": "PASS",
+    "checked_at": "2026-10-13T16:48:56.262690+00:00",
+    "checks": [
+      "public_event_list_and_pagination_contract",
+      "protected_endpoints_require_bearer_token",
+      "incorrect_password_rejected",
+      "json_login_and_authenticated_profile",
+      "invalid_token_rejected",
+      "invalid_event_timestamps_rejected",
+      "create_readback_and_distinct_second_page",
+      "invalid_pagination_rejected"
+    ],
+    "created_public_id": "IOo--BoSjoZyIGUCox9PO",
+    "data_scope": "synthetic development records",
+    "runtime_scope": "Record Python and database engine separately; this test does not certify native PostgreSQL."
+  },
+  "api_and_database_restart_readback": {
+    "status": "PASS",
+    "public_id": "IOo--BoSjoZyIGUCox9PO",
+    "engine": "PGlite18.6 alternative, not nativePG17"
+  },
+  "status": "PASS_WITH_NATIVE_DATABASE_GATE_NOT_RUN",
+  "backend_pytest": {
+    "status": "PASS",
+    "passed": 2,
+    "initial_failures": "2 stale assertions (integer ID and old duplicate message), corrected to current contract",
+    "warnings": "4 existing Pydantic class Config deprecations"
+  },
+  "bootstrap": {
+    "schema_and_seed_writes": "PASS on PGlite alternative",
+    "repeat_runs": "existing account and events preserved, zero extra seed rows",
+    "clean_exit": "BLOCKED by PGlite socket disconnect timeout, test processes terminated after writes",
+    "native_postgresql17": "NOT_RUN"
+  },
+  "source": {
+    "repo": "KV6014BHV31-GP6/event-management-app",
+    "frontend_base": "3e9aa8f15f18dd52a142fb3bd1ebe1efaa497ab9",
+    "backend_base": "79804aa67508de23d3f3c613e65cf375e9ded2a3",
+    "shared_base": "cabb6a6a2cfede5ceacec47620eb1fa95c4da3a1",
+    "feature": "dev_fe_events_login"
+  },
+  "dependency_pins": "73 imported pins installed unchanged on Python3.14.8",
+  "frontend_node_tests": {
+    "status": "PASS",
+    "count": 30
+  },
+  "proxy_node_tests": {
+    "status": "PASS",
+    "count": 4
+  },
+  "backend_source_and_requirements_unchanged": true,
+  "historical_frontend_and_capture_unchanged": true,
+  "repository_checks": {
+    "document_control": "PASS:135 controlled files,135 relative links",
+    "document_and_historical_regression_tests": {
+      "status": "PASS",
+      "count": 23
+    },
+    "new_change_whitespace": "PASS with CRLF-aware git check",
+    "preserved_backend_whitespace": "Two inherited trailing-space warnings in src/auth/deps.py and tests/conftest.py; bytes intentionally preserved"
+  },
+  "independent_review": {
+    "status": "PASS after fixing wrong-password test construction for the bcrypt72-byte limit",
+    "business_source_unchanged": true
+  }
+}

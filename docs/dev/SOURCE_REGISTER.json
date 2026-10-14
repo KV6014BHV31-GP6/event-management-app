@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 20,
+  "source_count": 24,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -206,6 +206,51 @@
         "change_visibility",
         "send_messages"
       ]
+    },
+    {
+      "source_id": "USER-FE-LIVE-20261014",
+      "title": "User-approved event index and Login implementation plan",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "content_status": "implementation_and_reviewable_PR_authorized_not_remote_merge",
+      "locator": "Current conversation, 2026-10-14 Hong Kong; private screenshots not published"
+    },
+    {
+      "source_id": "BACKEND-CODE-20261013",
+      "title": "Austin users/events FastAPI source",
+      "classification": "observed_source_code",
+      "raw_in_repository": true,
+      "content_status": "source_verified_runtime_scope_separate",
+      "locator": "https://github.com/KV6014BHV31-GP6/event-management-app/commit/79804aa67508de23d3f3c613e65cf375e9ded2a3"
+    },
+    {
+      "source_id": "USER-NATIVE-ACCEPTANCE-20261014",
+      "title": "Supplied native Windows environment and A/B acceptance reports",
+      "classification": "user_supplied_test_evidence",
+      "raw_in_repository": false,
+      "content_status": "reported_pass_for_environment_and_A_B_only_hashes_checked_raw_logs_not_reviewed",
+      "locator": "FE-LIVE-20261014 task source hashes and PR #3 acceptance sections; run 20261014-152157"
+    },
+    {
+      "source_id": "USER-PR3-MERGE-20261014",
+      "title": "User instruction to review PR #3 and merge to dev if no blocking findings",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "permissions": [
+        "review_PR3",
+        "correct_review_documentation",
+        "mark_ready",
+        "merge_PR3_into_dev"
+      ],
+      "not_authorized": [
+        "deploy",
+        "promote_uat",
+        "promote_main",
+        "change_protections",
+        "force_push",
+        "delete_branches"
+      ],
+      "locator": "Current conversation, 2026-10-14 Hong Kong; private screenshot not published"
     }
   ]
 }

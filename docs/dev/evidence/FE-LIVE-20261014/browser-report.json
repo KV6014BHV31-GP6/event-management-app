@@ -1,0 +1,117 @@
+{
+  "evidenceScope": "REAL_FASTAPI_WITH_PGLITE18_6_TEST_TRANSPORT",
+  "mainFlowInterception": false,
+  "checks": [
+    {
+      "name": "Public events render from server without login",
+      "status": "PASS"
+    },
+    {
+      "name": "Events desktop 1440: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "Smallest page-size selection and Next request/render page 2",
+      "status": "PASS"
+    },
+    {
+      "name": "Events mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "Login mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "Login desktop 1440: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "Wrong password shows a safe error and stores no session",
+      "status": "PASS"
+    },
+    {
+      "name": "Successful login verifies server profile and displays identity",
+      "status": "PASS"
+    },
+    {
+      "name": "Refresh re-verifies the same identity through /users/me",
+      "status": "PASS"
+    },
+    {
+      "name": "Logout clears the session and survives refresh",
+      "status": "PASS"
+    },
+    {
+      "name": "Browser Back after logout does not restore signed-in UI",
+      "status": "PASS"
+    },
+    {
+      "name": "Controlled empty mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "SYNTHETIC_INTERCEPTION: empty",
+      "status": "PASS"
+    },
+    {
+      "name": "Controlled network mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "SYNTHETIC_INTERCEPTION: network",
+      "status": "PASS"
+    },
+    {
+      "name": "Controlled backend-502 mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "SYNTHETIC_INTERCEPTION: backend-502",
+      "status": "PASS"
+    },
+    {
+      "name": "Controlled invalid-contract mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "SYNTHETIC_INTERCEPTION: invalid-contract",
+      "status": "PASS"
+    },
+    {
+      "name": "Controlled xss mobile 390: no horizontal overflow",
+      "status": "PASS"
+    },
+    {
+      "name": "SYNTHETIC_INTERCEPTION: xss",
+      "status": "PASS"
+    },
+    {
+      "name": "No unexpected browser console or page errors (expected HTTP failures recorded separately)",
+      "status": "PASS"
+    }
+  ],
+  "screenshots": [
+    "events-desktop-1440.png",
+    "events-mobile-390.png",
+    "login-mobile-390.png",
+    "login-desktop-1440.png"
+  ],
+  "expectedResourceErrors": [
+    {
+      "path": "/api/v1/auth/login",
+      "controlled": false
+    },
+    {
+      "path": "/api/v1/events",
+      "controlled": true
+    },
+    {
+      "path": "/api/v1/events",
+      "controlled": true
+    }
+  ],
+  "unexpectedConsoleErrors": [],
+  "browserVersion": "153.0.8010.0",
+  "status": "PASS"
+}

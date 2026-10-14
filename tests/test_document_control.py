@@ -10,7 +10,7 @@ import unittest
 
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT/'scripts'))
-from check_dev_control import REGISTER, validate
+from check_dev_control import REGISTER, validate, text_chunks
 
 class DocumentControlTests(unittest.TestCase):
     def setUp(self):
@@ -51,6 +51,10 @@ class DocumentControlTests(unittest.TestCase):
     def test_private_env_is_rejected(self):
         (self.root/'.env').write_text('LOCAL_VALUE=synthetic')
         self.assertIn('private_env_file:',self.errors())
+    def test_utf16_requirements_remain_scanned(self):
+        path = self.root/'synthetic-requirements.txt'
+        path.write_text('fastapi==0.142.4\n', encoding='utf-16')
+        self.assertEqual(text_chunks(path), ['fastapi==0.142.4\n'])
     def test_refresh_preserves_id_owner_status(self):
         r=self.register();before=next(x for x in r['documents'] if x['path']=='README.md')
         with (self.root/'README.md').open('a',encoding='utf-8') as f: f.write('\nReviewed wording update.\n')
