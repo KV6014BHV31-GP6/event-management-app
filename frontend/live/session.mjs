@@ -23,6 +23,19 @@ export function createSession({ api, storage = null }) {
     get hasToken() { return Boolean(token); },
     get persistent() { return persistent; },
     logout: clear,
+    async createEvent(payload) {
+      if (!token || !user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);
+      const current = revision;
+      try {
+        const event = await api.createEvent(payload, token);
+        if (current !== revision) throw new ApiError('aborted', 'Session changed. Check Events before creating again.');
+        return event;
+      } catch (error) {
+        if (current !== revision) throw new ApiError('aborted', 'Session changed. Check Events before creating again.');
+        if (error.status === 401) clear();
+        throw error;
+      }
+    },
     async restore() {
       if (!token) return null;
       const current = ++revision;

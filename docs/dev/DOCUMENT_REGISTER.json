@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-14T09:55:11.230816+00:00",
-  "reason": "Label original cloud/task evidence historical alongside native acceptance successor",
-  "document_count": 135,
+  "reviewed_at": "2026-10-14T10:20:41.000630+00:00",
+  "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary",
+  "document_count": 139,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -253,7 +253,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 17,
+      "revision": 18,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -338,6 +338,13 @@
           "size_bytes": 3284,
           "superseded_at": "2026-10-14T09:54:48.765266+00:00",
           "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
+        },
+        {
+          "revision": 17,
+          "sha256": "b7981ead7319595666afc8c82e8bfbb004b2b4bf082aaa98bdde3c95563253f4",
+          "size_bytes": 4449,
+          "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+          "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
         }
       ],
       "import_lineage": {
@@ -350,8 +357,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "b7981ead7319595666afc8c82e8bfbb004b2b4bf082aaa98bdde3c95563253f4",
-      "size_bytes": 4449
+      "sha256": "d480ed346d7b24eecfb17fb4cdca5a6db5c02029ad3aafb6b33af0a93c7e1473",
+      "size_bytes": 4884
     },
     {
       "document_id": "DOC-11",
@@ -1114,7 +1121,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1145,13 +1152,20 @@
           "size_bytes": 2723,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 5,
+          "sha256": "7fc09794e707cafc957a1cb9e1c24650530dfeeeb648c6ecd69c7d4d5fc2bac8",
+          "size_bytes": 3595,
+          "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+          "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "7fc09794e707cafc957a1cb9e1c24650530dfeeeb648c6ecd69c7d4d5fc2bac8",
-      "size_bytes": 3595
+      "sha256": "8a468b37414273ae9d9e9929ce4bdc818ed59cf50883e9ee526e7af39422dce8",
+      "size_bytes": 4468
     },
     {
       "document_id": "DOC-25",
@@ -2216,16 +2230,24 @@
     {
       "document_id": "FE-LIVE-20261014-045",
       "path": "frontend/live/api.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3ad3b58deb16cc7d66545afc215551482005cbb53d82dc2ecf5d48babc56418c",
+          "size_bytes": 5101,
+          "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+          "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "3ad3b58deb16cc7d66545afc215551482005cbb53d82dc2ecf5d48babc56418c",
-      "size_bytes": 5101
+      "sha256": "aebe989dd72b71a42d4ff31561f18d8b27992600a82e13717700f3b69528556b",
+      "size_bytes": 6251
     },
     {
       "document_id": "FE-LIVE-20261014-046",
@@ -2300,30 +2322,46 @@
     {
       "document_id": "FE-LIVE-20261014-051",
       "path": "frontend/live/session.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "83dd172eecc21bf766c89272c9e99e41ff3656392faf08a1255f6cc41bd3b9dc",
+          "size_bytes": 1860,
+          "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+          "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "83dd172eecc21bf766c89272c9e99e41ff3656392faf08a1255f6cc41bd3b9dc",
-      "size_bytes": 1860
+      "sha256": "bc3a8f4c2687e69476b21abd672ddef9b5f11ac8b627dd51d69526be5771615c",
+      "size_bytes": 2481
     },
     {
       "document_id": "FE-LIVE-20261014-052",
       "path": "frontend/live/styles.css",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "62080c01128f3c4eeb2c1fcce07d4f1cd8304663a03c7c5974945491afd9ff6d",
+          "size_bytes": 12954,
+          "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+          "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "62080c01128f3c4eeb2c1fcce07d4f1cd8304663a03c7c5974945491afd9ff6d",
-      "size_bytes": 12954
+      "sha256": "ce1039b3966134ca3d43f3b7ce5adc23833a253db57ac08a97a62f7f679b1f8b",
+      "size_bytes": 13604
     },
     {
       "document_id": "FE-LIVE-20261014-053",
@@ -2370,16 +2408,24 @@
     {
       "document_id": "FE-LIVE-20261014-056",
       "path": "frontend/live/ui.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "812d7dcbde474b027493aafcf58ad2ff090555fd26024b682721a876d68a9883",
+          "size_bytes": 2692,
+          "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+          "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "812d7dcbde474b027493aafcf58ad2ff090555fd26024b682721a876d68a9883",
-      "size_bytes": 2692
+      "sha256": "6505f02e6049313f1e8c7fc8b65e2dd7c9f452bbf6a7339c3eeb5d77435131da",
+      "size_bytes": 2806
     },
     {
       "document_id": "FE-LIVE-20261014-057",
@@ -2406,6 +2452,58 @@
       ],
       "sha256": "9164b9b7094651690f2cd1974072ed039b71a0d1a91fb75da85a51dc4a53886c",
       "size_bytes": 14401
+    },
+    {
+      "document_id": "FE-CREATE-EVENT-20261014-001",
+      "path": "frontend/live/create-event.html",
+      "revision": 1,
+      "owner": "Benjamin frontend / root Codex writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "c5f190c16be8b732308e24288f4a78b9934ae0252a056f38723d84e4c2bddb17",
+      "size_bytes": 3271
+    },
+    {
+      "document_id": "FE-CREATE-EVENT-20261014-002",
+      "path": "frontend/live/create-event.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend / root Codex writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "22366f7aaa3a0bccf61db13215a157596379b612a3f69d475a7f7446498bfd48",
+      "size_bytes": 4885
+    },
+    {
+      "document_id": "FE-CREATE-EVENT-20261014-003",
+      "path": "frontend/live/tests/create-event.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend / root Codex writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "c42721e56cf0099e6161e6232f205e08cdeee898085f81e8c89ef79cdcf8eed2",
+      "size_bytes": 11237
+    },
+    {
+      "document_id": "FE-CREATE-EVENT-20261014-004",
+      "path": "docs/dev/tasks/FE-CREATE-EVENT-20261014.md",
+      "revision": 1,
+      "owner": "Benjamin frontend / root Codex writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "BACKEND-CODE-20261013"
+      ],
+      "sha256": "44c5d0559133951f9b670fcbc3fba87067da03d7175219eec2e1445c4c7dae62",
+      "size_bytes": 5085
     }
   ]
 }

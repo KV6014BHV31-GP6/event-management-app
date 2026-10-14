@@ -1,6 +1,6 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.3.1`，2026-10-14（香港）。Active task: [FE-LIVE-20261014](tasks/FE-LIVE-20261014.md). This file describes the reviewed PR #3 integration slice. The user authorized promotion into `dev`; the actual merge SHA/state is recorded by [PR #3](https://github.com/KV6014BHV31-GP6/event-management-app/pull/3). No `uat`/`main` promotion or deployment is authorized. Source baselines and ownership are in the task.
+版本：`repo-docs/0.3.1`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). Create Event UI is implemented on `dev_fe_create_event_mvp`, with 44/44 Node unit/component/proxy checks passed. Native UI → HTTP 201 → refreshed/reloaded list acceptance is BLOCKED / NOT_RUN for this new slice (cloud lacks Python 3.14, native PostgreSQL and browser executables). PR #3 is merged into dev at `7a06f43dc30c8378d9f3c569635523b25ce556b0`. The following table retains PR #3 evidence and its original scope. The user authorized promotion into `dev`; the actual merge SHA/state is recorded by [PR #3](https://github.com/KV6014BHV31-GP6/event-management-app/pull/3). No `uat`/`main` promotion or deployment is authorized. Source baselines and ownership are in the task.
 
 | Area | State | Evidence boundary |
 |---|---|---|
@@ -24,6 +24,6 @@ Detailed [validation receipt](evidence/FE-LIVE-20261014/VALIDATION.json), [brows
 
 1. Complete the remaining full native E2E, Security and team UAT scope separately. Native A/B checks are already reported passed; do not reset them to NOT_RUN.
 2. Follow up the existing local Ctrl+C stopper compatibility and backend organizer/signup authorization policy before broader privileged workflows.
-3. Proceed through reviewed `dev → uat → main` promotion only when separately authorized. Create Event UI and the broader guest-booking/dashboard scope remain later tasks.
+3. Proceed through reviewed `dev → uat → main` promotion only when separately authorized. Run the new Create Event five-step native demo before accepting that UI; the broader guest-booking/dashboard scope remains later work.
 
 The former static-shell and initial implementation stop points are historical. On 2026-10-14 the user explicitly authorized review and merge of PR #3 into `dev`. This does not approve production deployment or broaden the feature scope. The task records the source hashes, review checks and evidence limits; original cloud evidence remains unchanged.

@@ -29,7 +29,7 @@ export function validateEventPage(value, page, pageSize) {
 }
 
 export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = {}) {
-  async function request(path, { method = 'GET', body, token, signal } = {}) {
+  async function request(path, { method = 'GET', body, token, signal, expectedStatus } = {}) {
     const controller = new AbortController();
     let timedOut = false;
     const cancel = () => controller.abort();
@@ -51,6 +51,7 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
         if (response.status === 429) throw new ApiError('rate_limit', 'Too many requests. Please wait a moment and try again.', 429);
         throw new ApiError('server', 'The service is temporarily unavailable. Please try again.', response.status);
       }
+      if (expectedStatus !== undefined && response.status !== expectedStatus) throw contractError();
       try { return await response.json(); }
       catch (error) {
         if (controller.signal.aborted) throw error;
@@ -85,6 +86,21 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
       if (!data || !nonemptyString(data.access_token) || /\s/.test(data.access_token)
         || typeof data.token_type !== 'string' || data.token_type.toLowerCase() !== 'bearer') throw contractError();
       return data.access_token;
+    },
+    async createEvent(payload, token) {
+      if (!nonemptyString(token)) throw new ApiError('unauthorized', 'Please log in to continue.', 401);
+      const { title, overview, location, start_time, end_time, online_quota, offline_quota } = payload;
+      const data = await request('/events', {
+        method: 'POST', token, expectedStatus: 201,
+        body: { title, overview, location, start_time, end_time, online_quota, offline_quota },
+      });
+      validateEventPage({ data: [data], total_count: 1, total_pages: 1, page: 1, page_size: 1 }, 1, 1);
+      if (!Number.isSafeInteger(data.id) || data.id < 1 || data.public_id.length !== 21
+        || !nonemptyString(data.title) || !nonemptyString(data.location) || !nonemptyString(data.organizer_id)
+        || !nonnegativeInteger(data.online_quota) || !nonnegativeInteger(data.offline_quota)
+        || !validDate(data.created_at) || !validDate(data.updated_at)
+        || new Date(data.end_time) <= new Date(data.start_time)) throw contractError();
+      return data;
     },
     async getMe(token, { signal } = {}) {
       if (!nonemptyString(token)) throw new ApiError('unauthorized', 'Please log in to continue.', 401);
