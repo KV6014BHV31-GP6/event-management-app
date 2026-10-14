@@ -41,7 +41,7 @@ def redact(value: str) -> str:
 def run(args, name, cwd=ROOT, env=None, timeout=300):
     result = subprocess.run([str(x) for x in args], cwd=cwd, env=env, capture_output=True,
                             text=True, encoding='utf-8', errors='replace', timeout=timeout)
-    (OUT / (name + '.txt')).write_text(redact(result.stdout + result.stderr), encoding='utf-8')
+    (OUT / (name + '.txt')).write_text(redact(result.stdout + result.stderr), encoding='utf-8', newline='\n')
     print(f'{name}: exit {result.returncode}', flush=True)
     if result.returncode:
         raise RuntimeError(f'{name} failed with exit {result.returncode}; see redacted {name}.txt')
@@ -49,7 +49,7 @@ def run(args, name, cwd=ROOT, env=None, timeout=300):
 
 
 def git(*args):
-    return subprocess.check_output(['git', *args], cwd=ROOT, text=True, encoding='utf-8').strip()
+    return subprocess.check_output(['git', *args], cwd=ROOT, text=True, encoding='utf-8').rstrip('\r\n')
 
 
 def guard():
@@ -131,7 +131,7 @@ def execute():
         db_password, seed_password, jwt_secret = (secrets.token_hex(24) for _ in range(3))
         SECRET_VALUES.extend([db_password, seed_password, jwt_secret])
         sql = WORK / 'create-database.sql'
-        sql.write_text(f"CREATE ROLE {database} LOGIN PASSWORD '{db_password}' NOSUPERUSER NOCREATEDB NOCREATEROLE;\nCREATE DATABASE {database} OWNER {database};\n", encoding='utf-8')
+        sql.write_text(f"CREATE ROLE {database} LOGIN PASSWORD '{db_password}' NOSUPERUSER NOCREATEDB NOCREATEROLE;\nCREATE DATABASE {database} OWNER {database};\n", encoding='utf-8', newline='\n')
         run([*pg, '-f', sql], 'database-create', env=pg_env)
         sql.unlink()
         env.update(DATABASE_URL=f'postgresql://{database}:{db_password}@127.0.0.1:5432/{database}', JWT_SECRET_KEY=jwt_secret,
@@ -189,7 +189,7 @@ def execute():
                     report['cleanup'].append({'pid': process.pid, 'method': 'terminate-own-test-process', 'exit': process.returncode})
         for name, log in logs:
             log.close()
-            (OUT / (name + '.txt')).write_text(redact((WORK / (name + '.log')).read_text(encoding='utf-8', errors='replace')), encoding='utf-8')
+            (OUT / (name + '.txt')).write_text(redact((WORK / (name + '.log')).read_text(encoding='utf-8', errors='replace')), encoding='utf-8', newline='\n')
         if service_started:
             try:
                 run(['pwsh', '-NoProfile', '-Command', 'Stop-Service postgresql-x64-17'], 'postgres-stop')
@@ -202,7 +202,7 @@ def execute():
             report['status'] = 'FAIL'
             report['error'] = 'The tested source checkout changed during execution.'
         report['completed_at'] = datetime.now(timezone.utc).isoformat()
-        (OUT / 'execution-result.json').write_text(redact(json.dumps(report, ensure_ascii=False, indent=2, default=str)) + '\n', encoding='utf-8')
+        (OUT / 'execution-result.json').write_text(redact(json.dumps(report, ensure_ascii=False, indent=2, default=str)) + '\n', encoding='utf-8', newline='\n')
         print(json.dumps({'status': report['status'], 'native_ui_status': report['native_ui_status'], 'tested_sha': report['tested_sha'], 'stages': report['stages'], 'error': report.get('error')}, indent=2), flush=True)
     return 0 if report['status'] == 'PASS' else 1
 
@@ -212,7 +212,7 @@ def publish():
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / 'execution-result.json'
     if not path.exists():
-        path.write_text(json.dumps({'status': 'BLOCKED', 'native_ui_status': 'NOT_RUN', 'tested_sha': git('rev-parse', 'HEAD'), 'error': 'Runner setup failed before execution report.'}, indent=2) + '\n', encoding='utf-8')
+        path.write_text(json.dumps({'status': 'BLOCKED', 'native_ui_status': 'NOT_RUN', 'tested_sha': git('rev-parse', 'HEAD'), 'error': 'Runner setup failed before execution report.'}, indent=2) + '\n', encoding='utf-8', newline='\n')
     report = json.loads(path.read_text(encoding='utf-8'))
     expected = report['tested_sha']
     run(['git', 'fetch', 'origin', BRANCH], 'publish-fetch')
@@ -226,13 +226,13 @@ def publish():
             shutil.copy2(OUT / name, destination / name)
     run_url = f'https://github.com/{REPO}/actions/runs/{os.environ["GITHUB_RUN_ID"]}'
     status = report['native_ui_status']
-    readme = f'''# PR4 native Create Event acceptance\n\nStatus: working-baseline. Native UI result: **{status}**.\n\n- Tested commit: `{expected}`.\n- Execution: GitHub-hosted Windows runner, Python 3.14, native PostgreSQL 17 and real Chrome. Not the user E: environment.\n- Workflow: {run_url}\n- The execution and browser JSON files contain stage results, A1-A10, redacted request metadata and same-ID readbacks. Never infer PASS from the presence of this folder.\n- Screenshots and redacted process/test logs are in the workflow artifact. No passwords, tokens, HAR, traces or video are retained.\n- Unit tests deliberately mock fetch; the native browser flow does not intercept routes or replace the database.\n- Database readback is SELECT-only after one real UI submission. Full E2E, Security, UAT, restart, deployment and merge are outside scope.\n- This evidence publication changes documentation only. Reviewer sign-off is separate.\n'''
-    (destination / 'README.md').write_text(readme, encoding='utf-8')
+    readme = f'''# PR4 native Create Event acceptance\n\nStatus: working-baseline. Native UI result: **{status}**.\n\n- Tested commit: `{expected}`.\n- Execution: GitHub-hosted Windows runner, Python 3.14, native PostgreSQL 17 and real Chrome. Not the user E: environment.\n- Workflow: {run_url}\n- The execution and browser JSON files contain stage results, A1-A10, redacted request metadata and same-ID readbacks. Never infer PASS from the presence of this folder.\n- Screenshots and redacted process/test logs are in the workflow artifact. No passwords, tokens, HAR, traces or video are retained.\n- Unit tests deliberately mock fetch; the native browser flow does not intercept routes or replace the database.\n- Database readback is SELECT-only after one real UI submission. Full E2E, Security, UAT, restart, deployment and merge are outside scope.\n- Initial run 38556907376 failed before Login: the test used Playwright isDisabled() on a fieldset rather than testing its disabled property and actual button. Documentation publication then failed on Windows-generated CRLF. Both harness issues were corrected; the failed run and artifact remain in GitHub Actions. No product change was made to bypass these checks.\n- This evidence publication changes documentation only. Reviewer sign-off is separate.\n'''
+    (destination / 'README.md').write_text(readme, encoding='utf-8', newline='\n')
     current = ROOT / 'docs/dev/CURRENT.md'
     content = current.read_text(encoding='utf-8')
     paragraphs = content.split('\n\n')
     paragraphs[1] = f'版本：`repo-docs/0.3.2`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). PR #4 quota boundary repaired. Native Create Event UI acceptance: **{status}**, [current evidence](evidence/FE-CREATE-EVENT-NATIVE-20261014/{RUN_ID}/README.md), tested `{expected}` on a GitHub-hosted Windows runner, not the user E: machine. This supersedes only the previous pending PR #4 UI result. PR #3 remains merged at `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its historical evidence below is unchanged. PR #4 is not merged; no uat/main promotion or deployment.'
-    current.write_text('\n\n'.join(paragraphs), encoding='utf-8')
+    current.write_text('\n\n'.join(paragraphs), encoding='utf-8', newline='\n')
     task = ROOT / 'docs/dev/tasks/FE-CREATE-EVENT-20261014.md'
     with task.open('a', encoding='utf-8', newline='\n') as stream:
         stream.write(f'\n## Authorized repair and native acceptance successor, {RUN_ID}\n\nThe user authorized resolving review findings and updating this PR, explicitly without merge. Quotas now match native PostgreSQL integer range 0..2147483647; both input max attributes and independent boundary tests are included. Native UI status: **{status}**, tested `{expected}` on GitHub-hosted Windows, not the user local machine. [Evidence](../evidence/FE-CREATE-EVENT-NATIVE-20261014/{RUN_ID}/README.md). Historical NOT_RUN entries describe the earlier run and are retained. No backend/schema/pin changes, alternative engine, full E2E, Security, UAT or deployment.\n')
@@ -250,13 +250,15 @@ def publish():
         data = (ROOT / rel).read_bytes()
         register['documents'].append({'document_id': 'PR4-' + hashlib.sha256(rel.encode()).hexdigest()[:16].upper(), 'path': rel, 'title': Path(rel).name, 'owner': 'Benjamin / Developer', 'status': 'working-baseline', 'revision': 1, 'sha256': hashlib.sha256(data).hexdigest(), 'size_bytes': len(data), 'dependencies': [], 'approval_record': None})
     register['document_count'] = len(register['documents'])
-    register_path.write_text(json.dumps(register, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+    register_path.write_text(json.dumps(register, ensure_ascii=False, indent=2) + '\n', encoding='utf-8', newline='\n')
     run([sys.executable, 'scripts/refresh_document_register.py', '--reason', 'PR4 quota boundary repair and actual native Windows acceptance evidence'], 'register-refresh')
+    # The legacy refresher uses platform newlines; the register does not fingerprint itself.
+    register_path.write_bytes(register_path.read_bytes().replace(b'\r\n', b'\n'))
     run([sys.executable, 'scripts/check_dev_control.py'], 'document-control')
     run(['git', 'diff', '--check'], 'final-diff-check')
     assert not git('diff', '--name-only', expected, '--', 'frontend/live', 'backend'), 'Evidence publication must not modify application source.'
     allowed = ['docs/dev/CURRENT.md', 'docs/dev/DOCUMENT_REGISTER.json', 'docs/dev/tasks/FE-CREATE-EVENT-20261014.md', 'frontend/README.md', relative]
-    changed = git('status', '--porcelain').splitlines()
+    changed = git('status', '--porcelain', '-uall').splitlines()
     if any(not any(line[3:] == p or line[3:].startswith(p + '/') for p in allowed) for line in changed):
         raise RuntimeError('Unexpected file outside documentation publication scope.')
     run(['git', 'config', 'user.name', 'github-actions[bot]'], 'git-name')
@@ -266,7 +268,7 @@ def publish():
     run(['git', 'push', 'origin', 'HEAD:refs/heads/' + BRANCH], 'git-push')
     final_sha = git('rev-parse', 'HEAD')
     run(['git', 'archive', '--format=zip', '--output=' + str(OUT / 'source-tree.zip'), final_sha], 'source-archive')
-    (OUT / 'publication.json').write_text(json.dumps({'tested_sha': expected, 'final_sha': final_sha, 'application_source_unchanged': True, 'native_ui_status': status, 'document_control': 'PASS', 'workflow_run': run_url, 'merged': False}, indent=2) + '\n', encoding='utf-8')
+    (OUT / 'publication.json').write_text(json.dumps({'tested_sha': expected, 'final_sha': final_sha, 'application_source_unchanged': True, 'native_ui_status': status, 'document_control': 'PASS', 'workflow_run': run_url, 'merged': False}, indent=2) + '\n', encoding='utf-8', newline='\n')
     print('PUBLISHED ' + final_sha, flush=True)
     return 0
 

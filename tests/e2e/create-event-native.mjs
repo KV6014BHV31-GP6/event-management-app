@@ -49,7 +49,8 @@ try {
   await page.goto(`${base}/live/login.html`);
   assert.equal(await page.getByRole('link', { name: 'Create event', exact: true }).count(), 0);
   await page.goto(`${base}/live/create-event.html`);
-  assert.equal(await page.locator('#event-fields').isDisabled(), true);
+  assert.equal(await page.locator('#event-fields').evaluate(node => node.disabled), true, 'fieldset.disabled must be true');
+  assert.equal(await page.getByRole('button', { name: 'Create event', exact: true }).isDisabled(), true, 'submit control must be disabled');
   assert.equal(posts, 0);
   check('A1', 'Anonymous Create Event page has a disabled fieldset and no POST.');
 
@@ -152,7 +153,8 @@ try {
   await page.getByRole('link', { name: 'Create event', exact: true }).click();
   await fieldsEnabled();
   await page.getByRole('button', { name: 'Log out', exact: true }).click();
-  assert.equal(await page.locator('#event-fields').isDisabled(), true);
+  assert.equal(await page.locator('#event-fields').evaluate(node => node.disabled), true, 'fieldset.disabled must be true');
+  assert.equal(await page.getByRole('button', { name: 'Create event', exact: true }).isDisabled(), true, 'submit control must be disabled');
   assert.equal(await page.evaluate(() => sessionStorage.getItem('rose.live.access-token')), null);
   // Synthetic invalid stored session, real backend 401. This is not a mocked response or an expiry-timer claim.
   await page.evaluate(() => sessionStorage.setItem('rose.live.access-token', 'synthetic-invalid-session'));
@@ -160,7 +162,8 @@ try {
   await page.reload();
   assert.equal((await me401).status(), 401);
   await page.waitForFunction(() => sessionStorage.getItem('rose.live.access-token') === null);
-  assert.equal(await page.locator('#event-fields').isDisabled(), true);
+  assert.equal(await page.locator('#event-fields').evaluate(node => node.disabled), true, 'fieldset.disabled must be true');
+  assert.equal(await page.getByRole('button', { name: 'Create event', exact: true }).isDisabled(), true, 'submit control must be disabled');
   assert.equal(posts, 1);
   await page.screenshot({ path: join(output, '03-session-blocked.png'), fullPage: true });
   check('A10', 'Native duplicate Enter, Cancel, logout and real invalid-session 401 checked; timeout/403/422/late-response cases are separately covered by Node unit/component tests.');
@@ -169,6 +172,7 @@ try {
 } catch (error) {
   report.status = 'FAIL';
   report.error = error.message;
+  report.error_stack = error.stack;
   if (page) await page.screenshot({ path: join(output, 'failure.png'), fullPage: true }).catch(() => {});
   process.exitCode = 1;
 } finally {
