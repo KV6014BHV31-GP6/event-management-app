@@ -61,15 +61,19 @@ try {
   const profile = responseFor('/api/v1/users/me');
   await page.locator('#login-submit').click();
   assert.equal((await login).status(), 200);
-  const verifiedUser = await (await profile).json();
-  assert.equal(verifiedUser.username, 'demo_organizer');
+  assert.equal((await profile).status(), 200); // Login redirects immediately; do not read its discarded response body.
   await page.waitForURL('**/live/index.html');
   await page.getByRole('link', { name: 'Create event', exact: true }).waitFor();
   verifiedToken = await page.evaluate(() => sessionStorage.getItem('rose.live.access-token'));
   assert.ok(verifiedToken);
-  check('A2', 'Real Login 200 and profile verification produce Create event navigation.');
+  const formProfile = responseFor('/api/v1/users/me');
   await page.getByRole('link', { name: 'Create event', exact: true }).click();
   await fieldsEnabled();
+  const formProfileResponse = await formProfile;
+  assert.equal(formProfileResponse.status(), 200);
+  const verifiedUser = await formProfileResponse.json();
+  assert.equal(verifiedUser.username, 'demo_organizer');
+  check('A2', 'Real Login 200 and profile verification produce Create event navigation.');
   assert.deepEqual(await page.locator('#event-fields [name]').evaluateAll(nodes => nodes.map(n => n.name).sort()), ['end_time', 'location', 'offline_quota', 'online_quota', 'overview', 'start_time', 'title']);
   check('A3', 'The real form contains exactly the seven agreed named fields.');
 
