@@ -1,8 +1,26 @@
 # Austin frontend and API integration record
 
-Current evidence: SRC09 supplies 15 API/feature claims and SRC10 repeats them. There are 11 unique HTTP method/path pairs. No payload, response schema, auth contract, reachable base URL, code commit or runtime test has been supplied. The old workspace reported repo404. During this import preparation the target repository became readable and was observed empty (no branches or pull requests). Both attempted write methods returned 403 Resource not accessible by integration; no backend code or runtime was verified. All claims are REPORTED, all actual integration tests are BLOCKED/NOT_RUN.
+## Source-inspected dev slice, FE-LIVE-20261014
 
-In the historical NU v1.2.0 workspace, the local frontend uses `integration/src/mock-service.mjs`; `integration/src/http-adapter.mjs` is a separately gated transport scaffold. Those historical modules are not imported in this documentation PR; the included standalone HTML is frozen visual evidence, not a replacement production app. The application does not currently switch to live HTTP. A production composition/service mapper must be written against the real repo and verified contract. The scaffold preserves route names; it does not validate their existence on Austin's server.
+This record describes dev implementation, not code present on main. Read [CURRENT](../dev/CURRENT.md) for the exact pinned baseline and fresh evidence. The following source-backed contract supersedes the historical "no backend source" state **only for this slice**. Backend source: `dev_be_users` at `79804aa67508de23d3f3c613e65cf375e9ded2a3`; frontend base: `dev_fe_shell` at `3e9aa8f15f18dd52a142fb3bd1ebe1efaa497ab9`. Runtime and browser results are tracked in [CURRENT](../dev/CURRENT.md) and the [task](../dev/tasks/FE-LIVE-20261014.md). Public index and Login were the FE-LIVE delivery. The later [Create Event task](../dev/tasks/FE-CREATE-EVENT-20261014.md) adds the dev form; guest booking and other historical claims remain separate.
+
+| Operation | Source contract | Frontend behavior |
+|---|---|---|
+| `GET /api/v1/events` | Public. `page` starts at 1; `pageSize` is 1–100, default 20. Optional `status` filter. Response: `data`, `total_count`, `page`, `page_size`, `total_pages`. | Show title, overview, location, dates and server status; provide pagination, loading, empty and explicit error/retry states. Quota settings are not remaining places. |
+| `POST /api/v1/auth/login` | JSON `username` (3–20 characters), `password` (minimum 6). Response: `access_token`, `token_type: bearer`; wrong credentials: 401, input validation: 422. | Verify identity through `/users/me` before showing signed-in status. No automatic retries of login writes. |
+| `GET /api/v1/users/me` | Bearer token; response `id`, `username`, `role`, `created_at`, `updated_at`; missing/invalid token: 401. | Restore a tab session by re-verifying it; clear expired/rejected identity; show recoverable network failure separately. |
+| `POST /api/v1/events` | Bearer token, no organizer-role enforcement in imported code. Required `title`, `location`, `start_time`, `end_time`; optional `overview`, nonnegative `online_quota`, `offline_quota`. End must follow start. 201 on create, 422 on invalid input. | FE-LIVE originally had no Create Event UI. PR #4 adds a real form on dev, requires 201 plus a valid schema and guards duplicate/unknown-outcome submissions; see its task and exact native evidence. |
+| `GET /api/v1/events/{public_id}` | Public; 21-character identifier, 400 invalid structure, 404 absent. | Used for integration readback, no new detail screen. |
+
+Event responses also contain internal `id`, `organizer_id`, `public_id`, status and audit timestamps. The UI does not display internal identifiers or infer booking eligibility from them. Source returns events newest-created first. The browser renders supplied text with safe DOM text APIs and keeps all API failures visible, without Mock fallback.
+
+The local Node server forwards same-origin `/api/v1/` calls to loopback FastAPI. It is a development proxy, not a deployment or authentication boundary. Tokens use tab-scoped session storage, never passwords; `/users/me` verifies restored sessions. Logout clears this browser's token; the backend has no revocation endpoint and tokens can remain valid until their configured expiry. Shared-device and production token policy still require review. The imported public user-creation endpoint accepts a caller-supplied role; production authorization remains unresolved.
+
+## Historical handoff record (preserved)
+
+Historical evidence at initial import: SRC09 supplies 15 API/feature claims and SRC10 repeats them. There are 11 unique HTTP method/path pairs. No payload, response schema, auth contract, reachable base URL, code commit or runtime test has been supplied. The old workspace reported repo404. During this import preparation the target repository became readable and was observed empty (no branches or pull requests). Both attempted write methods returned 403 Resource not accessible by integration; no backend code or runtime was verified. All claims are REPORTED, all actual integration tests are BLOCKED/NOT_RUN.
+
+In the historical NU v1.2.0 workspace, the local frontend uses `integration/src/mock-service.mjs`; `integration/src/http-adapter.mjs` is a separately gated transport scaffold. Those historical modules are not imported in this documentation PR; the included standalone HTML is frozen visual evidence, not a replacement production app. At that historical point the application did not switch to live HTTP. A production composition/service mapper must be written against the real repo and verified contract. The scaffold preserves route names; it does not validate their existence on Austin's server.
 
 ## Claim-by-claim receipt
 
@@ -67,3 +85,11 @@ A screenshot of a mock success is G2 evidence only. G4 requires the real fronten
 ## DEV-SPLIT-20261013 handoff location
 
 For the proposed Frontend/Backend workspace split, use [HANDOFF_CHECKLIST.md](HANDOFF_CHECKLIST.md) as the intake form and [Developer ownership](../dev/OWNERSHIP.md) to identify the contributor and reviewer. This document remains the sole inventory of reported operations; none of these routes became verified merely by adding directory entry points.
+
+## Current scope counting, 2026-10-16
+
+Pinned dev has eight business API operations plus health. Its three live pages wire four business operations: event list, JSON Login, current profile and event creation. Form-token Login, user creation and participant creation have no dedicated live UI; event detail is available as an API operation without a dedicated live detail screen. HTTP/proxy verification is not UI integration of every endpoint. These counts do not measure completion of the eighteen-feature draft.
+
+## Fresh native contract exceptions, 2026-10-16
+
+The [pinned-dev native receipt](../dev/evidence/DEV-BASELINE-VERIFY-20261016/README.md) exercised every currently implemented business operation. The source-contract table above is not a claim that all invalid inputs return 422: oversized quota values, mixed timestamp awareness and over-limit password bytes reproduced 500; participant duplicate races also produced 500. Empty event fields returned 201 despite stricter live form validation. See [bug and contract proposals](../dev/BUG_PROPOSALS.md). No backend contract or implementation is changed by this documentation PR.

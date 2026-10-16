@@ -1,16 +1,16 @@
 # Developer Log Task 1 / 2
 
-Status：Developer contribution / DRAFT，待 PM 插入完整團隊 Log Task。不是已提交課程稿。
+Status: Developer contribution / DRAFT, pending PM insertion into the complete team Log Task. These are not submitted course documents.
 
-| 文件 | 內容 | 本次處理 |
+| Document | Content | Historical treatment |
 |---|---|---|
-| [Log Task 1](NU_Log_Task_1_Developer_Contribution_EN.docx) | Feature plan、US story splitting、痛點、journey、原始 Mock 截圖 | 保留指定來源 bytes，7頁重新渲染檢查 |
-| [Log Task 2](NU_Log_Task_2_Developer_Technical_Spec_EN.docx) | 技術架構、API 交接、offline/race 設計、競品技術對照、驗收 | 保留指定來源 bytes，9頁重新渲染檢查 |
+| [Log Task 1](NU_Log_Task_1_Developer_Contribution_EN.docx) | Feature plan, User Story splitting, pain points, journey and original Mock screenshots | Preserve designated source bytes; seven pages rendered and inspected |
+| [Log Task 2](NU_Log_Task_2_Developer_Technical_Spec_EN.docx) | Architecture, API handoff, offline/race design, competitor technical comparison and acceptance | Preserve designated source bytes; nine pages rendered and inspected |
 
-兩份以2026-10-12為內容快照，並保留英文、source-capture 截圖和原有引用。競品資料是文件當時的研究，不是本輪重新核查。沒有選用 `.before_source_capture.docx` 或早期示意畫面。
+Both are content snapshots dated 2026-10-12 and retain English prose, source-capture screenshots and original citations. Competitor information is research from that document date, not research refreshed in the current task. Neither `.before_source_capture.docx` nor earlier illustrative screens were selected.
 
-有關新18項 Feature 及舊17項 coverage 的差異，必讀 [ID 對照](../FEATURE_ID_CROSSWALK.md)。兩份 Word 主體用 US01 至 US10，不全域改寫歷史 Feature ID。
+Read the [ID crosswalk](../FEATURE_ID_CROSSWALK.md) for the newer eighteen-feature table versus older seventeen-feature coverage. Both Word documents primarily use US01–US10. Do not globally rewrite historical feature IDs.
 
-截圖與驗證來源在 [LOG_DOCX evidence](../evidence/LOG_DOCX_20261012/README.md)。原始 SharePoint brief、組員完整稿和私人附件留原位置，引用文字不是指向公開可下載的原件。
+Screenshots and validation provenance are in [LOG_DOCX evidence](../evidence/LOG_DOCX_20261012/README.md). Original SharePoint briefs, complete team drafts and private attachments remain in their original locations; quoted citations do not imply publicly downloadable originals.
 
-PM 組裝前需確認政策、引用、各角色內容和當次提交要求；這個 PR 不自動發 WhatsApp、Email 或向課程平台上傳。
+Before assembly, PM must confirm policy, citations, each role's content and the current submission requirements. This documentation work does not automatically send WhatsApp/email or upload to a course platform. The 2026-10-16 English Markdown revision leaves Word and capture bytes unchanged and does not rerun their historical render checks.
