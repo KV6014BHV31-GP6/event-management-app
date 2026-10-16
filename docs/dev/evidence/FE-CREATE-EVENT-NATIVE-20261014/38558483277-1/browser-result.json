@@ -1,0 +1,251 @@
+{
+  "status": "PASS",
+  "scope": "Real Chrome, HTTP and native PostgreSQL 17; GitHub-hosted Windows, NOT the user E: machine",
+  "run_id": "38558483277-1",
+  "checks": {
+    "A1": {
+      "status": "PASS",
+      "detail": "Anonymous Create Event page has a disabled fieldset and no POST."
+    },
+    "A2": {
+      "status": "PASS",
+      "detail": "Real Login 200 and profile verification produce Create event navigation."
+    },
+    "A3": {
+      "status": "PASS",
+      "detail": "The real form contains exactly the seven agreed named fields."
+    },
+    "A4": {
+      "status": "PASS",
+      "detail": "Required/end-after-start/quota-overflow prevent POST; real browser timezone and ISO conversion checked."
+    },
+    "A5": {
+      "status": "PASS",
+      "detail": "Form POST uses the existing Bearer session and only seven allowed JSON fields."
+    },
+    "A6": {
+      "status": "PASS",
+      "detail": "Exactly one real form POST returned HTTP 201."
+    },
+    "A7": {
+      "status": "PASS",
+      "detail": "Visible success message, server title and server public_id match the 201 response."
+    },
+    "A8": {
+      "status": "PASS",
+      "detail": "Back to events causes a new first-page GET and renders the created record."
+    },
+    "A9": {
+      "status": "PASS",
+      "detail": "The same public_id is visible after new GETs for Back, Refresh and Reload; one POST only."
+    },
+    "A10": {
+      "status": "PASS",
+      "detail": "Native duplicate Enter, Cancel, logout and real invalid-session 401 checked; timeout/403/422/late-response cases are separately covered by Node unit/component tests."
+    }
+  },
+  "network": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/events",
+      "status": 201
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 401
+    }
+  ],
+  "requests": [
+    {
+      "method": "POST",
+      "path": "/api/v1/auth/login"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "POST",
+      "path": "/api/v1/events",
+      "bearer_present": true,
+      "bearer_matches_existing_session": true,
+      "fields": [
+        "end_time",
+        "location",
+        "offline_quota",
+        "online_quota",
+        "overview",
+        "start_time",
+        "title"
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=6"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v1/users/me"
+    }
+  ],
+  "browser_errors": [],
+  "chrome": "154.0.8037.58",
+  "sandbox_enabled": true,
+  "timezone": "Asia/Hong_Kong",
+  "expected_start": "2027-01-12T01:00:00.000Z",
+  "expected_end": "2027-01-12T02:00:00.000Z",
+  "created_event": {
+    "title": "NU Frontend Create Demo 38558483277-1",
+    "overview": "Synthetic native PR4 acceptance",
+    "location": "Synthetic hall",
+    "online_quota": 2,
+    "offline_quota": 3,
+    "start_time": "2027-01-12T01:00:00Z",
+    "end_time": "2027-01-12T02:00:00Z",
+    "id": 4,
+    "public_id": "1cA35SVjkHykMrba80P-c",
+    "organizer_id": "01J00000000000000000000001",
+    "status": "ACTIVE",
+    "created_at": "2026-10-14T11:43:34.530939Z",
+    "updated_at": "2026-10-14T11:43:34.530939Z"
+  },
+  "event_post_count": 1,
+  "readbacks": [
+    {
+      "stage": "back-to-events",
+      "status": 200,
+      "page": 1,
+      "public_id": "1cA35SVjkHykMrba80P-c",
+      "title": "NU Frontend Create Demo 38558483277-1"
+    },
+    {
+      "stage": "refresh-events",
+      "status": 200,
+      "page": 1,
+      "public_id": "1cA35SVjkHykMrba80P-c",
+      "title": "NU Frontend Create Demo 38558483277-1"
+    },
+    {
+      "stage": "browser-reload",
+      "status": 200,
+      "page": 1,
+      "public_id": "1cA35SVjkHykMrba80P-c",
+      "title": "NU Frontend Create Demo 38558483277-1"
+    }
+  ]
+}

@@ -33,7 +33,9 @@ export function mountAccount(session, { loginPage = false, onChange = () => {} }
     } else if (session.user) {
       const name = element('span', 'account-name', session.user.username);
       name.title = `Logged in as ${session.user.username}`;
-      account.append(name);
+      const create = element('a', 'nav-link', 'Create event');
+      create.href = './create-event.html';
+      account.append(create, name);
     } else if (failed) {
       const retry = element('button', 'button button-quiet', 'Retry login check');
       retry.type = 'button';

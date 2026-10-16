@@ -1,6 +1,6 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.3.1`，2026-10-14（香港）。Active task: [FE-LIVE-20261014](tasks/FE-LIVE-20261014.md). This file describes the reviewed PR #3 integration slice. The user authorized promotion into `dev`; the actual merge SHA/state is recorded by [PR #3](https://github.com/KV6014BHV31-GP6/event-management-app/pull/3). No `uat`/`main` promotion or deployment is authorized. Source baselines and ownership are in the task.
+版本：`repo-docs/0.3.2`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). PR #4 quota boundary repaired. Native Create Event UI acceptance: **PASS**, [current evidence](evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md), tested `0a29fde4ef8b1b76d2ba105d03ef9362ac9a8d90` on a GitHub-hosted Windows runner, not the user E: machine. This supersedes only the previous pending PR #4 UI result. PR #3 remains merged at `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its historical evidence below is unchanged. PR #4 is not merged; no uat/main promotion or deployment.
 
 | Area | State | Evidence boundary |
 |---|---|---|
@@ -24,6 +24,6 @@ Detailed [validation receipt](evidence/FE-LIVE-20261014/VALIDATION.json), [brows
 
 1. Complete the remaining full native E2E, Security and team UAT scope separately. Native A/B checks are already reported passed; do not reset them to NOT_RUN.
 2. Follow up the existing local Ctrl+C stopper compatibility and backend organizer/signup authorization policy before broader privileged workflows.
-3. Proceed through reviewed `dev → uat → main` promotion only when separately authorized. Create Event UI and the broader guest-booking/dashboard scope remain later tasks.
+3. Proceed through reviewed `dev → uat → main` promotion only when separately authorized. Run the new Create Event five-step native demo before accepting that UI; the broader guest-booking/dashboard scope remains later work.
 
 The former static-shell and initial implementation stop points are historical. On 2026-10-14 the user explicitly authorized review and merge of PR #3 into `dev`. This does not approve production deployment or broaden the feature scope. The task records the source hashes, review checks and evidence limits; original cloud evidence remains unchanged.

@@ -179,3 +179,12 @@ select { border: 1px solid var(--border); border-radius: 6px; background: var(--
   .login-card { padding: 23px; }
 }
 @media (prefers-reduced-motion: reduce) { .spinner { animation: none; border-top-color: var(--green); } }
+
+/* Minimal Create Event form, sharing the existing ROSE palette and fields. */
+.create-main { max-width: 780px; }
+.create-card { margin-top: 32px; margin-bottom: 32px; }
+.create-card h1 { font-size: clamp(32px, 6vw, 46px); }
+.create-card fieldset { border: 0; padding: 0; min-width: 0; margin: 24px 0 0; }
+.field textarea { width: 100%; min-width: 0; padding: 12px 13px; border: 1px solid #cad5c7; border-radius: 6px; background: #fdfefc; color: #243e34; font: inherit; resize: vertical; }
+#create-result { overflow-wrap: anywhere; }
+@media (max-width: 720px) { .masthead { flex-wrap: wrap; padding-block: 16px; } .header-nav { flex-wrap: wrap; } }

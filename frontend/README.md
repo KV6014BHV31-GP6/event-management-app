@@ -1,6 +1,6 @@
 # Frontend workspace
 
-**Current slice:** public event index and Login, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. See [FE-LIVE-20261014](../docs/dev/tasks/FE-LIVE-20261014.md) and [CURRENT](../docs/dev/CURRENT.md) for exact validation and limits. This does not implement bookings, event creation UI or the full ROSE Dashboard.
+**Current slice:** public event index, Login and minimal Create Event, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. See [FE-LIVE-20261014](../docs/dev/tasks/FE-LIVE-20261014.md) and [CURRENT](../docs/dev/CURRENT.md) for exact validation and limits. Create Event scope and pending native acceptance: [FE-CREATE-EVENT-20261014](../docs/dev/tasks/FE-CREATE-EVENT-20261014.md). This does not implement bookings or the full ROSE Dashboard.
 
 ## Run the live frontend
 
@@ -29,7 +29,13 @@ Stop with Ctrl+C. Opening HTML using `file://` cannot provide the same-origin AP
 - JSON Login followed by authenticated `/users/me`; incorrect credentials remain visible. Identity is verified on reload before it appears.
 - Only the bearer token is kept in tab-scoped `sessionStorage`, never the password/profile. If storage is unavailable, Login works only on that page and explains that navigation ends the session.
 - Logout clears the local token; history-cache restoration reloads and checks the session. The backend has no revocation endpoint; existing tokens remain valid until expiry. Production/shared-device session policy requires review.
-- No inferred remaining places or coordinator permissions. Event status comes from the API; signup and Create Event UI are outside this slice.
+- No inferred remaining places or coordinator permissions. Event status comes from the API; signup is outside this slice.
+
+## Create Event
+
+After Login and `/users/me` verification, choose **Create event**. The form at `/live/create-event.html` accepts title, optional overview, location, local start/end times and two non-negative quotas. Browser timezone is shown; dates are converted to ISO instants. Only a valid HTTP 201 response shows the server title/public ID. **Back to events** opens the existing first page and fetches server data again.
+
+Cancel performs no write. Logout disables submission immediately. Unknown POST outcomes are never retried automatically; check Events before attempting another creation. Native UI/API/PostgreSQL acceptance for this new page remains BLOCKED / NOT_RUN in this cloud environment; historical PR #3 API creation is not evidence for this form.
 
 ## Checks
 
@@ -54,3 +60,11 @@ python -m http.server 8080 --bind 127.0.0.1
 Open `http://127.0.0.1:8080/frontend/`. This historical static server does not proxy APIs; use port 5173 for the live slice.
 
 The frozen [v1.2.1 source](../docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html) retains SHA256 `3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e`. Original v1.2.0 modules/tests remain intact. Historical role selection is not authentication.
+
+### PR #4 acceptance update (38557951101-1)
+
+Quota inputs and payload validation enforce `0..2147483647`, matching the existing database integer fields. Native UI acceptance on GitHub-hosted Windows: **FAIL**. This supersedes the earlier cloud-only pending status for the tested source; it does not claim execution on the user local machine. [Run evidence](../docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md). No merge or deployment.
+
+### PR #4 acceptance update (38558483277-1)
+
+Quota inputs and payload validation enforce `0..2147483647`, matching the existing database integer fields. Native UI acceptance on GitHub-hosted Windows: **PASS**. This supersedes the earlier cloud-only pending status for the tested source; it does not claim execution on the user local machine. [Run evidence](../docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md). No merge or deployment.
