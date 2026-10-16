@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.2.0",
-  "reviewed_at": "2026-10-16T02:32:15.419849+00:00",
-  "reason": "Record completed documentation validation and immutable native evidence fingerprints",
+  "reviewed_at": "2026-10-16T02:36:17.302245+00:00",
+  "reason": "Record observed Draft PR 5 identity for repository context handoff",
   "document_count": 73,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -374,7 +374,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 13,
+      "revision": 14,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -431,6 +431,13 @@
           "size_bytes": 2342,
           "superseded_at": "2026-10-16T02:27:44.663977+00:00",
           "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        },
+        {
+          "revision": 13,
+          "sha256": "a6d8ff10cdffc812fb72669f7403e19e16af2c52a56ee3756e26f18b422a71c5",
+          "size_bytes": 7390,
+          "superseded_at": "2026-10-16T02:36:17.302245+00:00",
+          "reason": "Record observed Draft PR 5 identity for repository context handoff"
         }
       ],
       "import_lineage": {
@@ -441,8 +448,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a6d8ff10cdffc812fb72669f7403e19e16af2c52a56ee3756e26f18b422a71c5",
-      "size_bytes": 7390
+      "sha256": "5f781ee50a843a0fca802c76b6a8c98c8f86f73b5141151b0477ed85138509a5",
+      "size_bytes": 7575
     },
     {
       "document_id": "DOC-11",
@@ -1226,7 +1233,7 @@
     {
       "document_id": "PUB-DOC-DEV-BASELINE-VERIFY-20261016",
       "path": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1236,13 +1243,20 @@
           "size_bytes": 6446,
           "superseded_at": "2026-10-16T02:32:15.419849+00:00",
           "reason": "Record completed documentation validation and immutable native evidence fingerprints"
+        },
+        {
+          "revision": 2,
+          "sha256": "344daba31bc4ff269227bac24a9c2e995a8afdd1c76f780a4d181664ca312146",
+          "size_bytes": 7721,
+          "superseded_at": "2026-10-16T02:36:17.302245+00:00",
+          "reason": "Record observed Draft PR 5 identity for repository context handoff"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "344daba31bc4ff269227bac24a9c2e995a8afdd1c76f780a4d181664ca312146",
-      "size_bytes": 7721,
+      "sha256": "b5d674dc4bb7b785ec309012dbe2459e60611561a1bc1ae03a9d6ae8ac8c483e",
+      "size_bytes": 8304,
       "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
     },
     {

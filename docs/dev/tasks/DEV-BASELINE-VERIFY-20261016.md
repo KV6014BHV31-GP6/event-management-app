@@ -1,6 +1,6 @@
 # DEV-BASELINE-VERIFY-20261016 | Pinned dev verification and English context handoff
 
-Status: working-baseline / VERIFICATION COMPLETE WITH DEFECTS; documentation publication being finalized. Date: 2026-10-16 (UTC+8). Documentation owner: GPT-6.1 Sol under the current user's explicit delegation; parent agent owns exact native-result integration, document-register metadata and publication. Reviewers: pending; no team approval implied.
+Status: working-baseline / VERIFICATION COMPLETE WITH DEFECTS; DOCUMENTATION DRAFT PUBLISHED. Date: 2026-10-16 (UTC+8). Documentation owner: GPT-6.1 Sol under the current user's explicit delegation; parent agent owns exact native-result integration, document-register metadata and publication. Reviewers: pending; no team approval implied.
 
 ## Objective and authorization
 
@@ -53,3 +53,7 @@ The external DOCS_AUDIT_HANDOFF.md records exact changed/new paths, semantic-rev
 After the reviewed translations, source-scope/bug evidence and explicit metadata exception were integrated, the unchanged main-based document-control checker passed: 73 controlled files, 74 payload files and 185 local links. The unchanged main-based unittest suite passed 12/12 (29.449 seconds). This is separate from the pinned dev suite, which passed 22/23 with the retained Windows fixture failure. English/provenance review covered all 50 Markdown files, including all 45 pinned-dev Markdown paths, with zero CJK prose candidates and semantic review by a second GPT-6.1 Sol reviewer. All 23 original non-Markdown payload files other than the approved register remained byte-identical, including both Developer Word files.
 
 The register tool initially emitted Windows CRLF, causing whitespace checks to fail; its self-excluded JSON output was normalized to LF without changing metadata values or modifying the tool. Final document-control, English/link/scope and whitespace checks are rerun after this checkpoint. The existing source/test files remain unchanged. Content ownership has returned to the parent publisher. Source/base identities above remain the resume anchors; publication identity is verified separately after push.
+
+## Publication checkpoint
+
+[Draft PR #5](https://github.com/KV6014BHV31-GP6/event-management-app/pull/5) was created on 2026-10-16 with base `main` and head `docs/english-context-handoff-20261016`. Initial published documentation commit: `1f5a404970dd9959f2d8c9cf8607fee2eb2eba3b`. This follow-up records the observed PR identity; query GitHub for its current head, and use the local final delivery receipt for the full reread head SHA after this checkpoint. No reviewer was assigned, merge performed or application code imported. Main and dev product refs must be rechecked after publication.

@@ -10,6 +10,7 @@ Version: `repo-docs/0.4.0`, updated 2026-10-16 (UTC+8). This is the sole current
 | Pinned remote dev baseline | `a47ff7d92f296ebd0604a1df98daf0b8111829b3` | PR #3 event index/Login and PR #4 Create Event are merged into dev; implementation is referenced, not copied into this PR |
 | Preserved local checkout | Local `dev` at `cabb6a6a2cfede5ceacec47620eb1fa95c4da3a1` | Fourteen commits behind pinned remote dev; it is not the tested remote-dev snapshot and was not switched, pulled or overwritten for this task |
 | Documentation worktree | `docs/english-context-handoff-20261016`, based on main | English Markdown/context/status changes plus the explicitly user-approved `docs/dev/DOCUMENT_REGISTER.json` metadata exception; no application code import |
+| Documentation delivery | OPEN / DRAFT | [PR #5](https://github.com/KV6014BHV31-GP6/event-management-app/pull/5), base `main`, head `docs/english-context-handoff-20261016`; no merge |
 | Promotion / release | NOT_ACCEPTED / NOT_RUN | No dev → uat → main product promotion, deployment, complete Security review or team UAT is established |
 
 Historical PR #1 main commit was `aac3d3af7230544f7a1dab5ef051bd511b2972ba`, before the PR #2 shell merge. Historical PR #3 merge commit: `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its prior evidence remains scoped to the recorded application commit.
