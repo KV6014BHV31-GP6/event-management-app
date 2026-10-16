@@ -1,19 +1,23 @@
-# TASK-ID | 目標
+# TASK-ID | Objective
 
-Status：draft。Owner：待指定。Reviewers：待確認。
+Status: draft. Owner: unassigned. Reviewers: unconfirmed. Updated: YYYY-MM-DDTHH:MM:SS+08:00.
 
-## Scope
+## Scope and identity
 
-記 repo、base branch/full SHA、working-tree 狀態、允許路徑、明確不做事項。
+Record repository, absolute checkout/worktree, base branch/full SHA, working branch/full SHA, working-tree changes, allowed paths, sole writer and explicit exclusions. State the current user instruction and distinguish historical authorization from permission for this task.
 
 ## Sources and acceptance
 
-記來源 ID/版本、完整 US/Feature namespace、驗收例子、尚欠輸入。
+Record source IDs/versions, complete User Story/feature namespaces, contract version, acceptance examples and missing inputs. Separate source evidence, proposal, team decision and acceptance.
 
 ## Work and verification
 
-記改動、原件/衍生差異、command、actual result、環境、時間、限制、evidence 路徑。沒有跑的測試寫 NOT_RUN。
+Record changes, original versus derived artifacts, exact commands, exit codes, expected/observed results, environment, timestamp, limitations and sanitized evidence links. Unexecuted tests stay NOT_RUN. A local PASS is tied to its exact branch/SHA and environment.
 
-## Handoff
+## Checkpoint and resume
 
-最多三個下一步。commit SHA、remote branch SHA、PR URL、reviewer 分開保存；沒有回條不得標成功。
+Use [CONTEXT_HANDOFF](../CONTEXT_HANDOFF.md) for bounded retrieval and the structured checkpoint. Include outstanding questions, blockers, no more than three next actions and the exact safe resume command. Recheck branch/SHA and dirty paths before resuming.
+
+## Delivery
+
+Record local commit SHA, reread remote branch SHA, PR URL/base/head and reviewer separately. Do not mark remote operations successful without receipts. Commit messages use Traditional Chinese (Hong Kong), keeping English technical nouns unchanged.

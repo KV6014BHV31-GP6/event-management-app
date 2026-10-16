@@ -42,7 +42,7 @@ Use an agreed task checkpoint, not silence or personality, as the trigger. For a
 - If it cannot start reproducibly: isolate one startup blocker, record command/log, repair minimal cause, retain useful work.
 - If API runs but differs: use an adapter for harmless naming differences; update contract explicitly. Do not silently reinterpret status or permissions.
 - If a critical acceptance case fails: reproduce it, add meaningful regression coverage, fix the bounded server invariant. Retain unaffected modules.
-- If the agreed checkpoint passes without the necessary backend input: record task ownership transfer and implement the minimum independent backend slice in a separate branch after inspecting available repo code. Keep API shape compatible where practical.
+- If the agreed checkpoint passes without the necessary backend input: obtain explicit scope/ownership handoff, record the transfer and implement the minimum independent backend slice in a separate branch after inspecting available repo code. Keep API shape compatible where practical.
 
 ## Full Dev fallback sequence
 
@@ -55,7 +55,7 @@ Use an agreed task checkpoint, not silence or personality, as the trigger. For a
 
 ## Critical acceptance suite for the actual backend
 
-All below remain NOT_RUN until an actual environment exists:
+The broader booking cases below remain NOT_RUN until individually executed against the relevant actual implementation. Existing dev event/Login/Create Event evidence does not clear them:
 
 - Anonymous participant can request a place without an account; cannot read another participant's private registration.
 - Staff roles cannot manage another leader's allocation or unrestricted users by guessing IDs.
@@ -72,6 +72,6 @@ All below remain NOT_RUN until an actual environment exists:
 
 Record requirement/operation IDs, frontend SHA, backend SHA, contract version, environment, command/evidence, date, result and reviewer. Any unexecuted item stays NOT_RUN. Any missing input stays BLOCKED. Final report states achieved gates and next action, never a blanket “all done”.
 
-## Workspace paths (documentation-only split)
+## Workspace paths and branch boundaries
 
-Frontend code will be placed under [frontend](../../frontend/README.md) after authenticated source review; backend code under [backend](../../backend/README.md) only after equivalent handoff. Consult [OWNERSHIP](OWNERSHIP.md) and [API checklist](../api/HANDOFF_CHECKLIST.md). The G0–G6 gates above remain unchanged; the split does not advance a gate.
+Main retains [frontend](../../frontend/README.md) and [backend](../../backend/README.md) README-only shells. The pinned dev baseline contains implementation in those paths; consult [CURRENT](CURRENT.md) for exact branch/SHA and evidence. This Markdown PR does not import code. Consult [OWNERSHIP](OWNERSHIP.md) and [API checklist](../api/HANDOFF_CHECKLIST.md). The G0–G6 gates above remain unchanged; the split does not advance a gate.

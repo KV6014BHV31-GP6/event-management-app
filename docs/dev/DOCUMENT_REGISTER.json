@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.2.0",
-  "reviewed_at": "2026-10-13T01:42:12.307720+00:00",
-  "reason": "Record observed DEV-SPLIT docs-only local validation in active task",
-  "document_count": 56,
+  "reviewed_at": "2026-10-16T02:36:17.302245+00:00",
+  "reason": "Record observed Draft PR 5 identity for repository context handoff",
+  "document_count": 73,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -22,15 +22,23 @@
     {
       "document_id": "PUB-DOC-002",
       "path": ".github/pull_request_template.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "76c724badde12c87168fbb88579417ca56135ff916f08071767985894c5784cc",
+          "size_bytes": 473,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "76c724badde12c87168fbb88579417ca56135ff916f08071767985894c5784cc",
-      "size_bytes": 473
+      "sha256": "1bc514b5a9c5c2474a84bc0692cdcfab9f5a4b928a1167a571a73c84b9093e40",
+      "size_bytes": 567
     },
     {
       "document_id": "DOC-39",
@@ -61,7 +69,7 @@
     {
       "document_id": "DOC-03",
       "path": "AGENTS.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -84,6 +92,13 @@
           "size_bytes": 2594,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 4,
+          "sha256": "72670398f89b9425aa61b20eeaa7605a9e6392a30117b86bb0aeb5f1d96c4530",
+          "size_bytes": 3091,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -94,21 +109,97 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "72670398f89b9425aa61b20eeaa7605a9e6392a30117b86bb0aeb5f1d96c4530",
-      "size_bytes": 3091
+      "sha256": "5fdc954db5260323624716f3d8f5e3176ea6d65f6a34d35690cbba1ea53d693f",
+      "size_bytes": 8097
+    },
+    {
+      "document_id": "DOC-40",
+      "path": "README.md",
+      "revision": 4,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f6ab2efb279c3e436ca8ddd0addcfa5f7dbc90e8b0901f3726b56bf2f117fa34",
+          "size_bytes": 1402,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        },
+        {
+          "revision": 2,
+          "sha256": "1c6821ce5a511cd4e10a0d7165139e62062b125af7231a2b8cb0a558f8dc5c50",
+          "size_bytes": 1524,
+          "superseded_at": "2026-10-13T01:37:33.207141+00:00",
+          "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 3,
+          "sha256": "8c505a9d4edc994db8c2a44553c6b5d3b64d78a1f0101bc24c9a4fee2e5c18a5",
+          "size_bytes": 1671,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "f6ab2efb279c3e436ca8ddd0addcfa5f7dbc90e8b0901f3726b56bf2f117fa34",
+        "source_size_bytes": 1402
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d12710f308a7f136013c418287443e7f88ff836caffb90e17a1d23e80445a6f8",
+      "size_bytes": 2482
     },
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f3106ee937e9e1b498f967f8ed65b4c557309b84b621dbd0b8cea9eb70716c89",
+          "size_bytes": 890,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f3106ee937e9e1b498f967f8ed65b4c557309b84b621dbd0b8cea9eb70716c89",
-      "size_bytes": 890
+      "sha256": "c9441a66277cd8762b85ebea3d6ed6da1948e87e3f8461bd93add856dbf8f404",
+      "size_bytes": 1614
+    },
+    {
+      "document_id": "PUB-DOC-003",
+      "path": "docs/README.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "7081ac80a7160754c41e2b412e2abe8439926528d392f4e6322d8124f4c01177",
+          "size_bytes": 944,
+          "superseded_at": "2026-10-13T01:37:33.207141+00:00",
+          "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 2,
+          "sha256": "c81c40fbab1fb1467663a7ff146cb161f3b4826ae985d126d173f76f606cb794",
+          "size_bytes": 1052,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5202c342975fd6e6bc3c59b3b83b292b0e65235988be916b0d1fa8b21248f24d",
+      "size_bytes": 1348
     },
     {
       "document_id": "DOC-06",
@@ -131,20 +222,28 @@
     {
       "document_id": "PUB-DOC-SPLIT-006",
       "path": "docs/api/HANDOFF_CHECKLIST.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "34383ab74de3a9898fff1cbd83157b213d9a243f4c1a556dbfb88c52198abf55",
+          "size_bytes": 1876,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "34383ab74de3a9898fff1cbd83157b213d9a243f4c1a556dbfb88c52198abf55",
-      "size_bytes": 1876
+      "sha256": "85359a3fb3824f28206c486618c8239c1d30b5e31c899075a28cb83a1206fe55",
+      "size_bytes": 1998
     },
     {
       "document_id": "DOC-07",
       "path": "docs/api/INTEGRATION.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -161,6 +260,13 @@
           "size_bytes": 7762,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 3,
+          "sha256": "22ab024ff76aeb2d1cc7a26b125a5322689d1240fbb5e410362746f0966c8cf3",
+          "size_bytes": 8154,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -172,8 +278,8 @@
         "USER-PR-SCOPE",
         "SRC-API-HANDOFF-V120"
       ],
-      "sha256": "22ab024ff76aeb2d1cc7a26b125a5322689d1240fbb5e410362746f0966c8cf3",
-      "size_bytes": 8154
+      "sha256": "6905e4bf1daf313affa9afa5c6306ff8155f273cc76c2ee87ba61f347481d68d",
+      "size_bytes": 12689
     },
     {
       "document_id": "DOC-08",
@@ -194,22 +300,81 @@
       "size_bytes": 1202
     },
     {
-      "document_id": "PUB-DOC-SPLIT-004",
-      "path": "docs/dev/backend/README.md",
+      "document_id": "FE-SHELL-002",
+      "path": "docs/dev/BRANCHING.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "22d527e540958c1cc4b63d957c6cca947d2a362f316e96f566170ee9e7238665",
+          "size_bytes": 2265,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "265c563994fa9895db8700b16a1bc8ec0719660c4a9abe65ab2d6bf6c38e4814",
+      "size_bytes": 3291,
+      "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md",
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/BRANCHING.md",
+        "source_sha256": "22d527e540958c1cc4b63d957c6cca947d2a362f316e96f566170ee9e7238665",
+        "source_size_bytes": 2265,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "PUB-DOC-BUG-PROPOSALS-20261016",
+      "path": "docs/dev/BUG_PROPOSALS.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "544367e5276cfc9b802ea673850f5135887799070b9fc0fb588f65ad1c444cf4",
+          "size_bytes": 8799,
+          "superseded_at": "2026-10-16T02:29:43.447438+00:00",
+          "reason": "Reconcile native supplemental login failures with raw results and preserve explicit acceptance limits"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "3cad1a4f1517a98df8816cb15c3d79d8db5293c1c29827b0ea8d42c730f9e682",
+      "size_bytes": 8951,
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "PUB-DOC-CONTEXT-HANDOFF-20261016",
+      "path": "docs/dev/CONTEXT_HANDOFF.md",
       "revision": 1,
       "owner": "Benjamin Dev workflow",
-      "status": "draft",
+      "status": "working-baseline",
       "revision_history": [],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "cfe5eeebf0064c263d73507c19b03e62ced749e80192692ed1b013237ed0caa9",
-      "size_bytes": 1417
+      "sha256": "d048a9bb09cf42c56dd4450b3342e71a29aab07190e45640e46d65aac123881e",
+      "size_bytes": 3202,
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
     },
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 12,
+      "revision": 14,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -259,6 +424,20 @@
           "size_bytes": 2662,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 12,
+          "sha256": "bd5dbeba3f2babd2017fed6d03dcc88c967d86112174584162853c06d388f7b9",
+          "size_bytes": 2342,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        },
+        {
+          "revision": 13,
+          "sha256": "a6d8ff10cdffc812fb72669f7403e19e16af2c52a56ee3756e26f18b422a71c5",
+          "size_bytes": 7390,
+          "superseded_at": "2026-10-16T02:36:17.302245+00:00",
+          "reason": "Record observed Draft PR 5 identity for repository context handoff"
         }
       ],
       "import_lineage": {
@@ -269,13 +448,13 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "bd5dbeba3f2babd2017fed6d03dcc88c967d86112174584162853c06d388f7b9",
-      "size_bytes": 2342
+      "sha256": "5f781ee50a843a0fca802c76b6a8c98c8f86f73b5141151b0477ed85138509a5",
+      "size_bytes": 7575
     },
     {
       "document_id": "DOC-11",
       "path": "docs/dev/DECISIONS.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -298,6 +477,13 @@
           "size_bytes": 1543,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 4,
+          "sha256": "959fdc42985d58dec3ae96783f777f614334874389d18082951548e1253daf7f",
+          "size_bytes": 2927,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -308,13 +494,13 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "959fdc42985d58dec3ae96783f777f614334874389d18082951548e1253daf7f",
-      "size_bytes": 2927
+      "sha256": "3c1d4c3642753d975497dabd956d84519d1dd402ea4f058974d4f568dd193cbd",
+      "size_bytes": 4879
     },
     {
       "document_id": "DOC-12",
       "path": "docs/dev/DEV_FLOW.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -324,6 +510,13 @@
           "size_bytes": 6061,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 2,
+          "sha256": "72b44e7950d5ba796e362ccd9a3013c1f79ae356c736199a0edd649e52c1e4b0",
+          "size_bytes": 6462,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -334,13 +527,27 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "72b44e7950d5ba796e362ccd9a3013c1f79ae356c736199a0edd649e52c1e4b0",
-      "size_bytes": 6462
+      "sha256": "494803922cc28c2f0bc9952a4300287e7dba38f4a0f2793c501bf6c300742b54",
+      "size_bytes": 6698
+    },
+    {
+      "document_id": "PUB-DOC-DEV-SCOPE-AUDIT-20261016",
+      "path": "docs/dev/DEV_SCOPE_AUDIT.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ec22e7418f131f9c91217dc7ba1ba65652ba6d2a86c7ec27a7c3d6d611de96de",
+      "size_bytes": 6957,
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
     },
     {
       "document_id": "DOC-13",
       "path": "docs/dev/DOCUMENT_CONTROL.md",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -363,6 +570,13 @@
           "size_bytes": 3364,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 5,
+          "sha256": "6f67cb0efd8f67aa497b396dede39970db74941f566cb22347f17fbd95526f0b",
+          "size_bytes": 4094,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -373,8 +587,410 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6f67cb0efd8f67aa497b396dede39970db74941f566cb22347f17fbd95526f0b",
-      "size_bytes": 4094
+      "sha256": "4959db88203c7480f839f52bdb450667b0f1153a6b5915f940cda552cee7fdc5",
+      "size_bytes": 5339
+    },
+    {
+      "document_id": "PUB-DOC-004",
+      "path": "docs/dev/FEATURE_ID_CROSSWALK.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "790f47aef164f6814711ef600c337dab761ace37067b6ec70c51e8c3bf0c9a80",
+          "size_bytes": 3784,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "SP-FEATURES-20261012",
+        "SP-US-20261012",
+        "SRC04"
+      ],
+      "sha256": "379a32c97001efd11e4c0bd45af0b6e3c51bc627ca33361ca5750faf17db04af",
+      "size_bytes": 4163
+    },
+    {
+      "document_id": "PUB-DOC-005",
+      "path": "docs/dev/FILE_SELECTION.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "cbd2cef6fc4e617953e5cffad8254ab040031e15c87fc4cbecb0e7730c1d1053",
+          "size_bytes": 1909,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "f78a3925e54606f130c57169d39abf1915befdc61e375c4bf6d3027abbe23c51",
+      "size_bytes": 2824
+    },
+    {
+      "document_id": "PUB-DOC-SPLIT-005",
+      "path": "docs/dev/OWNERSHIP.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "93e606dfa26a284261379f4bdf52527ccd272e7a165b387d1c16b2904f869138",
+      "size_bytes": 2017
+    },
+    {
+      "document_id": "PUB-DOC-006",
+      "path": "docs/dev/README.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e2ad39ca37314e0a68f4fce223fe34fd5a1b7b7fb1de658be559ccbd69fd82c1",
+          "size_bytes": 1042,
+          "superseded_at": "2026-10-13T01:37:33.207141+00:00",
+          "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 2,
+          "sha256": "5e5e3d9d5adea9238ac354c563db622761fb8825d74aaff77b90bc7902d79f98",
+          "size_bytes": 1392,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "135f9b1f28cc82ed3937fab6089daca04ee90caa33e8f34af1ebe9b472155dcd",
+      "size_bytes": 2254
+    },
+    {
+      "document_id": "DOC-18",
+      "path": "docs/dev/REQUIREMENTS.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "01ee1309978231fa954930726e5fc8137ae984c74768025530a4a21610ee7a4f",
+          "size_bytes": 7423,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        },
+        {
+          "revision": 2,
+          "sha256": "6e69b35ccb9e4098bb2f6cc5587ee9713cb8927c153a721cf17878d8063718c0",
+          "size_bytes": 3600,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "01ee1309978231fa954930726e5fc8137ae984c74768025530a4a21610ee7a4f",
+        "source_size_bytes": 7423
+      },
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "SP-FEATURES-20261012",
+        "SP-US-20261012",
+        "SRC04"
+      ],
+      "sha256": "03319835832090adadf0c29eceb3c0265a954f40426deb7c8b21cac492ab21eb",
+      "size_bytes": 4477
+    },
+    {
+      "document_id": "DOC-19",
+      "path": "docs/dev/SOURCE_REGISTER.json",
+      "revision": 7,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 4,
+          "sha256": "9b32fe899a7d300a28940e1cd65d59acfe230d0b61db41cefa30dc99b20229dd",
+          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 5,
+          "sha256": "217e2dfa6f87ccbffcd1d40b39ee85ee05eb651e3be660b8837b88c2fd284733",
+          "superseded_at": "2026-10-12T11:00:09.602551+00:00",
+          "reason": "TASK-004"
+        },
+        {
+          "revision": 6,
+          "sha256": "3ec4305b613d7388ab6ae091afd65252a92c218781db2d8c6217751c704f8757",
+          "size_bytes": 14255,
+          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        }
+      ],
+      "import_lineage": {
+        "workspace_version": "1.2.0",
+        "source_sha256": "3ec4305b613d7388ab6ae091afd65252a92c218781db2d8c6217751c704f8757",
+        "source_size_bytes": 14255
+      },
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e2a082613c70c5e75c6ba35b81671ffce5cc12b4ecef78bc49dcda995f68f6f8",
+      "size_bytes": 8011
+    },
+    {
+      "document_id": "PUB-DOC-007",
+      "path": "docs/dev/TEST_PLAN.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "8b13f047a8034ef92025c14fb3c250c24653917bcab48e257a02681ff560e038",
+          "size_bytes": 1993,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "7c2a4a0e6b9a90a11f248f8c0d35786d7cb1f265591ad17c7c482e0ea4521940",
+      "size_bytes": 2342
+    },
+    {
+      "document_id": "PUB-DOC-SPLIT-004",
+      "path": "docs/dev/backend/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "draft",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "cfe5eeebf0064c263d73507c19b03e62ced749e80192692ed1b013237ed0caa9",
+          "size_bytes": 1417,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "4d4d76fcf20e997d2ba9b169b28731cdfe65e03efd6707dd01eb34d1d9abad07",
+      "size_bytes": 1770
+    },
+    {
+      "document_id": "PUB-DOC-DEV-VERIFY-EVIDENCE-20261016",
+      "path": "docs/dev/evidence/DEV-BASELINE-VERIFY-20261016/README.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1ae6d54d5c963cfd53778a2694f4eee1f9648e148fd3ae33638c9008f90e4464",
+          "size_bytes": 9118,
+          "superseded_at": "2026-10-16T02:29:43.447438+00:00",
+          "reason": "Reconcile native supplemental login failures with raw results and preserve explicit acceptance limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "01a448267d05e34c1868ca1a9ea095ee2fabbd35aa019a2b30098b3a0884315f",
+          "size_bytes": 9229,
+          "superseded_at": "2026-10-16T02:32:15.419849+00:00",
+          "reason": "Record completed documentation validation and immutable native evidence fingerprints"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "f6b529a2b81420f9dcd4e16cec1614d4045dfc706c8099ac071585adac96b6cf",
+      "size_bytes": 10029,
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "PR4-05F7C286E05E0B7B",
+      "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md",
+      "title": "README.md",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 2,
+      "sha256": "d4407c4d46aa630ef880f546b0c7eafecbaaa8c9606a78f65b0098603acc06d5",
+      "size_bytes": 1937,
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "approval_record": null,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38557951101-1/README.md",
+        "source_sha256": "38f40a1675b005b1cf60659804ee41f5cfefb23749880c7e12ce59b64e702faa",
+        "source_size_bytes": 1377,
+        "source_revision": 1,
+        "source_dependencies": [],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "38f40a1675b005b1cf60659804ee41f5cfefb23749880c7e12ce59b64e702faa",
+          "size_bytes": 1377,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ]
+    },
+    {
+      "document_id": "PR4-8C6EAD754F737BD2",
+      "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md",
+      "title": "README.md",
+      "owner": "Benjamin / Developer",
+      "status": "working-baseline",
+      "revision": 2,
+      "sha256": "67a266fb791d1a8cf6d59b9666ffc92555e85b272a9959ab8cb5a65d036f88bd",
+      "size_bytes": 1937,
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "approval_record": null,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md",
+        "source_sha256": "415748f090461eb1564a06fd4b9deab9ad36d4188b28adb35b7113b8e95ecc92",
+        "source_size_bytes": 1377,
+        "source_revision": 1,
+        "source_dependencies": [],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "415748f090461eb1564a06fd4b9deab9ad36d4188b28adb35b7113b8e95ecc92",
+          "size_bytes": 1377,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ]
+    },
+    {
+      "document_id": "FE-LIVE-20261014-034",
+      "path": "docs/dev/evidence/FE-LIVE-20261014/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "21addd549afbc421ced99de41d9c304575de2ee0362b81edc48d501b2ec7d1be",
+          "size_bytes": 3251,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "fe166dbeb2cb3dac6f5c6ce4a36ca5d0fabc79b9961bcde0a8a6d55fbcdb1e5b",
+      "size_bytes": 5094,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/evidence/FE-LIVE-20261014/README.md",
+        "source_sha256": "21addd549afbc421ced99de41d9c304575de2ee0362b81edc48d501b2ec7d1be",
+        "source_size_bytes": 3251,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-FE-LIVE-20261014"
+        ],
+        "dependencies_not_present_in_main_source_register": [
+          "USER-FE-LIVE-20261014"
+        ],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "PUB-DOC-008",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/NU_Log_Documents_Final_QA.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "db4b9a838a4450c625ba47a3f0e44b38b52711ee72152a240eaf0d2a5135a02c",
+      "size_bytes": 2198
+    },
+    {
+      "document_id": "PUB-DOC-009",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/NU_v1.2.1_Browser_Capture_Evidence.json",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "35cac595455674a0623a3efb7242feb6f4744d24159035cc972bbbc755e91620",
+      "size_bytes": 6263
+    },
+    {
+      "document_id": "PUB-DOC-010",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "62e9b847135ba5880960a109fd251a77af36c2924ce38d11640a6e8d5a2a0c56",
+          "size_bytes": 1095,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "10415359bb41b8dabebd652a6b8a0f77326c4a13c7d6144d0bb81706fb75757c",
+      "size_bytes": 1320
+    },
+    {
+      "document_id": "PUB-DOC-011",
+      "path": "docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE",
+        "CAPTURE-20261012"
+      ],
+      "sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
+      "size_bytes": 50708
     },
     {
       "document_id": "PUB-DOC-012",
@@ -461,34 +1077,6 @@
       "size_bytes": 150041
     },
     {
-      "document_id": "PUB-DOC-008",
-      "path": "docs/dev/evidence/LOG_DOCX_20261012/NU_Log_Documents_Final_QA.json",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE",
-        "CAPTURE-20261012"
-      ],
-      "sha256": "db4b9a838a4450c625ba47a3f0e44b38b52711ee72152a240eaf0d2a5135a02c",
-      "size_bytes": 2198
-    },
-    {
-      "document_id": "PUB-DOC-009",
-      "path": "docs/dev/evidence/LOG_DOCX_20261012/NU_v1.2.1_Browser_Capture_Evidence.json",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE",
-        "CAPTURE-20261012"
-      ],
-      "sha256": "35cac595455674a0623a3efb7242feb6f4744d24159035cc972bbbc755e91620",
-      "size_bytes": 6263
-    },
-    {
       "document_id": "PUB-DOC-018",
       "path": "docs/dev/evidence/LOG_DOCX_20261012/participant_mobile_confirmed_390px.png",
       "revision": 1,
@@ -515,34 +1103,6 @@
       ],
       "sha256": "2cc3c0776f243d6072f30fe95ab85217f4c9ed5cb10a797b0c4aca226faba5bf",
       "size_bytes": 90753
-    },
-    {
-      "document_id": "PUB-DOC-010",
-      "path": "docs/dev/evidence/LOG_DOCX_20261012/README.md",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE",
-        "CAPTURE-20261012"
-      ],
-      "sha256": "62e9b847135ba5880960a109fd251a77af36c2924ce38d11640a6e8d5a2a0c56",
-      "size_bytes": 1095
-    },
-    {
-      "document_id": "PUB-DOC-011",
-      "path": "docs/dev/evidence/LOG_DOCX_20261012/ROSE_DEMO_English_v1.2.1_SOURCE.html",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE",
-        "CAPTURE-20261012"
-      ],
-      "sha256": "3949160d0317c2b32ceadb00adca263db507f55c5577cb7ed4aa05e48cd8292e",
-      "size_bytes": 50708
     },
     {
       "document_id": "PUB-DOC-020",
@@ -582,57 +1142,44 @@
     {
       "document_id": "PUB-DOC-022",
       "path": "docs/dev/evidence/V121_HISTORICAL_SUMMARY.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f84459faabc7a954e84d764b62c14c853de1acaa54fd44040af712862ed4ee18",
+          "size_bytes": 1045,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f84459faabc7a954e84d764b62c14c853de1acaa54fd44040af712862ed4ee18",
-      "size_bytes": 1045
-    },
-    {
-      "document_id": "PUB-DOC-004",
-      "path": "docs/dev/FEATURE_ID_CROSSWALK.md",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE",
-        "SP-FEATURES-20261012",
-        "SP-US-20261012",
-        "SRC04"
-      ],
-      "sha256": "790f47aef164f6814711ef600c337dab761ace37067b6ec70c51e8c3bf0c9a80",
-      "size_bytes": 3784
-    },
-    {
-      "document_id": "PUB-DOC-005",
-      "path": "docs/dev/FILE_SELECTION.md",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "cbd2cef6fc4e617953e5cffad8254ab040031e15c87fc4cbecb0e7730c1d1053",
-      "size_bytes": 1909
+      "sha256": "3c18f88fa70f27970b576f49c6502242ad1035cd48c6902fe52a8a6944da0d8c",
+      "size_bytes": 1168
     },
     {
       "document_id": "PUB-DOC-SPLIT-003",
       "path": "docs/dev/frontend/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a3fa72b72d5709a6c4ec4b072aec7cf6901bd8f6e43b2f38ac83727745405d51",
+          "size_bytes": 1736,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a3fa72b72d5709a6c4ec4b072aec7cf6901bd8f6e43b2f38ac83727745405d51",
-      "size_bytes": 1736
+      "sha256": "0d27f4206bfdafc73e0fa8f80b235a47a67788f3f9f9d1e8d062d73c32d5ce8b",
+      "size_bytes": 2120
     },
     {
       "document_id": "PUB-DOC-023",
@@ -665,116 +1212,52 @@
     {
       "document_id": "PUB-DOC-025",
       "path": "docs/dev/log-tasks/README.md",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "8e81df3f65eee0e534e190c200807a9a37ceaaa31af0ff2a0f40ec7724d80b4c",
-      "size_bytes": 1341
-    },
-    {
-      "document_id": "PUB-DOC-SPLIT-005",
-      "path": "docs/dev/OWNERSHIP.md",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "draft",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "93e606dfa26a284261379f4bdf52527ccd272e7a165b387d1c16b2904f869138",
-      "size_bytes": 2017
-    },
-    {
-      "document_id": "PUB-DOC-006",
-      "path": "docs/dev/README.md",
       "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
         {
           "revision": 1,
-          "sha256": "e2ad39ca37314e0a68f4fce223fe34fd5a1b7b7fb1de658be559ccbd69fd82c1",
-          "size_bytes": 1042,
-          "superseded_at": "2026-10-13T01:37:33.207141+00:00",
-          "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+          "sha256": "8e81df3f65eee0e534e190c200807a9a37ceaaa31af0ff2a0f40ec7724d80b4c",
+          "size_bytes": 1341,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5e5e3d9d5adea9238ac354c563db622761fb8825d74aaff77b90bc7902d79f98",
-      "size_bytes": 1392
+      "sha256": "9aa55a655db3af36d4259ff79fd2bb9a2d6069854bbf88892d3125310533d035",
+      "size_bytes": 1843
     },
     {
-      "document_id": "DOC-18",
-      "path": "docs/dev/REQUIREMENTS.md",
-      "revision": 2,
+      "document_id": "PUB-DOC-DEV-BASELINE-VERIFY-20261016",
+      "path": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md",
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
         {
           "revision": 1,
-          "sha256": "01ee1309978231fa954930726e5fc8137ae984c74768025530a4a21610ee7a4f",
-          "size_bytes": 7423,
-          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
-          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
-        }
-      ],
-      "import_lineage": {
-        "workspace_version": "1.2.0",
-        "source_sha256": "01ee1309978231fa954930726e5fc8137ae984c74768025530a4a21610ee7a4f",
-        "source_size_bytes": 7423
-      },
-      "dependencies": [
-        "USER-PR-SCOPE",
-        "SP-FEATURES-20261012",
-        "SP-US-20261012",
-        "SRC04"
-      ],
-      "sha256": "6e69b35ccb9e4098bb2f6cc5587ee9713cb8927c153a721cf17878d8063718c0",
-      "size_bytes": 3600
-    },
-    {
-      "document_id": "DOC-19",
-      "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 7,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [
-        {
-          "revision": 4,
-          "sha256": "9b32fe899a7d300a28940e1cd65d59acfe230d0b61db41cefa30dc99b20229dd",
-          "superseded_at": "2026-10-12T10:50:51.636683+00:00",
-          "reason": "TASK-004"
+          "sha256": "736ea1a47617257f01af4b8c958870ed1f609e44a62d97034db1f6e1d981b318",
+          "size_bytes": 6446,
+          "superseded_at": "2026-10-16T02:32:15.419849+00:00",
+          "reason": "Record completed documentation validation and immutable native evidence fingerprints"
         },
         {
-          "revision": 5,
-          "sha256": "217e2dfa6f87ccbffcd1d40b39ee85ee05eb651e3be660b8837b88c2fd284733",
-          "superseded_at": "2026-10-12T11:00:09.602551+00:00",
-          "reason": "TASK-004"
-        },
-        {
-          "revision": 6,
-          "sha256": "3ec4305b613d7388ab6ae091afd65252a92c218781db2d8c6217751c704f8757",
-          "size_bytes": 14255,
-          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
-          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+          "revision": 2,
+          "sha256": "344daba31bc4ff269227bac24a9c2e995a8afdd1c76f780a4d181664ca312146",
+          "size_bytes": 7721,
+          "superseded_at": "2026-10-16T02:36:17.302245+00:00",
+          "reason": "Record observed Draft PR 5 identity for repository context handoff"
         }
       ],
-      "import_lineage": {
-        "workspace_version": "1.2.0",
-        "source_sha256": "3ec4305b613d7388ab6ae091afd65252a92c218781db2d8c6217751c704f8757",
-        "source_size_bytes": 14255
-      },
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e2a082613c70c5e75c6ba35b81671ffce5cc12b4ecef78bc49dcda995f68f6f8",
-      "size_bytes": 8011
+      "sha256": "b5d674dc4bb7b785ec309012dbe2459e60611561a1bc1ae03a9d6ae8ac8c483e",
+      "size_bytes": 8304,
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -798,9 +1281,235 @@
       "size_bytes": 2464
     },
     {
+      "document_id": "FE-CREATE-EVENT-20261014-004",
+      "path": "docs/dev/tasks/FE-CREATE-EVENT-20261014.md",
+      "revision": 4,
+      "owner": "Benjamin frontend / root Codex writer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "44c5d0559133951f9b670fcbc3fba87067da03d7175219eec2e1445c4c7dae62",
+          "size_bytes": 5085,
+          "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "743568d6fc8ebcbcb55ee86dfb55fed89846463f4f5c1081ce80cbdafbe858f7",
+          "size_bytes": 5757,
+          "superseded_at": "2026-10-14T11:43:38.979369+00:00",
+          "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 3,
+          "sha256": "e2836a7b14014c4795c70d0dcaab486927f7c537a58101108c7a7389f326a42d",
+          "size_bytes": 6429,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "b4997892d3e4c88d1569584908ce77977b19042825154943a85472fcf7ae54ea",
+      "size_bytes": 6952,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/tasks/FE-CREATE-EVENT-20261014.md",
+        "source_sha256": "e2836a7b14014c4795c70d0dcaab486927f7c537a58101108c7a7389f326a42d",
+        "source_size_bytes": 6429,
+        "source_revision": 3,
+        "source_dependencies": [
+          "BACKEND-CODE-20261013"
+        ],
+        "dependencies_not_present_in_main_source_register": [
+          "BACKEND-CODE-20261013"
+        ],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "FE-LIVE-20261014-042",
+      "path": "docs/dev/tasks/FE-LIVE-20261014.md",
+      "revision": 5,
+      "owner": "Benjamin Dev integration evidence",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9789804f832070c4d41a6bfcbd54168f91dc985abe74083aab7201b406df9cba",
+          "size_bytes": 3977,
+          "superseded_at": "2026-10-13T16:52:43.154181+00:00",
+          "reason": "Record final 34 Node, 23 repository, 2 backend, 8 HTTP and 22 browser checks with native PostgreSQL gate retained"
+        },
+        {
+          "revision": 2,
+          "sha256": "5d06ccf20b4fbb9508d837448df9aa751e23709622693ad959fc00d72890eec5",
+          "size_bytes": 4346,
+          "superseded_at": "2026-10-14T09:54:48.765266+00:00",
+          "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
+        },
+        {
+          "revision": 3,
+          "sha256": "62dc7b74ce9b0f723397dc0744a1416abb472a53234bf34700323040164de792",
+          "size_bytes": 8557,
+          "superseded_at": "2026-10-14T09:55:11.230816+00:00",
+          "reason": "Label original cloud/task evidence historical alongside native acceptance successor"
+        },
+        {
+          "revision": 4,
+          "sha256": "f857129293b946a5e47a6af2950680eb0797632597e53ced3345bbdb7f820e1d",
+          "size_bytes": 8643,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "27285eaa2c97c51fc76b72647fe41c1d570b5fa43955c1764f445d8bf228cbc4",
+      "size_bytes": 9266,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/tasks/FE-LIVE-20261014.md",
+        "source_sha256": "f857129293b946a5e47a6af2950680eb0797632597e53ced3345bbdb7f820e1d",
+        "source_size_bytes": 8643,
+        "source_revision": 4,
+        "source_dependencies": [
+          "USER-FE-LIVE-20261014",
+          "USER-NATIVE-ACCEPTANCE-20261014",
+          "USER-PR3-MERGE-20261014"
+        ],
+        "dependencies_not_present_in_main_source_register": [
+          "USER-FE-LIVE-20261014",
+          "USER-NATIVE-ACCEPTANCE-20261014",
+          "USER-PR3-MERGE-20261014"
+        ],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "FE-V120-012",
+      "path": "docs/dev/tasks/FE-MOCK-V120-20261013.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d03b0e1bb1506e6a2948a26cbcddc75d1a6b904b628252a37471990439961c05",
+          "size_bytes": 1026,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c8d9b5fda7713bc8ee76e1f10ec783d9692eb9da389aa6ffc75d32d68cf70a39",
+      "size_bytes": 1546,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/tasks/FE-MOCK-V120-20261013.md",
+        "source_sha256": "d03b0e1bb1506e6a2948a26cbcddc75d1a6b904b628252a37471990439961c05",
+        "source_size_bytes": 1026,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "FE-V121-004",
+      "path": "docs/dev/tasks/FE-MOCK-V121-20261013.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "06edff55878eec2c8543de53d045513f46c346aec691e5534d696ec4d5950619",
+          "size_bytes": 1338,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "fffc909e66bbb39fe96e2b533646bf69ba5dcb4e895ffd02149619e0c78e9068",
+      "size_bytes": 1858,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/tasks/FE-MOCK-V121-20261013.md",
+        "source_sha256": "06edff55878eec2c8543de53d045513f46c346aec691e5534d696ec4d5950619",
+        "source_size_bytes": 1338,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "FE-SHELL-003",
+      "path": "docs/dev/tasks/FE-SHELL-20261013.md",
+      "revision": 3,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f7fb84addf49ce7e65af84aec210eac98a5fd38d5f64a4b83e1c49448b504451",
+          "size_bytes": 2658,
+          "superseded_at": "2026-10-13T02:08:04.460297+00:00",
+          "reason": "FE-SHELL: record native browser navigation blocked by environment; retain successful static HTTP tests"
+        },
+        {
+          "revision": 2,
+          "sha256": "754541a3294ffbc4249a05324c22f391b57b326e791b686014e2d2ece2d76a2f",
+          "size_bytes": 3090,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9f371d3487644f2222f3d7f8d34e5c2ca92b45ba0997fd1ebe50f1b357e117a8",
+      "size_bytes": 3606,
+      "authorization_record": "docs/dev/tasks/FE-SHELL-20261013.md",
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "docs/dev/tasks/FE-SHELL-20261013.md",
+        "source_sha256": "754541a3294ffbc4249a05324c22f391b57b326e791b686014e2d2ece2d76a2f",
+        "source_size_bytes": 3090,
+        "source_revision": 2,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
       "document_id": "PUB-DOC-026",
       "path": "docs/dev/tasks/PR-PREP-20261013.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -824,18 +1533,25 @@
           "size_bytes": 2759,
           "superseded_at": "2026-10-12T17:05:41.054725+00:00",
           "reason": "記錄 GitHub Draft PR 1、正常 Push 及 Fetch 回讀成功"
+        },
+        {
+          "revision": 4,
+          "sha256": "85d7ac248024bc13df6fbc1c6a9b446a1d7b032aa644698e9076fc0ccfd102d9",
+          "size_bytes": 3674,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "85d7ac248024bc13df6fbc1c6a9b446a1d7b032aa644698e9076fc0ccfd102d9",
-      "size_bytes": 3674
+      "sha256": "ffe4180d594a0938b70ccd0347ac91dc3b493ce7bce0d7197ce4b7f7fd4ae6c8",
+      "size_bytes": 4434
     },
     {
       "document_id": "DOC-24",
       "path": "docs/dev/tasks/TEMPLATE.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -845,6 +1561,13 @@
           "size_bytes": 553,
           "superseded_at": "2026-10-12T16:15:43.702002+00:00",
           "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+        },
+        {
+          "revision": 2,
+          "sha256": "0aab754bb4aeb475bf135e0ac8ff716d4f6a3915f116a58bf5b879a52ee19328",
+          "size_bytes": 596,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -855,125 +1578,244 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0aab754bb4aeb475bf135e0ac8ff716d4f6a3915f116a58bf5b879a52ee19328",
-      "size_bytes": 596
-    },
-    {
-      "document_id": "PUB-DOC-007",
-      "path": "docs/dev/TEST_PLAN.md",
-      "revision": 1,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "8b13f047a8034ef92025c14fb3c250c24653917bcab48e257a02681ff560e038",
-      "size_bytes": 1993
+      "sha256": "99a8f9baed48170705075ecdbcfbd061f8bb1788211038818181dc9238b7afaa",
+      "size_bytes": 1475
     },
     {
       "document_id": "PUB-DOC-027",
       "path": "docs/pm/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Role owner pending team confirmation",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3f0209b515fcc412b1044b070cb66cc4d240c9551555af919447df6c1ed8a0d7",
+          "size_bytes": 508,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "3f0209b515fcc412b1044b070cb66cc4d240c9551555af919447df6c1ed8a0d7",
-      "size_bytes": 508
+      "sha256": "25daf09cb92a930e3509ad43d625219aab592eace906a1928a5d06646691c55a",
+      "size_bytes": 587
     },
     {
       "document_id": "PUB-DOC-028",
       "path": "docs/qa/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Role owner pending team confirmation",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4ba1b27c7d8edfe4dcf6b191a7127df8a4f2537a31050fb5df00f46588fa481d",
+          "size_bytes": 523,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4ba1b27c7d8edfe4dcf6b191a7127df8a4f2537a31050fb5df00f46588fa481d",
-      "size_bytes": 523
+      "sha256": "cf33a725cc220f17c7b64be3ae2c58de8bcd75a98433347a51c0d9e708599106",
+      "size_bytes": 582
     },
     {
-      "document_id": "PUB-DOC-003",
-      "path": "docs/README.md",
+      "document_id": "PUB-DOC-029",
+      "path": "docs/security/README.md",
+      "revision": 2,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1f4b7886980f0a8c7fddbacc260d4ace496d1ce7b25a962f80bae62b0fb14690",
+          "size_bytes": 554,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "600ed895d5d38e7be2c759c4932f0e09f2083a264d945ac95f351245810f1497",
+      "size_bytes": 617
+    },
+    {
+      "document_id": "PUB-DOC-030",
+      "path": "docs/submissions/README.md",
+      "revision": 2,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a6fde1d1e3e04f3f99eb9d3de37534010d254d1b2a17268b25c9d85053eeeec1",
+          "size_bytes": 548,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c92f505e736cbcc555b5879df9cdd3f023459dec5f49cf3b290246c92defc883",
+      "size_bytes": 658
+    },
+    {
+      "document_id": "PUB-DOC-031",
+      "path": "docs/ui-ux/README.md",
+      "revision": 2,
+      "owner": "Role owner pending team confirmation",
+      "status": "draft",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d4e77c7abea8f37f05c6237b555617a2207e966116d4a73d8ad5fe5c59dcdbda",
+          "size_bytes": 528,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "dea8db9e867f7f1d5f5f0f1abe6ad8c7a9d91f64e8597da43378f54fc80177c7",
+      "size_bytes": 599
+    },
+    {
+      "document_id": "PUB-DOC-SPLIT-001",
+      "path": "frontend/README.md",
       "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
         {
           "revision": 1,
-          "sha256": "7081ac80a7160754c41e2b412e2abe8439926528d392f4e6322d8124f4c01177",
-          "size_bytes": 944,
-          "superseded_at": "2026-10-13T01:37:33.207141+00:00",
-          "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+          "sha256": "fca7241ebd3344c4b5b395764c379e8a5824b3861888289791ef8c0829e487ab",
+          "size_bytes": 899,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "c81c40fbab1fb1467663a7ff146cb161f3b4826ae985d126d173f76f606cb794",
-      "size_bytes": 1052
+      "sha256": "e76433753bd1aa45df95fd851558e1fb425b5d82045327171b3413c0852250be",
+      "size_bytes": 1789
     },
     {
-      "document_id": "PUB-DOC-029",
-      "path": "docs/security/README.md",
-      "revision": 1,
-      "owner": "Role owner pending team confirmation",
-      "status": "draft",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "1f4b7886980f0a8c7fddbacc260d4ace496d1ce7b25a962f80bae62b0fb14690",
-      "size_bytes": 554
-    },
-    {
-      "document_id": "PUB-DOC-030",
-      "path": "docs/submissions/README.md",
-      "revision": 1,
-      "owner": "Role owner pending team confirmation",
-      "status": "draft",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "a6fde1d1e3e04f3f99eb9d3de37534010d254d1b2a17268b25c9d85053eeeec1",
-      "size_bytes": 548
-    },
-    {
-      "document_id": "PUB-DOC-031",
-      "path": "docs/ui-ux/README.md",
-      "revision": 1,
-      "owner": "Role owner pending team confirmation",
-      "status": "draft",
-      "revision_history": [],
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "d4e77c7abea8f37f05c6237b555617a2207e966116d4a73d8ad5fe5c59dcdbda",
-      "size_bytes": 528
-    },
-    {
-      "document_id": "PUB-DOC-SPLIT-001",
-      "path": "frontend/README.md",
-      "revision": 1,
+      "document_id": "FE-V121-002",
+      "path": "frontend/mock/README.md",
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6c8591a7aa75fa96ccf366a1108747bc81355ebd03933fa204aaacdf2a45648a",
+          "size_bytes": 747,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "fca7241ebd3344c4b5b395764c379e8a5824b3861888289791ef8c0829e487ab",
-      "size_bytes": 899
+      "sha256": "2886353806d00669a31a69a65f57f70bb9ffd3356c6dc6215d540472a4238507",
+      "size_bytes": 1364,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "frontend/mock/README.md",
+        "source_sha256": "6c8591a7aa75fa96ccf366a1108747bc81355ebd03933fa204aaacdf2a45648a",
+        "source_size_bytes": 747,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "FE-V120-011",
+      "path": "frontend/mock/v1.2.0/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c14efaf376b58769ca21f438cf9efd48c5cb636aa16d6f0d1efe215faa99df2e",
+          "size_bytes": 1175,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e27b0e25c976499d50bf324acf294091908a75aa7f4f67441bb0a1b065b16f97",
+      "size_bytes": 2055,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "frontend/mock/v1.2.0/README.md",
+        "source_sha256": "c14efaf376b58769ca21f438cf9efd48c5cb636aa16d6f0d1efe215faa99df2e",
+        "source_size_bytes": 1175,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
+    },
+    {
+      "document_id": "FE-V121-003",
+      "path": "frontend/mock/v1.2.1/README.md",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ffc843752a9434401622f57acc2aacbee695b240be4ec23a55fe3d0c65ef09a5",
+          "size_bytes": 1418,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "257ba79d61070360321a3cdf70317b84917d629e23612c637e6a83c88c59b327",
+      "size_bytes": 2052,
+      "dev_import_lineage": {
+        "commit": "a47ff7d92f296ebd0604a1df98daf0b8111829b3",
+        "path": "frontend/mock/v1.2.1/README.md",
+        "source_sha256": "ffc843752a9434401622f57acc2aacbee695b240be4ec23a55fe3d0c65ef09a5",
+        "source_size_bytes": 1418,
+        "source_revision": 1,
+        "source_dependencies": [
+          "USER-PR-SCOPE"
+        ],
+        "dependencies_not_present_in_main_source_register": [],
+        "source_register_url": "https://github.com/KV6014BHV31-GP6/event-management-app/blob/a47ff7d92f296ebd0604a1df98daf0b8111829b3/docs/dev/SOURCE_REGISTER.json",
+        "scope": "Historical dev provenance only; no source approval or product code import"
+      },
+      "registration_record": "docs/dev/tasks/DEV-BASELINE-VERIFY-20261016.md"
     },
     {
       "document_id": "DOC-25",
       "path": "integration/README.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -990,6 +1832,13 @@
           "size_bytes": 994,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 3,
+          "sha256": "05078fd29af1913780ca3c13707a46bf344bc50682a3fe11ad377cc55af57132",
+          "size_bytes": 1304,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
         }
       ],
       "import_lineage": {
@@ -1000,41 +1849,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "05078fd29af1913780ca3c13707a46bf344bc50682a3fe11ad377cc55af57132",
-      "size_bytes": 1304
-    },
-    {
-      "document_id": "DOC-40",
-      "path": "README.md",
-      "revision": 3,
-      "owner": "Benjamin Dev workflow",
-      "status": "working-baseline",
-      "revision_history": [
-        {
-          "revision": 1,
-          "sha256": "f6ab2efb279c3e436ca8ddd0addcfa5f7dbc90e8b0901f3726b56bf2f117fa34",
-          "size_bytes": 1402,
-          "superseded_at": "2026-10-12T16:15:43.702002+00:00",
-          "reason": "Selective public import successor; source scope and latest user authorization reconciled"
-        },
-        {
-          "revision": 2,
-          "sha256": "1c6821ce5a511cd4e10a0d7165139e62062b125af7231a2b8cb0a558f8dc5c50",
-          "size_bytes": 1524,
-          "superseded_at": "2026-10-13T01:37:33.207141+00:00",
-          "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
-        }
-      ],
-      "import_lineage": {
-        "workspace_version": "1.2.0",
-        "source_sha256": "f6ab2efb279c3e436ca8ddd0addcfa5f7dbc90e8b0901f3726b56bf2f117fa34",
-        "source_size_bytes": 1402
-      },
-      "dependencies": [
-        "USER-PR-SCOPE"
-      ],
-      "sha256": "8c505a9d4edc994db8c2a44553c6b5d3b64d78a1f0101bc24c9a4fee2e5c18a5",
-      "size_bytes": 1671
+      "sha256": "c95ecedee1e7afb2bc87b655ff1917177661a68d5cf42370337a8b5a3ce5c89b",
+      "size_bytes": 1594
     },
     {
       "document_id": "DOC-35",
@@ -1103,15 +1919,23 @@
     {
       "document_id": "PUB-DOC-SPLIT-007",
       "path": "tests/e2e/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "993f3f484550f56accdb48328d5709c76632387cd713730d6f863ecd4e65db37",
+          "size_bytes": 1494,
+          "superseded_at": "2026-10-16T02:27:44.663977+00:00",
+          "reason": "Reviewed English Markdown, pinned dev verification and context handoff; user-approved register-only metadata exception"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "993f3f484550f56accdb48328d5709c76632387cd713730d6f863ecd4e65db37",
-      "size_bytes": 1494
+      "sha256": "57f095999b9c937a26c5e83e515d02ee8fb228e5397d4da3fe07e2eeab0506cb",
+      "size_bytes": 4603
     },
     {
       "document_id": "PUB-DOC-032",
