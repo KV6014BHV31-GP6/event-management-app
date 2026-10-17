@@ -1,71 +1,66 @@
-import ulid
-from fastapi import HTTPException, status
+from sqlalchemy import func, or_
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
-
 from src.participants.models import ParticipantModel
-from src.participants.schemas import ParticipantCreate
-from src.users.models import UserModel
+from src.participants.schemas import ParticipantUpdate
 
 
 class ParticipantService:
-    @staticmethod
-    async def create_participant(
-        db: AsyncSession,
-        participant_in: ParticipantCreate,
-        current_user: UserModel | None
+    def __init__(self, db: AsyncSession):
+        self.db = db
+
+    async def get_participant_by_id(self, participant_id: str) -> ParticipantModel | None:
+        query = select(ParticipantModel).where(
+            ParticipantModel.id == participant_id)
+        result = await self.db.execute(query)
+        return result.scalar_one_or_none()
+
+    async def update_participant(
+        self, db_participant: ParticipantModel, update_in: ParticipantUpdate, updater_user_id: str
     ) -> ParticipantModel:
+        """
+        Applies partial updates to a participant profile, tracking administrative modifiers.
+        """
+        update_data = update_in.model_dump(exclude_unset=True)
+        for key, value in update_data.items():
+            setattr(db_participant, key, value)
 
-        # Rule 1 Default: No account active, initialize both tracking parameters as null
-        assigned_user_id = None
-        assigned_updated_by = None
+        db_participant.updated_by_user_id = updater_user_id
 
-        if current_user:
-            # Rule 2: User profile registers themselves
-            if current_user.role.value == "user":
-                assigned_user_id = current_user.id
-                assigned_updated_by = current_user.id
+        self.db.add(db_participant)
+        await self.db.commit()
+        await self.db.refresh(db_participant)
+        return db_participant
 
-            # Rule 3: Organizer or Leader assists an external user registration
-            elif current_user.role.value in ("organizer", "leader"):
-                assigned_user_id = None
-                assigned_updated_by = current_user.id
+    async def get_paginated_participants(self, page: int = 1, page_size: int = 20, keyword: str | None = None) -> dict:
+        query = select(ParticipantModel)
+        count_query = select(func.count()).select_from(ParticipantModel)
 
-        # Unique Check: Ensure a physical user profile doesn't spawn duplicate mapping models
-        if assigned_user_id:
-            user_stmt = select(ParticipantModel).where(
-                ParticipantModel.user_id == assigned_user_id)
-            user_result = await db.execute(user_stmt)
-            if user_result.scalar_one_or_none():
-                raise HTTPException(
-                    status_code=status.HTTP_400_BAD_REQUEST,
-                    detail="A participant profile is already linked to your user account."
-                )
-
-        # Unique Check: Ensure unique telephone constraints map smoothly
-        phone_stmt = select(ParticipantModel).where(
-            ParticipantModel.phone == participant_in.phone)
-        phone_result = await db.execute(phone_stmt)
-        if phone_result.scalar_one_or_none():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Phone number is already registered."
+        if keyword:
+            search_filter = or_(
+                ParticipantModel.first_name.ilike(f"%{keyword}%"),
+                ParticipantModel.last_name.ilike(f"%{keyword}%"),
+                ParticipantModel.phone.ilike(f"%{keyword}%")
             )
+            query = query.where(search_filter)
+            count_query = count_query.where(search_filter)
 
-        new_participant = ParticipantModel(
-            id=str(ulid.ULID()),
-            user_id=assigned_user_id,
-            first_name=participant_in.first_name,
-            last_name=participant_in.last_name,
-            gender=participant_in.gender.value,
-            date_of_birth=participant_in.date_of_birth,
-            phone=participant_in.phone,
-            address=participant_in.address,
-            national_id=participant_in.national_id,
-            updated_by_user_id=assigned_updated_by
-        )
+        count_result = await self.db.execute(count_query)
+        total_count = count_result.scalar_one()
 
-        db.add(new_participant)
-        await db.commit()
-        await db.refresh(new_participant)
-        return new_participant
+        offset = (page - 1) * page_size
+        query = query.order_by(ParticipantModel.created_at.desc()).offset(
+            offset).limit(page_size)
+
+        data_result = await self.db.execute(query)
+        participants = list(data_result.scalars().all())
+        total_pages = (total_count + page_size -
+                       1) // page_size if total_count > 0 else 0
+
+        return {
+            "total_count": total_count,
+            "page": page,
+            "page_size": page_size,
+            "total_pages": total_pages,
+            "data": participants
+        }

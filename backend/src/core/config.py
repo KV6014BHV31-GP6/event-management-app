@@ -14,6 +14,14 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 120
 
+    STORAGE_PROVIDER: str = "local"  # "local" or "gcs"
+    UPLOAD_DIR: str = "uploads"      # Root directory for local storage
+
+    # Google Cloud Storage configurations
+    GCS_BUCKET_NAME: str = "your-gcs-bucket-name"
+    GCS_PROJECT_ID: str = "your-gcloud-project-id"
+    GOOGLE_APPLICATION_CREDENTIALS: str | None = None
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",

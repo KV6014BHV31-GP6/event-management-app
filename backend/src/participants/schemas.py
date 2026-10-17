@@ -1,38 +1,31 @@
-from datetime import date, datetime
-from enum import Enum
+from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel, Field
 
 
-class UserGender(str, Enum):
-    MALE = "male"
-    FEMALE = "female"
-
-
-class ParticipantCreate(BaseModel):
-    user_id: str | None = Field(
-        None, max_length=26, description="Optional associated user ID")
-    first_name: str = Field(..., max_length=20)
-    last_name: str = Field(..., max_length=20)
-    gender: UserGender
-    date_of_birth: date
-    phone: str = Field(..., max_length=20)
-    address: str | None = None
-    national_id: str | None = Field(None, max_length=50)
+class ParticipantUpdate(BaseModel):
+    first_name: Optional[str] = Field(None, max_length=50)
+    last_name: Optional[str] = Field(None, max_length=50)
+    phone: Optional[str] = Field(None, max_length=20)
 
 
 class ParticipantResponse(BaseModel):
     id: str
-    user_id: str | None
+    user_id: Optional[str]
     first_name: str
     last_name: str
-    gender: UserGender
-    date_of_birth: date
     phone: str
-    address: str | None
-    national_id: str | None
     created_at: datetime
     updated_at: datetime
-    updated_by_user_id: str | None
+    updated_by_user_id: Optional[str]
 
     class Config:
         from_attributes = True
+
+
+class PaginatedParticipantResponse(BaseModel):
+    total_count: int
+    page: int
+    page_size: int
+    total_pages: int
+    data: list[ParticipantResponse]
