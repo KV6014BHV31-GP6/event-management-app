@@ -31,3 +31,7 @@ Guest 報名保留無帳戶設計。Server 對身份授權、名額、取消、�
 ## Developer directory split, 2026-10-13
 
 `frontend/` and `backend/` are README-only workspace boundaries until authentic source and stack are verified. Responsibility and reviewer proposal: `docs/dev/OWNERSHIP.md`; task: `docs/dev/tasks/DEV-SPLIT-20261013.md`. Keep `docs/dev/CURRENT.md` as the only repository-functional status. `integration/` remains frozen synthetic evidence. Never treat placeholder folders, unconfirmed API claims or historical document tests as functional implementation.
+
+## Current authorization successor: FE-SHELL-20261013
+
+The user explicitly authorized merging the main directory shell before initializing dev/uat and the frontend feature. PR #2 was merged; this one-time exception does not grant future merge permission. The current task may commit/push the static preview entry, related Markdown and tests on dev_fe_shell, then stop. Do not open a promotion PR, merge the feature, force-push, deploy, change protections/default branch/visibility or delete branches. Read docs/dev/BRANCHING.md and docs/dev/tasks/FE-SHELL-20261013.md. This successor overrides earlier no-merge wording only for the already authorized structure bootstrap; all evidence and privacy rules remain.

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>NU ROSE · 四角色操作演示</title>
+  <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+  <div class="mock-banner"><strong>MOCK PREVIEW</strong><span>只有合成資料，不會真的報名或發送訊息。重新載入會重設。</span></div>
+  <header class="shell masthead">
+    <div class="brand"><span class="brand-mark">N</span><div>NU / GROUP 6<small>活動管理 · 可操作開發提案</small></div></div>
+    <button id="network" class="quiet" type="button" aria-pressed="false">模擬斷網</button>
+  </header>
+  <main class="shell">
+    <section class="intro"><p class="eyebrow">ROSE · 活動報名至現場簽到</p><h1>先試一次，就知道怎樣操作。</h1><p>從參加者、社區負責人、統籌者及現場同事四個角度，試用同一組示範資料。</p></section>
+    <div class="workspace"><aside><p class="nav-label">選擇操作角色</p><nav aria-label="Preview role">
+      <button data-role="participant" aria-current="page">參加者 <span>申請名額</span></button>
+      <button data-role="coordinator">統籌者 <span>查看名額</span></button>
+      <button data-role="leader">社區負責人 <span>代報及推廣</span></button>
+      <button data-role="staff">現場同事 <span>辦理簽到</span></button>
+    </nav><p class="role-note">角色切換僅供演示，不代表登入或取得真實權限。</p><div id="network-state" class="network-state">模擬連線正常</div></aside>
+    <div class="content"><p id="feedback" class="feedback" role="status" aria-live="polite">DEMO：請選擇一個示範身份。不需要建立帳戶。</p><div id="view"></div><dialog id="confirm-dialog" aria-labelledby="confirm-title"><h2 id="confirm-title">確定取消這個示範報名？</h2><p>只影響示範資料。釋出的名額會按同渠道候補順序補上。</p><div class="actions"><button type="button" id="confirm-no" class="secondary">保留報名</button><button type="button" id="confirm-yes" class="primary">確認取消</button></div></dialog></div></div>
+  </main>
+  <footer class="shell"><a href="/" target="_top">回到 NU 交接中心</a> · <button id="reset-demo" class="quiet" type="button">重設全部示範資料</button><p>MOCK：記憶體資料，未連接 Austin backend。Walk-in 規則待確認。</p></footer>
+  <script type="module" src="./src/app.mjs"></script>
+</body>
+</html>

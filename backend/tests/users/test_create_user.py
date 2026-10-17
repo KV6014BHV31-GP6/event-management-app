@@ -31,8 +31,10 @@ async def test_create_user_success(client: AsyncClient):
 
     data = response.json()
     assert "id" in data
-    # Ensures the system maps auto-incrementing integer serials
-    assert isinstance(data["id"], int)
+    # The current user contract returns a 26-character ULID string.
+    assert isinstance(data["id"], str)
+    assert len(data["id"]) == 26
+    assert all(character in "0123456789ABCDEFGHJKMNPQRSTVWXYZ" for character in data["id"])
     assert data["username"] == payload["username"]
 
     # Confirm email doesn't exist anywhere in payload response schemas
@@ -66,4 +68,4 @@ async def test_create_user_duplicate_username(client: AsyncClient):
     res2 = await client.post("/api/v1/users", json=payload)
 
     assert res2.status_code == status.HTTP_400_BAD_REQUEST
-    assert res2.json()["detail"] == "Username already registered"
+    assert res2.json()["detail"] == "Username is already registered."

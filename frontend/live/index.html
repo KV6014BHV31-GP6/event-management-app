@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Explore ROSE community events and find the details for your next visit.">
+  <title>Community events | ROSE</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./events.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="masthead shell">
+    <a class="brand" href="./index.html" aria-label="ROSE community events"><span class="brand-mark" aria-hidden="true">R</span><span><strong>ROSE</strong><small>Community event access</small></span></a>
+    <nav class="header-nav" aria-label="Main navigation"><a class="nav-link current" href="./index.html" aria-current="page">Events</a><div id="account" class="account"><a class="button button-small" href="./login.html">Log in <span aria-hidden="true">↗</span></a></div></nav>
+  </header>
+  <main id="main" class="shell" tabindex="-1">
+    <div id="auth-notice" class="notice" role="status" hidden></div>
+    <section class="intro" aria-labelledby="page-title">
+      <div><p class="eyebrow">GROWING CONNECTIONS, TOGETHER</p><h1 id="page-title">A little closer<br>to community.</h1><p class="intro-copy">Discover community events and find the details<br class="desktop-break"> for your next visit. A place to connect starts here.</p></div>
+      <aside class="welcome-note"><span class="welcome-mark" aria-hidden="true">✳</span><p class="eyebrow">OPEN TO EVERYONE</p><p>You’re welcome<br>to take a look around.</p><small>Browse events without an account.</small></aside>
+    </section>
+    <section class="events-section" aria-labelledby="events-heading">
+      <div class="section-heading"><div><p class="eyebrow">WHAT’S HAPPENING</p><h2 id="events-heading" tabindex="-1">Explore events <span id="event-count" class="count" hidden></span></h2></div><button type="button" id="refresh-events" class="button button-quiet"><span aria-hidden="true">↻</span> Refresh events</button></div>
+      <div class="list-toolbar"><p id="results-summary" role="status" aria-live="polite" aria-atomic="true">Loading events…</p><label class="page-size-label" for="page-size">Show <select id="page-size" name="page-size"><option value="6">6 per page</option><option value="12">12 per page</option><option value="24">24 per page</option></select></label></div>
+      <div id="event-content" aria-busy="true"><div class="state-panel"><span class="spinner" aria-hidden="true"></span><h3>Finding community events…</h3><p>This should only take a moment.</p></div></div>
+      <nav id="pagination" class="pagination" aria-label="Event pages" hidden>
+        <div class="pagination-buttons"><button id="first-page" class="button button-quiet" type="button" aria-label="First page">First</button><button id="previous-page" class="button button-quiet" type="button" aria-label="Previous page">← Previous</button></div>
+        <form id="page-jump" class="page-jump"><label for="page-number">Page</label><input id="page-number" name="page" type="number" min="1" step="1" required inputmode="numeric" aria-describedby="page-total"><span id="page-total"></span><button type="submit" class="button button-quiet">Go</button></form>
+        <div class="pagination-buttons"><button id="next-page" class="button button-quiet" type="button" aria-label="Next page">Next →</button><button id="last-page" class="button button-quiet" type="button" aria-label="Last page">Last</button></div>
+      </nav>
+      <p class="timezone-note" id="timezone-note"></p>
+    </section>
+    <noscript><div class="notice notice-error">Enable JavaScript to load community events from the server.</div></noscript>
+  </main>
+  <footer class="footer shell"><span class="footer-brand">ROSE <span>·</span> Community event access</span><span>Small moments. Stronger communities.</span></footer>
+</body>
+</html>

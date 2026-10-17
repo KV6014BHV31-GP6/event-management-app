@@ -1,0 +1,6 @@
+{
+  "name": "nu-event-integration-starter",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "node --test tests/*.test.mjs" }
+}
