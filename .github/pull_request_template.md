@@ -1,15 +1,15 @@
-## 範圍與原因
+## Scope and reason
 
-說明這個 PR 解決甚麼、屬於哪個角色、哪些內容明確不做。
+Describe the problem this PR solves, the responsible role and explicit exclusions.
 
-## 來源與受影響 ID
+## Sources and affected IDs
 
-使用完整 source namespace，記版本及必要 ID 對照。
+Use complete source namespaces. Record versions and any necessary ID crosswalk.
 
-## 變更與驗證
+## Changes and validation
 
-記實際 commands、結果、環境、evidence；區分文件、Mock、API+DB、人工驗收。
+Record actual commands, results, environment and evidence. Distinguish document checks, mocks, API/DB integration and human acceptance.
 
-## 風險、待決與 reviewer
+## Risks, open decisions and reviewer
 
-記個資排除、未核對 contract、policy decisions、ownership 和回復方法。不要把測試通過当作 team sign-off。
+Record personal-data exclusions, unverified contracts, policy decisions, ownership and recovery steps. Passing tests do not establish team sign-off.

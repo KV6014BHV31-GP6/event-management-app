@@ -1,17 +1,19 @@
-# Developer 入口
+# Developer entry
 
-**Status: DOCUMENT_WORKSPACE / NO LIVE APP OR BACKEND.** Frontend 與 Backend 分開管理；目前只建立 source landing zones，不是已完成的程式碼。
+**Status: main documentation shell; pinned dev contains implementation.** Read [CURRENT](CURRENT.md) first for exact branch/full-SHA identity, fresh verification status and historical evidence limits. This documentation PR does not import runnable frontend/backend code into main.
 
-| 領域 | 入口 | 責任界線 |
+| Area | Entry | Responsibility / boundary |
 |---|---|---|
-| Frontend | [frontend/README.md](frontend/README.md) | Benjamin 的 UI / user journey / API adapter |
-| Backend | [backend/README.md](backend/README.md) | Austin 所報交付，source 及 ownership 待核對 |
-| Integration | [API checklist](../api/HANDOFF_CHECKLIST.md) | 實際 schema/auth/errors/IDs，未 verified |
-| Ownership | [OWNERSHIP.md](OWNERSHIP.md) | Writer/Reviewer 邊界，團隊待審 |
-| Current | [CURRENT.md](CURRENT.md) | 唯一當前功能／阻礙／下三步 |
-| Requirements | [REQUIREMENTS.md](REQUIREMENTS.md)、[crosswalk](FEATURE_ID_CROSSWALK.md) | US01–US10、新舊 Feature ID |
-| Dev flow | [DEV_FLOW.md](DEV_FLOW.md)、[E2E acceptance](../../tests/e2e/README.md) | G0–G6、尚未執行的實測 |
-| Document control | [DOCUMENT_CONTROL.md](DOCUMENT_CONTROL.md)、[register](DOCUMENT_REGISTER.json) | source/revision/metadata |
-| Existing deliverables | [log-tasks](log-tasks/README.md)、[mock evidence](../../integration/README.md) | 歷史文件及 synthetic capture |
+| Frontend | [Frontend notes](frontend/README.md) | Benjamin's UI, user journeys and API adapter; main shell and dev implementation separated |
+| Backend | [Backend notes](backend/README.md) | Austin reported contributor; authentic source evidence does not transfer ownership |
+| Integration | [API checklist](../api/HANDOFF_CHECKLIST.md) | Actual schema/auth/errors/IDs for source-inspected dev slice; broader intake open |
+| Source scope | [DEV_SCOPE_AUDIT](DEV_SCOPE_AUDIT.md), [bug proposals](BUG_PROPOSALS.md) | Exact-dev API/UI/feature denominators and separate proposed repairs |
+| Ownership | [OWNERSHIP](OWNERSHIP.md) | Writer/reviewer boundaries pending team review |
+| Current | [CURRENT](CURRENT.md) | Sole current functional status, blockers and next actions |
+| Requirements | [Requirements](REQUIREMENTS.md), [crosswalk](FEATURE_ID_CROSSWALK.md) | US01–US10 and older/newer feature namespaces |
+| Workflow | [DEV_FLOW](DEV_FLOW.md), [branching](BRANCHING.md), [E2E](../../tests/e2e/README.md) | G0–G6, branch/promotion rules and separately scoped acceptance |
+| Context / resume | [AGENTS](../../AGENTS.md), [CONTEXT_HANDOFF](CONTEXT_HANDOFF.md), [task template](tasks/TEMPLATE.md) | Ordered minimal startup, bounded evidence retrieval and checkpointing |
+| Document control | [Control policy](DOCUMENT_CONTROL.md), [register](DOCUMENT_REGISTER.json) | Source, revision and metadata integrity |
+| Existing deliverables | [Log tasks](log-tasks/README.md), [frozen evidence](../../integration/README.md) | Historical drafts and synthetic captures |
 
-現有 `integration/` frozen evidence 不當作 `frontend/` production source；完整 v1.2.1 工程 ZIP 與可執行 backend 均未驗證導入。
+The frozen integration capture is not production frontend source. The complete original v1.2.1 engineering ZIP remains unverified/unimported; the dev standalone mock and later live implementation have distinct provenance. English Markdown translation does not alter original DOCX/image/code bytes or establish team acceptance.
