@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer">
+  <title>Online application | ROSE</title><link rel="stylesheet" href="./styles.css"><script type="module" src="./registration.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="masthead shell">
+    <a class="brand" href="./index.html" aria-label="ROSE community events"><span class="brand-mark" aria-hidden="true">R</span><span><strong>ROSE</strong><small>Community event access</small></span></a>
+    <nav class="header-nav" aria-label="Main navigation"><a class="nav-link" href="./index.html">Events</a><div id="account" class="account"></div></nav>
+  </header>
+  <main id="main" class="shell registration-main">
+    <div id="auth-notice" class="notice" role="status" hidden></div>
+    <a id="registration-back" class="back-link" href="./index.html">← Event details</a>
+    <section class="application-heading"><p class="eyebrow">ONLINE APPLICATION</p><h1 id="selected-event-title">Your selected event</h1><p id="selected-event-location" class="muted"></p></section>
+    <p id="event-message" class="notice" role="status">Loading your selected event…</p>
+    <div id="registration-login" class="notice" hidden><p>Log in with your participant account to apply. Your selected event will be kept.</p><a id="registration-login-link" class="button" href="./login.html">Log in to apply →</a></div>
+    <p id="participant-account-note" class="notice" hidden>Use a participant account to apply. Log out, then log in with that account.</p>
+    <p id="registration-progress" class="notice" role="status" aria-live="polite" hidden></p>
+    <form id="registration-form" autocomplete="off">
+      <fieldset id="registration-fields" disabled>
+        <legend>Application details</legend>
+        <div class="application-grid">
+          <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" type="text" aria-describedby="name-limit"><small id="name-limit">Up to 20 characters per name.</small></div>
+          <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" type="text" aria-describedby="name-limit"></div>
+          <div class="field"><label for="gender">Gender</label><select id="gender" name="gender" required><option value="">Choose an option</option><option value="male">Male</option><option value="female">Female</option></select></div>
+          <div class="field"><label for="date_of_birth">Date of birth</label><input id="date_of_birth" name="date_of_birth" type="date" required></div>
+          <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="text"><small>Up to 20 characters.</small></div>
+          <div class="field"><label for="national_id">National ID</label><input id="national_id" name="national_id" type="text"><small>Up to 50 characters. Use the same participant details for each event.</small></div>
+          <div class="field application-wide"><label for="address">Address</label><textarea id="address" name="address" rows="2"></textarea></div>
+          <div class="field"><label for="income_band_code">Income band code</label><input id="income_band_code" name="income_band_code" type="text"><small>Enter the code supplied for your application, up to 20 characters.</small></div>
+          <div class="field"><label for="marriage_status">Marital status</label><select id="marriage_status" name="marriage_status" required><option value="">Choose an option</option><option value="single">Single</option><option value="married">Married</option><option value="divorced">Divorced</option><option value="widowed">Widowed</option></select></div>
+        </div>
+        <p class="muted">Submitting sends an application. A place is not confirmed.</p>
+        <div class="application-actions"><button id="registration-submit" class="button" type="submit">Send application →</button><a class="button button-quiet" href="./index.html">Choose another event</a></div>
+      </fieldset>
+    </form>
+    <section id="registration-result" class="application-receipt" aria-labelledby="receipt-heading" hidden>
+      <p class="eyebrow">APPLICATION RECEIVED</p><h2 id="receipt-heading">Your application is pending.</h2>
+      <p>This is the response to your submission. It does not confirm a place.</p>
+      <dl><dt>Event</dt><dd id="receipt-event"></dd><dt>Event reference</dt><dd id="receipt-public-id"></dd><dt>Application reference</dt><dd id="receipt-id"></dd><dt>Status</dt><dd id="receipt-status"></dd></dl>
+      <a class="button" href="./index.html">Browse another event →</a>
+    </section>
+    <p class="muted application-footnote">Keep your application reference before leaving this page. Saved applications cannot be retrieved here after a reload. If you have already submitted for this event, ask the organiser to check before applying again.</p>
+  </main>
+  <footer class="footer shell"><span class="footer-brand">ROSE · Community event access</span><span>Small moments. Stronger communities.</span></footer>
+</body>
+</html>

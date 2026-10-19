@@ -1,6 +1,16 @@
 # NU Developer 當前狀態
 
-版本：`repo-docs/0.3.2`，2026-10-14（香港）。Active task: [FE-CREATE-EVENT-20261014](tasks/FE-CREATE-EVENT-20261014.md). PR #4 quota boundary repaired. Native Create Event UI acceptance: **PASS**, [current evidence](evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md), tested `0a29fde4ef8b1b76d2ba105d03ef9362ac9a8d90` on a GitHub-hosted Windows runner, not the user E: machine. This supersedes only the previous pending PR #4 UI result. PR #3 remains merged at `7a06f43dc30c8378d9f3c569635523b25ce556b0`; its historical evidence below is unchanged. PR #4 is not merged; no uat/main promotion or deployment.
+Active task, 2026-10-20 (Hong Kong): [FE-W7-BROWSE-REGISTRATION-20261020](tasks/FE-W7-BROWSE-REGISTRATION-20261020.md). This branch is the stage-2 frontend feature based on `origin/dev` **`a47ff7d92f296ebd0604a1df98daf0b8111829b3`**, which already contains merged PR #3 and PR #4. Austin's backend dependency remains separate at **`d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0`**; it is not merged into this feature or dev. The branch names and hashes qualify every current claim; main documentation is read-only reference.
+
+W7 limited implementation: server search/detail, selected-event Login return, verified ordinary-user online POST/pending receipt and applying to different events. Stage-2 checks: 77/77 Node checks, 19 real browser/HTTP/proxy checks and a fresh READ ONLY native PG17 mapping for three distinct applications by the same participant passed. Five controlled UI cases are explicitly synthetic. Original checkout, stage-1 worktrees and original Demo DB remain unchanged. Exact commands, source boundaries, first failures and external evidence are indexed in the task. This is LOCAL_VERIFIED / bounded INTEGRATION_VERIFIED, not designer/PM approval or stage-3 acceptance.
+
+Own-registration GET, server-enforced registration authentication/ownership, public-role restrictions and agreed income/eligibility/pending policy remain ISSUE_COMPLETION_GAP. Full E2E, Security, UAT, DB restart and video are NOT_RUN in W7. Deliver only a base=dev Draft PR with Refs #19/#22; stop for Astra's independently authorized third stage. No merge or promotion.
+
+W7 document-control CLI passes. The Python document suite is **22/23 PASS, 1 FAIL** (exit 1): its existing UTF-16 fixture expects LF but Windows writes CRLF. The same failure was freshly reproduced on the unchanged dev baseline, with identical test/checker bytes. No test was weakened; the task and external baseline evidence record this known failing gate.
+
+## Preserved pre-W7 evidence (not a new test run)
+
+Previous FE-CREATE-EVENT evidence: [native receipt](evidence/FE-CREATE-EVENT-NATIVE-20261014/38558483277-1/README.md), tested `0a29fde4ef8b1b76d2ba105d03ef9362ac9a8d90` on a GitHub-hosted Windows runner, not the user E: machine. Its earlier pending status was superseded by that run; the historical evidence table below is retained within its original scope.
 
 | Area | State | Evidence boundary |
 |---|---|---|

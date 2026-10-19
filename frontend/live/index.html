@@ -23,6 +23,10 @@
     </section>
     <section class="events-section" aria-labelledby="events-heading">
       <div class="section-heading"><div><p class="eyebrow">WHAT’S HAPPENING</p><h2 id="events-heading" tabindex="-1">Explore events <span id="event-count" class="count" hidden></span></h2></div><button type="button" id="refresh-events" class="button button-quiet"><span aria-hidden="true">↻</span> Refresh events</button></div>
+      <form id="event-search" class="event-search" role="search">
+        <div><label for="event-keyword">Search events</label><input id="event-keyword" name="keyword" type="search" placeholder="Search titles or overviews" autocomplete="off"></div>
+        <button class="button" type="submit">Search</button><button id="clear-search" class="button button-quiet" type="button">Clear search</button>
+      </form>
       <div class="list-toolbar"><p id="results-summary" role="status" aria-live="polite" aria-atomic="true">Loading events…</p><label class="page-size-label" for="page-size">Show <select id="page-size" name="page-size"><option value="6">6 per page</option><option value="12">12 per page</option><option value="24">24 per page</option></select></label></div>
       <div id="event-content" aria-busy="true"><div class="state-panel"><span class="spinner" aria-hidden="true"></span><h3>Finding community events…</h3><p>This should only take a moment.</p></div></div>
       <nav id="pagination" class="pagination" aria-label="Event pages" hidden>

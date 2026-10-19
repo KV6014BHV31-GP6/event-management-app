@@ -12,6 +12,18 @@ const contractError = () => new ApiError('contract', 'The server returned an une
 const nonemptyString = value => typeof value === 'string' && value.trim().length > 0;
 const nonnegativeInteger = value => Number.isSafeInteger(value) && value >= 0;
 const validDate = value => typeof value === 'string' && Number.isFinite(new Date(value).valueOf());
+const publicId = value => typeof value === 'string' && /^[A-Za-z0-9_-]{21}$/.test(value);
+const ulid = value => typeof value === 'string' && /^[0-9A-HJKMNP-TV-Z]{26}$/.test(value);
+const registrationFields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'phone', 'address', 'national_id', 'income_band_code', 'marriage_status', 'medical_record'];
+
+function validateEvent(value) {
+  validateEventPage({ data: [value], total_count: 1, total_pages: 1, page: 1, page_size: 1 }, 1, 1);
+  if (!Number.isSafeInteger(value.id) || value.id < 1 || !publicId(value.public_id)
+    || !nonemptyString(value.organizer_id) || !nonnegativeInteger(value.online_quota)
+    || !nonnegativeInteger(value.offline_quota) || !validDate(value.created_at) || !validDate(value.updated_at)
+    || new Date(value.end_time) <= new Date(value.start_time)) throw contractError();
+  return value;
+}
 
 export function validateEventPage(value, page, pageSize) {
   if (!value || !Array.isArray(value.data)
@@ -29,7 +41,7 @@ export function validateEventPage(value, page, pageSize) {
 }
 
 export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = {}) {
-  async function request(path, { method = 'GET', body, token, signal, expectedStatus } = {}) {
+  async function request(path, { method = 'GET', body, token, signal, expectedStatus, operation, eventId } = {}) {
     const controller = new AbortController();
     let timedOut = false;
     const cancel = () => controller.abort();
@@ -45,6 +57,24 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
         signal: controller.signal, cache: 'no-store', credentials: 'omit', redirect: 'error',
       });
       if (!response.ok) {
+        if (operation && [400, 404].includes(response.status)) {
+          let failure;
+          try { failure = await response.json(); } catch (error) { if (controller.signal.aborted) throw error; /* Never echo an untrusted response. */ }
+          const detail = failure?.detail;
+          if (response.status === 400 && detail === 'Invalid identifier structure. Expected a 21-character public NanoID ID.') {
+            throw new ApiError('validation', 'Choose a valid event.', 400);
+          }
+          const notFound = `Event with public identifier '${eventId}' was not found${operation === 'registration' ? '.' : ''}`;
+          if (response.status === 404 && detail === notFound) throw new ApiError('not_found', 'This event could not be found. Choose another event.', 404);
+          if (operation === 'registration' && response.status === 400) {
+            const errors = new Map([
+              ['This participant already holds an active registration record for this event.', ['duplicate', 'An application already exists for this participant and event. Please do not submit it again.']],
+              ['Registration full. Online quota limits for this event are exhausted.', ['full', 'This event is not accepting more online applications. Choose another event.']],
+              ['Registration rejected. This event is not currently accepting entries.', ['inactive', 'This event is not currently accepting applications. Choose another event.']],
+            ]);
+            if (errors.has(detail)) { const [kind, message] = errors.get(detail); throw new ApiError(kind, message, 400); }
+          }
+        }
         if (response.status === 401) throw new ApiError('unauthorized', 'Your login has expired. Please log in again.', 401);
         if (response.status === 403) throw new ApiError('forbidden', 'Your account cannot access this request.', 403);
         if (response.status === 422) throw new ApiError('validation', 'Please check your details and try again.', 422);
@@ -69,12 +99,35 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
   }
 
   return {
-    async getEvents({ page = 1, pageSize = 6, signal } = {}) {
+    async getEvents({ page = 1, pageSize = 6, keyword = '', signal } = {}) {
       if (!Number.isSafeInteger(page) || page < 1 || !Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 100) {
         throw new ApiError('validation', 'Choose a valid event page and page size.');
       }
-      const data = await request(`/events?page=${page}&pageSize=${pageSize}`, { signal });
+      if (typeof keyword !== 'string') throw new ApiError('validation', 'Enter a search term.');
+      const query = new URLSearchParams({ page: String(page), pageSize: String(pageSize) });
+      if (keyword) query.set('keyword', keyword);
+      const data = await request(`/events?${query}`, { signal });
       return validateEventPage(data, page, pageSize);
+    },
+    async getEvent(id, { signal } = {}) {
+      if (!publicId(id)) throw new ApiError('validation', 'Choose a valid event.');
+      const data = validateEvent(await request(`/events/${id}`, { signal, expectedStatus: 200, operation: 'detail', eventId: id }));
+      if (data.public_id !== id) throw contractError();
+      return data;
+    },
+    async registerForEvent(id, payload, token) {
+      if (!publicId(id)) throw new ApiError('validation', 'Choose a valid event.');
+      if (!nonemptyString(token)) throw new ApiError('unauthorized', 'Please log in to continue.', 401);
+      const body = Object.fromEntries(registrationFields.map(key => [key, key === 'medical_record' ? payload[key] ?? null : payload[key]]));
+      const data = await request(`/events/${id}/registrations`, { method: 'POST', token, body,
+        expectedStatus: 201, operation: 'registration', eventId: id });
+      if (!data || !ulid(data.id) || !ulid(data.participant_id)
+        || !Number.isSafeInteger(data.event_id) || data.event_id < 1
+        || !(data.created_by_user_id === null || ulid(data.created_by_user_id))
+        || data.channel !== 'online' || data.status !== 'pending'
+        || !validDate(data.created_at) || !validDate(data.updated_at)
+        || registrationFields.some(key => data[key] !== body[key])) throw contractError();
+      return data;
     },
     async login({ username, password }, { signal } = {}) {
       let data;

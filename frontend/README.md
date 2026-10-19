@@ -1,6 +1,26 @@
 # Frontend workspace
 
-**Current slice:** public event index, Login and minimal Create Event, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. See [FE-LIVE-20261014](../docs/dev/tasks/FE-LIVE-20261014.md) and [CURRENT](../docs/dev/CURRENT.md) for exact validation and limits. Create Event scope and pending native acceptance: [FE-CREATE-EVENT-20261014](../docs/dev/tasks/FE-CREATE-EVENT-20261014.md). This does not implement bookings or the full ROSE Dashboard.
+**Current slice:** public event browsing/search/detail, Login, existing Create Event and a minimal online application form, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
+
+## W7 backend dependency and local integration
+
+W7 targets frontend base `dev` at `a47ff7d92f296ebd0604a1df98daf0b8111829b3` and Austin's separate backend `dev_be_registrations` at **`d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0`**. That backend is not yet in dev. Use its already running, isolated native PostgreSQL service for the W7 flow; do not merge its branch into this frontend PR or apply its schema to an existing Demo database. The generic older setup below remains historical and is not a passing W7 bootstrap/migration procedure: the dependency's bootstrap still writes an incompatible uppercase status.
+
+The stage-2 frontend uses a separate loopback port, preserving other running checkouts:
+
+```powershell
+$env:PORT = '5188'
+$env:BACKEND_URL = 'http://127.0.0.1:8017'
+node frontend/dev-server.mjs
+```
+
+Open `http://127.0.0.1:5188/live/`. Search uses the server's title/overview `keyword`, keeps it across pagination/refresh and resets page one on a new search. **View event → Apply for this event** keeps a validated public ID through Login, with no arbitrary redirect destination. Both lowercase backend statuses and the historical `ACTIVE` badge are supported without changing the value displayed.
+
+The online form re-verifies the participant through `/users/me` immediately before its single POST. It checks the response event/user attribution, `online` channel and `pending` status. A pending receipt is not a confirmed place. Income is a free-text code, with no invented options or eligibility rules; optional medical information is not collected. Use synthetic data for this local demonstration.
+
+The receipt exists only on that page. There is **no own-registration GET** in this backend; reload does not retrieve it. No participant/profile/receipt is saved in browser storage. Unknown write results lock this form against resend; ask the organiser to reconcile them. Frontend Login gating does not repair optional backend auth, public signup roles or participant ownership.
+
+Limited browser verification is opt-in, needs external Playwright/Chrome and restricted synthetic fixture JSON paths. `W7_ACCOUNTS_FILE` has `ordinary`/`organizer` credentials; `W7_PARTICIPANT_FILE` has the flat participant schema. Never pass secret values in command arguments. Set `APP_URL`, `W7_RUN_ID`, `EVIDENCE_DIR` (outside the checkout), `PLAYWRIGHT_MODULE` and `BROWSER_EXECUTABLE`, then run `node tests/e2e/w7_browser.mjs --allow-synthetic-writes`. It prepares three different events through the existing Create Event UI and applies with the same ordinary participant; three is this test arrangement, not an Austin requirement. Existing fixture evidence causes it to refuse blind write reruns. Five separately labelled intercepted UI cases are not native backend PASS. See the task for exact results and handoff limitations.
 
 ## Run the live frontend
 
@@ -35,7 +55,7 @@ Stop with Ctrl+C. Opening HTML using `file://` cannot provide the same-origin AP
 
 After Login and `/users/me` verification, choose **Create event**. The form at `/live/create-event.html` accepts title, optional overview, location, local start/end times and two non-negative quotas. Browser timezone is shown; dates are converted to ISO instants. Only a valid HTTP 201 response shows the server title/public ID. **Back to events** opens the existing first page and fetches server data again.
 
-Cancel performs no write. Logout disables submission immediately. Unknown POST outcomes are never retried automatically; check Events before attempting another creation. Native UI/API/PostgreSQL acceptance for this new page remains BLOCKED / NOT_RUN in this cloud environment; historical PR #3 API creation is not evidence for this form.
+Cancel performs no write. Logout disables submission immediately. Unknown POST outcomes are never retried automatically; check Events before attempting another creation. At the earlier cloud checkpoint this form's native UI/API/PostgreSQL checks were BLOCKED / NOT_RUN. W7 stage 2 now separately exercised three creations through this UI and native DB mapping, including the Login/quota/double-submit regressions described in the task; historical PR #3 API evidence is not reused as proof. DB restart and independent stage-3 acceptance remain NOT_RUN.
 
 ## Checks
 

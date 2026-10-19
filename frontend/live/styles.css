@@ -188,3 +188,37 @@ select { border: 1px solid var(--border); border-radius: 6px; background: var(--
 .field textarea { width: 100%; min-width: 0; padding: 12px 13px; border: 1px solid #cad5c7; border-radius: 6px; background: #fdfefc; color: #243e34; font: inherit; resize: vertical; }
 #create-result { overflow-wrap: anywhere; }
 @media (max-width: 720px) { .masthead { flex-wrap: wrap; padding-block: 16px; } .header-nav { flex-wrap: wrap; } }
+
+/* W7 keeps the existing ROSE surface, with one task and action per page. */
+.event-search { display: flex; gap: 12px; align-items: end; margin-top: 26px; }
+.event-search > div { flex: 1; }
+.event-search label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 9px; }
+.event-search input { width: 100%; min-width: 0; min-height: 44px; border: 1px solid var(--border); border-radius: 6px; padding: 11px 13px; font-size: 16px; color: inherit; background: var(--white); }
+.event-open { align-self: start; margin-top: 22px; }
+.detail-main { min-height: 60vh; }
+.detail-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, 1fr); gap: 70px; padding-block: 48px; }
+.detail-layout h1, .application-heading h1 { font-size: clamp(34px, 5vw, 48px); overflow-wrap: anywhere; }
+.detail-overview { color: var(--muted); font-size: 16px; line-height: 1.9; white-space: pre-line; overflow-wrap: anywhere; margin-top: 25px; }
+.detail-facts { border-left: 1px solid var(--border); padding-left: 35px; }
+.detail-facts dl, .application-receipt dl { margin-block: 25px; }
+.detail-facts dt, .application-receipt dt { color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: .6px; margin-top: 21px; }
+.detail-facts dd, .application-receipt dd { margin: 7px 0 0; line-height: 1.6; overflow-wrap: anywhere; }
+.registration-main { max-width: 940px; }
+.application-heading { margin-block: 36px; }
+#registration-fields { border: 0; border-top: 1px solid var(--border); min-width: 0; padding: 28px 0 0; margin-top: 30px; }
+#registration-fields legend { font: 26px Georgia, serif; padding-right: 20px; }
+.application-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 28px; }
+.application-grid .field { margin-block: 12px; }
+.application-wide { grid-column: 1 / -1; }
+.application-grid select { width: 100%; min-height: 48px; font-size: 16px; }
+.application-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.application-footnote { border-top: 1px solid var(--border); padding-top: 22px; margin-top: 34px; }
+.application-receipt { padding-block: 35px; }
+.application-receipt h2 { font-size: 35px; }
+@media (max-width: 720px) {
+  .event-search { flex-wrap: wrap; }
+  .event-search > div { flex-basis: 100%; }
+  .detail-layout { grid-template-columns: 1fr; gap: 30px; padding-block: 35px; }
+  .detail-facts { border-left: 0; border-top: 1px solid var(--border); padding: 28px 0 0; }
+  .application-grid { grid-template-columns: 1fr; }
+}
