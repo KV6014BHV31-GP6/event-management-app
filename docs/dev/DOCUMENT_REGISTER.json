@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T02:24:47.256978+00:00",
-  "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps",
-  "document_count": 163,
+  "reviewed_at": "2026-10-20T04:11:34.726233+00:00",
+  "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes",
+  "document_count": 165,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 24,
+      "revision": 25,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -394,6 +394,13 @@
           "size_bytes": 8618,
           "superseded_at": "2026-10-20T02:24:47.256978+00:00",
           "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        },
+        {
+          "revision": 24,
+          "sha256": "f2e806319c5936328de8aa5a730a4a0a6a5b08ed50d714a3b792ca9cd3237d8a",
+          "size_bytes": 10869,
+          "superseded_at": "2026-10-20T04:11:34.726233+00:00",
+          "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes"
         }
       ],
       "import_lineage": {
@@ -406,8 +413,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "f2e806319c5936328de8aa5a730a4a0a6a5b08ed50d714a3b792ca9cd3237d8a",
-      "size_bytes": 10869
+      "sha256": "afb4cebb5fc3852dba247e1eea813896f20a139505b047a4896edcd3c39ae053",
+      "size_bytes": 11601
     },
     {
       "document_id": "DOC-11",
@@ -761,7 +768,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-003",
       "path": "docs/dev/frontend/README.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -771,13 +778,20 @@
           "size_bytes": 1736,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "ceaa5f0a0809f5746d0ee03fc34378c14e705753796debf86da436833bf1677b",
+          "size_bytes": 1934,
+          "superseded_at": "2026-10-20T04:11:34.726233+00:00",
+          "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ceaa5f0a0809f5746d0ee03fc34378c14e705753796debf86da436833bf1677b",
-      "size_bytes": 1934
+      "sha256": "07257afa3a4ada8ffc5247daeb5c2a7a02753bb3a66e117284272ba11beb1292",
+      "size_bytes": 4681
     },
     {
       "document_id": "PUB-DOC-023",
@@ -3065,14 +3079,46 @@
     {
       "document_id": "FE-CREATE-ROLE-20261020-002",
       "path": "docs/dev/tasks/FE-CREATE-EVENT-ROLE-GUARD-20261020.md",
+      "revision": 2,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4ef31e9ae3cebb77cf93bcc8f0a675f2afa0d9082a1e7ae250de9e8c70f99202",
+          "size_bytes": 7987,
+          "superseded_at": "2026-10-20T04:11:34.726233+00:00",
+          "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes"
+        }
+      ],
+      "dependencies": [],
+      "sha256": "ea3f9dfecb10c69da501323397ce7388c1752580630a300ed4a286d3ee570163",
+      "size_bytes": 11361,
+      "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
+    },
+    {
+      "document_id": "FE-LIVE-DEMO-20261020-001",
+      "path": "docs/dev/frontend/demo/20261020-111833/NU_LIVE_FEATURE_DEMO.mp4",
       "revision": 1,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [],
       "dependencies": [],
-      "sha256": "4ef31e9ae3cebb77cf93bcc8f0a675f2afa0d9082a1e7ae250de9e8c70f99202",
-      "size_bytes": 7987,
-      "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
+      "sha256": "5060ccbf2c40c3001807966d1fa13975fb83a6816b83b7fc9aa84d6e734c3489",
+      "size_bytes": 9288611,
+      "source_note": "Current user authorization USER-DEMO-REPO-PR29-20261020 to publish the completed recorded live demo on existing PR #29; author demonstration only, not local Astra independent acceptance. Recorded frontend 7fad81c227d1817c8cdc9e465e1e5dcaa4afaf25 and separate backend d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0."
+    },
+    {
+      "document_id": "FE-LIVE-DEMO-20261020-002",
+      "path": "docs/dev/frontend/demo/20261020-111833/DEMO.md",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "e657237b9b202489112e8a118b7369091321cc1772e8447b2ea6307cf95ab8b7",
+      "size_bytes": 7344,
+      "source_note": "Current user authorization USER-DEMO-REPO-PR29-20261020 to publish the completed recorded live demo on existing PR #29; author demonstration only, not local Astra independent acceptance. Recorded frontend 7fad81c227d1817c8cdc9e465e1e5dcaa4afaf25 and separate backend d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0."
     }
   ]
 }
