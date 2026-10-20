@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="Create a ROSE account, then log in to continue.">
+  <title>Create account | ROSE</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./signup.mjs"></script>
+</head>
+<body class="login-page signup-page">
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="masthead shell">
+    <a class="brand" href="./index.html" aria-label="ROSE community events"><span class="brand-mark" aria-hidden="true">R</span><span><strong>ROSE</strong><small>Community event access</small></span></a>
+    <nav class="header-nav" aria-label="Main navigation"><a class="nav-link" href="./index.html">Events</a><a class="nav-link" href="./login.html" data-signup-login>Log in</a></nav>
+  </header>
+  <main id="main" class="shell login-main" tabindex="-1">
+    <a class="back-link" href="./index.html"><span aria-hidden="true">←</span> Back to events</a>
+    <div class="login-layout">
+      <section class="login-intro" aria-labelledby="signup-heading"><p class="eyebrow">ROSE ACCOUNT</p><h1 id="signup-heading">Create your<br>account.</h1><p>Choose a username and password.<br>Then log in to continue.</p><div class="login-note"><span class="welcome-mark" aria-hidden="true">✳</span><p>Already have an account?<br><a href="./login.html" data-signup-login>Log in to ROSE.</a></p></div></section>
+      <section class="login-card" aria-labelledby="signup-form-heading">
+        <p class="eyebrow">GET STARTED</p><h2 id="signup-form-heading">Create account</h2><p class="muted">Just a username and password.</p>
+        <form id="signup-form">
+          <fieldset id="signup-fields">
+            <legend class="visually-hidden">Account details</legend>
+            <div class="field"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required aria-describedby="username-hint"><small id="username-hint">3–20 characters. Keep spaces and capital letters as entered.</small></div>
+            <div class="field"><label for="password">Password</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="new-password" required aria-describedby="password-hint"><button id="toggle-password" type="button" aria-controls="password" aria-pressed="false">Show</button></div><small id="password-hint">At least 6 characters. The current service supports up to 72 UTF-8 bytes; some characters use more than one byte.</small></div>
+            <button id="signup-submit" class="button button-primary" type="submit">Create account <span aria-hidden="true">→</span></button>
+          </fieldset>
+        </form>
+        <p id="signup-progress" class="notice" role="status" aria-live="polite" tabindex="-1" hidden></p>
+        <div id="signup-result" class="signup-result" role="status" tabindex="-1" hidden><h3>Account created.</h3><p>You can now log in as <strong id="created-username"></strong>.</p><a class="button button-primary" href="./login.html" data-signup-login>Log in to continue <span aria-hidden="true">→</span></a></div>
+        <p class="login-footnote">Already registered? <a href="./login.html" data-signup-login>Log in</a>. You can browse events without an account.</p>
+      </section>
+    </div>
+    <noscript><div class="notice notice-error">Enable JavaScript to create an account.</div></noscript>
+  </main>
+  <footer class="footer shell"><span class="footer-brand">ROSE <span>·</span> Community event access</span><span>Small moments. Stronger communities.</span></footer>
+</body>
+</html>

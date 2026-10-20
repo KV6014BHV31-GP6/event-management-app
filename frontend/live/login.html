@@ -23,13 +23,13 @@
       <section class="login-card" aria-labelledby="login-heading">
         <div id="login-fields"><p class="eyebrow">WELCOME BACK</p><h2 id="login-heading">Log in to ROSE</h2><p class="muted">Use your existing username and password.</p>
           <form id="login-form">
-            <div class="field"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required minlength="3" maxlength="20" aria-describedby="username-hint"><small id="username-hint">Your account username, 3–20 characters.</small></div>
+            <div class="field"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required minlength="3" aria-describedby="username-hint"><small id="username-hint">Your account username, 3–20 characters.</small></div>
             <div class="field"><label for="password">Password</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="current-password" required minlength="6"><button type="button" id="toggle-password" aria-controls="password" aria-pressed="false">Show</button></div></div>
             <div id="login-error" class="notice notice-error" role="alert" tabindex="-1" hidden></div>
             <button id="login-submit" class="button button-primary" type="submit">Log in <span aria-hidden="true">→</span></button>
             <p id="login-progress" class="login-progress" role="status" aria-live="polite"></p>
           </form>
-          <p class="login-footnote">You can browse community events without logging in.</p>
+          <p class="login-footnote">New to ROSE? <a id="signup-link" href="./signup.html">Create an account</a>. You can also browse events without logging in.</p>
         </div>
         <div id="signed-in" hidden><p class="eyebrow">WELCOME BACK</p><h2>You’re logged in.</h2><p id="signed-in-user"></p><p id="memory-notice" class="notice" hidden>Your browser couldn’t save this login. You’re logged in on this page only; leaving or refreshing it will end this login.</p><a class="button button-primary" href="./index.html">Continue to events <span aria-hidden="true">→</span></a><button id="panel-logout" class="button button-quiet" type="button">Log out</button></div>
       </section>

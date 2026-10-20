@@ -14,6 +14,11 @@ const nonnegativeInteger = value => Number.isSafeInteger(value) && value >= 0;
 const validDate = value => typeof value === 'string' && Number.isFinite(new Date(value).valueOf());
 const publicId = value => typeof value === 'string' && /^[A-Za-z0-9_-]{21}$/.test(value);
 const ulid = value => typeof value === 'string' && /^[0-9A-HJKMNP-TV-Z]{26}$/.test(value);
+const signupTimestamp = value => {
+  if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/.test(value) || !validDate(value)) return false;
+  const day = new Date(`${value.slice(0, 10)}T00:00:00Z`);
+  return Number.isFinite(day.valueOf()) && day.toISOString().slice(0, 10) === value.slice(0, 10);
+};
 const registrationFields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'phone', 'address', 'national_id', 'income_band_code', 'marriage_status', 'medical_record'];
 
 function validateEvent(value) {
@@ -61,11 +66,14 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
           let failure;
           try { failure = await response.json(); } catch (error) { if (controller.signal.aborted) throw error; /* Never echo an untrusted response. */ }
           const detail = failure?.detail;
-          if (response.status === 400 && detail === 'Invalid identifier structure. Expected a 21-character public NanoID ID.') {
+          if (operation === 'signup' && response.status === 400 && detail === 'Username is already registered.') {
+            throw new ApiError('duplicate', 'This username is already registered. Log in or choose another username.', 400);
+          }
+          if (operation !== 'signup' && response.status === 400 && detail === 'Invalid identifier structure. Expected a 21-character public NanoID ID.') {
             throw new ApiError('validation', 'Choose a valid event.', 400);
           }
           const notFound = `Event with public identifier '${eventId}' was not found${operation === 'registration' ? '.' : ''}`;
-          if (response.status === 404 && detail === notFound) throw new ApiError('not_found', 'This event could not be found. Choose another event.', 404);
+          if (operation !== 'signup' && response.status === 404 && detail === notFound) throw new ApiError('not_found', 'This event could not be found. Choose another event.', 404);
           if (operation === 'registration' && response.status === 400) {
             const errors = new Map([
               ['This participant already holds an active registration record for this event.', ['duplicate', 'An application already exists for this participant and event. Please do not submit it again.']],
@@ -99,6 +107,17 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
   }
 
   return {
+    async createUser(payload) {
+      const { username, password } = payload ?? {};
+      if (typeof username !== 'string' || typeof password !== 'string') throw new ApiError('validation', 'Enter your username and password.');
+      const data = await request('/users', { method: 'POST', body: { username, password }, expectedStatus: 201, operation: 'signup' });
+      if (!data || typeof data !== 'object' || !/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(data.id)
+        || data.username !== username || data.role !== 'user'
+        || !signupTimestamp(data.created_at) || !signupTimestamp(data.updated_at)
+        || Object.hasOwn(data, 'password') || Object.hasOwn(data, 'password_hash')) throw contractError();
+      const { id, role, created_at, updated_at } = data;
+      return { id, username, role, created_at, updated_at };
+    },
     async getEvents({ page = 1, pageSize = 6, keyword = '', signal } = {}) {
       if (!Number.isSafeInteger(page) || page < 1 || !Number.isSafeInteger(pageSize) || pageSize < 1 || pageSize > 100) {
         throw new ApiError('validation', 'Choose a valid event page and page size.');
