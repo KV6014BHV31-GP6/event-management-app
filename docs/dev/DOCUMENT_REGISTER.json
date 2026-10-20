@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T01:46:18.700508+00:00",
-  "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure",
-  "document_count": 161,
+  "reviewed_at": "2026-10-20T02:24:47.256978+00:00",
+  "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps",
+  "document_count": 163,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 23,
+      "revision": 24,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -387,6 +387,13 @@
           "size_bytes": 6398,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 23,
+          "sha256": "b889219c87110d0f00b9c0dc5cac66a44d7ebf76dc7161e72e9625240bc1174b",
+          "size_bytes": 8618,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "import_lineage": {
@@ -399,8 +406,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "b889219c87110d0f00b9c0dc5cac66a44d7ebf76dc7161e72e9625240bc1174b",
-      "size_bytes": 8618
+      "sha256": "f2e806319c5936328de8aa5a730a4a0a6a5b08ed50d714a3b792ca9cd3237d8a",
+      "size_bytes": 10869
     },
     {
       "document_id": "DOC-11",
@@ -1163,7 +1170,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 11,
+      "revision": 12,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1236,13 +1243,20 @@
           "size_bytes": 8399,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 11,
+          "sha256": "176ffb49c6e57338109cb9e78b8f3dbd7034609095acc55aa3d45fa0dfba6dcc",
+          "size_bytes": 10735,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "176ffb49c6e57338109cb9e78b8f3dbd7034609095acc55aa3d45fa0dfba6dcc",
-      "size_bytes": 10735
+      "sha256": "c9fb137b1205af07cf1092658a858249774b2d42adfa4609299c781b86f2347f",
+      "size_bytes": 11871
     },
     {
       "document_id": "DOC-25",
@@ -2567,7 +2581,7 @@
     {
       "document_id": "FE-LIVE-20261014-056",
       "path": "frontend/live/ui.mjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2591,14 +2605,21 @@
           "size_bytes": 2829,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 4,
+          "sha256": "cf5887a37f945c4dc0d5574a380199541912f6f5d75d4a5b7657fdc44e67ad1e",
+          "size_bytes": 3123,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "cf5887a37f945c4dc0d5574a380199541912f6f5d75d4a5b7657fdc44e67ad1e",
-      "size_bytes": 3123
+      "sha256": "f5116b327f14087500c2f6b74dfd8873354df77b6dfdf798eac65eca65536f2e",
+      "size_bytes": 3206
     },
     {
       "document_id": "FE-LIVE-20261014-057",
@@ -2629,7 +2650,7 @@
     {
       "document_id": "FE-CREATE-EVENT-20261014-001",
       "path": "frontend/live/create-event.html",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
       "revision_history": [
@@ -2639,18 +2660,25 @@
           "size_bytes": 3271,
           "superseded_at": "2026-10-14T11:39:23.557430+00:00",
           "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "daa84729bc0918189a8d04cfe51008bc9da758775554ca88f2acc5558905ef5d",
+          "size_bytes": 3305,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "daa84729bc0918189a8d04cfe51008bc9da758775554ca88f2acc5558905ef5d",
-      "size_bytes": 3305
+      "sha256": "d7ad3ca77a1ee2491e57b7f0d5533053fd36f1a058b03f857dc0d8c3f51d35e5",
+      "size_bytes": 3404
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-002",
       "path": "frontend/live/create-event.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
       "revision_history": [
@@ -2660,26 +2688,41 @@
           "size_bytes": 4885,
           "superseded_at": "2026-10-14T11:39:23.557430+00:00",
           "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "3abb1710c927f8d5276d99a8a3862fa50167ac43d2d0901de82ad13559a02254",
+          "size_bytes": 4927,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "3abb1710c927f8d5276d99a8a3862fa50167ac43d2d0901de82ad13559a02254",
-      "size_bytes": 4927
+      "sha256": "cb5a3748eab43a776ad332a45c49337c16a5ab5d48022fd8b2dff77414460f3c",
+      "size_bytes": 5545
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-003",
       "path": "frontend/live/tests/create-event.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c42721e56cf0099e6161e6232f205e08cdeee898085f81e8c89ef79cdcf8eed2",
+          "size_bytes": 11237,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "c42721e56cf0099e6161e6232f205e08cdeee898085f81e8c89ef79cdcf8eed2",
-      "size_bytes": 11237
+      "sha256": "3b7d3c40c44ea8b6066525fdbe3b186e76fe13c1ee454df69e6eeaa5001a2fb2",
+      "size_bytes": 11257
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-004",
@@ -2760,11 +2803,20 @@
       "title": "quota-boundary.test.mjs",
       "owner": "Benjamin / Developer",
       "status": "working-baseline",
-      "revision": 1,
-      "sha256": "9fd86c6f3f12283104d40334880b44497f63f32d3e98faa72a1d4d0dda6bb023",
-      "size_bytes": 1802,
+      "revision": 2,
+      "sha256": "b0af11c118c86649b1dac7f26ffb1e95df390b1f8ee5d6e4c2252544ca7b7bfa",
+      "size_bytes": 1821,
       "dependencies": [],
-      "approval_record": null
+      "approval_record": null,
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9fd86c6f3f12283104d40334880b44497f63f32d3e98faa72a1d4d0dda6bb023",
+          "size_bytes": 1802,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        }
+      ]
     },
     {
       "document_id": "PR4-FBCF546ACFBD00A8",
@@ -2997,6 +3049,30 @@
       "sha256": "93f7e67389ab6f8af5516b30e672145349871e155ece9bd10b713c39f6a65e26",
       "size_bytes": 9646,
       "source_note": "User Signup authorization USER-SIGNUP-20261020; stacked increment over verified W7 head. No backend or team approval inferred."
+    },
+    {
+      "document_id": "FE-CREATE-ROLE-20261020-001",
+      "path": "frontend/live/tests/create-event-role.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "7588b07487364143766969ad85c86000afd09be6161368c66daad8a510a1bb97",
+      "size_bytes": 13971,
+      "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
+    },
+    {
+      "document_id": "FE-CREATE-ROLE-20261020-002",
+      "path": "docs/dev/tasks/FE-CREATE-EVENT-ROLE-GUARD-20261020.md",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "4ef31e9ae3cebb77cf93bcc8f0a675f2afa0d9082a1e7ae250de9e8c70f99202",
+      "size_bytes": 7987,
+      "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
     }
   ]
 }

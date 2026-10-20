@@ -37,14 +37,19 @@ export function createEventController({ session, onChange = () => {} }) {
     get state() { return state; },
     async submit(values) {
       if (['submitting', 'success', 'uncertain'].includes(state.status)) return;
-      let payload;
+      let payload, creatorId;
       try {
         if (!session.user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);
+        if (session.user.role !== 'organizer') throw new ApiError('forbidden', 'Organizer account required.', 403);
+        creatorId = session.user.id;
         payload = eventPayload(values);
       } catch (error) { emit({ status: 'error', message: error.message, event: null }); return; }
       emit({ status: 'submitting', message: 'Creating event…', event: null });
       try {
         const event = await session.createEvent(payload);
+        if (session.user?.role !== 'organizer' || session.user.id !== creatorId) {
+          throw new ApiError('aborted', 'Account changed. Check Events before creating again.');
+        }
         emit({ status: 'success', message: 'Event created successfully', event });
       } catch (error) {
         const uncertain = !['unauthorized', 'forbidden', 'validation', 'rate_limit'].includes(error.kind);
@@ -62,18 +67,21 @@ export function mountCreateEvent() {
   const progress = document.querySelector('#create-progress');
   const result = document.querySelector('#create-result');
   const prompt = document.querySelector('#login-prompt');
+  const organizerPrompt = document.querySelector('#organizer-prompt');
   const controller = createEventController({ session, onChange: () => { account.render(); render(); } });
   const account = mountAccount(session, { onChange: render });
   function render() {
     const state = controller.state;
-    const success = state.status === 'success' && Boolean(session.user);
-    fields.disabled = !session.user || ['submitting', 'success', 'uncertain'].includes(state.status);
+    const organizer = session.user?.role === 'organizer';
+    const success = state.status === 'success' && organizer;
+    fields.disabled = !organizer || ['submitting', 'success', 'uncertain'].includes(state.status);
     form.hidden = success;
     prompt.hidden = Boolean(session.user);
+    organizerPrompt.hidden = !session.user || organizer;
     result.hidden = !success;
-    progress.textContent = state.message;
+    progress.textContent = state.status === 'success' && !organizer ? '' : state.message;
     progress.className = ['error', 'uncertain'].includes(state.status) ? 'notice notice-error' : 'notice';
-    progress.hidden = !state.message;
+    progress.hidden = !progress.textContent;
     form.setAttribute('aria-busy', String(state.status === 'submitting'));
     if (success) {
       document.querySelector('#created-title').textContent = state.event.title;
@@ -83,7 +91,7 @@ export function mountCreateEvent() {
   document.querySelector('#create-timezone').textContent = `Dates and times use your browser timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}.`;
   form.addEventListener('submit', event => {
     event.preventDefault();
-    if (fields.disabled || !form.reportValidity()) return;
+    if (session.user?.role !== 'organizer' || fields.disabled || !form.reportValidity()) return;
     controller.submit(Object.fromEntries(new FormData(form)));
   });
   account.check();

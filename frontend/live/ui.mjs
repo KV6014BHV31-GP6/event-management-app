@@ -35,9 +35,12 @@ export function mountAccount(session, { loginPage = false, loginHref = './login.
     } else if (session.user) {
       const name = element('span', 'account-name', session.user.username);
       name.title = `Logged in as ${session.user.username}`;
-      const create = element('a', 'nav-link', 'Create event');
-      create.href = './create-event.html';
-      account.append(create, name);
+      if (session.user.role === 'organizer') {
+        const create = element('a', 'nav-link', 'Create event');
+        create.href = './create-event.html';
+        account.append(create);
+      }
+      account.append(name);
     } else if (failed) {
       const retry = element('button', 'button button-quiet', 'Retry login check');
       retry.type = 'button';
