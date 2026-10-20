@@ -4,7 +4,7 @@ import { selectedPublicId, loginRoute } from './event-navigation.mjs';
 /** Match schema characters; the byte ceiling is compatibility with bcrypt, not schema policy. */
 export function signupPayload(values) {
   const { username, password } = values ?? {};
-  if (typeof username !== 'string' || [...username].length < 3 || [...username].length > 20) {
+  if (typeof username !== 'string' || !username.trim() || [...username].length < 3 || [...username].length > 20) {
     throw new ApiError('validation', 'Enter a username with 3–20 characters.');
   }
   if (typeof password !== 'string' || [...password].length < 6) {
@@ -52,6 +52,7 @@ export function mountSignup() {
   const toggle = document.querySelector('#toggle-password');
   const progress = document.querySelector('#signup-progress');
   const result = document.querySelector('#signup-result');
+  let initialized = false;
   const controller = createSignupController({ api, onChange: state => {
     fields.disabled = ['submitting', 'success', 'uncertain'].includes(state.status);
     form.setAttribute('aria-busy', String(state.status === 'submitting'));
@@ -70,13 +71,15 @@ export function mountSignup() {
   } });
   form.addEventListener('submit', event => {
     event.preventDefault();
-    if (fields.disabled || !form.reportValidity()) return;
+    if (!initialized || fields.disabled || !form.reportValidity()) return;
     controller.submit(Object.fromEntries(new FormData(form)));
   });
   toggle.addEventListener('click', () => {
     const show = password.type === 'password'; password.type = show ? 'text' : 'password';
     toggle.textContent = show ? 'Hide' : 'Show'; toggle.setAttribute('aria-pressed', String(show)); password.focus();
   });
+  initialized = true;
+  fields.disabled = false;
 }
 
 if (typeof document !== 'undefined') mountSignup();

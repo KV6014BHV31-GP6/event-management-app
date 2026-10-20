@@ -1,5 +1,11 @@
 # NU Developer 當前狀態
 
+## Signup P0 follow-up, 2026-10-20
+
+Author implementation: initial sensitive-field lock and non-network native fallback, trim-empty username rejection without changing valid input, and strict string/canonical ULID response validation. The existing Login/Profile contract and uncertain-write lock are preserved. Test-first regression: 7/11 PASS and 4 FAIL before repair; final frontend suite 119/119 PASS. Three controlled Chrome cases (JavaScript disabled, module failure, partial initialization failure) changed from intercepted password-query attempts to disabled fields and zero native request attempts; all canary requests were aborted before reaching the network. This does not replace the preserved historical failures or establish Security/UAT acceptance.
+
+Evidence: `E:\NU_Local_Environment_20261014\guest-frontend\20261020-142554\evidence` (`p0-red.txt`, `p0-node.txt`, `privacy-before.json`, `privacy-after.json`). PR #28 remains stacked on #27. Native Signup/Login is deferred to the single-account downstream Guest author run; no additional account was created in this parent check. Backend authorization and ownership gaps remain unresolved. No merge or deployment.
+
 Active task, 2026-10-20 (Hong Kong): [FE-USER-SIGNUP-20261020](tasks/FE-USER-SIGNUP-20261020.md), Refs GitHub #25. This branch is `dev_fe_user_signup`, stacked on OPEN/Draft PR #27's verified head `dev_fe_w7_browse_registration@6ab9d531582b9528ded977f48b8c158403f8b8ce`. Its Draft PR targets the W7 branch while #27 remains unmerged. Austin's backend dependency is still separate at `d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0`; no merge/cherry-pick or backend change.
 
 Signup increment: two-field public POST201 with strict ordinary-user response validation, code-point lengths plus the bcrypt 72-byte compatibility guard, bounded duplicate/422 messages, in-flight/success/uncertain locks, and explicit existing Login. A validated selected event survives Signup→Login; only the Login HTML UTF-16 maximum was removed, leaving Session/proxy unchanged. Public backend role escalation remains unresolved.

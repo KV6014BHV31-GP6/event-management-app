@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T01:46:18.700508+00:00",
-  "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure",
-  "document_count": 161,
+  "reviewed_at": "2026-10-20T06:32:09.164471+00:00",
+  "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence",
+  "document_count": 162,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 23,
+      "revision": 24,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -387,6 +387,13 @@
           "size_bytes": 6398,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 23,
+          "sha256": "b889219c87110d0f00b9c0dc5cac66a44d7ebf76dc7161e72e9625240bc1174b",
+          "size_bytes": 8618,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
         }
       ],
       "import_lineage": {
@@ -399,8 +406,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "b889219c87110d0f00b9c0dc5cac66a44d7ebf76dc7161e72e9625240bc1174b",
-      "size_bytes": 8618
+      "sha256": "e849bbc9526649abc50aab845fa04eaee945d72804fa4097f6ac6a2727892744",
+      "size_bytes": 9798
     },
     {
       "document_id": "DOC-11",
@@ -879,7 +886,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 9,
+      "revision": 10,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -915,6 +922,13 @@
           "size_bytes": 8795,
           "superseded_at": "2026-10-14T09:54:48.765266+00:00",
           "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
+        },
+        {
+          "revision": 9,
+          "sha256": "cbd2461b25e089c91ede199b2080036e52cbbfc68101be3a9e77a438f6f0edab",
+          "size_bytes": 9903,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
         }
       ],
       "import_lineage": {
@@ -925,8 +939,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "cbd2461b25e089c91ede199b2080036e52cbbfc68101be3a9e77a438f6f0edab",
-      "size_bytes": 9903
+      "sha256": "dbd4e120110be38925c620bd8e86ed3571a1cb075603159db7d72b15edae3462",
+      "size_bytes": 10788
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -1163,7 +1177,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 11,
+      "revision": 12,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1236,13 +1250,20 @@
           "size_bytes": 8399,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 11,
+          "sha256": "176ffb49c6e57338109cb9e78b8f3dbd7034609095acc55aa3d45fa0dfba6dcc",
+          "size_bytes": 10735,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "176ffb49c6e57338109cb9e78b8f3dbd7034609095acc55aa3d45fa0dfba6dcc",
-      "size_bytes": 10735
+      "sha256": "ac817c516cee43659fa64867bf1450b1a5154cf4503976068d6cc3f30d4176e9",
+      "size_bytes": 11736
     },
     {
       "document_id": "DOC-25",
@@ -2307,7 +2328,7 @@
     {
       "document_id": "FE-LIVE-20261014-045",
       "path": "frontend/live/api.mjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2331,14 +2352,21 @@
           "size_bytes": 10349,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 4,
+          "sha256": "6d5f76b59b9c8b3d1212b5bbe879d231df3d1ff17c9df922e6bd382a8fc15180",
+          "size_bytes": 11832,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "6d5f76b59b9c8b3d1212b5bbe879d231df3d1ff17c9df922e6bd382a8fc15180",
-      "size_bytes": 11832
+      "sha256": "362a36dc2b83eb3c1032268d014da26a039b1815dc11b4ca73d9a8d60c626609",
+      "size_bytes": 11863
     },
     {
       "document_id": "FE-LIVE-20261014-046",
@@ -2953,50 +2981,95 @@
     {
       "document_id": "FE-SIGNUP-20261020-001",
       "path": "frontend/live/signup.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c3431c86752e086326684dab5a40442ff671063996fa2f3aefbef882c8deaa78",
+          "size_bytes": 3797,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        }
+      ],
       "dependencies": [],
-      "sha256": "c3431c86752e086326684dab5a40442ff671063996fa2f3aefbef882c8deaa78",
-      "size_bytes": 3797,
+      "sha256": "afb49cd20fbbe59f9e00f887e2041f9f83b740a7aeaedd7f044d76c830a3986e",
+      "size_bytes": 3822,
       "source_note": "User Signup authorization USER-SIGNUP-20261020; stacked increment over verified W7 head. No backend or team approval inferred."
     },
     {
       "document_id": "FE-SIGNUP-20261020-002",
       "path": "frontend/live/signup.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "be345d91cf70a9622d17d30c3dae7ac9265cd24b3d100714d7e3ff45500dd541",
+          "size_bytes": 4565,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        }
+      ],
       "dependencies": [],
-      "sha256": "be345d91cf70a9622d17d30c3dae7ac9265cd24b3d100714d7e3ff45500dd541",
-      "size_bytes": 4565,
+      "sha256": "3642d48840f2ae6d3018693fe226ea417587a5a453629370340dc5858e568725",
+      "size_bytes": 4677,
       "source_note": "User Signup authorization USER-SIGNUP-20261020; stacked increment over verified W7 head. No backend or team approval inferred."
     },
     {
       "document_id": "FE-SIGNUP-20261020-003",
       "path": "frontend/live/tests/signup.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b3b6866f74ee6761b5a8bb4d81c9b2cb7a5d20dd8b6ed7c0c842168d86a99642",
+          "size_bytes": 18453,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        }
+      ],
       "dependencies": [],
-      "sha256": "b3b6866f74ee6761b5a8bb4d81c9b2cb7a5d20dd8b6ed7c0c842168d86a99642",
-      "size_bytes": 18453,
+      "sha256": "4047cfb31828aefba4a7ef647e08b9820564b2d85ae6c3fec9f673ebc9b2f253",
+      "size_bytes": 18446,
       "source_note": "User Signup authorization USER-SIGNUP-20261020; stacked increment over verified W7 head. No backend or team approval inferred."
     },
     {
       "document_id": "FE-SIGNUP-20261020-004",
       "path": "docs/dev/tasks/FE-USER-SIGNUP-20261020.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "93f7e67389ab6f8af5516b30e672145349871e155ece9bd10b713c39f6a65e26",
+          "size_bytes": 9646,
+          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        }
+      ],
       "dependencies": [],
-      "sha256": "93f7e67389ab6f8af5516b30e672145349871e155ece9bd10b713c39f6a65e26",
-      "size_bytes": 9646,
+      "sha256": "51b292eb925a9ddcdba4c18ab2d6cfc40f9e962618396bef96006f83a41d705b",
+      "size_bytes": 11365,
       "source_note": "User Signup authorization USER-SIGNUP-20261020; stacked increment over verified W7 head. No backend or team approval inferred."
+    },
+    {
+      "document_id": "FE-P1-20261020-162",
+      "path": "frontend/live/tests/signup-p0.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-P0-P1-20261020"
+      ],
+      "sha256": "d4675479cbc89a6da95a9ad53737671b63445c435e87d82c72711503ba84eab0",
+      "size_bytes": 7364
     }
   ]
 }

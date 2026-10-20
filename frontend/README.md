@@ -75,6 +75,12 @@ After Login and `/users/me` verification, choose **Create event**. The form at `
 
 Cancel performs no write. Logout disables submission immediately. Unknown POST outcomes are never retried automatically; check Events before attempting another creation. At the earlier cloud checkpoint this form's native UI/API/PostgreSQL checks were BLOCKED / NOT_RUN. W7 stage 2 now separately exercised three creations through this UI and native DB mapping, including the Login/quota/double-submit regressions described in the task; historical PR #3 API evidence is not reused as proof. DB restart and independent stage-3 acceptance remain NOT_RUN.
 
+## Signup follow-up (2026-10-20)
+
+Signup starts with a disabled fieldset and a non-network `method="dialog"` fallback. Its JSON submit handler and password-toggle handler must both initialize before the fields become usable. Disabled JavaScript, a failed module or interrupted initialization leave the form locked. Whitespace-only usernames are rejected before POST; valid usernames retain their exact case, spaces and Unicode. Successful Signup requires a string canonical ULID before format validation; malformed HTTP201 responses remain uncertain and locked against resend.
+
+The follow-up author run has 119/119 frontend tests and three separately controlled Chrome privacy cases passing. The pre-fix failures are retained outside the repository. These are unit/component/proxy and controlled-browser evidence, not native Signup acceptance or Security/UAT approval. Native Signup/Login will be exercised once in the downstream Guest run, without creating another account for this parent revision.
+
 ## Checks
 
 From the repository root:
