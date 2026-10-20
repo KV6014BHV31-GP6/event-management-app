@@ -22,6 +22,8 @@ export function createSession({ api, storage = null }) {
     get user() { return user; },
     get hasToken() { return Boolean(token); },
     get persistent() { return persistent; },
+    // Read-only identity epoch; controllers can discard receipts after any session transition.
+    get revision() { return revision; },
     logout: clear,
     async registerForEvent(event, payload) {
       if (!token || !user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);

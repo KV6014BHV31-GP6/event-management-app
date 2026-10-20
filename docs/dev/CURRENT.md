@@ -1,5 +1,15 @@
 # NU Developer 當前狀態
 
+## Guest author implementation, 2026-10-20
+
+Active task: [FE-GUEST-REGISTRATION-20261020](tasks/FE-GUEST-REGISTRATION-20261020.md). P0 three Signup repairs are on PR #28 at `46e77c023d72426859e587aff7afa4db8b4c0027`; PR #29 includes them at `d09fe02d10b5636beb654d5d4c8d02f6f2f7a041` through a non-rewriting merge, preserving role guard and original Demo bytes. Guest is a separate `dev_fe_guest_registration` increment based on synchronized #29; the recorded Demo remains historical.
+
+Explicit Guest uses the existing registration form/API without account, Login or Authorization. Strict201/event/null-actor/online/pending contract, initialized form gate, failed-identity latch, existing signed-in ownership checks and submission/receipt locks are implemented. Final author checks:161/161 frontend tests;12/12 real Browser/UI/API checks;16/16 fresh READ ONLY native PG17 reconciliation checks. Only1 user,1 event,2 Participants and2 registrations were added; all pre-existing rows unchanged. Guest actor and Participant user_id are null. Evidence root: `E:\NU_Local_Environment_20261014\guest-frontend\20261020-142554`.
+
+Actual frontend5192 served bytes/PID/worktree and separate Backend8017 at `d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0` were verified; old5189 was not used as the tested source. Dev does not contain that Backend. Frontend integration does not mean dev alone is fully runnable. Intended Guest is supported; invalid-token anonymous fallback, Participant ownership, Create Event role enforcement, privileged Signup, retrieval and bootstrap/migration gaps remain open. Full E2E/Security/UAT and video remain NOT_RUN. Author PASS is not Astra approval. Sol performs no merge/deployment/P2; Astra has the user's conditional authority to integrate Frontend and necessary parents into dev after independent acceptance, subject to normal checks.
+
+## Preserved synchronized parent status
+
 ## Parent synchronization, 2026-10-20
 
 PR #29 now includes repaired PR #28 at `46e77c023d72426859e587aff7afa4db8b4c0027` through a non-rewriting local merge. Organizer navigation/controller protections and the original Demo files remain. The Demo describes its historical recorded source; it does not demonstrate these Signup repairs or Guest. The previous three Signup defects are repaired in this synchronized source; the historical failure statements below remain version-qualified. The separate backend dependency and unresolved authorization/ownership gaps are unchanged. This is author checking, not Astra acceptance; no PR merge or deployment.

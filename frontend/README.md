@@ -1,8 +1,18 @@
 # Frontend workspace
 
-**Current slice:** public event browsing/search/detail, Signup, Login, existing Create Event and a minimal online application form, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [Signup task](../docs/dev/tasks/FE-USER-SIGNUP-20261020.md), [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
+**Current slice:** public event browsing/search/detail, Signup, Login, organizer-only Create Event and explicit Guest or authenticated-user online applications, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [Guest task](../docs/dev/tasks/FE-GUEST-REGISTRATION-20261020.md), [Signup task](../docs/dev/tasks/FE-USER-SIGNUP-20261020.md), [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
 
-## Signup increment and local integration
+## Explicit Guest application (2026-10-20)
+
+From an event's existing application page, choose **Continue as guest** or **Log in / Create account**. Guest does not create an account or log in. The existing form stays disabled until initialization, event validation and identity checking finish, and uses a non-network native fallback. Existing or failed identities must explicitly log out before choosing Guest; organizer/leader accounts are never silently treated as Guest.
+
+The separate Guest API method sends the existing registration payload without Authorization and accepts only201 for the selected event, with an explicit null actor and online/pending receipt. Signed-in users keep the existing fresh-profile/token/ownership checks. Submission/success/uncertain locks and Session revision checks protect against duplicate submits or misattributed receipts. No personal form or receipt is stored in browser storage. Pending does not confirm a place; this page cannot retrieve the receipt after leaving or reloading. Keep the reference and contact the organiser.
+
+The bounded author run used new frontend5192 → existing Backend8017, verified served bytes and separate Backend `d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0`. It passed161 Node checks,12 real UI/API checks and16 READ ONLY DB checks, with exactly1 Signup user,1 event and2 successful applications/Participants. This is author evidence; complete native E2E/Security/UAT remain NOT_RUN. See the [Guest task](../docs/dev/tasks/FE-GUEST-REGISTRATION-20261020.md). Dev still lacks that separate Backend dependency; merging Frontend code alone does not supply full runtime conditions. The older recorded Demo is unchanged and does not show Guest.
+
+Intended anonymous Guest is supported. Invalid-token fallback, National ID ownership, backend organizer enforcement, privileged public Signup, own/Guest retrieval and bootstrap/migration gaps remain unresolved. No Backend or policy fix is implied.
+
+## Preserved Signup increment and local integration
 
 [Create account](live/signup.html) sends only `username` and `password` to public `POST /api/v1/users`, without a token or role. Only a valid HTTP201 ordinary-user response with matching username, ULID and timestamps shows success; a response containing password/hash fields is rejected. Signup does not log in automatically. The successful form stays disabled and clears its password; choose the existing Login to verify the same account through `/users/me`.
 
