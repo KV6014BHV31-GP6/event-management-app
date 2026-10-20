@@ -13,7 +13,7 @@ const nonemptyString = value => typeof value === 'string' && value.trim().length
 const nonnegativeInteger = value => Number.isSafeInteger(value) && value >= 0;
 const validDate = value => typeof value === 'string' && Number.isFinite(new Date(value).valueOf());
 const publicId = value => typeof value === 'string' && /^[A-Za-z0-9_-]{21}$/.test(value);
-const ulid = value => typeof value === 'string' && /^[0-9A-HJKMNP-TV-Z]{26}$/.test(value);
+const ulid = value => typeof value === 'string' && /^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(value);
 const signupTimestamp = value => {
   if (typeof value !== 'string' || !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?(Z|[+-]\d{2}:\d{2})$/.test(value) || !validDate(value)) return false;
   const day = new Date(`${value.slice(0, 10)}T00:00:00Z`);
@@ -106,6 +106,19 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
     }
   }
 
+  async function postRegistration(id, payload, token) {
+    const body = Object.fromEntries(registrationFields.map(key => [key, key === 'medical_record' ? payload[key] ?? null : payload[key]]));
+    const data = await request(`/events/${id}/registrations`, { method: 'POST', token, body,
+      expectedStatus: 201, operation: 'registration', eventId: id });
+    if (!data || !ulid(data.id) || !ulid(data.participant_id)
+      || !Number.isSafeInteger(data.event_id) || data.event_id < 1
+      || !(data.created_by_user_id === null || ulid(data.created_by_user_id))
+      || data.channel !== 'online' || data.status !== 'pending'
+      || !validDate(data.created_at) || !validDate(data.updated_at)
+      || registrationFields.some(key => data[key] !== body[key])) throw contractError();
+    return data;
+  }
+
   return {
     async createUser(payload) {
       const { username, password } = payload ?? {};
@@ -137,15 +150,14 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
     async registerForEvent(id, payload, token) {
       if (!publicId(id)) throw new ApiError('validation', 'Choose a valid event.');
       if (!nonemptyString(token)) throw new ApiError('unauthorized', 'Please log in to continue.', 401);
-      const body = Object.fromEntries(registrationFields.map(key => [key, key === 'medical_record' ? payload[key] ?? null : payload[key]]));
-      const data = await request(`/events/${id}/registrations`, { method: 'POST', token, body,
-        expectedStatus: 201, operation: 'registration', eventId: id });
-      if (!data || !ulid(data.id) || !ulid(data.participant_id)
-        || !Number.isSafeInteger(data.event_id) || data.event_id < 1
-        || !(data.created_by_user_id === null || ulid(data.created_by_user_id))
-        || data.channel !== 'online' || data.status !== 'pending'
-        || !validDate(data.created_at) || !validDate(data.updated_at)
-        || registrationFields.some(key => data[key] !== body[key])) throw contractError();
+      return postRegistration(id, payload, token);
+    },
+    async registerGuestForEvent(id, payload, expectedEventId) {
+      if (!publicId(id) || !Number.isSafeInteger(expectedEventId) || expectedEventId < 1) {
+        throw new ApiError('validation', 'Choose a valid event.');
+      }
+      const data = await postRegistration(id, payload);
+      if (data.event_id !== expectedEventId || data.created_by_user_id !== null) throw contractError();
       return data;
     },
     async login({ username, password }, { signal } = {}) {

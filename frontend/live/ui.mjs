@@ -7,7 +7,7 @@ export function element(tag, className, text) {
   return node;
 }
 
-export function mountAccount(session, { loginPage = false, loginHref = './login.html', onChange = () => {} } = {}) {
+export function mountAccount(session, { loginPage = false, loginHref = './login.html', onChange = () => {}, onLogout = () => {} } = {}) {
   const account = document.querySelector('#account');
   const notice = document.querySelector('#auth-notice');
   // A history-cache restore must read the current tab token and reverify identity.
@@ -23,6 +23,7 @@ export function mountAccount(session, { loginPage = false, loginHref = './login.
 
   function logout() {
     const cleared = session.logout();
+    onLogout();
     showNotice(cleared ? 'You’re logged out.' : 'You’re logged out on this page. Close this tab to clear the saved login.');
     render();
     onChange(null);

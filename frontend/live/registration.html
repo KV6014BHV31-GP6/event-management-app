@@ -15,10 +15,12 @@
     <a id="registration-back" class="back-link" href="./index.html">← Event details</a>
     <section class="application-heading"><p class="eyebrow">ONLINE APPLICATION</p><h1 id="selected-event-title">Your selected event</h1><p id="selected-event-location" class="muted"></p></section>
     <p id="event-message" class="notice" role="status">Loading your selected event…</p>
-    <div id="registration-login" class="notice" hidden><p>Log in with your participant account to apply. Your selected event will be kept.</p><a id="registration-login-link" class="button" href="./login.html">Log in to apply →</a></div>
-    <p id="participant-account-note" class="notice" hidden>Use a participant account to apply. Log out, then log in with that account.</p>
+    <div id="registration-login" class="notice" hidden><p>Choose how to apply. Your selected event will be kept. A guest application does not create an account or log you in.</p><div class="application-actions"><button id="continue-as-guest" class="button" type="button" disabled>Continue as guest</button><a id="registration-login-link" class="button button-quiet" href="./login.html">Log in</a><a id="registration-signup-link" class="button button-quiet" href="./signup.html">Create account</a></div></div>
+    <div id="registration-identity-blocked" class="notice" hidden><p>Your login could not be verified. A failed login is not changed into a guest application. Log in again, or explicitly log out before choosing Guest.</p><button id="registration-clear-identity" class="button button-quiet" type="button" disabled>Log out before choosing Guest</button></div>
+    <p id="registration-guest-note" class="notice" hidden>You are applying as a guest, without an account or login.</p>
+    <p id="participant-account-note" class="notice" hidden>Use a participant account to apply. An organizer or leader account is not treated as Guest. Log out before choosing Guest or logging in with a participant account.</p>
     <p id="registration-progress" class="notice" role="status" aria-live="polite" hidden></p>
-    <form id="registration-form" autocomplete="off">
+    <form id="registration-form" method="dialog" autocomplete="off">
       <fieldset id="registration-fields" disabled>
         <legend>Application details</legend>
         <div class="application-grid">
@@ -38,7 +40,7 @@
     </form>
     <section id="registration-result" class="application-receipt" aria-labelledby="receipt-heading" hidden>
       <p class="eyebrow">APPLICATION RECEIVED</p><h2 id="receipt-heading">Your application is pending.</h2>
-      <p>This is the response to your submission. It does not confirm a place.</p>
+      <p>This is the response to your submission. It does not confirm a place. Keep your reference and contact the organiser if you need help. This page cannot retrieve the application after you leave or reload.</p>
       <dl><dt>Event</dt><dd id="receipt-event"></dd><dt>Event reference</dt><dd id="receipt-public-id"></dd><dt>Application reference</dt><dd id="receipt-id"></dd><dt>Status</dt><dd id="receipt-status"></dd></dl>
       <a class="button" href="./index.html">Browse another event →</a>
     </section>

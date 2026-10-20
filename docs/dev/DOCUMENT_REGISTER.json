@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T06:33:02.215729+00:00",
-  "reason": "Synchronize repaired Signup parent while preserving organizer guard and historical Demo evidence",
-  "document_count": 166,
+  "reviewed_at": "2026-10-20T06:38:57.718672+00:00",
+  "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend",
+  "document_count": 168,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 26,
+      "revision": 27,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -408,6 +408,13 @@
           "size_bytes": 11601,
           "superseded_at": "2026-10-20T06:33:02.215729+00:00",
           "reason": "Synchronize repaired Signup parent while preserving organizer guard and historical Demo evidence"
+        },
+        {
+          "revision": 26,
+          "sha256": "823132139b48a18d0d249b56b2292939da22d113f4733cb7c47cf079f0f257e9",
+          "size_bytes": 13480,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
         }
       ],
       "import_lineage": {
@@ -420,8 +427,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "823132139b48a18d0d249b56b2292939da22d113f4733cb7c47cf079f0f257e9",
-      "size_bytes": 13480,
+      "sha256": "fcb437ef8eb1c11df4bb72125b288ea36212e76311275f875bfe75e5a9628602",
+      "size_bytes": 15379,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1353,7 +1360,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 13,
+      "revision": 14,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1440,13 +1447,20 @@
           "size_bytes": 11871,
           "superseded_at": "2026-10-20T06:33:02.215729+00:00",
           "reason": "Synchronize repaired Signup parent while preserving organizer guard and historical Demo evidence"
+        },
+        {
+          "revision": 13,
+          "sha256": "1dc66f4630dad85c51b4c482f27333220a7733c3ee6d4f364168798e9faf191a",
+          "size_bytes": 12872,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1dc66f4630dad85c51b4c482f27333220a7733c3ee6d4f364168798e9faf191a",
-      "size_bytes": 12872,
+      "sha256": "6f8af705b3e94f1b9c6aaad0c6940f264312b2e4214e740241523a3428bc7570",
+      "size_bytes": 14935,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -2605,7 +2619,7 @@
     {
       "document_id": "FE-LIVE-20261014-045",
       "path": "frontend/live/api.mjs",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2636,14 +2650,21 @@
           "size_bytes": 11832,
           "superseded_at": "2026-10-20T06:32:09.164471+00:00",
           "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        },
+        {
+          "revision": 5,
+          "sha256": "362a36dc2b83eb3c1032268d014da26a039b1815dc11b4ca73d9a8d60c626609",
+          "size_bytes": 11863,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "362a36dc2b83eb3c1032268d014da26a039b1815dc11b4ca73d9a8d60c626609",
-      "size_bytes": 11863
+      "sha256": "e933a433a758dda1852efe6eb081f026d188cedd0042aba1bec5b5423f98fee8",
+      "size_bytes": 12377
     },
     {
       "document_id": "FE-LIVE-20261014-046",
@@ -2765,7 +2786,7 @@
     {
       "document_id": "FE-LIVE-20261014-051",
       "path": "frontend/live/session.mjs",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2782,14 +2803,21 @@
           "size_bytes": 2481,
           "superseded_at": "2026-10-19T18:50:07.982849+00:00",
           "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        },
+        {
+          "revision": 3,
+          "sha256": "da16a99011611aa9905b824c7c7f421882c52c686d46978a402cea43c021a830",
+          "size_bytes": 4267,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "da16a99011611aa9905b824c7c7f421882c52c686d46978a402cea43c021a830",
-      "size_bytes": 4267
+      "sha256": "031bb717a4cd5409a03f5ccb89fbe63e17eb075a2cbfe9325884e32639ec8291",
+      "size_bytes": 4404
     },
     {
       "document_id": "FE-LIVE-20261014-052",
@@ -2872,7 +2900,7 @@
     {
       "document_id": "FE-LIVE-20261014-056",
       "path": "frontend/live/ui.mjs",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2903,14 +2931,21 @@
           "size_bytes": 3123,
           "superseded_at": "2026-10-20T02:24:47.256978+00:00",
           "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        },
+        {
+          "revision": 5,
+          "sha256": "f5116b327f14087500c2f6b74dfd8873354df77b6dfdf798eac65eca65536f2e",
+          "size_bytes": 3206,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "f5116b327f14087500c2f6b74dfd8873354df77b6dfdf798eac65eca65536f2e",
-      "size_bytes": 3206
+      "sha256": "ccdea81083e56aada7f2ed08fc8a02f0d92cd4ab46640e256ec82c5b05ccb844",
+      "size_bytes": 3243
     },
     {
       "document_id": "FE-LIVE-20261014-057",
@@ -3248,25 +3283,41 @@
     {
       "document_id": "FE-W7-20261020-005",
       "path": "frontend/live/registration.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e8474a3d9268da2c352c17150472e61472da1eb059fef90ddd7cd06d7f3f1f86",
+          "size_bytes": 5216,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        }
+      ],
       "dependencies": [],
-      "sha256": "e8474a3d9268da2c352c17150472e61472da1eb059fef90ddd7cd06d7f3f1f86",
-      "size_bytes": 5216,
+      "sha256": "78566ccf179827d08c070cbd25ff8bee50a6422dbf381edfb6842dc6a7679145",
+      "size_bytes": 6201,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
       "document_id": "FE-W7-20261020-006",
       "path": "frontend/live/registration.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1df4b7ceeef375466747439f0a86c8e79721192b419dda897e7c26c8c13a099f",
+          "size_bytes": 6602,
+          "superseded_at": "2026-10-20T06:38:57.718672+00:00",
+          "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        }
+      ],
       "dependencies": [],
-      "sha256": "1df4b7ceeef375466747439f0a86c8e79721192b419dda897e7c26c8c13a099f",
-      "size_bytes": 6602,
+      "sha256": "1f47d9feb38441db98ce71ff0f19592e87bc245717aa1df19d7f4dd48e55922b",
+      "size_bytes": 12450,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
@@ -3441,6 +3492,32 @@
       ],
       "sha256": "d4675479cbc89a6da95a9ad53737671b63445c435e87d82c72711503ba84eab0",
       "size_bytes": 7364
+    },
+    {
+      "document_id": "FE-P1-20261020-167",
+      "path": "frontend/live/tests/guest-registration.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-P0-P1-20261020"
+      ],
+      "sha256": "ae349f599a5af48535f57c16aa8ac18de333eaeb6e48e8a89b2257f62422fea0",
+      "size_bytes": 30461
+    },
+    {
+      "document_id": "FE-P1-20261020-168",
+      "path": "docs/dev/tasks/FE-GUEST-REGISTRATION-20261020.md",
+      "revision": 1,
+      "owner": "Benjamin Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-P0-P1-20261020"
+      ],
+      "sha256": "165b6fb3b55e2722ffc870bd1e0d8c1d1acb71b40430b546ae13161ec5026799",
+      "size_bytes": 8185
     }
   ]
 }
