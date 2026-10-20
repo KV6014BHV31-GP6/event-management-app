@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T06:32:09.164471+00:00",
-  "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence",
-  "document_count": 162,
+  "reviewed_at": "2026-10-20T06:33:02.215729+00:00",
+  "reason": "Synchronize repaired Signup parent while preserving organizer guard and historical Demo evidence",
+  "document_count": 166,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 24,
+      "revision": 26,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -392,8 +392,22 @@
           "revision": 23,
           "sha256": "b889219c87110d0f00b9c0dc5cac66a44d7ebf76dc7161e72e9625240bc1174b",
           "size_bytes": 8618,
-          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
-          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        },
+        {
+          "revision": 24,
+          "sha256": "f2e806319c5936328de8aa5a730a4a0a6a5b08ed50d714a3b792ca9cd3237d8a",
+          "size_bytes": 10869,
+          "superseded_at": "2026-10-20T04:11:34.726233+00:00",
+          "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes"
+        },
+        {
+          "revision": 25,
+          "sha256": "afb4cebb5fc3852dba247e1eea813896f20a139505b047a4896edcd3c39ae053",
+          "size_bytes": 11601,
+          "superseded_at": "2026-10-20T06:33:02.215729+00:00",
+          "reason": "Synchronize repaired Signup parent while preserving organizer guard and historical Demo evidence"
         }
       ],
       "import_lineage": {
@@ -406,8 +420,163 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "e849bbc9526649abc50aab845fa04eaee945d72804fa4097f6ac6a2727892744",
-      "size_bytes": 9798
+      "sha256": "823132139b48a18d0d249b56b2292939da22d113f4733cb7c47cf079f0f257e9",
+      "size_bytes": 13480,
+      "upstream_revision_lineage": {
+        "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
+        "entry": {
+          "document_id": "DOC-01",
+          "path": "docs/dev/CURRENT.md",
+          "revision": 24,
+          "owner": "Benjamin Dev workflow",
+          "status": "working-baseline",
+          "revision_history": [
+            {
+              "revision": 5,
+              "sha256": "f1176c644e946c2d5306a2856f996fd3ee82e4a4232d13ceb1b140443a0604d6",
+              "superseded_at": "2026-10-12T10:50:51.636683+00:00",
+              "reason": "TASK-004"
+            },
+            {
+              "revision": 6,
+              "sha256": "56762ac23a9b5109bbe8ccac4801eaffbe96cdabccd7f97b00f0f8da8a703983",
+              "superseded_at": "2026-10-12T10:56:27.214277+00:00",
+              "reason": "TASK-004"
+            },
+            {
+              "revision": 7,
+              "sha256": "e2e69ec8dfa6b9e224da7173deba59a9a8501a7f3dace34bca0b4bea6d8dbc67",
+              "size_bytes": 2045,
+              "superseded_at": "2026-10-12T16:15:43.702002+00:00",
+              "reason": "Selective public import successor; source scope and latest user authorization reconciled"
+            },
+            {
+              "revision": 8,
+              "sha256": "a919a40ccf25736a9cf7e0a15b1da107f84a111ddfa64597a9a3c7899ea50445",
+              "size_bytes": 2308,
+              "superseded_at": "2026-10-12T17:02:54.892016+00:00",
+              "reason": "記錄本地 beeawanegd CLI 授權、Bundle 與 manifest 核對及待發佈狀態"
+            },
+            {
+              "revision": 9,
+              "sha256": "a640b31146214b9de63240be490f2827357c8266b2ba9add3c1254f305d947ab",
+              "size_bytes": 2458,
+              "superseded_at": "2026-10-12T17:03:15.238450+00:00",
+              "reason": "保留 LF 換行並記錄本地 CLI 執行狀態"
+            },
+            {
+              "revision": 10,
+              "sha256": "93e0c6426286f437e8134df405aebdbb65250202c40a0fe521d9cd20107a5022",
+              "size_bytes": 2431,
+              "superseded_at": "2026-10-12T17:05:41.054725+00:00",
+              "reason": "記錄 GitHub Draft PR 1、正常 Push 及 Fetch 回讀成功"
+            },
+            {
+              "revision": 11,
+              "sha256": "624e8de55c39d05c4a0048efc7a8439d484afb6410d196a9d26cd922fac6cc18",
+              "size_bytes": 2662,
+              "superseded_at": "2026-10-13T01:37:33.207141+00:00",
+              "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+            },
+            {
+              "revision": 12,
+              "sha256": "bd5dbeba3f2babd2017fed6d03dcc88c967d86112174584162853c06d388f7b9",
+              "size_bytes": 2342,
+              "superseded_at": "2026-10-13T02:07:09.131039+00:00",
+              "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
+            },
+            {
+              "revision": 13,
+              "sha256": "0ebd6eaf80f1dcf2062212fe8e3181d100754c118b8f6945db48802037ad2b8f",
+              "size_bytes": 2234,
+              "superseded_at": "2026-10-13T04:36:01.697Z",
+              "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)"
+            },
+            {
+              "revision": 14,
+              "sha256": "b0f17feaca1d4a84e6a0469dfd19b021e6d61e702ecfd7d0f284598d369f30b8",
+              "size_bytes": 2631,
+              "superseded_at": "2026-10-13T04:39:43.923Z",
+              "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
+            },
+            {
+              "revision": 15,
+              "sha256": "6928df314992e468bcfc00174c29125d5f3aa5c2cba75d1a7f037dea15026f04",
+              "size_bytes": 3125,
+              "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+              "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+            },
+            {
+              "revision": 16,
+              "sha256": "9710f8a2d9a4bdb2c341e36c9e07d8c21e2fbf0845bf5fedc8da17cec18f027b",
+              "size_bytes": 3284,
+              "superseded_at": "2026-10-14T09:54:48.765266+00:00",
+              "reason": "PR3 merge review: record supplied native acceptance and explicit dev merge authorization; application bytes unchanged"
+            },
+            {
+              "revision": 17,
+              "sha256": "b7981ead7319595666afc8c82e8bfbb004b2b4bf082aaa98bdde3c95563253f4",
+              "size_bytes": 4449,
+              "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+              "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+            },
+            {
+              "revision": 18,
+              "sha256": "d480ed346d7b24eecfb17fb4cdca5a6db5c02029ad3aafb6b33af0a93c7e1473",
+              "size_bytes": 4884,
+              "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+              "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+            },
+            {
+              "revision": 19,
+              "sha256": "8b90e7ec4e73b32fab4b4acf61c1921ca10efd01719946f3139bef41a2f66f7c",
+              "size_bytes": 4701,
+              "superseded_at": "2026-10-14T11:43:38.979369+00:00",
+              "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+            },
+            {
+              "revision": 20,
+              "sha256": "718a7432c71d231de9cdaa56fad5d733922662b73bae00d496ba4efc8ec8d77e",
+              "size_bytes": 4701,
+              "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+              "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+            },
+            {
+              "revision": 21,
+              "sha256": "4ea61b222bfa46f0b5b535434c1a06b0224ce7e4856be3a89124dd73c5c57419",
+              "size_bytes": 6039,
+              "superseded_at": "2026-10-19T18:55:02.344041+00:00",
+              "reason": "Record W7 frontend scope and executed stage-2 verification; preserve known baseline unittest failure"
+            },
+            {
+              "revision": 22,
+              "sha256": "35b9100137c9c5e0a0dbf868bf65022a77cc8b14c39efb5a08229ba33bffda1c",
+              "size_bytes": 6398,
+              "superseded_at": "2026-10-20T01:46:18.700508+00:00",
+              "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+            },
+            {
+              "revision": 23,
+              "sha256": "b889219c87110d0f00b9c0dc5cac66a44d7ebf76dc7161e72e9625240bc1174b",
+              "size_bytes": 8618,
+              "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+              "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+            }
+          ],
+          "import_lineage": {
+            "workspace_version": "1.2.0",
+            "source_sha256": "e2e69ec8dfa6b9e224da7173deba59a9a8501a7f3dace34bca0b4bea6d8dbc67",
+            "source_size_bytes": 2045
+          },
+          "dependencies": [
+            "USER-PR-SCOPE",
+            "USER-NATIVE-ACCEPTANCE-20261014",
+            "USER-PR3-MERGE-20261014"
+          ],
+          "sha256": "e849bbc9526649abc50aab845fa04eaee945d72804fa4097f6ac6a2727892744",
+          "size_bytes": 9798
+        }
+      }
     },
     {
       "document_id": "DOC-11",
@@ -761,7 +930,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-003",
       "path": "docs/dev/frontend/README.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -771,13 +940,20 @@
           "size_bytes": 1736,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "ceaa5f0a0809f5746d0ee03fc34378c14e705753796debf86da436833bf1677b",
+          "size_bytes": 1934,
+          "superseded_at": "2026-10-20T04:11:34.726233+00:00",
+          "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ceaa5f0a0809f5746d0ee03fc34378c14e705753796debf86da436833bf1677b",
-      "size_bytes": 1934
+      "sha256": "07257afa3a4ada8ffc5247daeb5c2a7a02753bb3a66e117284272ba11beb1292",
+      "size_bytes": 4681
     },
     {
       "document_id": "PUB-DOC-023",
@@ -1177,7 +1353,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 12,
+      "revision": 13,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1255,15 +1431,116 @@
           "revision": 11,
           "sha256": "176ffb49c6e57338109cb9e78b8f3dbd7034609095acc55aa3d45fa0dfba6dcc",
           "size_bytes": 10735,
-          "superseded_at": "2026-10-20T06:32:09.164471+00:00",
-          "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        },
+        {
+          "revision": 12,
+          "sha256": "c9fb137b1205af07cf1092658a858249774b2d42adfa4609299c781b86f2347f",
+          "size_bytes": 11871,
+          "superseded_at": "2026-10-20T06:33:02.215729+00:00",
+          "reason": "Synchronize repaired Signup parent while preserving organizer guard and historical Demo evidence"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ac817c516cee43659fa64867bf1450b1a5154cf4503976068d6cc3f30d4176e9",
-      "size_bytes": 11736
+      "sha256": "1dc66f4630dad85c51b4c482f27333220a7733c3ee6d4f364168798e9faf191a",
+      "size_bytes": 12872,
+      "upstream_revision_lineage": {
+        "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
+        "entry": {
+          "document_id": "PUB-DOC-SPLIT-001",
+          "path": "frontend/README.md",
+          "revision": 12,
+          "owner": "Benjamin Dev workflow",
+          "status": "working-baseline",
+          "revision_history": [
+            {
+              "revision": 1,
+              "sha256": "fca7241ebd3344c4b5b395764c379e8a5824b3861888289791ef8c0829e487ab",
+              "size_bytes": 899,
+              "superseded_at": "2026-10-13T02:07:09.131039+00:00",
+              "reason": "FE-SHELL: preserve PR2 structure, add static preview entry and user-authorized branch workflow; no feature merge"
+            },
+            {
+              "revision": 2,
+              "sha256": "d25d1c98f470bf791b4aa9a32a4f9574367f298ab924612d95d72851e514234b",
+              "size_bytes": 1956,
+              "superseded_at": "2026-10-13T04:36:01.697Z",
+              "reason": "Import verified NU v1.2.0 module-based frontend mock source in dev_fe_shell (commit 1 of 2)"
+            },
+            {
+              "revision": 3,
+              "sha256": "061b43b26967b9b1adc2b1352e6a313484f6773ef47b583b827dbc08817e8815",
+              "size_bytes": 2419,
+              "superseded_at": "2026-10-13T04:39:43.923Z",
+              "reason": "Upgrade source-index from NU v1.2.0 modular mock to verified v1.2.1 English standalone demo (commit 2 of 2)"
+            },
+            {
+              "revision": 4,
+              "sha256": "6ad148fe7480adf824891855219e4310f65dfe8d53a46e2c95dc35d6f664549a",
+              "size_bytes": 2723,
+              "superseded_at": "2026-10-13T16:51:30.997857+00:00",
+              "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+            },
+            {
+              "revision": 5,
+              "sha256": "7fc09794e707cafc957a1cb9e1c24650530dfeeeb648c6ecd69c7d4d5fc2bac8",
+              "size_bytes": 3595,
+              "superseded_at": "2026-10-14T10:20:41.000630+00:00",
+              "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+            },
+            {
+              "revision": 6,
+              "sha256": "8a468b37414273ae9d9e9929ce4bdc818ed59cf50883e9ee526e7af39422dce8",
+              "size_bytes": 4468,
+              "superseded_at": "2026-10-14T11:39:23.557430+00:00",
+              "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+            },
+            {
+              "revision": 7,
+              "sha256": "33d861bce13c1f60ba0a0fa2478ad27863dd69c0a1464446c3759b1e6990895b",
+              "size_bytes": 4929,
+              "superseded_at": "2026-10-14T11:43:38.979369+00:00",
+              "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+            },
+            {
+              "revision": 8,
+              "sha256": "0a8b3f7aed7c1711c03980046358b60b4fd2b0edda6da36bb58780b4f3dc4aec",
+              "size_bytes": 5390,
+              "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+              "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+            },
+            {
+              "revision": 9,
+              "sha256": "8679e9ef1956d07754b5a336206e37c43bc1d4bf8ec5aa3d64ca469e8e8048c3",
+              "size_bytes": 8185,
+              "superseded_at": "2026-10-19T18:56:13.599919+00:00",
+              "reason": "Qualify historical Create Event cloud status with bounded W7 native evidence"
+            },
+            {
+              "revision": 10,
+              "sha256": "f843d56be84440063cc4cbd7bc239848d243d03c27a8e1a8e4714006b7ac2993",
+              "size_bytes": 8399,
+              "superseded_at": "2026-10-20T01:46:18.700508+00:00",
+              "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+            },
+            {
+              "revision": 11,
+              "sha256": "176ffb49c6e57338109cb9e78b8f3dbd7034609095acc55aa3d45fa0dfba6dcc",
+              "size_bytes": 10735,
+              "superseded_at": "2026-10-20T06:32:09.164471+00:00",
+              "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+            }
+          ],
+          "dependencies": [
+            "USER-PR-SCOPE"
+          ],
+          "sha256": "ac817c516cee43659fa64867bf1450b1a5154cf4503976068d6cc3f30d4176e9",
+          "size_bytes": 11736
+        }
+      }
     },
     {
       "document_id": "DOC-25",
@@ -2595,7 +2872,7 @@
     {
       "document_id": "FE-LIVE-20261014-056",
       "path": "frontend/live/ui.mjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2619,14 +2896,21 @@
           "size_bytes": 2829,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 4,
+          "sha256": "cf5887a37f945c4dc0d5574a380199541912f6f5d75d4a5b7657fdc44e67ad1e",
+          "size_bytes": 3123,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "cf5887a37f945c4dc0d5574a380199541912f6f5d75d4a5b7657fdc44e67ad1e",
-      "size_bytes": 3123
+      "sha256": "f5116b327f14087500c2f6b74dfd8873354df77b6dfdf798eac65eca65536f2e",
+      "size_bytes": 3206
     },
     {
       "document_id": "FE-LIVE-20261014-057",
@@ -2657,7 +2941,7 @@
     {
       "document_id": "FE-CREATE-EVENT-20261014-001",
       "path": "frontend/live/create-event.html",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
       "revision_history": [
@@ -2667,18 +2951,25 @@
           "size_bytes": 3271,
           "superseded_at": "2026-10-14T11:39:23.557430+00:00",
           "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "daa84729bc0918189a8d04cfe51008bc9da758775554ca88f2acc5558905ef5d",
+          "size_bytes": 3305,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "daa84729bc0918189a8d04cfe51008bc9da758775554ca88f2acc5558905ef5d",
-      "size_bytes": 3305
+      "sha256": "d7ad3ca77a1ee2491e57b7f0d5533053fd36f1a058b03f857dc0d8c3f51d35e5",
+      "size_bytes": 3404
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-002",
       "path": "frontend/live/create-event.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
       "revision_history": [
@@ -2688,26 +2979,41 @@
           "size_bytes": 4885,
           "superseded_at": "2026-10-14T11:39:23.557430+00:00",
           "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "3abb1710c927f8d5276d99a8a3862fa50167ac43d2d0901de82ad13559a02254",
+          "size_bytes": 4927,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "3abb1710c927f8d5276d99a8a3862fa50167ac43d2d0901de82ad13559a02254",
-      "size_bytes": 4927
+      "sha256": "cb5a3748eab43a776ad332a45c49337c16a5ab5d48022fd8b2dff77414460f3c",
+      "size_bytes": 5545
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-003",
       "path": "frontend/live/tests/create-event.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c42721e56cf0099e6161e6232f205e08cdeee898085f81e8c89ef79cdcf8eed2",
+          "size_bytes": 11237,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "c42721e56cf0099e6161e6232f205e08cdeee898085f81e8c89ef79cdcf8eed2",
-      "size_bytes": 11237
+      "sha256": "3b7d3c40c44ea8b6066525fdbe3b186e76fe13c1ee454df69e6eeaa5001a2fb2",
+      "size_bytes": 11257
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-004",
@@ -2788,11 +3094,20 @@
       "title": "quota-boundary.test.mjs",
       "owner": "Benjamin / Developer",
       "status": "working-baseline",
-      "revision": 1,
-      "sha256": "9fd86c6f3f12283104d40334880b44497f63f32d3e98faa72a1d4d0dda6bb023",
-      "size_bytes": 1802,
+      "revision": 2,
+      "sha256": "b0af11c118c86649b1dac7f26ffb1e95df390b1f8ee5d6e4c2252544ca7b7bfa",
+      "size_bytes": 1821,
       "dependencies": [],
-      "approval_record": null
+      "approval_record": null,
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9fd86c6f3f12283104d40334880b44497f63f32d3e98faa72a1d4d0dda6bb023",
+          "size_bytes": 1802,
+          "superseded_at": "2026-10-20T02:24:47.256978+00:00",
+          "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        }
+      ]
     },
     {
       "document_id": "PR4-FBCF546ACFBD00A8",
@@ -3057,6 +3372,62 @@
       "sha256": "51b292eb925a9ddcdba4c18ab2d6cfc40f9e962618396bef96006f83a41d705b",
       "size_bytes": 11365,
       "source_note": "User Signup authorization USER-SIGNUP-20261020; stacked increment over verified W7 head. No backend or team approval inferred."
+    },
+    {
+      "document_id": "FE-CREATE-ROLE-20261020-001",
+      "path": "frontend/live/tests/create-event-role.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "7588b07487364143766969ad85c86000afd09be6161368c66daad8a510a1bb97",
+      "size_bytes": 13971,
+      "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
+    },
+    {
+      "document_id": "FE-CREATE-ROLE-20261020-002",
+      "path": "docs/dev/tasks/FE-CREATE-EVENT-ROLE-GUARD-20261020.md",
+      "revision": 2,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4ef31e9ae3cebb77cf93bcc8f0a675f2afa0d9082a1e7ae250de9e8c70f99202",
+          "size_bytes": 7987,
+          "superseded_at": "2026-10-20T04:11:34.726233+00:00",
+          "reason": "Publish the original NU Live Demo MP4 and report on existing PR #29 with provenance and unresolved gaps; no product changes"
+        }
+      ],
+      "dependencies": [],
+      "sha256": "ea3f9dfecb10c69da501323397ce7388c1752580630a300ed4a286d3ee570163",
+      "size_bytes": 11361,
+      "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
+    },
+    {
+      "document_id": "FE-LIVE-DEMO-20261020-001",
+      "path": "docs/dev/frontend/demo/20261020-111833/NU_LIVE_FEATURE_DEMO.mp4",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "5060ccbf2c40c3001807966d1fa13975fb83a6816b83b7fc9aa84d6e734c3489",
+      "size_bytes": 9288611,
+      "source_note": "Current user authorization USER-DEMO-REPO-PR29-20261020 to publish the completed recorded live demo on existing PR #29; author demonstration only, not local Astra independent acceptance. Recorded frontend 7fad81c227d1817c8cdc9e465e1e5dcaa4afaf25 and separate backend d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0."
+    },
+    {
+      "document_id": "FE-LIVE-DEMO-20261020-002",
+      "path": "docs/dev/frontend/demo/20261020-111833/DEMO.md",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "e657237b9b202489112e8a118b7369091321cc1772e8447b2ea6307cf95ab8b7",
+      "size_bytes": 7344,
+      "source_note": "Current user authorization USER-DEMO-REPO-PR29-20261020 to publish the completed recorded live demo on existing PR #29; author demonstration only, not local Astra independent acceptance. Recorded frontend 7fad81c227d1817c8cdc9e465e1e5dcaa4afaf25 and separate backend d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0."
     },
     {
       "document_id": "FE-P1-20261020-162",

@@ -118,7 +118,7 @@ test('mounted form disables before verification and immediately on logout; late 
     setAttribute(name, value) { this[name] = value; }
     reportValidity() { return true; }
   }
-  const ids = ['create-event-form', 'event-fields', 'create-progress', 'create-result', 'login-prompt', 'account', 'auth-notice', 'create-timezone', 'created-title', 'created-id'];
+  const ids = ['create-event-form', 'event-fields', 'create-progress', 'create-result', 'login-prompt', 'organizer-prompt', 'account', 'auth-notice', 'create-timezone', 'created-title', 'created-id'];
   const nodes = Object.fromEntries(ids.map(id => [`#${id}`, new Node()]));
   nodes['#event-fields'].disabled = true; // HTML's initial disabled fieldset.
   const original = Object.fromEntries(['document', 'fetch', 'sessionStorage', 'addEventListener', 'FormData'].map(k => [k, Object.getOwnPropertyDescriptor(globalThis, k)]));

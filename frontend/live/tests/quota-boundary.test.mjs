@@ -15,7 +15,7 @@ test('both quotas accept zero and the PostgreSQL integer maximum', () => {
 
 test('either quota above PostgreSQL integer maximum is rejected before any POST', async () => {
   let posts = 0;
-  const session = { user: { id: 'synthetic-user' }, createEvent: async () => { posts++; } };
+  const session = { user: { id: 'synthetic-user', role: 'organizer' }, createEvent: async () => { posts++; } };
   for (const field of ['online_quota', 'offline_quota']) {
     for (const value of ['2147483648', '9007199254740991']) {
       const input = { ...values, [field]: value };

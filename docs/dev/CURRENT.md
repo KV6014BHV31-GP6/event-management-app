@@ -1,10 +1,28 @@
 # NU Developer 當前狀態
 
+## Parent synchronization, 2026-10-20
+
+PR #29 now includes repaired PR #28 at `46e77c023d72426859e587aff7afa4db8b4c0027` through a non-rewriting local merge. Organizer navigation/controller protections and the original Demo files remain. The Demo describes its historical recorded source; it does not demonstrate these Signup repairs or Guest. The previous three Signup defects are repaired in this synchronized source; the historical failure statements below remain version-qualified. The separate backend dependency and unresolved authorization/ownership gaps are unchanged. This is author checking, not Astra acceptance; no PR merge or deployment.
+
 ## Signup P0 follow-up, 2026-10-20
 
 Author implementation: initial sensitive-field lock and non-network native fallback, trim-empty username rejection without changing valid input, and strict string/canonical ULID response validation. The existing Login/Profile contract and uncertain-write lock are preserved. Test-first regression: 7/11 PASS and 4 FAIL before repair; final frontend suite 119/119 PASS. Three controlled Chrome cases (JavaScript disabled, module failure, partial initialization failure) changed from intercepted password-query attempts to disabled fields and zero native request attempts; all canary requests were aborted before reaching the network. This does not replace the preserved historical failures or establish Security/UAT acceptance.
 
 Evidence: `E:\NU_Local_Environment_20261014\guest-frontend\20261020-142554\evidence` (`p0-red.txt`, `p0-node.txt`, `privacy-before.json`, `privacy-after.json`). PR #28 remains stacked on #27. Native Signup/Login is deferred to the single-account downstream Guest author run; no additional account was created in this parent check. Backend authorization and ownership gaps remain unresolved. No merge or deployment.
+
+## Preserved role and Demo status (historical)
+
+Demo follow-up, 2026-10-20: the user authorized adding the completed [live feature recording and original report](frontend/README.md#recorded-live-feature-demo-2026-10-20) on the existing PR #29 branch. Recording frontend `7fad81c227d1817c8cdc9e465e1e5dcaa4afaf25` and separate backend `d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0` remain fixed; this follow-up changes docs/media only. It records one UI-created ordinary account, one event and two pending applications, with full MP4 playback/visual checks. The three inherited Signup defects and two backend role gaps remain open; complete native E2E/Security/UAT and local Astra acceptance are unchanged. Earlier video NOT_RUN statements below retain their original task/run scope.
+
+Active task, 2026-10-20 (Hong Kong): [FE-CREATE-EVENT-ROLE-GUARD-20261020](tasks/FE-CREATE-EVENT-ROLE-GUARD-20261020.md). Branch `dev_fe_create_event_role_guard` is stacked on PR #28's freshly verified OPEN/Draft head `dev_fe_user_signup@189dbe07fafddc793373abb36573805b3c471940`; PR #27/#28 and their worktrees are preserved. Runtime backend remains the separate clean `dev_be_registrations@d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0`.
+
+Frontend Create event now requires the exact verified `organizer` role in navigation, page display, DOM submit and controller. Anonymous Events remain public. Signed-in non-organizers get `Organizer account required.` rather than a Login prompt; absent/unverified identity, user, leader and missing/unknown roles cannot send a Create Event POST through the guarded UI. Logout and identity/role changes disable submission and prevent late success display. Session/storage/Login/API/Signup/registration and style are unchanged.
+
+Fresh author self-checks: full frontend120/120 PASS, including12 role tests; limited native browser7/7 PASS with existing accounts. Ordinary user made0 Create Event POSTs; organizer made exactly1 UI POST201. New READ ONLY PG17 mapping confirmed that one new event belongs to that organizer, old events and all other W7 tables are unchanged, and original DemoDB fingerprints are unchanged. Runtime provenance first queried preserved frontend5189 by mistake and correctly failed byte comparison before any writes; the external probe URL was corrected to new5190 and passed, with the first failure retained. Final document-control/diff results and exact commands are in the external ledger. These are author results, not local Astra independent acceptance or a final decision.
+
+Backend source inspection still finds login-only event creation without organizer enforcement and public Signup accepting caller privileged roles. Both remain unresolved; no ordinary-user direct API write probe or privileged Signup probe was performed. Full E2E/Security/UAT, backend repairs, bootstrap/schema/migration/DB restart and video are NOT_RUN. Deliver one English Draft PR, then stop; no merge, approval, Issue/Board/reviewer edit or deployment.
+
+## Preserved Signup implementation status (historical)
 
 Active task, 2026-10-20 (Hong Kong): [FE-USER-SIGNUP-20261020](tasks/FE-USER-SIGNUP-20261020.md), Refs GitHub #25. This branch is `dev_fe_user_signup`, stacked on OPEN/Draft PR #27's verified head `dev_fe_w7_browse_registration@6ab9d531582b9528ded977f48b8c158403f8b8ce`. Its Draft PR targets the W7 branch while #27 remains unmerged. Austin's backend dependency is still separate at `d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0`; no merge/cherry-pick or backend change.
 
