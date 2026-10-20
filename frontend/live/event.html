@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer">
+  <title>Event details | ROSE</title><link rel="stylesheet" href="./styles.css"><script type="module" src="./event-detail.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="masthead shell">
+    <a class="brand" href="./index.html" aria-label="ROSE community events"><span class="brand-mark" aria-hidden="true">R</span><span><strong>ROSE</strong><small>Community event access</small></span></a>
+    <nav class="header-nav" aria-label="Main navigation"><a class="nav-link" href="./index.html">Events</a><div id="account" class="account"></div></nav>
+  </header>
+  <main id="main" class="shell detail-main">
+    <div id="auth-notice" class="notice" role="status" hidden></div>
+    <a class="back-link" href="./index.html">← Back to events</a>
+    <p id="detail-message" class="notice" role="status">Loading event details…</p><button id="detail-retry" class="button button-quiet" type="button" hidden>Try again</button>
+    <article id="detail-content" class="detail-layout" hidden>
+      <div><p class="eyebrow">COMMUNITY EVENT</p><h1 id="detail-title"></h1><p id="detail-overview" class="detail-overview"></p></div>
+      <aside class="detail-facts">
+        <span id="detail-status" class="status-badge"></span>
+        <dl><dt>Starts</dt><dd><time id="detail-start"></time></dd><dt>Ends</dt><dd><time id="detail-end"></time></dd><dt>Location</dt><dd id="detail-location"></dd></dl>
+        <a id="choose-event" class="button" href="./index.html">Apply for this event →</a>
+        <p id="not-accepting" class="muted" hidden>This event is not currently accepting applications.</p>
+        <p class="muted">An application does not confirm a place. The organiser determines the final outcome.</p>
+      </aside>
+    </article>
+  </main>
+  <footer class="footer shell"><span class="footer-brand">ROSE · Community event access</span><span>Small moments. Stronger communities.</span></footer>
+</body>
+</html>

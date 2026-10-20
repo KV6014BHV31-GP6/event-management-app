@@ -23,6 +23,37 @@ export function createSession({ api, storage = null }) {
     get hasToken() { return Boolean(token); },
     get persistent() { return persistent; },
     logout: clear,
+    async registerForEvent(event, payload) {
+      if (!token || !user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);
+      const current = revision;
+      const identity = user.id;
+      let sent = false;
+      try {
+        const profile = await api.getMe(token);
+        if (current !== revision) throw new ApiError('unauthorized', 'Your session changed. Log in again before applying.', 401);
+        if (profile.id !== identity || profile.role !== 'user') {
+          throw new ApiError('forbidden', 'Use your verified participant account to apply.', 403);
+        }
+        user = profile;
+        sent = true;
+        const receipt = await api.registerForEvent(event.public_id, payload, token);
+        if (current !== revision || receipt.created_by_user_id !== identity
+          || receipt.event_id !== event.id || receipt.channel !== 'online' || receipt.status !== 'pending') {
+          throw new ApiError('uncertain', 'The application result cannot be verified. Do not submit it again.');
+        }
+        return receipt;
+      } catch (error) {
+        if (current !== revision) {
+          if (sent) throw new ApiError('uncertain', 'Your session changed while submitting. Do not submit this application again.');
+          throw new ApiError('unauthorized', 'Your session changed. No application was sent. Verify your current account before applying.', 401);
+        }
+        if (error.status === 401 || (!sent && error.kind === 'forbidden')) clear();
+        if (!sent && !['unauthorized', 'forbidden'].includes(error.kind)) {
+          throw new ApiError('verification', 'We could not verify your account. No application was sent. Check your login and try again.', error.status);
+        }
+        throw error;
+      }
+    },
     async createEvent(payload) {
       if (!token || !user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);
       const current = revision;

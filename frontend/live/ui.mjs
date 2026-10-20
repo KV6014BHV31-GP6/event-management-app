@@ -5,7 +5,7 @@ export function element(tag, className, text) {
   return node;
 }
 
-export function mountAccount(session, { loginPage = false, onChange = () => {} } = {}) {
+export function mountAccount(session, { loginPage = false, loginHref = './login.html', onChange = () => {} } = {}) {
   const account = document.querySelector('#account');
   const notice = document.querySelector('#auth-notice');
   // A history-cache restore must read the current tab token and reverify identity.
@@ -43,7 +43,7 @@ export function mountAccount(session, { loginPage = false, onChange = () => {} }
       account.append(retry);
     } else if (!loginPage) {
       const login = element('a', 'button button-small', 'Log in ↗');
-      login.href = './login.html';
+      login.href = loginHref;
       account.append(login);
     } else {
       const current = element('span', 'nav-link current', 'Log in');

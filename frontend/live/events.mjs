@@ -2,6 +2,7 @@ import { createApi } from './api.mjs';
 import { createSession, browserSessionStorage } from './session.mjs';
 import { createEventsController, paginationModel } from './events-state.mjs';
 import { element, mountAccount } from './ui.mjs';
+import { eventRoute, validPublicId } from './event-navigation.mjs';
 
 const api = createApi();
 const session = createSession({ api, storage: browserSessionStorage() });
@@ -45,7 +46,7 @@ function createCard(event) {
   const tile = element('div', 'date-tile');
   tile.setAttribute('aria-hidden', 'true');
   tile.append(element('strong', '', String(start.getDate()).padStart(2, '0')), element('span', '', start.toLocaleDateString('en', { month: 'short' })));
-  const status = element('span', `status-badge${event.status === 'ACTIVE' ? '' : ' inactive'}`, event.status);
+  const status = element('span', `status-badge${event.status.toLowerCase() === 'active' ? '' : ' inactive'}`, event.status);
   status.setAttribute('aria-label', `Event status: ${event.status}`);
   top.append(tile, status);
   article.append(top, element('h3', '', event.title || 'Untitled event'), element('p', 'event-overview', event.overview || 'The organiser hasn’t added an overview yet.'));
@@ -69,6 +70,12 @@ function createCard(event) {
   when.append(startLabel, endLabel);
   row('Location', 'location').textContent = event.location || 'Location to be confirmed';
   article.append(details);
+  if (validPublicId(event.public_id)) {
+    const link = element('a', 'button button-quiet event-open', 'View event →');
+    link.href = eventRoute(event.public_id);
+    link.setAttribute('aria-label', `View event: ${event.title}`);
+    article.append(link);
+  }
   return article;
 }
 
@@ -108,8 +115,8 @@ function render(state) {
   count.textContent = String(model.total);
   count.hidden = false;
   if (model.total === 0) {
-    summary.textContent = 'No events to show yet.';
-    content.append(statePanel('Something to look forward to.', 'There are no community events listed yet. Check back soon, or refresh to see what’s new.'));
+    summary.textContent = state.keyword ? 'No events match your search.' : 'No events to show yet.';
+    content.append(statePanel(state.keyword ? 'No matching events.' : 'Something to look forward to.', state.keyword ? 'Try another title or overview search, or clear the search to browse all events.' : 'There are no community events listed yet. Check back soon, or refresh to see what’s new.'));
   } else if (state.result.data.length === 0) {
     summary.textContent = 'No events on this page.';
     content.append(statePanel('This page has changed.', 'The event list has changed since your last request. Refresh to get the latest events.', { retry: true }));
@@ -141,5 +148,12 @@ document.querySelector('#last-page').addEventListener('click', () => navigate(co
 document.querySelector('#page-jump').addEventListener('submit', event => { event.preventDefault(); navigate(Number(pageInput.value)); });
 pageSize.addEventListener('change', () => { focusResults = true; controller.load(1, Number(pageSize.value)); });
 refresh.addEventListener('click', () => controller.load());
+document.querySelector('#event-search').addEventListener('submit', event => {
+  event.preventDefault(); focusResults = true;
+  controller.search(document.querySelector('#event-keyword').value);
+});
+document.querySelector('#clear-search').addEventListener('click', () => {
+  document.querySelector('#event-keyword').value = ''; focusResults = true; controller.search('');
+});
 account.check();
 controller.load();

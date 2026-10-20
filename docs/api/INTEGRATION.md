@@ -1,5 +1,20 @@
 # Austin frontend and API integration record
 
+## W7 bounded successor, 2026-10-20
+
+Frontend base: `dev@a47ff7d92f296ebd0604a1df98daf0b8111829b3`; backend dependency: `dev_be_registrations@d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0` (not in dev). This supersedes the historical contract inventory below **only for the W7 operations**. See the [W7 task](../dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md).
+
+| Operation | Current contract and UI boundary |
+| --- | --- |
+| GET `/events?page=1&pageSize=6&keyword=...` | Public, server-side title OR overview substring search, created_at descending. Page/page_size/total_count/total_pages/data are checked. New search resets page one; pagination/refresh keep keyword and discard stale responses. No location-search contract. |
+| GET `/events/{public_id}` | Public 21-character NanoID detail; selected detail must match requested public_id. Invalid/not-found errors use bounded static messages. UI displays server status as supplied, with case-compatible active styling. |
+| Login → GET `/users/me` | Existing token closure/tab session retained. Only a validated public ID may lead back to the fixed registration route. No signup UI, token getter or arbitrary URL redirect. |
+| POST `/events/{public_id}/registrations` | Flat first_name/last_name/gender/date_of_birth/phone/address/national_id/income_band_code/marriage_status, optional medical_record=null. Strings follow existing schema max lengths; no invented phone/income/eligibility policy. Current UI omits optional medical input. |
+| Registration 201 | Validate ULID references, selected numeric event_id, freshly verified nonnull created_by_user_id, online channel, pending status and echoed fields. Only then show the actual POST receipt. No confirmed-place or eligibility claim. |
+| Registration rejection/unknown result | Exact reviewed duplicate/full/inactive/invalid-ID/not-found details map to bounded messages. 401/403/422 are failures; arbitrary detail/HTML/422 input never displayed. Network/timeout/5xx/malformed or mismatched success is uncertain and never automatically resent. |
+
+Backend facts remain unresolved: registration uses optional auth, existing national_id reuse lacks current-user ownership enforcement, public signup accepts privileged roles, and there is no own-registration GET. UI gating/profile recheck does not fix these server policies. Page-memory receipts and external READ ONLY DB evidence are not a server readback feature. Original bootstrap/lowercase enum compatibility and old-database migration are not passed by the isolated schema/fixture harness. Formal income options, eligibility/review and pending-reserves-capacity policy still require PM/Austin decisions. Refs #19 / #22; full issues cannot be closed by this limited demo.
+
 ## Current live slice, FE-LIVE-20261014
 
 The following source-backed contract supersedes the historical "no backend source" state **only for this slice**. Backend source: `dev_be_users` at `79804aa67508de23d3f3c613e65cf375e9ded2a3`; frontend base: `dev_fe_shell` at `3e9aa8f15f18dd52a142fb3bd1ebe1efaa497ab9`. Runtime and browser results are tracked in [CURRENT](../dev/CURRENT.md) and the [task](../dev/tasks/FE-LIVE-20261014.md). Public index and Login are the current delivery. A Create Event UI, guest bookings and the other historical claims are not implemented by this slice.

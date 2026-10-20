@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-14T11:43:38.979369+00:00",
-  "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence",
-  "document_count": 149,
+  "reviewed_at": "2026-10-19T18:56:13.599919+00:00",
+  "reason": "Qualify historical Create Event cloud status with bounded W7 native evidence",
+  "document_count": 157,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -167,7 +167,7 @@
     {
       "document_id": "DOC-07",
       "path": "docs/api/INTEGRATION.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -191,6 +191,13 @@
           "size_bytes": 8154,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 4,
+          "sha256": "898731671d2ad577e029128b9c97cc75624db65438b29e9cf2c51e6a845c8023",
+          "size_bytes": 11217,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
         }
       ],
       "import_lineage": {
@@ -202,8 +209,8 @@
         "USER-PR-SCOPE",
         "SRC-API-HANDOFF-V120"
       ],
-      "sha256": "898731671d2ad577e029128b9c97cc75624db65438b29e9cf2c51e6a845c8023",
-      "size_bytes": 11217
+      "sha256": "0ef60743227c1d045f9e7ea911c9a47dcf077c30cf0b0ace0d3471c9b21b0b89",
+      "size_bytes": 13946
     },
     {
       "document_id": "DOC-08",
@@ -253,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 20,
+      "revision": 22,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -359,6 +366,20 @@
           "size_bytes": 4701,
           "superseded_at": "2026-10-14T11:43:38.979369+00:00",
           "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 20,
+          "sha256": "718a7432c71d231de9cdaa56fad5d733922662b73bae00d496ba4efc8ec8d77e",
+          "size_bytes": 4701,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        },
+        {
+          "revision": 21,
+          "sha256": "4ea61b222bfa46f0b5b535434c1a06b0224ce7e4856be3a89124dd73c5c57419",
+          "size_bytes": 6039,
+          "superseded_at": "2026-10-19T18:55:02.344041+00:00",
+          "reason": "Record W7 frontend scope and executed stage-2 verification; preserve known baseline unittest failure"
         }
       ],
       "import_lineage": {
@@ -371,8 +392,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "718a7432c71d231de9cdaa56fad5d733922662b73bae00d496ba4efc8ec8d77e",
-      "size_bytes": 4701
+      "sha256": "35b9100137c9c5e0a0dbf868bf65022a77cc8b14c39efb5a08229ba33bffda1c",
+      "size_bytes": 6398
     },
     {
       "document_id": "DOC-11",
@@ -1135,7 +1156,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 8,
+      "revision": 10,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1187,13 +1208,27 @@
           "size_bytes": 4929,
           "superseded_at": "2026-10-14T11:43:38.979369+00:00",
           "reason": "PR4 quota boundary repair and actual native Windows acceptance evidence"
+        },
+        {
+          "revision": 8,
+          "sha256": "0a8b3f7aed7c1711c03980046358b60b4fd2b0edda6da36bb58780b4f3dc4aec",
+          "size_bytes": 5390,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        },
+        {
+          "revision": 9,
+          "sha256": "8679e9ef1956d07754b5a336206e37c43bc1d4bf8ec5aa3d64ca469e8e8048c3",
+          "size_bytes": 8185,
+          "superseded_at": "2026-10-19T18:56:13.599919+00:00",
+          "reason": "Qualify historical Create Event cloud status with bounded W7 native evidence"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0a8b3f7aed7c1711c03980046358b60b4fd2b0edda6da36bb58780b4f3dc4aec",
-      "size_bytes": 5390
+      "sha256": "f843d56be84440063cc4cbd7bc239848d243d03c27a8e1a8e4714006b7ac2993",
+      "size_bytes": 8399
     },
     {
       "document_id": "DOC-25",
@@ -2258,7 +2293,7 @@
     {
       "document_id": "FE-LIVE-20261014-045",
       "path": "frontend/live/api.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2268,56 +2303,87 @@
           "size_bytes": 5101,
           "superseded_at": "2026-10-14T10:20:41.000630+00:00",
           "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        },
+        {
+          "revision": 2,
+          "sha256": "aebe989dd72b71a42d4ff31561f18d8b27992600a82e13717700f3b69528556b",
+          "size_bytes": 6251,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "aebe989dd72b71a42d4ff31561f18d8b27992600a82e13717700f3b69528556b",
-      "size_bytes": 6251
+      "sha256": "791614515a094e349a340998a3ff07be34416aeb4c5328fa27b441a4e7082c70",
+      "size_bytes": 10349
     },
     {
       "document_id": "FE-LIVE-20261014-046",
       "path": "frontend/live/events-state.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "bd463402817a62ed3283eeb9eb6d5c9a86dd19cec77c4df040734180486e7fd9",
+          "size_bytes": 1804,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "bd463402817a62ed3283eeb9eb6d5c9a86dd19cec77c4df040734180486e7fd9",
-      "size_bytes": 1804
+      "sha256": "7eb2952d22adc3719a8e1a8be085d953f868a6c7f25d41017c31013b4bfc8776",
+      "size_bytes": 1996
     },
     {
       "document_id": "FE-LIVE-20261014-047",
       "path": "frontend/live/events.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1dd2914cdc496a895855148203218a490dfc992d74e178849abbab3232ba0f62",
+          "size_bytes": 7602,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "1dd2914cdc496a895855148203218a490dfc992d74e178849abbab3232ba0f62",
-      "size_bytes": 7602
+      "sha256": "c7a7cd621d9489d3d0bbf404e5161e79bd7dd1c479ca13ebe1e3b28f2184eaa3",
+      "size_bytes": 8513
     },
     {
       "document_id": "FE-LIVE-20261014-048",
       "path": "frontend/live/index.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4360568b17dd7931b92f6edc67ea740a890710b09f8b151ce094673da5092882",
+          "size_bytes": 4016,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "4360568b17dd7931b92f6edc67ea740a890710b09f8b151ce094673da5092882",
-      "size_bytes": 4016
+      "sha256": "3cd0f5c6bc319a19b7667ca3d12af4536413b1bb5af0fd23e375607e3a287948",
+      "size_bytes": 4429
     },
     {
       "document_id": "FE-LIVE-20261014-049",
@@ -2336,21 +2402,29 @@
     {
       "document_id": "FE-LIVE-20261014-050",
       "path": "frontend/live/login.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "2e009a3a539850c314da2d0a70f250c7d6fbe5401488a4f7e7d7a1ecb332cd37",
+          "size_bytes": 2600,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "2e009a3a539850c314da2d0a70f250c7d6fbe5401488a4f7e7d7a1ecb332cd37",
-      "size_bytes": 2600
+      "sha256": "4f54a34e6482ed3d097ef51eaf2a36e8abb39e2c02bdf5b89b055917191a6f82",
+      "size_bytes": 3010
     },
     {
       "document_id": "FE-LIVE-20261014-051",
       "path": "frontend/live/session.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2360,19 +2434,26 @@
           "size_bytes": 1860,
           "superseded_at": "2026-10-14T10:20:41.000630+00:00",
           "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        },
+        {
+          "revision": 2,
+          "sha256": "bc3a8f4c2687e69476b21abd672ddef9b5f11ac8b627dd51d69526be5771615c",
+          "size_bytes": 2481,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "bc3a8f4c2687e69476b21abd672ddef9b5f11ac8b627dd51d69526be5771615c",
-      "size_bytes": 2481
+      "sha256": "da16a99011611aa9905b824c7c7f421882c52c686d46978a402cea43c021a830",
+      "size_bytes": 4267
     },
     {
       "document_id": "FE-LIVE-20261014-052",
       "path": "frontend/live/styles.css",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2382,14 +2463,21 @@
           "size_bytes": 12954,
           "superseded_at": "2026-10-14T10:20:41.000630+00:00",
           "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        },
+        {
+          "revision": 2,
+          "sha256": "ce1039b3966134ca3d43f3b7ce5adc23833a253db57ac08a97a62f7f679b1f8b",
+          "size_bytes": 13604,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "ce1039b3966134ca3d43f3b7ce5adc23833a253db57ac08a97a62f7f679b1f8b",
-      "size_bytes": 13604
+      "sha256": "92bcc55bd452d5973ac1268ada7d7547dad65d56e97a5917507b903d807f5d84",
+      "size_bytes": 16131
     },
     {
       "document_id": "FE-LIVE-20261014-053",
@@ -2436,7 +2524,7 @@
     {
       "document_id": "FE-LIVE-20261014-056",
       "path": "frontend/live/ui.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2446,14 +2534,21 @@
           "size_bytes": 2692,
           "superseded_at": "2026-10-14T10:20:41.000630+00:00",
           "reason": "Add minimal Create Event UI, focused tests and current native acceptance boundary"
+        },
+        {
+          "revision": 2,
+          "sha256": "6505f02e6049313f1e8c7fc8b65e2dd7c9f452bbf6a7339c3eeb5d77435131da",
+          "size_bytes": 2806,
+          "superseded_at": "2026-10-19T18:50:07.982849+00:00",
+          "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "6505f02e6049313f1e8c7fc8b65e2dd7c9f452bbf6a7339c3eeb5d77435131da",
-      "size_bytes": 2806
+      "sha256": "65ee64a6c5f6581d046d001cddf2665923e6351c3b45a64adbf922f3651ce56e",
+      "size_bytes": 2829
     },
     {
       "document_id": "FE-LIVE-20261014-057",
@@ -2692,6 +2787,110 @@
       "size_bytes": 1377,
       "dependencies": [],
       "approval_record": null
+    },
+    {
+      "document_id": "FE-W7-20261020-001",
+      "path": "docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md",
+      "revision": 2,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "43d6c42023cd7cca0b696b819b5704f86c8943b6b40879a87c79752f0cfb8ae2",
+          "size_bytes": 8632,
+          "superseded_at": "2026-10-19T18:55:02.344041+00:00",
+          "reason": "Record W7 frontend scope and executed stage-2 verification; preserve known baseline unittest failure"
+        }
+      ],
+      "dependencies": [],
+      "sha256": "f87a4e92de114bdd95efc9b1aeebfba2f5c74668ba6e6c96bbb9fcd3035ecaaf",
+      "size_bytes": 9307,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-002",
+      "path": "frontend/live/event-detail.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "d4d965be0cc7287d2f46e7b6552c5d52939fd3fe5156e7e5a8e536ec63862cb3",
+      "size_bytes": 3371,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-003",
+      "path": "frontend/live/event-navigation.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "5737c3a4ecf75f00b0df01bfac69372d4394a42eb03384f2a33ecae3a779f1ef",
+      "size_bytes": 749,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-004",
+      "path": "frontend/live/event.html",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "b1a717cc5f167cb3a73fdd75da14d0a3d9e8cbff6d726217d978ebc3a508f842",
+      "size_bytes": 2144,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-005",
+      "path": "frontend/live/registration.html",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "e8474a3d9268da2c352c17150472e61472da1eb059fef90ddd7cd06d7f3f1f86",
+      "size_bytes": 5216,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-006",
+      "path": "frontend/live/registration.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "1df4b7ceeef375466747439f0a86c8e79721192b419dda897e7c26c8c13a099f",
+      "size_bytes": 6602,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-007",
+      "path": "frontend/live/tests/w7.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "73ce5070ad1d7c7223f95b35ec5bdfef3e1a805e0d9e252c7a76f01e772c0b38",
+      "size_bytes": 24360,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
+    },
+    {
+      "document_id": "FE-W7-20261020-008",
+      "path": "tests/e2e/w7_browser.mjs",
+      "revision": 1,
+      "owner": "Benjamin frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [],
+      "sha256": "0dd7a7c4eb2cfd94aae344d1d63e7841aa23d05627de1b49d807313c63f0c0a7",
+      "size_bytes": 17622,
+      "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     }
   ]
 }

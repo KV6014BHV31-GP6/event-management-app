@@ -1,23 +1,26 @@
 /** The controller prevents a slow older page request from replacing a newer one. */
 export function createEventsController({ api, onChange, pageSize = 6 }) {
-  let state = { status: 'idle', page: 1, pageSize, result: null, error: null };
+  let state = { status: 'idle', page: 1, pageSize, keyword: '', result: null, error: null };
   let request = null;
   let revision = 0;
   function update(next) { state = { ...state, ...next }; onChange(state); }
-  return {
+  const controller = {
     get state() { return state; },
-    async load(page = state.page, nextPageSize = state.pageSize) {
+    search(keyword) {
+      return controller.load(1, state.pageSize, keyword.trim());
+    },
+    async load(page = state.page, nextPageSize = state.pageSize, keyword = state.keyword) {
       request?.abort();
       request = new AbortController();
       const current = ++revision;
-      update({ status: 'loading', page, pageSize: nextPageSize, error: null, result: null });
+      update({ status: 'loading', page, pageSize: nextPageSize, keyword, error: null, result: null });
       try {
-        let result = await api.getEvents({ page, pageSize: nextPageSize, signal: request.signal });
+        let result = await api.getEvents({ page, pageSize: nextPageSize, keyword, signal: request.signal });
         // A deletion can make the last page disappear. Fetch the new last page once.
         if (current !== revision) return;
         if (result.total_pages > 0 && page > result.total_pages) {
           page = result.total_pages;
-          result = await api.getEvents({ page, pageSize: nextPageSize, signal: request.signal });
+          result = await api.getEvents({ page, pageSize: nextPageSize, keyword, signal: request.signal });
         }
         if (current !== revision) return;
         update({ status: 'ready', result, page, error: null });
@@ -27,6 +30,7 @@ export function createEventsController({ api, onChange, pageSize = 6 }) {
       }
     },
   };
+  return controller;
 }
 
 export function paginationModel(result) {
