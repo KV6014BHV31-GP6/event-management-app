@@ -1,6 +1,24 @@
 # Frontend workspace
 
-**Current slice:** public event browsing/search/detail, Login, existing Create Event and a minimal online application form, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
+**Current slice:** public event browsing/search/detail, Signup, Login, existing Create Event and a minimal online application form, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [Signup task](../docs/dev/tasks/FE-USER-SIGNUP-20261020.md), [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
+
+## Signup increment and local integration
+
+[Create account](live/signup.html) sends only `username` and `password` to public `POST /api/v1/users`, without a token or role. Only a valid HTTP201 ordinary-user response with matching username, ULID and timestamps shows success; a response containing password/hash fields is rejected. Signup does not log in automatically. The successful form stays disabled and clears its password; choose the existing Login to verify the same account through `/users/me`.
+
+Username is 3–20 Unicode code points and password at least six, without trimming, case changes or normalization. The UI also limits passwords to 72 UTF-8 bytes for compatibility with the current bcrypt implementation. This is a frontend compatibility guard, not a backend schema maximum or a backend fix. The Login input's UTF-16 `maxlength` was removed so it can accept valid Unicode usernames created here; Session is unchanged.
+
+The exact duplicate400 and schema422 are bounded rejection states. Possible committed writes with network/timeout/server/unexpected response failures lock the form with an uncertain result and no resend. No participant/profile/password is saved in browser storage. Valid selected-event intent is carried through Signup back to the existing Login, using the existing public-ID helper only.
+
+This is a stacked increment: while PR #27 is OPEN, Signup is based on `dev_fe_w7_browse_registration@6ab9d531582b9528ded977f48b8c158403f8b8ce`. Austin's separate fixed backend remains required. Preserve the existing W7 frontend5188/backend8017; from the Signup worktree use a free loopback port:
+
+```powershell
+$env:PORT = '5189'
+$env:BACKEND_URL = 'http://127.0.0.1:8017'
+node frontend/dev-server.mjs
+```
+
+Open `http://127.0.0.1:5189/live/signup.html`. No install/build/proxy change is needed. Native Signup201, manual Login/Profile match and duplicate400 were exercised with one new synthetic ordinary account; the navigation-response-body harness failure and same-account continuation are separately retained in the task. Public backend Signup still accepts caller-selected privileged roles: omitting role in this UI does not fix that vulnerability. No full Issue #25, Security or UAT acceptance is claimed.
 
 ## W7 backend dependency and local integration
 
@@ -49,13 +67,19 @@ Stop with Ctrl+C. Opening HTML using `file://` cannot provide the same-origin AP
 - JSON Login followed by authenticated `/users/me`; incorrect credentials remain visible. Identity is verified on reload before it appears.
 - Only the bearer token is kept in tab-scoped `sessionStorage`, never the password/profile. If storage is unavailable, Login works only on that page and explains that navigation ends the session.
 - Logout clears the local token; history-cache restoration reloads and checks the session. The backend has no revocation endpoint; existing tokens remain valid until expiry. Production/shared-device session policy requires review.
-- No inferred remaining places or coordinator permissions. Event status comes from the API; signup is outside this slice.
+- No inferred remaining places or coordinator permissions. Event status comes from the API; Signup has only username/password and no role selection.
 
 ## Create Event
 
 After Login and `/users/me` verification, choose **Create event**. The form at `/live/create-event.html` accepts title, optional overview, location, local start/end times and two non-negative quotas. Browser timezone is shown; dates are converted to ISO instants. Only a valid HTTP 201 response shows the server title/public ID. **Back to events** opens the existing first page and fetches server data again.
 
 Cancel performs no write. Logout disables submission immediately. Unknown POST outcomes are never retried automatically; check Events before attempting another creation. At the earlier cloud checkpoint this form's native UI/API/PostgreSQL checks were BLOCKED / NOT_RUN. W7 stage 2 now separately exercised three creations through this UI and native DB mapping, including the Login/quota/double-submit regressions described in the task; historical PR #3 API evidence is not reused as proof. DB restart and independent stage-3 acceptance remain NOT_RUN.
+
+## Signup follow-up (2026-10-20)
+
+Signup starts with a disabled fieldset and a non-network `method="dialog"` fallback. Its JSON submit handler and password-toggle handler must both initialize before the fields become usable. Disabled JavaScript, a failed module or interrupted initialization leave the form locked. Whitespace-only usernames are rejected before POST; valid usernames retain their exact case, spaces and Unicode. Successful Signup requires a string canonical ULID before format validation; malformed HTTP201 responses remain uncertain and locked against resend.
+
+The follow-up author run has 119/119 frontend tests and three separately controlled Chrome privacy cases passing. The pre-fix failures are retained outside the repository. These are unit/component/proxy and controlled-browser evidence, not native Signup acceptance or Security/UAT approval. Native Signup/Login will be exercised once in the downstream Guest run, without creating another account for this parent revision.
 
 ## Checks
 

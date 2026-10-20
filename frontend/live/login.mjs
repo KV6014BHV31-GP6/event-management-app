@@ -1,7 +1,7 @@
 import { createApi } from './api.mjs';
 import { createSession, browserSessionStorage } from './session.mjs';
 import { mountAccount } from './ui.mjs';
-import { selectedPublicId, registrationRoute } from './event-navigation.mjs';
+import { selectedPublicId, registrationRoute, signupRoute } from './event-navigation.mjs';
 
 const api = createApi();
 const session = createSession({ api, storage: browserSessionStorage() });
@@ -13,6 +13,7 @@ const errorNotice = document.querySelector('#login-error');
 const progress = document.querySelector('#login-progress');
 const toggle = document.querySelector('#toggle-password');
 const selectedEvent = selectedPublicId(globalThis.location.search);
+document.querySelector('#signup-link').href = selectedEvent ? signupRoute(selectedEvent) : './signup.html';
 const destination = selectedEvent ? registrationRoute(selectedEvent) : './index.html';
 if (selectedEvent) {
   const continuation = document.querySelector('#signed-in a');

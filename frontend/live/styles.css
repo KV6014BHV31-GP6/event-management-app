@@ -190,6 +190,13 @@ select { border: 1px solid var(--border); border-radius: 6px; background: var(--
 @media (max-width: 720px) { .masthead { flex-wrap: wrap; padding-block: 16px; } .header-nav { flex-wrap: wrap; } }
 
 /* W7 keeps the existing ROSE surface, with one task and action per page. */
+#signup-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
+.signup-page .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.signup-result { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 22px; overflow-wrap: anywhere; }
+.signup-result h3 { font: 28px Georgia, serif; margin-block: 0 12px; }
+.signup-result p { color: var(--muted); font-size: 13px; line-height: 1.7; }
+.signup-result strong { white-space: pre-wrap; }
+
 .event-search { display: flex; gap: 12px; align-items: end; margin-top: 26px; }
 .event-search > div { flex: 1; }
 .event-search label { display: block; font-size: 12px; font-weight: 700; margin-bottom: 9px; }

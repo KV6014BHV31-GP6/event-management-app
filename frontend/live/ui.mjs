@@ -1,3 +1,5 @@
+import { selectedPublicId, signupRoute } from './event-navigation.mjs';
+
 export function element(tag, className, text) {
   const node = document.createElement(tag);
   if (className) node.className = className;
@@ -44,7 +46,10 @@ export function mountAccount(session, { loginPage = false, loginHref = './login.
     } else if (!loginPage) {
       const login = element('a', 'button button-small', 'Log in ↗');
       login.href = loginHref;
-      account.append(login);
+      const signup = element('a', 'nav-link', 'Create account');
+      const selected = selectedPublicId(globalThis.location?.search || '');
+      signup.href = selected ? signupRoute(selected) : './signup.html';
+      account.append(signup, login);
     } else {
       const current = element('span', 'nav-link current', 'Log in');
       current.setAttribute('aria-current', 'page');

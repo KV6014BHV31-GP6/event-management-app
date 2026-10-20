@@ -14,3 +14,4 @@ function route(page, id) {
 export const eventRoute = id => route('event', id);
 export const registrationRoute = id => route('registration', id);
 export const loginRoute = id => route('login', id);
+export const signupRoute = id => route('signup', id);
