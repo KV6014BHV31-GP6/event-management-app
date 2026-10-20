@@ -251,6 +251,29 @@
         "delete_branches"
       ],
       "locator": "Current conversation, 2026-10-14 Hong Kong; private screenshot not published"
+    },
+    {
+      "source_id": "USER-FE-P0-P1-20261020",
+      "title": "User authorization: three Signup repairs, parent synchronization and explicit Guest frontend",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "content_status": "Sol_author_implementation_and_checks_only_Astra_independent_acceptance_and_conditional_dev_integration",
+      "permissions": [
+        "repair_PR28",
+        "synchronize_PR29_without_rewriting",
+        "guest_frontend_Draft_PR",
+        "bounded_synthetic_browser_checks"
+      ],
+      "not_authorized": [
+        "Sol_merge",
+        "push_dev_main_uat",
+        "force_push",
+        "backend_schema_pins_changes",
+        "deployment",
+        "Issue_Board_changes",
+        "teammate_messages"
+      ],
+      "locator": "Current conversation, 2026-10-20 Hong Kong; no private fixtures retained"
     }
   ]
 }

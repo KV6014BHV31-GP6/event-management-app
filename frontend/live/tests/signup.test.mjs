@@ -39,7 +39,7 @@ test('Signup username length uses Unicode code points including twenty astral ch
 });
 
 test('Signup has no unapproved username regex, trim or case normalization', () => {
-  for (const username of ['   ', ' A ', 'Case_+@', 'éÉ🌱', 'e\u0301X']) {
+  for (const username of [' A ', 'Case_+@', 'éÉ🌱', 'e\u0301X']) {
     assert.equal(signupPayload({ ...values, username }).username, username);
   }
 });

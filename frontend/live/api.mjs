@@ -111,7 +111,7 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
       const { username, password } = payload ?? {};
       if (typeof username !== 'string' || typeof password !== 'string') throw new ApiError('validation', 'Enter your username and password.');
       const data = await request('/users', { method: 'POST', body: { username, password }, expectedStatus: 201, operation: 'signup' });
-      if (!data || typeof data !== 'object' || !/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(data.id)
+      if (!data || typeof data !== 'object' || typeof data.id !== 'string' || !/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(data.id)
         || data.username !== username || data.role !== 'user'
         || !signupTimestamp(data.created_at) || !signupTimestamp(data.updated_at)
         || Object.hasOwn(data, 'password') || Object.hasOwn(data, 'password_hash')) throw contractError();

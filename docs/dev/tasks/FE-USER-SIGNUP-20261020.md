@@ -1,5 +1,13 @@
 # FE-USER-SIGNUP-20261020
 
+## P0 repair successor (2026-10-20)
+
+The user's P0/P1 authorization permits repairing this feature branch and non-rewriting synchronization into PR #29, then a separate Guest Draft PR. Sol must not merge a PR or push dev/main/uat. Historical evidence below remains scoped to its original version.
+
+Reproduced before editing: new regression suite 7/11 PASS, 4 FAIL; three controlled Chrome canary scenarios attempted a native GET containing a password. Every attempt was intercepted and aborted before any network delivery, with no canary value persisted. Repairs: HTML initially disables the sensitive fieldset; `method="dialog"` provides a non-network fallback; handlers fully initialize before enabling. Trim is used only to reject all-whitespace usernames, preserving valid raw input and all previous code-point/byte guards. Signup response IDs require `typeof id === "string"` before canonical ULID validation. Invalid201 remains uncertain with no resend.
+
+Fresh results: 119/119 Node unit/component/proxy checks PASS; three controlled privacy cases PASS with disabled controls and zero native submission attempts. Commands: explicit PowerShell-expanded `node --test frontend/dev-server.test.mjs frontend/live/tests/*.test.mjs`; external `node scripts/privacy.mjs before/after`. Logs live under `E:\NU_Local_Environment_20261014\guest-frontend\20261020-142554\evidence`. The previous whitespace-permitted assertion was narrowed only to remove the now-rejected empty case; valid case/spaces/Unicode assertions remain. Session/Profile validation was not relaxed. Native Signup/Login awaits the one-account downstream run; complete native E2E/Security/UAT remain NOT_RUN. No backend changes or new credentials saved.
+
 Status: working-baseline. Owner: Benjamin frontend. Authorization `USER-SIGNUP-20261020`: minimal Signup, necessary checks and one English Draft PR with Refs [GitHub:KV6014BHV31-GP6/event-management-app#25](https://github.com/KV6014BHV31-GP6/event-management-app/issues/25). Commit message uses Traditional Chinese (Hong Kong) with English technical nouns. No merge, deployment, Issue/Board/reviewer edits, approval or teammate messages.
 
 ## Source and writer lock

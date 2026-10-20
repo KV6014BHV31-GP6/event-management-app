@@ -21,8 +21,8 @@
       <section class="login-intro" aria-labelledby="signup-heading"><p class="eyebrow">ROSE ACCOUNT</p><h1 id="signup-heading">Create your<br>account.</h1><p>Choose a username and password.<br>Then log in to continue.</p><div class="login-note"><span class="welcome-mark" aria-hidden="true">✳</span><p>Already have an account?<br><a href="./login.html" data-signup-login>Log in to ROSE.</a></p></div></section>
       <section class="login-card" aria-labelledby="signup-form-heading">
         <p class="eyebrow">GET STARTED</p><h2 id="signup-form-heading">Create account</h2><p class="muted">Just a username and password.</p>
-        <form id="signup-form">
-          <fieldset id="signup-fields">
+        <form id="signup-form" method="dialog">
+          <fieldset id="signup-fields" disabled>
             <legend class="visually-hidden">Account details</legend>
             <div class="field"><label for="username">Username</label><input id="username" name="username" type="text" autocomplete="username" autocapitalize="none" spellcheck="false" required aria-describedby="username-hint"><small id="username-hint">3–20 characters. Keep spaces and capital letters as entered.</small></div>
             <div class="field"><label for="password">Password</label><div class="password-field"><input id="password" name="password" type="password" autocomplete="new-password" required aria-describedby="password-hint"><button id="toggle-password" type="button" aria-controls="password" aria-pressed="false">Show</button></div><small id="password-hint">At least 6 characters. The current service supports up to 72 UTF-8 bytes; some characters use more than one byte.</small></div>
