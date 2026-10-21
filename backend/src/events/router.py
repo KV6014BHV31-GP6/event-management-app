@@ -19,7 +19,23 @@ async def create_event_endpoint(
     event_service: EventService = Depends(get_event_service),
     current_user: UserModel = Depends(get_current_user)
 ):
+<<<<<<< Updated upstream
     return await event_service.create_event(event_in=payload, organizer_id=current_user.id)
+=======
+<<<<<<< Updated upstream
+    organizer_id = current_user.id
+    new_event = await event_service.create_event(event_in=payload, organizer_id=organizer_id)
+    return new_event
+=======
+    # Authorization Guard: Restrict access to organizers early in the execution path
+    if current_user.role.value != "organizer":
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Access denied. This endpoint is restricted to system organizers only."
+        )
+    return await event_service.create_event(event_in=payload, organizer_id=current_user.id)
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
 
 
 @router.get("", response_model=PaginatedEventResponse, status_code=status.HTTP_200_OK)
