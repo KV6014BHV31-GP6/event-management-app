@@ -79,14 +79,11 @@ class RegistrationModel(Base):
     waitlisted_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True), nullable=True)
 
-<<<<<<< Updated upstream
-=======
     cancelled_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True), nullable=True)
     cancelled_by_user_id: Mapped[Optional[str]] = mapped_column(
         String(26), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
->>>>>>> Stashed changes
     created_at: Mapped[datetime] = mapped_column(DateTime(
         timezone=True), default=lambda: datetime.now(timezone.utc), nullable=False)
     updated_at: Mapped[datetime] = mapped_column(

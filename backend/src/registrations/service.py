@@ -1,15 +1,4 @@
 import ulid
-<<<<<<< Updated upstream
-from fastapi import HTTPException, status
-from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.future import select
-from sqlalchemy import func
-
-from src.events.models import EventModel, EventStatusEnum  # 👈 確保引入了 EventStatusEnum
-from src.participants.models import ParticipantModel
-from src.registrations.models import RegistrationModel, RegistrationStatusEnum, RegistrationChannelEnum, UserGenderEnum, MarriageStatusTypeEnum
-from src.registrations.schemas import RegistrationCreate
-=======
 from datetime import datetime, timezone
 from fastapi import HTTPException, status
 from typing import List, Optional
@@ -20,7 +9,6 @@ from src.events.models import EventModel, EventStatusEnum
 from src.participants.models import ParticipantModel
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum, RegistrationChannelEnum, UserGenderEnum, MarriageStatusTypeEnum
 from src.registrations.schemas import RegistrationCreate, RegistrationStatus
->>>>>>> Stashed changes
 
 
 class RegistrationService:
@@ -31,61 +19,38 @@ class RegistrationService:
         form_in: RegistrationCreate,
         current_user_id: str | None
     ) -> RegistrationModel:
-<<<<<<< Updated upstream
-
-=======
         """
         Executes the online registration business workflow within an atomic database transaction context.
         """
->>>>>>> Stashed changes
         # 1. Validate Event Entity Existence
         event_stmt = select(EventModel).where(
             EventModel.public_id == event_public_id)
         event_res = await db.execute(event_stmt)
         event = event_res.scalar_one_or_none()
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
         if not event:
             raise HTTPException(
                 status_code=status.HTTP_404_NOT_FOUND,
                 detail=f"Event with public identifier '{event_public_id}' was not found."
             )
 
-<<<<<<< Updated upstream
-        # 2. Fixed: Correctly validate against the EventStatusEnum type object
-        # Instead of event.status.lower() != "active", we check the Enum value directly
-=======
->>>>>>> Stashed changes
         if event.status != EventStatusEnum.active:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Registration rejected. This event is not currently accepting entries."
             )
 
-<<<<<<< Updated upstream
-        # 3. Strategy 5a: Search Participant strictly by national_id
-=======
         # 2. Search Participant strictly by national_id
->>>>>>> Stashed changes
         part_stmt = select(ParticipantModel).where(
             ParticipantModel.national_id == form_in.national_id)
         part_res = await db.execute(part_stmt)
         db_participant = part_res.scalar_one_or_none()
 
-<<<<<<< Updated upstream
-        if db_participant:
-            participant_id = db_participant.id
-
-            # Compare request payload values against existing record data properties
-=======
         # 3. Evaluate Participant Records Layout (Update or Create)
         if db_participant:
             participant_id = db_participant.id
 
             # Compare incoming request information against past records
->>>>>>> Stashed changes
             has_changes = (
                 db_participant.first_name != form_in.first_name or
                 db_participant.last_name != form_in.last_name or
@@ -96,19 +61,6 @@ class RegistrationService:
             )
 
             if has_changes:
-<<<<<<< Updated upstream
-                # Update properties if tracking record has changed values
-                db_participant.first_name = form_in.first_name
-                db_participant.last_name = form_in.last_name
-                db_participant.gender = UserGenderEnum[form_in.gender.value]
-                db_participant.date_of_birth = form_in.date_of_birth
-                db_participant.phone = form_in.phone
-                db_participant.address = form_in.address
-                db_participant.updated_by_user_id = current_user_id
-                db.add(db_participant)
-        else:
-            # Create a completely new participant resource trace mapping row
-=======
                 # Update participant details if personal demographics have shifted
                 db_participant.first_name = form_in.first_name
                 db_participant.last_name = form_in.last_name
@@ -122,17 +74,12 @@ class RegistrationService:
                 db.add(db_participant)
         else:
             # Create a completely new participant record
->>>>>>> Stashed changes
             new_p = ParticipantModel(
                 id=str(ulid.ULID()),
                 user_id=current_user_id,
                 first_name=form_in.first_name,
                 last_name=form_in.last_name,
-<<<<<<< Updated upstream
-                gender=UserGenderEnum[form_in.gender.value],
-=======
                 gender=UserGenderEnum(form_in.gender.value),
->>>>>>> Stashed changes
                 date_of_birth=form_in.date_of_birth,
                 phone=form_in.phone,
                 address=form_in.address,
@@ -141,73 +88,23 @@ class RegistrationService:
             db.add(new_p)
             participant_id = new_p.id
 
-<<<<<<< Updated upstream
-        # 4. Enforce active double-booking unique database constraints layout
-        dup_stmt = select(RegistrationModel).where(
-            RegistrationModel.event_id == event.id,
-            RegistrationModel.participant_id == participant_id,
-            RegistrationModel.status != RegistrationStatusEnum.cancelled
-        )
-        dup_res = await db.execute(dup_stmt)
-        if dup_res.scalar_one_or_none():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="This participant already holds an active registration record for this event."
-            )
-
-        # 5. Check Online Quota allocations parameters
-        count_stmt = select(func.count()).select_from(RegistrationModel).where(
-            RegistrationModel.event_id == event.id,
-            RegistrationModel.channel == RegistrationChannelEnum.online,
-            RegistrationModel.status != RegistrationStatusEnum.cancelled
-        )
-        count_res = await db.execute(count_stmt)
-        total_active_online = count_res.scalar_one()
-
-        if total_active_online >= event.online_quota:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Registration full. Online quota limits for this event are exhausted."
-            )
-
-        # 6. Instantiates Registration Object with 'pending' status property
-=======
         # 4. Create Registration (status = pending)
->>>>>>> Stashed changes
         new_registration = RegistrationModel(
             id=str(ulid.ULID()),
             event_id=event.id,
             participant_id=participant_id,
-<<<<<<< Updated upstream
-            created_by_user_id=current_user_id,
-=======
             created_by_user_id=current_user_id,  # Null if anonymous guest
->>>>>>> Stashed changes
             channel=RegistrationChannelEnum.online,
             status=RegistrationStatusEnum.pending,
             first_name=form_in.first_name,
             last_name=form_in.last_name,
-<<<<<<< Updated upstream
-            gender=UserGenderEnum[form_in.gender.value],
-=======
             gender=UserGenderEnum(form_in.gender.value),
->>>>>>> Stashed changes
             date_of_birth=form_in.date_of_birth,
             phone=form_in.phone,
             address=form_in.address,
             national_id=form_in.national_id,
             income_band_code=form_in.income_band_code,
             medical_record=form_in.medical_record,
-<<<<<<< Updated upstream
-            marriage_status=MarriageStatusTypeEnum[form_in.marriage_status.value]
-        )
-
-        # 7. Commit transaction block directly inside worker boundary scope
-        db.add(new_registration)
-        await db.commit()
-        await db.refresh(new_registration)
-        return new_registration
-=======
             marriage_status=MarriageStatusTypeEnum(
                 form_in.marriage_status.value)
         )
@@ -455,4 +352,94 @@ class RegistrationService:
         await db.refresh(registration)
 
         return registration
->>>>>>> Stashed changes
+
+    @staticmethod
+    async def create_from_offline(
+        db: AsyncSession,
+        event_id: int,
+        # Accepts list elements forwarded from offline_sync module layers
+        applications: List[any],
+        leader_id: str
+    ) -> int:
+        """
+        Handles database matching lookups and builds registration records 
+        using a channel='offline' layout.
+        """
+        processed_count = 0
+        now_utc = datetime.now(timezone.utc)
+
+        for app in applications:
+            # Step 3: Search the participants table via national_id
+            part_stmt = select(ParticipantModel).where(
+                ParticipantModel.national_id == app.national_id)
+            part_res = await db.execute(part_stmt)
+            db_participant = part_res.scalar_one_or_none()
+
+            if db_participant:
+                participant_id = db_participant.id
+
+                # Evaluate field updates if profile characteristics changed
+                has_changes = (
+                    db_participant.first_name != app.first_name or
+                    db_participant.last_name != app.last_name or
+                    db_participant.gender.value != app.gender.value or
+                    db_participant.date_of_birth != app.date_of_birth or
+                    db_participant.phone != app.phone or
+                    db_participant.address != app.address
+                )
+
+                if has_changes:
+                    db_participant.first_name = app.first_name
+                    db_participant.last_name = app.last_name
+                    db_participant.gender = app.gender
+                    db_participant.date_of_birth = app.date_of_birth
+                    db_participant.phone = app.phone
+                    db_participant.address = app.address
+                    db_participant.updated_at = now_utc
+                    db_participant.updated_by_user_id = leader_id
+                    db.add(db_participant)
+            else:
+                # If national_id is not found, instantiate a new record in participants table
+                new_p = ParticipantModel(
+                    id=str(ulid.ULID()),
+                    user_id=None,  # Offline registrants do not have system access tokens initially
+                    first_name=app.first_name,
+                    last_name=app.last_name,
+                    gender=app.gender,
+                    date_of_birth=app.date_of_birth,
+                    phone=app.phone,
+                    address=app.address,
+                    national_id=app.national_id,
+                    created_at=now_utc,
+                    updated_at=now_utc
+                )
+                db.add(new_p)
+                participant_id = new_p.id
+
+            # Step 4: Create a record in registrations table
+            new_registration = RegistrationModel(
+                id=str(ulid.ULID()),
+                event_id=event_id,
+                participant_id=participant_id,
+                created_by_user_id=leader_id,
+                channel=RegistrationChannelEnum.offline,  # channel = 'offline'
+                status=RegistrationStatusEnum.pending,    # status = 'pending'
+                created_at=now_utc,
+                updated_at=now_utc,
+                first_name=app.first_name,
+                last_name=app.last_name,
+                gender=app.gender,
+                date_of_birth=app.date_of_birth,
+                phone=app.phone,
+                address=app.address,
+                national_id=app.national_id,
+                income_band_code=app.income_level,  # Field maps to schema storage row definitions
+                medical_record=app.medical_record,
+                marriage_status=app.marriage_status
+            )
+            db.add(new_registration)
+            processed_count += 1
+
+        # Commit transactional states down onto server engines safely
+        await db.commit()
+        return processed_count

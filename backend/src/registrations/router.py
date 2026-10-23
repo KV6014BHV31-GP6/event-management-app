@@ -1,11 +1,3 @@
-<<<<<<< Updated upstream
-from fastapi import APIRouter, Depends, status, HTTPException
-from sqlalchemy.ext.asyncio import AsyncSession
-
-from src.auth.deps import get_optional_current_user
-from src.core.database import get_async_db
-from src.registrations.schemas import RegistrationCreate, RegistrationResponse
-=======
 from fastapi import APIRouter, Depends, status, HTTPException, Query
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -13,7 +5,6 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.auth.deps import get_current_user, get_optional_current_user
 from src.core.database import get_async_db
 from src.registrations.schemas import RegistrationCreate, RegistrationResponse, RegistrationStatus
->>>>>>> Stashed changes
 from src.registrations.service import RegistrationService
 from src.users.models import UserModel
 
@@ -35,24 +26,15 @@ async def create_registration_endpoint(
     """
     Submits a registration request form for a specific event using its public NanoID.
 
-<<<<<<< Updated upstream
-    - **Data Comparison**: Dynamically patches existing participant table values if personal details have shifted.
-    - **Transactional**: Fully rolls back state mutations cleanly if any validation rule check blocks fail.
-=======
     - **Authentication**: Supports both authenticated users and anonymous guests. 
       If an expired token is sent, the auth layer fast-fails with 401 to trigger front-end token refresh retries.
     - **Data Comparison**: Dynamically updates participant definitions if personal profiles have changed.
     - **Transactional**: Fully encapsulated within an atomic transaction block boundary.
->>>>>>> Stashed changes
     """
     if len(public_id) != 21:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-<<<<<<< Updated upstream
-            detail="Invalid identifier structure. Expected a 21-character public NanoID ID."
-=======
             detail="Invalid identifier structure. Expected a 21-character public NanoID."
->>>>>>> Stashed changes
         )
 
     operator_id = current_user.id if current_user else None
@@ -63,8 +45,6 @@ async def create_registration_endpoint(
         form_in=payload,
         current_user_id=operator_id
     )
-<<<<<<< Updated upstream
-=======
 
 
 @router.get(
@@ -216,4 +196,3 @@ async def approve_registration_endpoint(
         registration_id=registration_id,
         organizer_id=current_user.id
     )
->>>>>>> Stashed changes

@@ -1,11 +1,7 @@
 from datetime import datetime, date
 from enum import Enum
 from typing import Optional
-<<<<<<< Updated upstream
-from pydantic import BaseModel, Field
-=======
 from pydantic import BaseModel, Field, ConfigDict
->>>>>>> Stashed changes
 
 
 class RegistrationChannel(str, Enum):
@@ -67,9 +63,4 @@ class RegistrationResponse(BaseModel):
     created_at: datetime
     updated_at: datetime
 
-<<<<<<< Updated upstream
-    class Config:
-        from_attributes = True
-=======
     model_config = ConfigDict(from_attributes=True)
->>>>>>> Stashed changes
