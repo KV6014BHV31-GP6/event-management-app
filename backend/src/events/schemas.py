@@ -31,6 +31,42 @@ class EventResponse(EventCreate):
         from_attributes = True
 
 
+class QuotaDetailItem(BaseModel):
+    approved: int
+    capacity: int
+
+
+class EventQuotaAggregate(BaseModel):
+    online: QuotaDetailItem
+    offline: QuotaDetailItem
+    total: QuotaDetailItem
+    waiting_count: int = Field(..., alias="waitingCount")
+
+    model_config = {"populate_by_name": True}
+
+
+class EventResponse(BaseModel):
+    id: int
+    public_id: str = Field(..., max_length=21,
+                           description="Unique 21-character NanoID structural string")
+    organizer_id: str
+    title: str
+    overview: Optional[str] = None
+    location: str
+    online_quota: int
+    offline_quota: int
+    start_time: datetime
+    end_time: datetime
+    status: EventStatus
+    created_at: datetime
+    updated_at: datetime
+    image_path: Optional[str] = None
+    quota: EventQuotaAggregate  # Real-time computed quota summary block
+
+    class Config:
+        from_attributes = True
+
+
 class PaginatedEventResponse(BaseModel):
     total_count: int = Field(...,
                              description="Total number of events matching the filter criteria")
