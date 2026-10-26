@@ -1,5 +1,33 @@
 # Austin frontend and API integration record
 
+## Backend repair candidate — 2026-10-26
+
+This section describes Sol's tested candidate on `dev_be_booking_lifecycle_repair`, based on `dev@4541c948f8aec68dbbb9500630abc8282a62abca`; it does not revise Austin source history or grant Frontend live admission. Final immutable SHA is in the PR/external receipt. [Data Flow Before/After](DATA_FLOW.md) and [adoption/policy/test task](../dev/tasks/BE-BOOKING-LIFECYCLE-REPAIR-20261026.md) qualify every claim. Earlier sections below retain their source/version scope. PR38 remains untouched UI_ONLY.
+
+All paths below use `/api/v1`; error envelope is `{"detail": ...}`. Source/read five-state contracts are separate from strict registration POST201/online/pending. HTTP/DB VERIFIED means bounded author checks, not Astra approval, whole Security or UAT acceptance.
+
+| Method/path | Candidate HTTP contract and measured boundary |
+| --- | --- |
+| POST `/users` | Public username3–20 code points/nonblank and password>=6 code points/<=72 UTF-8 bytes; original valid values retained. Omitted role or user creates201 ordinary user. Organizer/leader role injection422 with no row. Username duplicate400 `Username is already registered.`; response id/username/role/timestamps, never password/hash. |
+| POST `/auth/login`; POST `/auth/token` | Existing JSON and form transports preserved;200 access_token/token_type=bearer,401 wrong identity. No refresh/Cookie feature adopted. JWT sub is exact username; role permission always comes from current DB user. |
+| GET `/users/me` | Required Bearer;200 DB identity. Invalid/expired/malformed/non-Bearer/empty/unknown subject/refresh-as-access401; no Guest fallback or write. |
+| POST `/events` | Required DB organizer; ordinary/leader403, anonymous401. Existing form fields/default quotas retained, max2147483647 and explicit timezone timestamps/end>start.201 response includes matching public_id/numeric id and required quota. Invalid naive/mixed timestamps422. |
+| GET `/events` | Public page/pageSize/status/keyword;200 count/page/page_size/total_pages/data. page>=1, size1..100 default20; keyword title OR overview; same SQL statement count/page/aggregates. Invalid status422. |
+| GET `/events/{public_id}` | Public21-character ID;200 detail/required quota; bad length400 `Invalid identifier structure. Expected a 21-character public NanoID ID.`; missing404 `Event with public identifier '<public_id>' was not found` (no final period). |
+| POST `/events/{public_id}/registrations` | Only absent Authorization can be Guest. Flat existing participant form plus medical_record=null. Valid201 requires generated ULIDs, correct event_id/actor, echoed snapshot, online/pending. Both A/B pending allowed even online capacity1. Invalid auth401; identity collision403; normal noncancelled duplicate400 `This participant already holds an active registration record for this event.`; missing event404 with final period; inactive400; invalid body422; other constraint conflict409 generic. |
+| GET `/me/registrations` | Required identity; optional five-state status;200 flat own array by created_by_user_id, created_at descending. Invalid status422. No pagination, title/public_id mapping, Guest capability or fabricated persistence. |
+| POST `/me/registrations/{id}/cancel` | Required owner; no body.200 cancelled for pending/approved/waiting; missing404; nonowner403 `You cannot cancel this registration.`; rejected/repeated400 `This registration cannot be cancelled in its current state.`. Supported approved cancellation and one waiting promotion commit atomically. |
+| GET `/registrations`; GET `/registrations/{id}` | Required organizer; list optional status and no pagination/event filter,200 global list/detail. Ordinary/leader403 with/without valid status; detail missing404. Not a user/Guest listing endpoint. |
+| POST `/registrations/{id}/approve` | Required organizer, no body; pending-only200 approved/waiting according to supported count; nonpending409 `Only pending registrations can be reviewed.`; missing404; nonorganizer403. |
+
+Quota shape: `online/offline/total` each contain configured capacity and DB approved count; `waitingCount` is nested in quota. `allocation_supported=true` only for online rows/offline capacity0. Unsupported offline allocation count is null, never an invented0; total counts are actual all-channel counts, not remaining. Mixed/unmapped Approve or approved-cancel returns409 `Mixed-pool allocation is not supported by this candidate.`. No walkin/ocr→offline assumption or offer/accept/expiry is implemented.
+
+Mutation protocol: event→registration lock for review/cancel; event→user→participant for online creation. State is reread after locking, updates flushed with autoflush=False, and each service owns one commit/rollback over auth autobegin. Native partial unique index on event/participant where status!=cancelled backs duplicate prevention, including rejected. Cancelled reapplication retains source behavior only; it is not approved universal policy. Guest identity reuse/claim/read/cancel is unsupported. No unadopted offline writer is mounted or claimed to obey the protocol.
+
+Evidence:28 SQLite/ASGI/schema tests PASS;3 opt-in native PG tests PASS; main native ledger100 layered checks PASS across preserved stopped attempts/continuations, plus5 additional HTTP checks and4 unchanged Frontend API-client compatibility checks. New READ ONLY DB verifies final4 users/5 events/3 Participants/9 registrations, null Guest pointers, identities/statuses and counts. Source/runtime and command receipts are local originals; public task/tests/data-flow provide inspectable summaries. Whole native E2E/Browser/Security/UAT and old DB migration NOT_RUN. Actual cases define VERIFIED coverage; other permutations of documented source errors are not independently claimed as HTTP verified.
+
+## Historical integration records
+
 ## W7 bounded successor, 2026-10-20
 
 Frontend base: `dev@a47ff7d92f296ebd0604a1df98daf0b8111829b3`; backend dependency: `dev_be_registrations@d2f924bc6d7fb73e4c54da6fa0d73fd7ea8639a0` (not in dev). This supersedes the historical contract inventory below **only for the W7 operations**. See the [W7 task](../dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md).

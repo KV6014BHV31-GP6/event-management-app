@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T06:38:57.718672+00:00",
-  "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend",
-  "document_count": 168,
+  "reviewed_at": "2026-10-26T12:21:14.607513+00:00",
+  "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits",
+  "document_count": 178,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,7 +107,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 2,
+      "revision": 4,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
       "revision_history": [
@@ -117,13 +117,28 @@
           "size_bytes": 890,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "63ce6f75e9fa389c774964e5929f72b9346791870c11cd226b2c8fb681d0c6b5",
+          "size_bytes": 6070,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 3,
+          "sha256": "f43319860f55dd6a2c31f211c2295d6c76884f683f3bb2315660dd66ca3df143",
+          "size_bytes": 8658,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
         }
       ],
       "dependencies": [
-        "USER-PR-SCOPE"
+        "USER-PR-SCOPE",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "63ce6f75e9fa389c774964e5929f72b9346791870c11cd226b2c8fb681d0c6b5",
-      "size_bytes": 6070
+      "sha256": "5790e1e7aff8d56c03d40fd4c6c87c6212be9bce6890da2e4877ce367a8974df",
+      "size_bytes": 8865
     },
     {
       "document_id": "DOC-06",
@@ -167,7 +182,7 @@
     {
       "document_id": "DOC-07",
       "path": "docs/api/INTEGRATION.md",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -198,6 +213,13 @@
           "size_bytes": 11217,
           "superseded_at": "2026-10-19T18:50:07.982849+00:00",
           "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        },
+        {
+          "revision": 5,
+          "sha256": "0ef60743227c1d045f9e7ea911c9a47dcf077c30cf0b0ace0d3471c9b21b0b89",
+          "size_bytes": 13946,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
         }
       ],
       "import_lineage": {
@@ -207,10 +229,11 @@
       },
       "dependencies": [
         "USER-PR-SCOPE",
-        "SRC-API-HANDOFF-V120"
+        "SRC-API-HANDOFF-V120",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "0ef60743227c1d045f9e7ea911c9a47dcf077c30cf0b0ace0d3471c9b21b0b89",
-      "size_bytes": 13946
+      "sha256": "2c1bea82cc5743c8c6568668edc34a044099475cfb5fa0528c7619acee8a6444",
+      "size_bytes": 19799
     },
     {
       "document_id": "DOC-08",
@@ -260,7 +283,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 27,
+      "revision": 28,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -415,6 +438,13 @@
           "size_bytes": 13480,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 27,
+          "sha256": "fcb437ef8eb1c11df4bb72125b288ea36212e76311275f875bfe75e5a9628602",
+          "size_bytes": 15379,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
         }
       ],
       "import_lineage": {
@@ -425,10 +455,11 @@
       "dependencies": [
         "USER-PR-SCOPE",
         "USER-NATIVE-ACCEPTANCE-20261014",
-        "USER-PR3-MERGE-20261014"
+        "USER-PR3-MERGE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "fcb437ef8eb1c11df4bb72125b288ea36212e76311275f875bfe75e5a9628602",
-      "size_bytes": 15379,
+      "sha256": "597b8c21945b7ebcd99252d6dcb2c7b60ffc0302ec5581370cd063c19a0919d5",
+      "size_bytes": 17470,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1069,7 +1100,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 10,
+      "revision": 11,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1112,6 +1143,13 @@
           "size_bytes": 9903,
           "superseded_at": "2026-10-20T06:32:09.164471+00:00",
           "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        },
+        {
+          "revision": 10,
+          "sha256": "dbd4e120110be38925c620bd8e86ed3571a1cb075603159db7d72b15edae3462",
+          "size_bytes": 10788,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
         }
       ],
       "import_lineage": {
@@ -1120,10 +1158,11 @@
         "source_size_bytes": 14255
       },
       "dependencies": [
-        "USER-PR-SCOPE"
+        "USER-PR-SCOPE",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "dbd4e120110be38925c620bd8e86ed3571a1cb075603159db7d72b15edae3462",
-      "size_bytes": 10788
+      "sha256": "f2ae455a3ae917ae1dc16c4799cccc707e03b2d154cbfb126ca7f13069d742c8",
+      "size_bytes": 12199
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -1994,16 +2033,32 @@
     {
       "document_id": "FE-LIVE-20261014-002",
       "path": "backend/pytest.ini",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4c969334a7230771719b46d212468249566ca47df10a56f2d527f5cf2bb60bda",
+          "size_bytes": 76,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "0193e19b9bda0ae392a45ed0b46bf5c8bd28fde5c48589a936de03de5adc6bf3",
+          "size_bytes": 194,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "4c969334a7230771719b46d212468249566ca47df10a56f2d527f5cf2bb60bda",
-      "size_bytes": 76
+      "sha256": "1886ef7dd780d729e6852e621bdf8473ba96f01619a6b685b516711e1077a726",
+      "size_bytes": 189
     },
     {
       "document_id": "FE-LIVE-20261014-003",
@@ -2036,16 +2091,25 @@
     {
       "document_id": "FE-LIVE-20261014-005",
       "path": "backend/scripts/dev_bootstrap.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin integration setup; Austin backend review",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a77e1917069653e917ba283d54a53a23789aada36186c3877463b3ab69df2483",
+          "size_bytes": 8546,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
-        "BACKEND-CODE-20261013"
+        "BACKEND-CODE-20261013",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "a77e1917069653e917ba283d54a53a23789aada36186c3877463b3ab69df2483",
-      "size_bytes": 8546
+      "sha256": "1414c843528f1fc7bf606655e39a51b42273e0f3eba433ee3066e51d11f9be23",
+      "size_bytes": 10033
     },
     {
       "document_id": "FE-LIVE-20261014-006",
@@ -2064,16 +2128,32 @@
     {
       "document_id": "FE-LIVE-20261014-007",
       "path": "backend/src/auth/deps.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0d4f77b85753c00a4af907f1caffce1bac638ee107daf230ac351b1353f339a2",
+          "size_bytes": 2507,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "4c1e0f3f886a8665822ae98cb78af4cab05e3461255712787b823e0d188ffb03",
+          "size_bytes": 2447,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "0d4f77b85753c00a4af907f1caffce1bac638ee107daf230ac351b1353f339a2",
-      "size_bytes": 2507
+      "sha256": "e057d8c9249fa162673e4573de5161e00b4335c1302306b92cacbd6bfc42fc38",
+      "size_bytes": 2395
     },
     {
       "document_id": "FE-LIVE-20261014-008",
@@ -2134,30 +2214,62 @@
     {
       "document_id": "FE-LIVE-20261014-012",
       "path": "backend/src/core/database.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "aaa31efa05100e09d63b94f9f8b4da86985dcec894c87cf9eedcde511eb6dc10",
+          "size_bytes": 1015,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "c223903546a7648a51b02975886fa606aed5b4b943841bd34fe81dcf0b1d520a",
+          "size_bytes": 1010,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "aaa31efa05100e09d63b94f9f8b4da86985dcec894c87cf9eedcde511eb6dc10",
-      "size_bytes": 1015
+      "sha256": "f78cec9ec195b0db3a8ba698b05123f7daec1c7a84535ef46d4b09c1343c6bce",
+      "size_bytes": 967
     },
     {
       "document_id": "FE-LIVE-20261014-013",
       "path": "backend/src/core/security.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "30899f98db4eaa01828da5e829c1e00247a26f952f45870b0e1ff8c9e1a876b4",
+          "size_bytes": 1252,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "4116286c90968077271d3da23c1861532ba21a6770731bd1fdaeaf09c2eeca1c",
+          "size_bytes": 1325,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "30899f98db4eaa01828da5e829c1e00247a26f952f45870b0e1ff8c9e1a876b4",
-      "size_bytes": 1252
+      "sha256": "280f7bcee59054277f37026d3c1459377526e284749406e885b2d6bcad693102",
+      "size_bytes": 1283
     },
     {
       "document_id": "FE-LIVE-20261014-014",
@@ -2176,72 +2288,138 @@
     {
       "document_id": "FE-LIVE-20261014-015",
       "path": "backend/src/events/models.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6c0acdf00b1e8a014aa14d98da5ff4df61351238f215fb4dc5f5dc4aad49a7e5",
+          "size_bytes": 1617,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "23380602c325b63f10923704a66bccac8d977d15fb6b625da73a65f2764aae2b",
+          "size_bytes": 1935,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "6c0acdf00b1e8a014aa14d98da5ff4df61351238f215fb4dc5f5dc4aad49a7e5",
-      "size_bytes": 1617
+      "sha256": "5ab63ce732c72828a44e308a2e3165d421f0d9bdaad6605640053f78830148de",
+      "size_bytes": 1887
     },
     {
       "document_id": "FE-LIVE-20261014-016",
       "path": "backend/src/events/router.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "090647f069fa2716c0866ed7910e3bcccf5b4a61c90081b3d7bc360233cb2f37",
+          "size_bytes": 3010,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "090647f069fa2716c0866ed7910e3bcccf5b4a61c90081b3d7bc360233cb2f37",
-      "size_bytes": 3010
+      "sha256": "2fa310ad7ea5e534a899ff264d841f5fd53f066b185b13a244679f117e9110fd",
+      "size_bytes": 1872
     },
     {
       "document_id": "FE-LIVE-20261014-017",
       "path": "backend/src/events/schemas.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ad7e06d6790a2251a4f0f079fb47d6753312861751d26508660a9647cb94d2d6",
+          "size_bytes": 1448,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "ed2cb92064b63b128b8e6c79faf177acafcd8cef867412faa964713262652299",
+          "size_bytes": 2250,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "ad7e06d6790a2251a4f0f079fb47d6753312861751d26508660a9647cb94d2d6",
-      "size_bytes": 1448
+      "sha256": "ed9e7d33ffcdbe267108f011670fc16205199799a33a786e9f2552bed7526ea1",
+      "size_bytes": 2179
     },
     {
       "document_id": "FE-LIVE-20261014-018",
       "path": "backend/src/events/service.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0cd31e2cb6288076e4b0fa02693709dc3e43ccea2b357a1ec706d3e792e148d2",
+          "size_bytes": 2943,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "0cd31e2cb6288076e4b0fa02693709dc3e43ccea2b357a1ec706d3e792e148d2",
-      "size_bytes": 2943
+      "sha256": "17c01c9cb1195e1ced2d01b8fdadd4ec7e3465c8d80488822ead043bdbd37ebf",
+      "size_bytes": 3880
     },
     {
       "document_id": "FE-LIVE-20261014-019",
       "path": "backend/src/main.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "fa49841ee121e5724a971235cce91dd8f570784833226a70201d81446cc12d71",
+          "size_bytes": 830,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "875d5d3a1967606210471392c00c92fb3d3265a8257fd2cbc224256eadb35db6",
+          "size_bytes": 969,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "fa49841ee121e5724a971235cce91dd8f570784833226a70201d81446cc12d71",
-      "size_bytes": 830
+      "sha256": "9f1c7bf4088e0d970a3e8bc2e8da2aefc0b953cc0c000556f1137fbf4529c3d3",
+      "size_bytes": 944
     },
     {
       "document_id": "FE-LIVE-20261014-020",
@@ -2260,16 +2438,32 @@
     {
       "document_id": "FE-LIVE-20261014-021",
       "path": "backend/src/participants/models.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f659c4fceeb3296c0b4aa50f30e18b2cb4e1b06160aa56146d595b7bd364c2a4",
+          "size_bytes": 1684,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "31274e9969f852992e088b77b329aa65bcb96ad10a868b1a761aa12dc2ff444c",
+          "size_bytes": 1712,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "f659c4fceeb3296c0b4aa50f30e18b2cb4e1b06160aa56146d595b7bd364c2a4",
-      "size_bytes": 1684
+      "sha256": "6b2c56eeb841c6cd535dbb67826392a90cf16a9d986339bbe7a97898474548e9",
+      "size_bytes": 1677
     },
     {
       "document_id": "FE-LIVE-20261014-022",
@@ -2288,30 +2482,55 @@
     {
       "document_id": "FE-LIVE-20261014-023",
       "path": "backend/src/participants/schemas.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a033618672048771f0ff19d435e691156abbdd4054fc6570dcb404a9a59ac6ce",
+          "size_bytes": 985,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "400d697ffc8324053dfc0b25f39a928bba3c7390673b518f5c91d8fb238edbdb",
+          "size_bytes": 968,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "a033618672048771f0ff19d435e691156abbdd4054fc6570dcb404a9a59ac6ce",
-      "size_bytes": 985
+      "sha256": "b43e1039d774ecc56599c0581cd27a0731765e0bc19a85cb3bbf1a153e81a750",
+      "size_bytes": 930
     },
     {
       "document_id": "FE-LIVE-20261014-024",
       "path": "backend/src/participants/service.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "11c7d875663480a8579e3558d71aa95deeaa39e91ca77937414b2e4808ab2ca2",
+          "size_bytes": 2860,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "11c7d875663480a8579e3558d71aa95deeaa39e91ca77937414b2e4808ab2ca2",
-      "size_bytes": 2860
+      "sha256": "92eb7eabda42f2a52334f70a508e8298204aea3fcf55f864580679736d804333",
+      "size_bytes": 3141
     },
     {
       "document_id": "FE-LIVE-20261014-025",
@@ -2358,30 +2577,62 @@
     {
       "document_id": "FE-LIVE-20261014-028",
       "path": "backend/src/users/schemas.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1014826b9c9bad6e706ee0c97868ad1cce9321050f66bd00eb106a38465cee1a",
+          "size_bytes": 566,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "ce9437e4e69f8489bad82ad78ca08bd1f155f18c060ccf1f61519f3c2221ddc8",
+          "size_bytes": 1255,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "1014826b9c9bad6e706ee0c97868ad1cce9321050f66bd00eb106a38465cee1a",
-      "size_bytes": 566
+      "sha256": "b6e8073228f5815665e95911fc2fd417158e2a3e27f5a2c2fc023d14505cf688",
+      "size_bytes": 1208
     },
     {
       "document_id": "FE-LIVE-20261014-029",
       "path": "backend/src/users/service.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "83d3c139791662793a92447bb344c7abe877ffce8e60c2392529b3d74a00f05d",
+          "size_bytes": 1241,
+          "superseded_at": "2026-10-26T12:16:32.370893+00:00",
+          "reason": "Repair runnable Backend lifecycle with strict identity, owned participant pairing, database duplicate and serialized allocation; record layered native evidence and policy limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "49c2a7bf98c14d27ae8d65e7e9f41e833dbd5df5ffe700cd075552aec3a01ed1",
+          "size_bytes": 1645,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
-        "USER-FE-LIVE-20261014"
+        "USER-FE-LIVE-20261014",
+        "USER-BE-REPAIR-20261026"
       ],
-      "sha256": "83d3c139791662793a92447bb344c7abe877ffce8e60c2392529b3d74a00f05d",
-      "size_bytes": 1241
+      "sha256": "5a5fca0cf6d5ff0a8a535f7c5792546bc4bb9d6d04bee93a09adce5d287ed3f1",
+      "size_bytes": 1601
     },
     {
       "document_id": "FE-LIVE-20261014-030",
@@ -3518,6 +3769,178 @@
       ],
       "sha256": "165b6fb3b55e2722ffc870bd1e0d8c1d1acb71b40430b546ae13161ec5026799",
       "size_bytes": 8185
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-01",
+      "path": "backend/src/registrations/__init__.py",
+      "revision": 1,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-02",
+      "path": "backend/src/registrations/models.py",
+      "revision": 2,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "94bd941f8f429047dc2e2b1c45f1da98133d3930d538a0ce3279ead5bcd6e136",
+          "size_bytes": 4177,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "8c3c21c03b73e3a3680074620acb72d7110dae70ec88eeaa6d3d4afa0a87a1e2",
+      "size_bytes": 4082
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-03",
+      "path": "backend/src/registrations/router.py",
+      "revision": 1,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "93ae184be90bf1a3f5cc9bf721d6d50e56284881379bebdd8b9a9c1bc7aa936e",
+      "size_bytes": 2804
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-04",
+      "path": "backend/src/registrations/schemas.py",
+      "revision": 2,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e60ae822192f40035e429b2eec27f56e7d742a300d4c0df10eee1b955a0b325d",
+          "size_bytes": 1639,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "d8560a37ce69278035b6fc9ece0302a2e94013fe0dd2e55b9e99c06903dde188",
+      "size_bytes": 1573
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-05",
+      "path": "backend/src/registrations/service.py",
+      "revision": 1,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "b82aa06524abe9eab434139447233c101fb93a4507dda35d832b7790a2180823",
+      "size_bytes": 8643
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-06",
+      "path": "backend/tests/native/test_candidate_pg.py",
+      "revision": 1,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "574944996aa7fd7bdb94e845907c76ed3f08e7944ab68e90536f1f47eb4975fd",
+      "size_bytes": 5403
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-07",
+      "path": "backend/tests/test_booking_lifecycle.py",
+      "revision": 1,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "5bf078a95d8b07498d5a4370bca01adf3d36d64b9acbf91a98661813cb6e458c",
+      "size_bytes": 10799
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-08",
+      "path": "backend/tests/test_bootstrap_schema.py",
+      "revision": 1,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "77cf13a1a06630055294a664f13f0630049327c6f5bae35870e70393b2f1a93a",
+      "size_bytes": 1521
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-09",
+      "path": "docs/api/DATA_FLOW.md",
+      "revision": 2,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ddd7d6d1c4b748a2261bc18cd9bbe33791c4c60538055a26f2eaf89e95d86bf2",
+          "size_bytes": 13953,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "07cae7d0141a05cd7846e2add0d0b49220795f3317c6549bc7b93f3623e049be",
+      "size_bytes": 14391
+    },
+    {
+      "document_id": "BE-REPAIR-20261026-10",
+      "path": "docs/dev/tasks/BE-BOOKING-LIFECYCLE-REPAIR-20261026.md",
+      "revision": 2,
+      "owner": "Sol Backend repair sole writer; Austin original source",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "37869a8ddbe5316a91ed3f9ba60c69146062b66dc83df3a1273ef1377861ccb0",
+          "size_bytes": 12695,
+          "superseded_at": "2026-10-26T12:21:14.607513+00:00",
+          "reason": "Normalize only repaired files to LF for required diff checks; preserve native-tested source text AST equivalence and clarify schema guard limits"
+        }
+      ],
+      "dependencies": [
+        "USER-BE-REPAIR-20261026",
+        "BE-REPAIR-BEFORE-20261026"
+      ],
+      "sha256": "a0faaeb56560d3d096e3aafddd9f3f21869182f84847f89d73f36a43f10b79ae",
+      "size_bytes": 13354
     }
   ]
 }

@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 24,
+  "source_count": 27,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -274,6 +274,39 @@
         "teammate_messages"
       ],
       "locator": "Current conversation, 2026-10-20 Hong Kong; no private fixtures retained"
+    },
+    {
+      "source_id": "USER-BE-REPAIR-20261026",
+      "title": "User-authorized necessary Backend repair on prepared branch; supersedes old Frontend-only restriction for this task",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "locator": "PROMPT_FOR_SOL_BACKEND_REPAIR.md, run20261026-181320",
+      "sha256": "3f737cc0cf1e478ed87a7f03ddc42c9fcfa9599de6cfe7c49f3caa0b24c7dd9b",
+      "permissions": [
+        "selective_Backend_repair",
+        "related_tests",
+        "new_isolated_native_candidate",
+        "one_Backend_Draft_PR"
+      ],
+      "not_authorized": [
+        "Austin_branch_or_dev_main_uat_push",
+        "Frontend_or_PR38_changes",
+        "force_push",
+        "merge",
+        "Approve_Ready_auto_merge",
+        "Issue_Board_reviewer_message_changes",
+        "primary_launcher_switch",
+        "deployment"
+      ]
+    },
+    {
+      "source_id": "BE-REPAIR-BEFORE-20261026",
+      "title": "Astra fixed-source preflight and six Before data flows",
+      "classification": "user_supplied_source_review",
+      "raw_in_repository": false,
+      "locator": "DATA_FLOW.md and HANDOFF.json, run20261026-181320; source D/U/R/E/O fixed in repair task",
+      "sha256": "b366c0aeb10459d551983a8f43bda7c396875e90e4b662205ced491bb90e711c",
+      "content_status": "pre_repair_source_findings_and_baseline_layers_not_candidate_HTTP_PASS"
     }
   ]
 }

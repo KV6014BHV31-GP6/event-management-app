@@ -20,6 +20,26 @@ class BootstrapError(Exception):
     """An actionable, non-secret error that is safe to display."""
 
 
+def require_compatible_existing_schema(connection, metadata):
+    """create_all cannot upgrade an older schema: stop before touching it."""
+    from sqlalchemy import inspect
+    inspector = inspect(connection)
+    for table in metadata.sorted_tables:
+        if not inspector.has_table(table.name):
+            continue
+        columns = {item['name']: item for item in inspector.get_columns(table.name)}
+        for column in table.columns:
+            actual = columns.get(column.name)
+            if actual is None or (not column.nullable and actual['nullable']):
+                raise BootstrapError("Existing schema is incompatible; use a new dedicated database or a separately validated migration.")
+            if connection.dialect.name == 'postgresql' and getattr(column.type, 'native_enum', False):
+                if getattr(actual['type'], 'name', None) != column.type.name:
+                    raise BootstrapError("Existing enum schema is incompatible; no migration was applied.")
+        indexes = {item['name'] for item in inspector.get_indexes(table.name)}
+        if any(index.unique and index.name not in indexes for index in table.indexes):
+            raise BootstrapError("Required unique index is missing; no automatic legacy upgrade was applied.")
+
+
 def get_seed_password() -> tuple[str, str]:
     """Use an explicit password or persist a generated password for retries."""
     from dotenv import dotenv_values
@@ -70,8 +90,9 @@ async def bootstrap() -> None:
     from src.core.database import AsyncSessionLocal, Base, async_engine
     from src.core.security import hash_password
     from src.users.models import UserModel, UserRoleEnum
-    from src.events.models import EventModel
+    from src.events.models import EventModel, EventStatusEnum
     from src.participants.models import ParticipantModel  # noqa: F401; register every table before create_all
+    from src.registrations.models import RegistrationModel  # noqa: F401
 
     # Development engine defaults to SQL echo; keep seed hashes out of console logs.
     async_engine.echo = False
@@ -81,6 +102,7 @@ async def bootstrap() -> None:
     try:
         async with async_engine.begin() as connection:
             # Add missing tables only. This is not a migration or reset operation.
+            await connection.run_sync(lambda sync: require_compatible_existing_schema(sync, Base.metadata))
             await connection.run_sync(Base.metadata.create_all)
 
         async with AsyncSessionLocal() as session:
@@ -128,7 +150,7 @@ async def bootstrap() -> None:
                         offline_quota=10,
                         start_time=start_time,
                         end_time=start_time + timedelta(hours=3),
-                        status="ACTIVE",
+                        status=EventStatusEnum.active,
                     ))
                     events_created += 1
         print("Development schema ready (missing tables created; no tables dropped).")

@@ -1,5 +1,17 @@
 # NU Developer 當前狀態
 
+## Backend repair author candidate — 2026-10-26
+
+Current task: [BE-BOOKING-LIFECYCLE-REPAIR-20261026](tasks/BE-BOOKING-LIFECYCLE-REPAIR-20261026.md). New explicit authorization permits the necessary Backend repair on existing `dev_be_booking_lifecycle_repair`, based on dev4541c948; the earlier UI_ONLY restriction belongs to the preserved Frontend task, not this Backend repair. Austin branches/dev/uat/main, Frontend and PR38 remain unchanged. Sol is sole product writer; Astra independently accepts later.
+
+Candidate now imports/produces schemas and exposes actual HTTP OpenAPI with14 paths. Shared strict DB identity, public-user-only Signup, organizer guards, owned participant pairing, partial unique duplicate index and event-first atomic review/cancel/promotion are implemented. Only online/offline0 allocation is supported; mixed-pool409 and truthful nullable quota preserve policy limits. Bootstrap runs on a new isolated native PG17 schema and refuses incompatible legacy schema; old DB migration is not passed.
+
+Author results:28 unit/SQLite/ASGI/schema tests PASS;3 opt-in native PG tests PASS; existing Frontend161/161 PASS. Main native ledger100 layered checks PASS with original stopped harness attempts and same-fixture continuation preserved; additional HTTP5/5 and unchanged API-client4/4 PASS. Fresh READ ONLY DB confirms4 users/5 events/3 Participants/9 registrations, Guest null pointers, owned readbacks and approved<=capacity in the tested scenarios. Three-state races and rollback are detailed in the task. There is no clean-single-attempt or whole Security/UAT claim.
+
+External original run: `E:\NU_Local_Environment_20261014\backend-repair\20261026-181320`, Sol receipts under `sol/`. Final full SHA/PR/runtime closeout are recorded after publication. Source-only pre-repair evidence remains intact. Frontend live own read/cancel/Approve/quota remains incomplete; whole E2E/Browser/Security/UAT/DB restart/video/deployment and old-schema migration are NOT_RUN. No merge, launcher switch, stage C or next feature by Sol.
+
+## Historical Frontend delivery records
+
 ## Guest author implementation, 2026-10-20
 
 Active task: [FE-GUEST-REGISTRATION-20261020](tasks/FE-GUEST-REGISTRATION-20261020.md). P0 three Signup repairs are on PR #28 at `46e77c023d72426859e587aff7afa4db8b4c0027`; PR #29 includes them at `d09fe02d10b5636beb654d5d4c8d02f6f2f7a041` through a non-rewriting merge, preserving role guard and original Demo bytes. Guest is a separate `dev_fe_guest_registration` increment based on synchronized #29; the recorded Demo remains historical.

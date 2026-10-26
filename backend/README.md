@@ -1,5 +1,21 @@
 # Backend development setup
 
+## Booking lifecycle repair candidate — 2026-10-26
+
+The bootstrap preflight checks required column presence/nullability, PG enum type names and required index names. It detects those incompatibilities; it is not a complete legacy schema/migration validator.
+
+Candidate branch `dev_be_booking_lifecycle_repair` selectively repairs auth/users/events/participants/registrations on dev4541c948. Source adoption, exact candidate SHA, checks and limitations are in the [repair task](../docs/dev/tasks/BE-BOOKING-LIFECYCLE-REPAIR-20261026.md), [API contract](../docs/api/INTEGRATION.md) and [Data Flow](../docs/api/DATA_FLOW.md). Existing dependency pins and Frontend bytes are retained. This is author verification, not Astra independent approval or deployment.
+
+Use only a new dedicated schema, non-superuser application role and synthetic data. `python -B -m scripts.dev_bootstrap --acknowledge-development`, from `backend/`, registers all four model tables, seeds the original organizer and three lowercase active events and preserves credentials/dates on repeat. It now refuses incompatible existing columns/enums/missing required unique index; `create_all` is not a migration. No original Demo database was upgraded or reset.
+
+Configuration names remain DATABASE_URL/JWT_SECRET_KEY and optional SEED_PASSWORD in ignored settings. Restrict Windows ACL before writing secrets; do not print values or pass passwords on command lines. SQL echo is disabled and bound parameters hidden. Candidate runtime uses existing Python3.14.8/pins and PostgreSQL17.11; HTTP OpenAPI/PID/cwd/source and actual nonprivileged DB identity are independently recorded. No server auto-bootstrap or primary launcher change.
+
+Relevant tests: existing unit/SQLite/ASGI assertions plus new auth/ownership/lifecycle/schema cases (`python -B -m pytest -q`). Native tests under `tests/native/test_candidate_pg.py` require explicit NU_NATIVE_SETTINGS_FILE and NU_NATIVE_REFERENCES_FILE paths to an already owned dedicated candidate; absent configuration SKIPs as NOT_RUN. They never recreate/drop a native schema. The atomic rollback case needs the documented approved/waiting fixture state; do not blindly replay it after final promotion. Actual native HTTP runner and secure candidate start/stop commands are in the external handoff, with no temporary shell-secret dependency.
+
+Supported allocation is the user-authorized online-only/offline0 scenario. Mixed-pool approval/promotion is controlled409; quota offline approved=null when mapping is unverified. Read count/capacity fields are not remaining places. Current Frontend remains without own GET/cancel/Approve/quota wiring; PR38 remains UI_ONLY. Full E2E/Browser/Security/UAT/DB restart, migration, video and deployment NOT_RUN.
+
+## Historical imported setup baseline
+
 This folder contains Austin's imported FastAPI backend at source baseline `79804aa`, plus additive development setup. Python 3.14 and PostgreSQL 17 are **REPORTED** as Austin's environment. The imported `src/` and dependency pins remain unchanged; two stale user-test assertions were aligned with the existing ULID/error contract; setup instructions are not product, security or UAT acceptance. See [current status](../docs/dev/CURRENT.md) for the latest verification evidence.
 
 Run the commands below from `backend/`. Use a dedicated local database and synthetic data only.
