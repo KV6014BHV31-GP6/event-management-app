@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 24,
+  "source_count": 27,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -274,6 +274,44 @@
         "teammate_messages"
       ],
       "locator": "Current conversation, 2026-10-20 Hong Kong; no private fixtures retained"
+    },
+    {
+      "source_id": "USER-FE-BOOKING-LIFECYCLE-20261026",
+      "title": "User-directed Sol task: UI_ONLY booking status preparation and Developer test matrix",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "content_status": "UI_ONLY_live_integration_BLOCKED_no_Backend_or_runtime_switch",
+      "locator": "User-specified PROMPT_FOR_SOL.md in Astra handoff run20261026-095026",
+      "sha256": "b7c6e2b5398ce3e16616fe522ab0827c053fb3b8e4c228bd9ed74b86a7f5e8e3",
+      "permissions": [
+        "detached_display_component",
+        "component_tests",
+        "minimal_Developer_docs_metadata",
+        "isolated_feature_branch",
+        "commit_push_one_Draft_PR"
+      ],
+      "not_authorized": [
+        "live_API_adapter",
+        "Backend_changes",
+        "DB_schema_or_pins",
+        "launcher_switch",
+        "stage_C",
+        "merge",
+        "deploy",
+        "Issue_Board_reviewer_edits",
+        "teammate_messages"
+      ]
+    },
+    {
+      "source_id": "ASTRA-BACKEND-ADMISSION-20261026",
+      "title": "Astra stage A admission: no complete verified Backend pairing",
+      "classification": "user_supplied_admission_gate",
+      "raw_in_repository": false,
+      "locator": "HANDOFF.json and VERIFIED_CONTRACT.md, run20261026-095026",
+      "sha256": "557fafc2a4967909d16963b87e14944a1cb33c5110cdf1ff1c7a20d2319d3ec4",
+      "content_status": "BLOCKED_source_only_candidates_not_live_contracts",
+      "ready_backend": null,
+      "verified_new_http_contract_count": 0
     }
   ]
 }

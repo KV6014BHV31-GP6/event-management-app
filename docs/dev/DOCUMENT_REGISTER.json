@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-20T06:38:57.718672+00:00",
-  "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend",
-  "document_count": 168,
+  "reviewed_at": "2026-10-26T02:46:29.267518+00:00",
+  "reason": "Record UI_ONLY validation results and reconcile source metadata count after adding task admission sources",
+  "document_count": 171,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 27,
+      "revision": 28,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -415,6 +415,13 @@
           "size_bytes": 13480,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 27,
+          "sha256": "fcb437ef8eb1c11df4bb72125b288ea36212e76311275f875bfe75e5a9628602",
+          "size_bytes": 15379,
+          "superseded_at": "2026-10-26T02:45:44.631034+00:00",
+          "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
         }
       ],
       "import_lineage": {
@@ -427,8 +434,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "fcb437ef8eb1c11df4bb72125b288ea36212e76311275f875bfe75e5a9628602",
-      "size_bytes": 15379,
+      "sha256": "f8dc253cb96fc39390668a9c2b8933410322fd3835076e35b6570ad2cdc4aae0",
+      "size_bytes": 16921,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1069,7 +1076,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 10,
+      "revision": 12,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1112,6 +1119,20 @@
           "size_bytes": 9903,
           "superseded_at": "2026-10-20T06:32:09.164471+00:00",
           "reason": "Repair three confirmed Signup defects with test-first and controlled privacy evidence"
+        },
+        {
+          "revision": 10,
+          "sha256": "dbd4e120110be38925c620bd8e86ed3571a1cb075603159db7d72b15edae3462",
+          "size_bytes": 10788,
+          "superseded_at": "2026-10-26T02:45:44.631034+00:00",
+          "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
+        },
+        {
+          "revision": 11,
+          "sha256": "0461544280d5f7c7227f2b5d8e443835479741a6ed9432c7d6d494cfe3dd1cfb",
+          "size_bytes": 12336,
+          "superseded_at": "2026-10-26T02:46:29.267518+00:00",
+          "reason": "Record UI_ONLY validation results and reconcile source metadata count after adding task admission sources"
         }
       ],
       "import_lineage": {
@@ -1122,8 +1143,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "dbd4e120110be38925c620bd8e86ed3571a1cb075603159db7d72b15edae3462",
-      "size_bytes": 10788
+      "sha256": "b407da63716382a18bfb7a8ca463b97d1a2ff72c5b789476261b523faa603a70",
+      "size_bytes": 12336
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -1232,15 +1253,23 @@
     {
       "document_id": "PUB-DOC-007",
       "path": "docs/dev/TEST_PLAN.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "8b13f047a8034ef92025c14fb3c250c24653917bcab48e257a02681ff560e038",
+          "size_bytes": 1993,
+          "superseded_at": "2026-10-26T02:45:44.631034+00:00",
+          "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8b13f047a8034ef92025c14fb3c250c24653917bcab48e257a02681ff560e038",
-      "size_bytes": 1993
+      "sha256": "a52e2ed25fa66582e433ad669d15cb05d24225d38bf89db41e64bd1853fc0767",
+      "size_bytes": 9949
     },
     {
       "document_id": "PUB-DOC-027",
@@ -1360,7 +1389,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 14,
+      "revision": 15,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1454,13 +1483,20 @@
           "size_bytes": 12872,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 14,
+          "sha256": "6f8af705b3e94f1b9c6aaad0c6940f264312b2e4214e740241523a3428bc7570",
+          "size_bytes": 14935,
+          "superseded_at": "2026-10-26T02:45:44.631034+00:00",
+          "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6f8af705b3e94f1b9c6aaad0c6940f264312b2e4214e740241523a3428bc7570",
-      "size_bytes": 14935,
+      "sha256": "88530175fb0b9ccc98e7515589b41c6454a3954a9710af4ee3530de55fa88630",
+      "size_bytes": 16204,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -3518,6 +3554,56 @@
       ],
       "sha256": "165b6fb3b55e2722ffc870bd1e0d8c1d1acb71b40430b546ae13161ec5026799",
       "size_bytes": 8185
+    },
+    {
+      "document_id": "FE-BOOKING-20261026-VIEW",
+      "path": "frontend/live/booking-state-view.mjs",
+      "revision": 1,
+      "owner": "Benjamin Frontend / Sol sole writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-BOOKING-LIFECYCLE-20261026",
+        "ASTRA-BACKEND-ADMISSION-20261026"
+      ],
+      "sha256": "46116382c9cc034c6c5eea0f77450c8db6f3c2717fffba4195e65598a25a3210",
+      "size_bytes": 944
+    },
+    {
+      "document_id": "FE-BOOKING-20261026-TEST",
+      "path": "frontend/live/tests/booking-state-view.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Frontend / Sol sole writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-FE-BOOKING-LIFECYCLE-20261026",
+        "ASTRA-BACKEND-ADMISSION-20261026"
+      ],
+      "sha256": "f232cdb1a6587f65ba97cb99df9d382d0f930af0a99a2deb1df30d7ee20d351c",
+      "size_bytes": 4658
+    },
+    {
+      "document_id": "FE-BOOKING-20261026-TASK",
+      "path": "docs/dev/tasks/FE-BOOKING-LIFECYCLE-20261026.md",
+      "revision": 2,
+      "owner": "Benjamin Frontend / Sol sole writer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "2bcd0f82f8d8beff94ceab217dc27e5f4433a5527631bc14c86c4cfabdfe23f7",
+          "size_bytes": 6751,
+          "superseded_at": "2026-10-26T02:46:29.267518+00:00",
+          "reason": "Record UI_ONLY validation results and reconcile source metadata count after adding task admission sources"
+        }
+      ],
+      "dependencies": [
+        "USER-FE-BOOKING-LIFECYCLE-20261026",
+        "ASTRA-BACKEND-ADMISSION-20261026"
+      ],
+      "sha256": "b17ed470b43799ad3cd9ace0867de572aab12d4f7e9ebe0582dea8d87c74326d",
+      "size_bytes": 6798
     }
   ]
 }

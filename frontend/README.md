@@ -1,5 +1,13 @@
 # Frontend workspace
 
+## Booking lifecycle UI preparation — 2026-10-26
+
+**UI preparation only. Live integration is BLOCKED by the backend admission gate.** [booking-state-view.mjs](live/booking-state-view.mjs) is detached and is not imported by live pages. It maps pending/approved/waiting/rejected/cancelled to distinct fixed text; missing/unknown status is Unknown. Quota remains Unavailable even when component fixtures contain capacity settings or unverified aggregates. There are no actions, network, storage or API validation.
+
+Explicit-fixture [component tests](live/tests/booking-state-view.test.mjs) pass10/10; full frontend171/171 PASS. From the repo root use `node --test frontend/live/tests/booking-state-view.test.mjs`. A component harness can inspect the returned node with a supplied DOM; there is no new browser page or live Demo route. See the [current task](../docs/dev/tasks/FE-BOOKING-LIFECYCLE-20261026.md) and [Developer test matrix](../docs/dev/TEST_PLAN.md). Current dev contains merged PRs #27–30; older stack/runtime instructions below remain historical.
+
+READY Backend=null. Self-read/cancel/refill/quota and any organizer Approve remain BLOCKED pending Astra's verified full pairing. Existing development launchers and manual Demo version were not switched.
+
 **Current slice:** public event browsing/search/detail, Signup, Login, organizer-only Create Event and explicit Guest or authenticated-user online applications, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [Guest task](../docs/dev/tasks/FE-GUEST-REGISTRATION-20261020.md), [Signup task](../docs/dev/tasks/FE-USER-SIGNUP-20261020.md), [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
 
 ## Explicit Guest application (2026-10-20)

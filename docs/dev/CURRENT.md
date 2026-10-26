@@ -1,5 +1,15 @@
 # NU Developer 當前狀態
 
+## Booking lifecycle preparation — 2026-10-26
+
+**UI preparation only. Live integration is BLOCKED by the backend admission gate.** Current task: [FE-BOOKING-LIFECYCLE-20261026](tasks/FE-BOOKING-LIFECYCLE-20261026.md), Refs #36/#37. Freshly verified base: `dev@4541c948f8aec68dbbb9500630abc8282a62abca`; PRs #27–30 are already MERGED. Earlier Draft/stack/native statements below are historical. This work is isolated on `dev_fe_booking_lifecycle`; all16 pre-existing worktrees are preserved.
+
+Added a detached text-only five-status component and10 fixture tests; unknown is Unknown and quota Unavailable. There is no live import, adapter, storage, action, Backend or launcher change. Targeted10/10 and required full frontend171/171 PASS. The [Developer matrix and component example](TEST_PLAN.md) distinguish this result, inherited unit checks, historical native evidence and future blocked work. Document-control/diff results and immutable remote publication are recorded in the task/external receipt.
+
+Astra run20261026-095026 remains the admission source: READY Backend=null; new VERIFIED HTTP contracts=0. Self GET/cancel/Approve/waitlist/quota native integration remains BLOCKED. Full native E2E/Security/UAT/DB restart are NOT_RUN. Candidate SHAs and source-only risks are in the task. Old d2f924bc Backend results do not prove new lifecycle behavior; author checks do not represent Astra independent acceptance. Stage C, runtime/launcher switching, merge and deployment were not performed.
+
+## Historical frontend delivery records
+
 ## Guest author implementation, 2026-10-20
 
 Active task: [FE-GUEST-REGISTRATION-20261020](tasks/FE-GUEST-REGISTRATION-20261020.md). P0 three Signup repairs are on PR #28 at `46e77c023d72426859e587aff7afa4db8b4c0027`; PR #29 includes them at `d09fe02d10b5636beb654d5d4c8d02f6f2f7a041` through a non-rewriting merge, preserving role guard and original Demo bytes. Guest is a separate `dev_fe_guest_registration` increment based on synchronized #29; the recorded Demo remains historical.
