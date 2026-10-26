@@ -1,80 +1,52 @@
 import jwt
-from fastapi import Depends, HTTPException, status, Request
+from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.core.config import settings
 from src.core.database import get_async_db
-from src.users.models import UserModel
-from src.auth.schemas import TokenData
+from src.users.models import UserModel, UserRoleEnum
 
-oauth2_scheme = OAuth2PasswordBearer(
-    tokenUrl=f"{settings.API_V1_STR}/auth/token"
-)
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl=f"{settings.API_V1_STR}/auth/token", auto_error=False)
 
 
-async def get_current_user(
-    token: str = Depends(oauth2_scheme),
-    db: AsyncSession = Depends(get_async_db)
-) -> UserModel:
-    credentials_exception = HTTPException(
-        status_code=status.HTTP_401_UNAUTHORIZED,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
+def credentials_error():
+    return HTTPException(status.HTTP_401_UNAUTHORIZED, "Could not validate credentials",
+                         headers={"WWW-Authenticate": "Bearer"})
 
+
+async def resolve_user(request: Request, db: AsyncSession, *, optional: bool = False):
+    authorization = request.headers.get("Authorization")
+    if authorization is None and optional:
+        return None
+    parts = authorization.split() if authorization is not None else []
+    if len(parts) != 2 or parts[0].lower() != "bearer" or not parts[1]:
+        raise credentials_error()
     try:
-        payload = jwt.decode(
-            token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
-        username: str | None = payload.get("sub")
-
-        if username is None:
-            raise credentials_exception
-
-        token_data = TokenData(username=username)
-
-    except (jwt.PyJWTError, ValueError):
-        raise credentials_exception
-
-    query = select(UserModel).where(UserModel.username == token_data.username)
-    result = await db.execute(query)
-    user = result.scalar_one_or_none()
-
+        payload = jwt.decode(parts[1], settings.JWT_SECRET_KEY, algorithms=["HS256"],
+                             options={"require": ["exp", "sub"]})
+        username = payload.get("sub")
+        if not isinstance(username, str) or not username.strip() or payload.get("type") not in (None, "access"):
+            raise credentials_error()
+    except (jwt.PyJWTError, ValueError, TypeError):
+        raise credentials_error() from None
+    user = await db.scalar(select(UserModel).where(UserModel.username == username))
     if user is None:
-        raise credentials_exception
+        raise credentials_error()
+    return user  # Role and identity come from the DB, never a caller/JWT role claim.
 
-    return user
+
+async def get_current_user(request: Request, token: str | None = Depends(oauth2_scheme),
+                           db: AsyncSession = Depends(get_async_db)) -> UserModel:
+    return await resolve_user(request, db)
 
 
-async def get_optional_current_user(
-    request: Request,
-    db: AsyncSession = Depends(get_async_db)
-) -> UserModel | None:
-    """
-    Safely resolves the current user context if a token exists. 
-    Bypasses authentication failure cleanly to allow anonymous traffic.
-    """
-    authorization: str | None = request.headers.get("Authorization")
-    if not authorization or not authorization.startswith("Bearer "):
-        return None
+async def get_optional_current_user(request: Request, db: AsyncSession = Depends(get_async_db)) -> UserModel | None:
+    return await resolve_user(request, db, optional=True)
 
-    try:
-        # Splits 'Bearer <token_string>' into list array elements
-        parts = authorization.split(" ")
-        if len(parts) != 2:
-            return None
 
-        token = parts[1]
-
-        payload = jwt.decode(
-            token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
-        username: str | None = payload.get("sub")
-        if username is None:
-            return None
-
-        query = select(UserModel).where(UserModel.username == username)
-        result = await db.execute(query)
-        return result.scalar_one_or_none()
-
-    except (jwt.PyJWTError, ValueError, IndexError):
-        return None
+async def require_organizer(current_user: UserModel = Depends(get_current_user)) -> UserModel:
+    if current_user.role != UserRoleEnum.organizer:
+        raise HTTPException(status.HTTP_403_FORBIDDEN,
+                            "Access denied. This endpoint is restricted to system organizers only.")
+    return current_user

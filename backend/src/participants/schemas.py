@@ -16,8 +16,8 @@ class ParticipantCreate(BaseModel):
     gender: UserGender
     date_of_birth: date
     phone: str = Field(..., max_length=20)
-    address: str | None = None
-    national_id: str | None = Field(None, max_length=50)
+    address: str = ""
+    national_id: str = Field(..., max_length=50)
 
 
 class ParticipantResponse(BaseModel):

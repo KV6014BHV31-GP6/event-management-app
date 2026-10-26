@@ -2,15 +2,18 @@ import ulid
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy.exc import IntegrityError
 
 from src.core.security import hash_password
-from src.users.models import UserModel
-from src.users.schemas import UserCreate
+from src.users.models import UserModel, UserRoleEnum
+from src.users.schemas import UserCreate, UserRole
 
 
 class UserService:
     @staticmethod
     async def create_user(db: AsyncSession, user_in: UserCreate) -> UserModel:
+        if user_in.role != UserRole.USER:
+            raise HTTPException(status.HTTP_403_FORBIDDEN, "Public Signup only creates user accounts.")
         # Check uniqueness
         query = select(UserModel).where(UserModel.username == user_in.username)
         result = await db.execute(query)
@@ -28,10 +31,14 @@ class UserService:
             id=str(ulid.ULID()),
             username=user_in.username,
             password_hash=hash_password(user_in.password),
-            role=user_in.role.value
+            role=UserRoleEnum.user
         )
 
         db.add(new_user)
-        await db.commit()
+        try:
+            await db.commit()
+        except IntegrityError:
+            await db.rollback()
+            raise HTTPException(status.HTTP_400_BAD_REQUEST, "Username is already registered.") from None
         await db.refresh(new_user)
         return new_user
