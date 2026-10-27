@@ -1,5 +1,13 @@
 # NU Developer 當前狀態
 
+## PR38 successor Demo readiness — 2026-10-27 (current)
+
+**DEMO_READY for the limited author-validated local flow.** [Current task](tasks/BE-FE-DEMO-READINESS-20261027.md) supersedes the prior Backend-blocked status only on new branch `fix/pr38-demo-readiness`, starting exactly at PR38 `ff6e5d4fcdfb2f71103eac6769b376eca64bf843`. The new Draft PR is stacked on `dev_fe_booking_lifecycle`; PR38/PR39 and their environments remain unchanged. Astra directly implemented the necessary repair; no branch merge or PR39 adoption.
+
+Real UI D1–D7 now includes image/Create/search/detail/Edit, User/Guest applications, own read/Reload, organizer Approve and A-approved/B-waiting -> UI Cancel200 -> B-approved with quota1/0. Native owner/role/auth/duplicate/race checks, old-shape migration and fresh bootstrap are separately verified. Frontend239 PASS; Backend26 ASGI/SQLite +3 native PostgreSQL PASS. Exact immutable delivery SHA and source-bound receipts are in the PR/external HANDOFF. This is author validation, not team acceptance, comprehensive Security/UAT, mixed-pool policy or complete Issue closure.
+
+Dedicated candidate5197 ->8024 ->5435; root `E:\NU_Local_Environment_20261014\demo-readiness\20261027-141421`. Start/Stop/Status/Open only control this candidate. Private account/settings files remain outside Git. Existing historical failures and NOT_RUN scopes below retain their original dates and source versions.
+
 ## Austin dev integration — 2026-10-27 (current)
 
 **PARTIAL_LIVE / BACKEND_BLOCKED.** [Current task](tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md) supersedes the earlier UI_ONLY scope by explicit user authorization for Astra's Frontend implementation. Same Draft PR #38/branch `dev_fe_booking_lifecycle`, base dev; Austin Backend fixed at `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`. PR #39 remains untouched Plan B. No Backend tracked changes or remote merge.

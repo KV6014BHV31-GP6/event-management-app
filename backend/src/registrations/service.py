@@ -4,6 +4,10 @@ from fastapi import HTTPException, status
 from typing import List, Optional
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
+from sqlalchemy import func
+from sqlalchemy.exc import IntegrityError
+from functools import wraps
+from src.users.models import UserModel
 
 from src.events.models import EventModel, EventStatusEnum
 from src.participants.models import ParticipantModel
@@ -11,8 +15,40 @@ from src.registrations.models import RegistrationModel, RegistrationStatusEnum, 
 from src.registrations.schemas import RegistrationCreate, RegistrationStatus
 
 
+DUPLICATE = "This participant already holds an active registration record for this event."
+
+
+def rollback_write(operation):
+    """Auth may already have begun this session; commit once inside each operation."""
+    @wraps(operation)
+    async def wrapped(db, *args, **kwargs):
+        try:
+            return await operation(db, *args, **kwargs)
+        except IntegrityError as exc:
+            await db.rollback()
+            if getattr(exc.orig, "sqlstate", None) == "23505" or "UNIQUE constraint failed" in str(exc.orig):
+                raise HTTPException(status_code=409, detail="A conflicting participant or registration already exists.") from None
+            raise
+        except Exception:
+            await db.rollback()
+            raise
+    return wrapped
+
+
+async def lock_registration(db, registration_id):
+    event_id = await db.scalar(select(RegistrationModel.event_id).where(RegistrationModel.id == registration_id))
+    if event_id is None:
+        raise HTTPException(status_code=404, detail="Registration record was not found.")
+    event = await db.scalar(select(EventModel).where(EventModel.id == event_id)
+                            .with_for_update().execution_options(populate_existing=True))
+    registration = await db.scalar(select(RegistrationModel).where(RegistrationModel.id == registration_id)
+                                   .with_for_update().execution_options(populate_existing=True))
+    return event, registration
+
+
 class RegistrationService:
     @staticmethod
+    @rollback_write
     async def create_online_registration(
         db: AsyncSession,
         event_public_id: str,
@@ -24,7 +60,7 @@ class RegistrationService:
         """
         # 1. Validate Event Entity Existence
         event_stmt = select(EventModel).where(
-            EventModel.public_id == event_public_id)
+            EventModel.public_id == event_public_id).with_for_update().execution_options(populate_existing=True)
         event_res = await db.execute(event_stmt)
         event = event_res.scalar_one_or_none()
 
@@ -40,53 +76,35 @@ class RegistrationService:
                 detail="Registration rejected. This event is not currently accepting entries."
             )
 
-        # 2. Search Participant strictly by national_id
-        part_stmt = select(ParticipantModel).where(
-            ParticipantModel.national_id == form_in.national_id)
-        part_res = await db.execute(part_stmt)
-        db_participant = part_res.scalar_one_or_none()
-
-        # 3. Evaluate Participant Records Layout (Update or Create)
+        # Serialize the first participant creation for this user across different events.
+        if current_user_id:
+            await db.execute(select(UserModel.id).where(UserModel.id == current_user_id).with_for_update())
+        own = await db.scalar(select(ParticipantModel).where(ParticipantModel.user_id == current_user_id)) if current_user_id else None
+        by_identity = await db.scalar(select(ParticipantModel).where(ParticipantModel.national_id == form_in.national_id))
+        if own and own.national_id != form_in.national_id:
+            raise HTTPException(status_code=409, detail="Participant identity does not match this account.")
+        if by_identity and (not current_user_id or by_identity.user_id != current_user_id):
+            raise HTTPException(status_code=409, detail="This participant identity cannot be claimed by this request.")
+        db_participant = own or by_identity
         if db_participant:
-            participant_id = db_participant.id
-
-            # Compare incoming request information against past records
-            has_changes = (
-                db_participant.first_name != form_in.first_name or
-                db_participant.last_name != form_in.last_name or
-                db_participant.gender.value != form_in.gender.value or
-                db_participant.date_of_birth != form_in.date_of_birth or
-                db_participant.phone != form_in.phone or
-                db_participant.address != form_in.address
-            )
-
-            if has_changes:
-                # Update participant details if personal demographics have shifted
-                db_participant.first_name = form_in.first_name
-                db_participant.last_name = form_in.last_name
-                db_participant.gender = UserGenderEnum(form_in.gender.value)
-                db_participant.date_of_birth = form_in.date_of_birth
-                db_participant.phone = form_in.phone
-                db_participant.address = form_in.address
-                if current_user_id:
-                    db_participant.updated_by_user_id = current_user_id
-
-                db.add(db_participant)
+            duplicate = await db.scalar(select(RegistrationModel.id).where(
+                RegistrationModel.event_id == event.id, RegistrationModel.participant_id == db_participant.id))
+            if duplicate:
+                raise HTTPException(status_code=400, detail=DUPLICATE)
+            # Only a verified owner may change demographics, after duplicate checks.
+            for field in ("first_name", "last_name", "date_of_birth", "phone", "address"):
+                setattr(db_participant, field, getattr(form_in, field))
+            db_participant.gender = UserGenderEnum(form_in.gender.value)
+            db_participant.updated_by_user_id = current_user_id
         else:
-            # Create a completely new participant record
-            new_p = ParticipantModel(
-                id=str(ulid.ULID()),
-                user_id=current_user_id,
-                first_name=form_in.first_name,
-                last_name=form_in.last_name,
-                gender=UserGenderEnum(form_in.gender.value),
-                date_of_birth=form_in.date_of_birth,
-                phone=form_in.phone,
-                address=form_in.address,
-                national_id=form_in.national_id
-            )
-            db.add(new_p)
-            participant_id = new_p.id
+            db_participant = ParticipantModel(
+                id=str(ulid.ULID()), user_id=current_user_id,
+                first_name=form_in.first_name, last_name=form_in.last_name,
+                gender=UserGenderEnum(form_in.gender.value), date_of_birth=form_in.date_of_birth,
+                phone=form_in.phone, address=form_in.address, national_id=form_in.national_id)
+            db.add(db_participant)
+        await db.flush()  # FK target must exist; the session intentionally has autoflush=False.
+        participant_id = db_participant.id
 
         # 4. Create Registration (status = pending)
         new_registration = RegistrationModel(
@@ -140,27 +158,17 @@ class RegistrationService:
         return list(result.scalars().all())
 
     @staticmethod
+    @rollback_write
     async def cancel_user_registration(
         db: AsyncSession,
         registration_id: str,
         user_id: str
     ) -> RegistrationModel:
         """
-        Cancels an active event registration and triggers automated FIFO queue promotion 
+        Cancels an active event registration and triggers automated FIFO queue promotion
         based on waitlisted_at order if applicable.
         """
-        # 1. Fetch target registration record
-        stmt = select(RegistrationModel).where(
-            RegistrationModel.id == registration_id)
-        res = await db.execute(stmt)
-        registration = res.scalar_one_or_none()
-
-        # 2. Validate existence
-        if not registration:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Registration record with identifier '{registration_id}' was not found."
-            )
+        event, registration = await lock_registration(db, registration_id)
 
         # 3. Validate Ownership constraint
         if registration.created_by_user_id != user_id:
@@ -188,7 +196,8 @@ class RegistrationService:
         db.add(registration)
 
         # 6. Check if registration was approved before to trigger queue promotion
-        if was_approved:
+        if was_approved and event.status == EventStatusEnum.active:
+            await db.flush()
             # Find the oldest waitlisted entry sorted strictly by waitlisted_at ascending (FIFO)
             queue_stmt = (
                 select(RegistrationModel)
@@ -196,7 +205,8 @@ class RegistrationService:
                     RegistrationModel.event_id == registration.event_id,
                     RegistrationModel.status == RegistrationStatusEnum.waiting
                 )
-                .order_by(RegistrationModel.waitlisted_at.asc())
+                .order_by(RegistrationModel.waitlisted_at.asc(), RegistrationModel.created_at.asc(), RegistrationModel.id.asc())
+                .with_for_update().execution_options(populate_existing=True)
                 .limit(1)
             )
             queue_res = await db.execute(queue_stmt)
@@ -263,6 +273,7 @@ class RegistrationService:
         return registration
 
     @staticmethod
+    @rollback_write
     async def approve_registration(
         db: AsyncSession,
         registration_id: str,
@@ -271,17 +282,7 @@ class RegistrationService:
         """
         Executes the registration approval workflow after verifying capacity rules.
         """
-        # 1. Verify registration exists
-        reg_stmt = select(RegistrationModel).where(
-            RegistrationModel.id == registration_id)
-        reg_res = await db.execute(reg_stmt)
-        registration = reg_res.scalar_one_or_none()
-
-        if not registration:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail=f"Registration record with identifier '{registration_id}' was not found."
-            )
+        event, registration = await lock_registration(db, registration_id)
 
         # 2. Verify the registrations.status = "pending", otherwise -> 409 Conflict
         if registration.status != RegistrationStatusEnum.pending:
@@ -290,17 +291,8 @@ class RegistrationService:
                 detail=f"Approval rejected. Action can only be executed on 'pending' records. Current state is '{registration.status.value}'."
             )
 
-        # 3. Load event
-        event_stmt = select(EventModel).where(
-            EventModel.id == registration.event_id)
-        event_res = await db.execute(event_stmt)
-        event = event_res.scalar_one_or_none()
-
-        if not event:
-            raise HTTPException(
-                status_code=status.HTTP_404_NOT_FOUND,
-                detail="The event linked to this registration no longer exists."
-            )
+        if event.status != EventStatusEnum.active:
+            raise HTTPException(status_code=409, detail="Approval requires an active event.")
 
         # 4. Calculate capacity
         total_capacity = event.online_quota + event.offline_quota
@@ -354,6 +346,7 @@ class RegistrationService:
         return registration
 
     @staticmethod
+    @rollback_write
     async def create_from_offline(
         db: AsyncSession,
         event_id: int,
@@ -362,9 +355,16 @@ class RegistrationService:
         leader_id: str
     ) -> int:
         """
-        Handles database matching lookups and builds registration records 
+        Handles database matching lookups and builds registration records
         using a channel='offline' layout.
         """
+        event = await db.scalar(select(EventModel).where(EventModel.id == event_id)
+                                .with_for_update().execution_options(populate_existing=True))
+        if not event or event.status != EventStatusEnum.active:
+            raise HTTPException(status_code=400, detail="Offline registration requires an active event.")
+        identities = [item.national_id for item in applications]
+        if len(identities) != len(set(identities)):
+            raise HTTPException(status_code=409, detail="Duplicate participant identities in this batch.")
         processed_count = 0
         now_utc = datetime.now(timezone.utc)
 
@@ -376,28 +376,8 @@ class RegistrationService:
             db_participant = part_res.scalar_one_or_none()
 
             if db_participant:
-                participant_id = db_participant.id
-
-                # Evaluate field updates if profile characteristics changed
-                has_changes = (
-                    db_participant.first_name != app.first_name or
-                    db_participant.last_name != app.last_name or
-                    db_participant.gender.value != app.gender.value or
-                    db_participant.date_of_birth != app.date_of_birth or
-                    db_participant.phone != app.phone or
-                    db_participant.address != app.address
-                )
-
-                if has_changes:
-                    db_participant.first_name = app.first_name
-                    db_participant.last_name = app.last_name
-                    db_participant.gender = app.gender
-                    db_participant.date_of_birth = app.date_of_birth
-                    db_participant.phone = app.phone
-                    db_participant.address = app.address
-                    db_participant.updated_at = now_utc
-                    db_participant.updated_by_user_id = leader_id
-                    db.add(db_participant)
+                # No verified identity-claim route exists for previously recorded people.
+                raise HTTPException(status_code=409, detail="An existing participant cannot be claimed by offline sync.")
             else:
                 # If national_id is not found, instantiate a new record in participants table
                 new_p = ParticipantModel(
@@ -414,6 +394,7 @@ class RegistrationService:
                     updated_at=now_utc
                 )
                 db.add(new_p)
+                await db.flush()
                 participant_id = new_p.id
 
             # Step 4: Create a record in registrations table

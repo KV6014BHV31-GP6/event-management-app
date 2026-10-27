@@ -1,0 +1,48 @@
+# PR38 Demo readiness repair — 2026-10-27
+
+Status: working-baseline; **DEMO_READY for the bounded author-validated local flow**, not team approval, full Issue acceptance, Security or UAT. Astra is the sole product writer; helpers performed read-only source review. Explicit current user authorization permits the necessary Backend/Frontend/schema/test repair, a new isolated worktree, one stacked Draft PR and a separate local launcher. No merge/rebase/cherry-pick, PR38 mutation, PR39 adoption, deployment or Issue/Board change is authorized.
+
+## Fixed starting point and delivery
+
+Repository `KV6014BHV31-GP6/event-management-app`; branch `fix/pr38-demo-readiness`; START_SHA `ff6e5d4fcdfb2f71103eac6769b376eca64bf843`, the freshly verified PR38 head. Its inherited Austin dev source is `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`. The new Draft PR targets `dev_fe_booking_lifecycle` and contains only this repair increment. Final immutable SHA/PR number are in the remote PR and external HANDOFF; historical parent failures below remain version-qualified. No PR39 code, database or repair was read/adopted.
+
+## Minimal repairs and contract changes
+
+- Restore real `offline` in model, response schema and frontend read validation. Preserve walkin/ocr values and Austin Offline endpoint; no new Offline UI. Nonempty native Offline201 is separate API evidence. Existing identities cannot be claimed or overwritten through Offline sync; batches fail atomically on conflicts.
+- Restore missing Events PATCH imports and Approve count import. Alias FastAPI status so the existing `status` query no longer crashes ordinary-user authorization. Unknown event status and explicit null required PATCH fields produce controlled422. Omitted fields stay unchanged; naive input times are interpreted as UTC, aware times retain their instant. PATCH uses the same event row lock as approval/cancellation and rejects total capacity below approved count.
+- Public Signup allows only `user` (privileged caller role403), rejects blank username and over72 UTF-8-byte passwords422, and handles username uniqueness races. Existing role enum and privileged controlled fixtures remain. New access JWTs carry type=access; still-valid legacy access JWTs without type remain accepted, but refresh-as-access, missing expiration, malformed/expired credentials are rejected401. Only an absent Authorization header is Guest. Refresh/logout/files modules remain present; frontend Cookie transport is unchanged.
+- User participant matching first verifies account ownership and National ID consistency. Foreign/Guest identity claiming409; same user can reuse their participant across distinct events. Duplicate event/participant is rejected before demographic updates. A named DB unique constraint covers all statuses; re-enrolment after cancellation is not introduced. Existing duplicate400 text is retained; unique-race/identity409 maps to a safe controlled frontend validation error, not uncertain success or leaked identity detail.
+- Registration create, Approve, Cancel and quota PATCH serialize on the event row. Approve re-reads the locked registration and only accepts pending on an active event. Cancel verifies creator/status, flushes cancellation, locks the oldest waiting row using deterministic timestamp/id order, and commits cancellation+promotion once. A repeated cancel cannot release twice. Pending cancellation never releases an approved place. An inactive event permits cancellation but no new promotion. Exceptions rollback; native fault injection is confined to tests.
+- Preserve Austin's existing total-capacity/FIFO allocation implementation. The accepted demonstration is online1/offline0. This is not approval of mixed-pool lending, OCR allocation, eligibility, pending-seat reservations, cancellation deadlines or offer/accept/expiry policies.
+
+## Schema and setup
+
+Fresh development DB: `python -m scripts.dev_bootstrap --acknowledge-development` from backend, with dedicated non-superuser PostgreSQL settings and private SEED_PASSWORD. Bootstrap explicitly registers RegistrationModel and seeds lowercase EventStatusEnum.active. First and repeat runs succeeded; existing password/event dates/all row fingerprints were unchanged on repeat.
+
+Existing development DB: stop writers, back up and explicitly run `python -m scripts.migrate_demo_readiness --acknowledge-development --database <exact_database_name>`. The script verifies the DB/schema/type, sets a short lock timeout, locks registrations, refuses duplicate event/participant pairs without deleting anything, validates/adds the named unique constraint and adds the real offline enum value. The new enum is used only after commit. First/repeat migration preserved all rows in the isolated original-shape DB. A separate duplicate fixture refused with no row/schema change. This does not certify migration of any original Demo/production database. Launchers never initialize, seed or migrate.
+
+## Actual author validation
+
+Run `20261027-141421`, native Python3.14.8 / PostgreSQL17.11 / installed Chrome, unchanged requirement pins in an isolated venv. Frontend5197 -> Backend8024 -> PostgreSQL5435, dedicated non-superuser application role and separate uploads. Original5196/8023/5434 and all20 earlier worktrees remain protected.
+
+| Layer | Result and evidence boundary |
+| --- | --- |
+| Initial original-source failures | Bootstrap exit1; original two user tests FAIL on stale integer-ID/error-string assertions; native26 responses included7 actual500. Preserved before repair. |
+| Unit/ASGI/SQLite | 26 PASS after repair; the two stale assertions now strictly require canonical string ULID/user role and the existing exact duplicate error, rather than weakening assertions. |
+| Native PostgreSQL service tests | 3 PASS: last-slot plus repeated-cancel races, unique pair enforcement, controlled pre-commit fault with both cancellation/promotion rolled back. These are not Browser tests. |
+| Frontend Node/controller/DOM/proxy | 239 PASS; retained parent237 plus offline read and signed-in409 regression, with Guest409 mapping also checked. No dependency/framework change. |
+| Real Browser D1–D7 | Signup201 -> Login/fresh profile/local Logout; UI image upload201/Create201; search/detail/image/Reload; title-only PATCH/fresh GET preserving fields/image/time; A same participant across two events; Guest201/pending without Authorization/account/Login; organizer list/detail/Approve; A approved/B waiting -> A UI Cancel HTTP200 -> A cancelled/B approved after fresh GET/Reload; quota approved1/waiting0. |
+| Native HTTP negatives and races | 56 actual requests and59 assertions: owner/role/token/state/duplicate refusals, all negative checks leave all table fingerprints unchanged, pending cancellation no quota increase, nonempty Offline201, two real Approve requests and two real Cancel requests, microsecond-preserving PATCH/GET. Separate from UI actions. |
+| Native DB | Fresh READ ONLY connection reconciles Browser actor/participant/event/registration links; Guest actor and participant user_id null. Final dedicated Demo DB7 users/6 events/6 participants/7 registrations (includes separate D8 API fixtures). No SQL business-state updates. |
+
+Browser harness failures remain: two attempts to read the old Login profile body after automatic navigation, one sanitized snapshot omitting quota fields, and one incorrect expectation that full document Reload preserves keyword. Continuation used fresh GET/DB and existing records, never repeated successful Signup/Create/PATCH. The existing Refresh events button retains keyword; full document reload resets search. Core detail/data/image readback still succeeds. These failures are not erased or reported as clean first-run success.
+
+Read-only review identified inactive-event promotion and controlled409 frontend mapping; both were repaired and tested. This does not represent an independent team Approve. Six framework deprecation warnings remain. The historical unrelated root Python baseline is not rerun or silently repaired.
+
+## Reproduction and limits
+
+Frontend from repo root: explicitly expand `frontend/dev-server.test.mjs` and `frontend/live/tests/*.test.mjs`, then `node --test <paths>`. Backend from backend: `python -B -m pytest -q tests`; the3 native tests SKIP unless `NU_NATIVE_TEST_DATABASE_URL` points to a dedicated PostgreSQL database ending `_test` with non-superuser role. Opt-in tests create fresh synthetic fixtures without deleting earlier records. Document control: `python -B -X utf8 scripts/check_dev_control.py`; working/staged/committed `git diff --check`.
+
+Local-only evidence/launchers: `E:\NU_Local_Environment_20261014\demo-readiness\20261027-141421`. RESULT, DATA_FLOW, MANUAL_DEMO, HANDOFF, source hashes, HTTP/DB/command ledgers and the video-only Sol prompt are outside Git. This is not a publicly downloadable evidence URL; private credentials/logs stay restricted. The separate Start/Stop/Status/Open checks verify PID/creation/command/cwd, idempotent Start and fresh-terminal restart/readback. Final product bytes are tied to the release manifest and commit.
+
+Refs #23 / #26 / #32 / #36 / #37. No complete Issue closure. Mixed pools, full waitlist offers, Guest claim/read/cancel, participant management, notifications, new Offline/OCR UI, GCS/deployment, complete native E2E, Security, UAT, old DB migration, video and team/design review remain outside this bounded delivery. Frontend local Logout clears the Session; it is not server token revocation or verified refresh-Cookie transport. Sol's next task is recording/editing only, using fresh UI-created demonstration records; never reset or replay the already cancelled A row.

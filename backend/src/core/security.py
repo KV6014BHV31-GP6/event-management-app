@@ -31,7 +31,7 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None) -> s
             timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 
     # Standard JWT claims use 'exp' for expiration timestamp
-    to_encode.update({"exp": expire})
+    to_encode.update({"exp": expire, "type": "access"})
 
     # Sign the token using HS256 algorithm and our application secret key
     encoded_jwt = jwt.encode(

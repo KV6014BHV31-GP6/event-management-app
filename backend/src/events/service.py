@@ -1,4 +1,5 @@
 from nanoid import generate
+from fastapi import HTTPException
 from sqlalchemy import func, or_, case
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -109,6 +110,12 @@ class EventService:
             return None
 
         update_data = event_update.model_dump(exclude_unset=True)
+        approved = await self.db.scalar(select(func.count()).select_from(RegistrationModel).where(
+            RegistrationModel.event_id == db_event.id,
+            RegistrationModel.status == RegistrationStatusEnum.approved))
+        capacity = update_data.get("online_quota", db_event.online_quota) + update_data.get("offline_quota", db_event.offline_quota)
+        if capacity < approved:
+            raise HTTPException(status_code=409, detail="Capacity cannot be lower than current approved registrations.")
         for key, value in update_data.items():
             if key == "status" and value is not None:
                 setattr(db_event, key, EventStatusEnum[value.lower()])
@@ -129,12 +136,14 @@ class EventService:
         keyword: str | None = None
     ) -> dict:
         """
-        Returns a paginated bundle of all matching system event rows, pulling 
+        Returns a paginated bundle of all matching system event rows, pulling
         all structural quota indicators within a single database flight block.
         """
         # Build core filtering parameters
         where_conds = []
         if status_filter:
+            if status_filter.lower() not in EventStatusEnum.__members__:
+                raise HTTPException(status_code=422, detail="Unknown event status.")
             where_conds.append(EventModel.status ==
                                EventStatusEnum[status_filter.lower()])
         if keyword:

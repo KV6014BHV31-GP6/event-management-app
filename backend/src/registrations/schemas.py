@@ -6,6 +6,7 @@ from pydantic import BaseModel, Field, ConfigDict
 
 class RegistrationChannel(str, Enum):
     ONLINE = "online"
+    OFFLINE = "offline"
     WALKIN = "walkin"
     OCR = "ocr"
 

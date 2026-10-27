@@ -1,13 +1,14 @@
 from datetime import datetime, date, timezone
 import enum
 from typing import Optional
-from sqlalchemy import String, DateTime, Date, Integer, BigInteger, ForeignKey, Enum as SQLEnum, Text
+from sqlalchemy import String, DateTime, Date, Integer, BigInteger, ForeignKey, UniqueConstraint, Enum as SQLEnum, Text
 from sqlalchemy.orm import Mapped, mapped_column
 from src.core.database import Base
 
 
 class RegistrationChannelEnum(enum.Enum):
     online = "online"
+    offline = "offline"
     walkin = "walkin"
     ocr = "ocr"
 
@@ -34,6 +35,7 @@ class UserGenderEnum(enum.Enum):
 
 class RegistrationModel(Base):
     __tablename__ = "registrations"
+    __table_args__ = (UniqueConstraint("event_id", "participant_id", name="uq_registration_event_participant"),)
 
     id: Mapped[str] = mapped_column(String(26), primary_key=True)
     event_id: Mapped[int] = mapped_column(BigInteger, ForeignKey(
