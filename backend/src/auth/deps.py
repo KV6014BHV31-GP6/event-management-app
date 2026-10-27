@@ -51,18 +51,22 @@ async def get_optional_current_user(
     db: AsyncSession = Depends(get_async_db)
 ) -> UserModel | None:
     """
-    Safely resolves the current user context if a token exists. 
-    Bypasses authentication failure cleanly to allow anonymous traffic.
+    Resolves user context if an Authorization header is provided.
+    - If NO header is passed, returns None (allows anonymous guests).
+    - If a token is passed but is expired/corrupted, raises a 401 exception 
+      to prompt the frontend interceptor to refresh the token and retry.
     """
     authorization: str | None = request.headers.get("Authorization")
     if not authorization or not authorization.startswith("Bearer "):
         return None
 
     try:
-        # Splits 'Bearer <token_string>' into list array elements
         parts = authorization.split(" ")
         if len(parts) != 2:
-            return None
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Malformed authorization header structure."
+            )
 
         token = parts[1]
 
@@ -70,11 +74,89 @@ async def get_optional_current_user(
             token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
         username: str | None = payload.get("sub")
         if username is None:
-            return None
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token payload parameters."
+            )
 
         query = select(UserModel).where(UserModel.username == username)
         result = await db.execute(query)
-        return result.scalar_one_or_none()
+        user = result.scalar_one_or_none()
 
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User bound to this token does not exist."
+            )
+
+        return user
+
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Token expired",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
     except (jwt.PyJWTError, ValueError, IndexError):
-        return None
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+
+
+def get_refresh_token_from_cookie(request: Request) -> str:
+    """
+    Extracts the refresh token from secure HttpOnly cookies.
+    """
+    refresh_token = request.cookies.get("refresh_token")
+    if not refresh_token:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token missing from secure storage context.",
+            headers={"WWW-Authenticate": "Bearer"}
+        )
+    return refresh_token
+
+
+async def verify_refresh_token(
+    token: str = Depends(get_refresh_token_from_cookie),
+    db: AsyncSession = Depends(get_async_db)
+) -> UserModel:
+    """
+    Validates the refresh token cryptographic signature and retrieves the tied user record.
+    """
+    try:
+        payload = jwt.decode(
+            token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
+        username: str | None = payload.get("sub")
+        token_type: str | None = payload.get("type")
+
+        if username is None or token_type != "refresh":
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token metadata context structure."
+            )
+
+        query = select(UserModel).where(UserModel.username == username)
+        result = await db.execute(query)
+        user = result.scalar_one_or_none()
+
+        if user is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="User associated with token does not exist."
+            )
+
+        return user
+
+    except jwt.ExpiredSignatureError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Refresh token expired. Full re-authentication signature required."
+        )
+    except (jwt.PyJWTError, ValueError):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Could not validate credentials"
+        )
