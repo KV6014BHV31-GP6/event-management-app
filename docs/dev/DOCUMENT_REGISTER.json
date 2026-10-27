@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-10-26T02:46:29.267518+00:00",
-  "reason": "Record UI_ONLY validation results and reconcile source metadata count after adding task admission sources",
-  "document_count": 171,
+  "reviewed_at": "2026-10-27T02:46:10.262483+00:00",
+  "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload",
+  "document_count": 192,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -260,7 +260,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 28,
+      "revision": 29,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -422,6 +422,13 @@
           "size_bytes": 15379,
           "superseded_at": "2026-10-26T02:45:44.631034+00:00",
           "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
+        },
+        {
+          "revision": 28,
+          "sha256": "f8dc253cb96fc39390668a9c2b8933410322fd3835076e35b6570ad2cdc4aae0",
+          "size_bytes": 16921,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "import_lineage": {
@@ -434,8 +441,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "f8dc253cb96fc39390668a9c2b8933410322fd3835076e35b6570ad2cdc4aae0",
-      "size_bytes": 16921,
+      "sha256": "62b5159768d16d15656e2e63af889169c66551b8889e96184930977638b50bb0",
+      "size_bytes": 18235,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1076,7 +1083,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 12,
+      "revision": 13,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1133,6 +1140,13 @@
           "size_bytes": 12336,
           "superseded_at": "2026-10-26T02:46:29.267518+00:00",
           "reason": "Record UI_ONLY validation results and reconcile source metadata count after adding task admission sources"
+        },
+        {
+          "revision": 12,
+          "sha256": "b407da63716382a18bfb7a8ca463b97d1a2ff72c5b789476261b523faa603a70",
+          "size_bytes": 12336,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "import_lineage": {
@@ -1143,8 +1157,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "b407da63716382a18bfb7a8ca463b97d1a2ff72c5b789476261b523faa603a70",
-      "size_bytes": 12336
+      "sha256": "f3446630a9c02746d8de5a2194c5ff1234dfdff52e2eb4875eeb888164df0104",
+      "size_bytes": 13306
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -1253,7 +1267,7 @@
     {
       "document_id": "PUB-DOC-007",
       "path": "docs/dev/TEST_PLAN.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1263,13 +1277,20 @@
           "size_bytes": 1993,
           "superseded_at": "2026-10-26T02:45:44.631034+00:00",
           "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
+        },
+        {
+          "revision": 2,
+          "sha256": "a52e2ed25fa66582e433ad669d15cb05d24225d38bf89db41e64bd1853fc0767",
+          "size_bytes": 9949,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a52e2ed25fa66582e433ad669d15cb05d24225d38bf89db41e64bd1853fc0767",
-      "size_bytes": 9949
+      "sha256": "ea7ca887e7511a4f768f2210f050de5debce6fc1250197ad160dcae2fe457201",
+      "size_bytes": 12492
     },
     {
       "document_id": "PUB-DOC-027",
@@ -1389,7 +1410,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 15,
+      "revision": 16,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1490,13 +1511,20 @@
           "size_bytes": 14935,
           "superseded_at": "2026-10-26T02:45:44.631034+00:00",
           "reason": "Add detached UI_ONLY booking-state component and scoped Developer test matrix; preserve BLOCKED Backend admission"
+        },
+        {
+          "revision": 15,
+          "sha256": "88530175fb0b9ccc98e7515589b41c6454a3954a9710af4ee3530de55fa88630",
+          "size_bytes": 16204,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "88530175fb0b9ccc98e7515589b41c6454a3954a9710af4ee3530de55fa88630",
-      "size_bytes": 16204,
+      "sha256": "4cf0a9afd46585a53770696f2811363c4343b5a79e208f6439792ff27a1c11b8",
+      "size_bytes": 18287,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -2044,16 +2072,24 @@
     {
       "document_id": "FE-LIVE-20261014-003",
       "path": "backend/requirements.txt",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "2155406e9138779cf645dfffc5a23f8ce1876aa1f4f66bf1e0c4c296fa162c5f",
+          "size_bytes": 3124,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "2155406e9138779cf645dfffc5a23f8ce1876aa1f4f66bf1e0c4c296fa162c5f",
-      "size_bytes": 3124
+      "sha256": "1c94e2f60e7624a532433bb1d13453a80fa0946f4952c3a27049934d9df9f1e6",
+      "size_bytes": 3552
     },
     {
       "document_id": "FE-LIVE-20261014-004",
@@ -2100,30 +2136,46 @@
     {
       "document_id": "FE-LIVE-20261014-007",
       "path": "backend/src/auth/deps.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0d4f77b85753c00a4af907f1caffce1bac638ee107daf230ac351b1353f339a2",
+          "size_bytes": 2507,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "0d4f77b85753c00a4af907f1caffce1bac638ee107daf230ac351b1353f339a2",
-      "size_bytes": 2507
+      "sha256": "6afbc3bf63162f6c99547914a611d6b56ec9ee675315ea46b0027dcbcb6e8b81",
+      "size_bytes": 5516
     },
     {
       "document_id": "FE-LIVE-20261014-008",
       "path": "backend/src/auth/router.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e09e7c165306b3dd23b90395438d604508f0f31a6360cea80fe1db67797c8225",
+          "size_bytes": 2640,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "e09e7c165306b3dd23b90395438d604508f0f31a6360cea80fe1db67797c8225",
-      "size_bytes": 2640
+      "sha256": "d529f3ed027f7499caa9568f2c37d1e9e71f20514414ed629d5fc86e485fc7c7",
+      "size_bytes": 5796
     },
     {
       "document_id": "FE-LIVE-20261014-009",
@@ -2156,16 +2208,24 @@
     {
       "document_id": "FE-LIVE-20261014-011",
       "path": "backend/src/core/config.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "19985de5472e6b3fb44eef0fc4c2753570534284595261299578d4e97e643e4d",
+          "size_bytes": 660,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "19985de5472e6b3fb44eef0fc4c2753570534284595261299578d4e97e643e4d",
-      "size_bytes": 660
+      "sha256": "6c11992bb884491bdf5f0d9811fdbbb9a8f4988e6e9c0964ddc9a28b48fb8181",
+      "size_bytes": 995
     },
     {
       "document_id": "FE-LIVE-20261014-012",
@@ -2212,72 +2272,112 @@
     {
       "document_id": "FE-LIVE-20261014-015",
       "path": "backend/src/events/models.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6c0acdf00b1e8a014aa14d98da5ff4df61351238f215fb4dc5f5dc4aad49a7e5",
+          "size_bytes": 1617,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "6c0acdf00b1e8a014aa14d98da5ff4df61351238f215fb4dc5f5dc4aad49a7e5",
-      "size_bytes": 1617
+      "sha256": "84de60a2df93a6ef4db982270230365275b65fa68f1e1f290fe8ec7c1a9c250a",
+      "size_bytes": 2028
     },
     {
       "document_id": "FE-LIVE-20261014-016",
       "path": "backend/src/events/router.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "090647f069fa2716c0866ed7910e3bcccf5b4a61c90081b3d7bc360233cb2f37",
+          "size_bytes": 3010,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "090647f069fa2716c0866ed7910e3bcccf5b4a61c90081b3d7bc360233cb2f37",
-      "size_bytes": 3010
+      "sha256": "0454a8bfe0878e7162770e69654f3e1b85b0b0aae80d128421d2740614dcbf5b",
+      "size_bytes": 4182
     },
     {
       "document_id": "FE-LIVE-20261014-017",
       "path": "backend/src/events/schemas.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ad7e06d6790a2251a4f0f079fb47d6753312861751d26508660a9647cb94d2d6",
+          "size_bytes": 1448,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "ad7e06d6790a2251a4f0f079fb47d6753312861751d26508660a9647cb94d2d6",
-      "size_bytes": 1448
+      "sha256": "59a0cc69f0a5a73829ffe35aeca64444a9ca005d6043507de9212a1472562afe",
+      "size_bytes": 3111
     },
     {
       "document_id": "FE-LIVE-20261014-018",
       "path": "backend/src/events/service.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0cd31e2cb6288076e4b0fa02693709dc3e43ccea2b357a1ec706d3e792e148d2",
+          "size_bytes": 2943,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "0cd31e2cb6288076e4b0fa02693709dc3e43ccea2b357a1ec706d3e792e148d2",
-      "size_bytes": 2943
+      "sha256": "ab5e3f27d02c595acbb0a195772801123f800f79912040dc2b92792d80f40b72",
+      "size_bytes": 7325
     },
     {
       "document_id": "FE-LIVE-20261014-019",
       "path": "backend/src/main.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "fa49841ee121e5724a971235cce91dd8f570784833226a70201d81446cc12d71",
+          "size_bytes": 830,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "fa49841ee121e5724a971235cce91dd8f570784833226a70201d81446cc12d71",
-      "size_bytes": 830
+      "sha256": "d162d29825142bcb5067821cc48d9d6111898db76383a7963360794e9fba26a7",
+      "size_bytes": 1218
     },
     {
       "document_id": "FE-LIVE-20261014-020",
@@ -2296,58 +2396,90 @@
     {
       "document_id": "FE-LIVE-20261014-021",
       "path": "backend/src/participants/models.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f659c4fceeb3296c0b4aa50f30e18b2cb4e1b06160aa56146d595b7bd364c2a4",
+          "size_bytes": 1684,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "f659c4fceeb3296c0b4aa50f30e18b2cb4e1b06160aa56146d595b7bd364c2a4",
-      "size_bytes": 1684
+      "sha256": "31274e9969f852992e088b77b329aa65bcb96ad10a868b1a761aa12dc2ff444c",
+      "size_bytes": 1712
     },
     {
       "document_id": "FE-LIVE-20261014-022",
       "path": "backend/src/participants/router.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "163b1b9702ce58f2f96fb8dff4873bd29a142f2e1fbfcbedb559fa17b6389fb7",
+          "size_bytes": 884,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "163b1b9702ce58f2f96fb8dff4873bd29a142f2e1fbfcbedb559fa17b6389fb7",
-      "size_bytes": 884
+      "sha256": "dc743e143809e3c2507e08c39859803efa75a90cfbb5176a31d6f24c4d3eaa9c",
+      "size_bytes": 4129
     },
     {
       "document_id": "FE-LIVE-20261014-023",
       "path": "backend/src/participants/schemas.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a033618672048771f0ff19d435e691156abbdd4054fc6570dcb404a9a59ac6ce",
+          "size_bytes": 985,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "a033618672048771f0ff19d435e691156abbdd4054fc6570dcb404a9a59ac6ce",
-      "size_bytes": 985
+      "sha256": "3cef7224e503c720422be3b09f123759194fcc6474acb898e1eda42916212414",
+      "size_bytes": 767
     },
     {
       "document_id": "FE-LIVE-20261014-024",
       "path": "backend/src/participants/service.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "11c7d875663480a8579e3558d71aa95deeaa39e91ca77937414b2e4808ab2ca2",
+          "size_bytes": 2860,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "11c7d875663480a8579e3558d71aa95deeaa39e91ca77937414b2e4808ab2ca2",
-      "size_bytes": 2860
+      "sha256": "56c64b16c896bb84ffd55f3ac5a27683569dae8a7bb8fd150edcca21ba5b6071",
+      "size_bytes": 2593
     },
     {
       "document_id": "FE-LIVE-20261014-025",
@@ -2464,16 +2596,24 @@
     {
       "document_id": "FE-LIVE-20261014-033",
       "path": "backend/tests/users/test_create_user.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "02694fae74e2b5b8cc34adbe5f8851233191e9e8a0bcbf0458dd5bf5b2a1f17a",
+          "size_bytes": 2405,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "02694fae74e2b5b8cc34adbe5f8851233191e9e8a0bcbf0458dd5bf5b2a1f17a",
-      "size_bytes": 2405
+      "sha256": "b6ff680c4ac547bf0d3d716bfd1c5e23cbe2bd2fcd2af135a051444be881fbce",
+      "size_bytes": 2270
     },
     {
       "document_id": "FE-LIVE-20261014-034",
@@ -2627,35 +2767,51 @@
     {
       "document_id": "FE-LIVE-20261014-043",
       "path": "frontend/dev-server.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "7fdbf327db5e166733c4f099a795a04f7c6ffd0c232dd2493b2621e2aa4b8899",
+          "size_bytes": 5515,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "7fdbf327db5e166733c4f099a795a04f7c6ffd0c232dd2493b2621e2aa4b8899",
-      "size_bytes": 5515
+      "sha256": "dbeb1715c38b1262508484a9c2730c51ed62fbb2d3b232af10464903c93eb06d",
+      "size_bytes": 8194
     },
     {
       "document_id": "FE-LIVE-20261014-044",
       "path": "frontend/dev-server.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c105b7e9b1f1e0b543d3473ada1c2f58e6bc6d6b5f7b80a7984296d4d0ceee3e",
+          "size_bytes": 3229,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "c105b7e9b1f1e0b543d3473ada1c2f58e6bc6d6b5f7b80a7984296d4d0ceee3e",
-      "size_bytes": 3229
+      "sha256": "8027bfe35523659035ab5ec172268912412f1bfdbcb296ea35d6e498d3beae2e",
+      "size_bytes": 12348
     },
     {
       "document_id": "FE-LIVE-20261014-045",
       "path": "frontend/live/api.mjs",
-      "revision": 6,
+      "revision": 7,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2693,14 +2849,21 @@
           "size_bytes": 11863,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 6,
+          "sha256": "e933a433a758dda1852efe6eb081f026d188cedd0042aba1bec5b5423f98fee8",
+          "size_bytes": 12377,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "e933a433a758dda1852efe6eb081f026d188cedd0042aba1bec5b5423f98fee8",
-      "size_bytes": 12377
+      "sha256": "1dbe58418aadf3ac0a059c99ba151ac27a2a71c26bdd84a7d9f30c774233e92d",
+      "size_bytes": 18145
     },
     {
       "document_id": "FE-LIVE-20261014-046",
@@ -2727,7 +2890,7 @@
     {
       "document_id": "FE-LIVE-20261014-047",
       "path": "frontend/live/events.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2737,14 +2900,21 @@
           "size_bytes": 7602,
           "superseded_at": "2026-10-19T18:50:07.982849+00:00",
           "reason": "W7 stage2: reviewed frontend search/detail/login intent/online application, bounded tests and handoff documentation"
+        },
+        {
+          "revision": 2,
+          "sha256": "c7a7cd621d9489d3d0bbf404e5161e79bd7dd1c479ca13ebe1e3b28f2184eaa3",
+          "size_bytes": 8513,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "c7a7cd621d9489d3d0bbf404e5161e79bd7dd1c479ca13ebe1e3b28f2184eaa3",
-      "size_bytes": 8513
+      "sha256": "5beb862e9c5b51900f35e19a259efaf85e7ac70eb1df881fe01749675338872f",
+      "size_bytes": 8654
     },
     {
       "document_id": "FE-LIVE-20261014-048",
@@ -2822,7 +2992,7 @@
     {
       "document_id": "FE-LIVE-20261014-051",
       "path": "frontend/live/session.mjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2846,19 +3016,26 @@
           "size_bytes": 4267,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 4,
+          "sha256": "031bb717a4cd5409a03f5ccb89fbe63e17eb075a2cbfe9325884e32639ec8291",
+          "size_bytes": 4404,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "031bb717a4cd5409a03f5ccb89fbe63e17eb075a2cbfe9325884e32639ec8291",
-      "size_bytes": 4404
+      "sha256": "33d596b3eff9676f3db694c471e3185ff0322b2e150fe19603c677b2eb20880b",
+      "size_bytes": 7437
     },
     {
       "document_id": "FE-LIVE-20261014-052",
       "path": "frontend/live/styles.css",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2882,14 +3059,21 @@
           "size_bytes": 16131,
           "superseded_at": "2026-10-20T01:46:18.700508+00:00",
           "reason": "Add bounded Signup UI/API/tests and record native Signup Login Profile evidence with preserved harness failure"
+        },
+        {
+          "revision": 4,
+          "sha256": "f2d0b6da48b57c74c39ed5e315089129ddb209453923a72fbd6da8daf3b9dcc3",
+          "size_bytes": 16667,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "f2d0b6da48b57c74c39ed5e315089129ddb209453923a72fbd6da8daf3b9dcc3",
-      "size_bytes": 16667
+      "sha256": "a544ea262bd9e481c255603fd97883e334aa90c623ef0bac8699b8b0fb0c742b",
+      "size_bytes": 17210
     },
     {
       "document_id": "FE-LIVE-20261014-053",
@@ -2936,7 +3120,7 @@
     {
       "document_id": "FE-LIVE-20261014-056",
       "path": "frontend/live/ui.mjs",
-      "revision": 6,
+      "revision": 7,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2974,14 +3158,21 @@
           "size_bytes": 3206,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 6,
+          "sha256": "ccdea81083e56aada7f2ed08fc8a02f0d92cd4ab46640e256ec82c5b05ccb844",
+          "size_bytes": 3243,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "ccdea81083e56aada7f2ed08fc8a02f0d92cd4ab46640e256ec82c5b05ccb844",
-      "size_bytes": 3243
+      "sha256": "b090a5c5d7bf0fcc07c0784646c8d9dce8d2d0e0e2880d7f9a2b004777bb6682",
+      "size_bytes": 3645
     },
     {
       "document_id": "FE-LIVE-20261014-057",
@@ -3012,7 +3203,7 @@
     {
       "document_id": "FE-CREATE-EVENT-20261014-001",
       "path": "frontend/live/create-event.html",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
       "revision_history": [
@@ -3029,18 +3220,25 @@
           "size_bytes": 3305,
           "superseded_at": "2026-10-20T02:24:47.256978+00:00",
           "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        },
+        {
+          "revision": 3,
+          "sha256": "d7ad3ca77a1ee2491e57b7f0d5533053fd36f1a058b03f857dc0d8c3f51d35e5",
+          "size_bytes": 3404,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "d7ad3ca77a1ee2491e57b7f0d5533053fd36f1a058b03f857dc0d8c3f51d35e5",
-      "size_bytes": 3404
+      "sha256": "3f9b81ba88a6d1216427cddc8b4edec221a56a43369c059de03888294e22a3bc",
+      "size_bytes": 4593
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-002",
       "path": "frontend/live/create-event.mjs",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin frontend / root Codex writer",
       "status": "working-baseline",
       "revision_history": [
@@ -3057,13 +3255,20 @@
           "size_bytes": 4927,
           "superseded_at": "2026-10-20T02:24:47.256978+00:00",
           "reason": "Restrict Create Event frontend to verified organizers and record bounded author smoke plus unresolved backend authorization gaps"
+        },
+        {
+          "revision": 3,
+          "sha256": "cb5a3748eab43a776ad332a45c49337c16a5ab5d48022fd8b2dff77414460f3c",
+          "size_bytes": 5545,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "cb5a3748eab43a776ad332a45c49337c16a5ab5d48022fd8b2dff77414460f3c",
-      "size_bytes": 5545
+      "sha256": "163b72436d2e20091c995c89ac4a142acc656c4dff1329aed8912fbc112feb44",
+      "size_bytes": 11981
     },
     {
       "document_id": "FE-CREATE-EVENT-20261014-003",
@@ -3275,13 +3480,21 @@
     {
       "document_id": "FE-W7-20261020-002",
       "path": "frontend/live/event-detail.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d4d965be0cc7287d2f46e7b6552c5d52939fd3fe5156e7e5a8e536ec63862cb3",
+          "size_bytes": 3371,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [],
-      "sha256": "d4d965be0cc7287d2f46e7b6552c5d52939fd3fe5156e7e5a8e536ec63862cb3",
-      "size_bytes": 3371,
+      "sha256": "83304fd854e612c65b78b7d7c4fe6c31701f5f0ded83bc01fccc65a34f1ae516",
+      "size_bytes": 4169,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
@@ -3307,19 +3520,27 @@
     {
       "document_id": "FE-W7-20261020-004",
       "path": "frontend/live/event.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b1a717cc5f167cb3a73fdd75da14d0a3d9e8cbff6d726217d978ebc3a508f842",
+          "size_bytes": 2144,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [],
-      "sha256": "b1a717cc5f167cb3a73fdd75da14d0a3d9e8cbff6d726217d978ebc3a508f842",
-      "size_bytes": 2144,
+      "sha256": "151859ddcd5320f96076825b50bb526c9bee9a504ca1c3ece857e6187b6a209d",
+      "size_bytes": 2309,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
       "document_id": "FE-W7-20261020-005",
       "path": "frontend/live/registration.html",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -3329,11 +3550,18 @@
           "size_bytes": 5216,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 2,
+          "sha256": "78566ccf179827d08c070cbd25ff8bee50a6422dbf381edfb6842dc6a7679145",
+          "size_bytes": 6201,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [],
-      "sha256": "78566ccf179827d08c070cbd25ff8bee50a6422dbf381edfb6842dc6a7679145",
-      "size_bytes": 6201,
+      "sha256": "6a3baa989a162683b3cb3523d8108038350298d438380c2ea1e6fdcee780ffae",
+      "size_bytes": 6311,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
@@ -3463,13 +3691,21 @@
     {
       "document_id": "FE-CREATE-ROLE-20261020-001",
       "path": "frontend/live/tests/create-event-role.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "7588b07487364143766969ad85c86000afd09be6161368c66daad8a510a1bb97",
+          "size_bytes": 13971,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [],
-      "sha256": "7588b07487364143766969ad85c86000afd09be6161368c66daad8a510a1bb97",
-      "size_bytes": 13971,
+      "sha256": "8c5d2f0b34b34e0895e322b5e7a5e23e1a0f90e4ab0f4ac3ffdfced5bb3e8539",
+      "size_bytes": 14161,
       "source_note": "Current user authorization USER-FE-CREATE-ROLE-20261020; frontend-only organizer restriction. Author self-checks, no local Astra approval inferred."
     },
     {
@@ -3558,16 +3794,24 @@
     {
       "document_id": "FE-BOOKING-20261026-VIEW",
       "path": "frontend/live/booking-state-view.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Frontend / Sol sole writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "46116382c9cc034c6c5eea0f77450c8db6f3c2717fffba4195e65598a25a3210",
+          "size_bytes": 944,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        }
+      ],
       "dependencies": [
         "USER-FE-BOOKING-LIFECYCLE-20261026",
         "ASTRA-BACKEND-ADMISSION-20261026"
       ],
-      "sha256": "46116382c9cc034c6c5eea0f77450c8db6f3c2717fffba4195e65598a25a3210",
-      "size_bytes": 944
+      "sha256": "cfc4e01a003225e2cd1abf9eafbaa328cb818624c5ec73fbfe7ac192809ac913",
+      "size_bytes": 1850
     },
     {
       "document_id": "FE-BOOKING-20261026-TEST",
@@ -3586,7 +3830,7 @@
     {
       "document_id": "FE-BOOKING-20261026-TASK",
       "path": "docs/dev/tasks/FE-BOOKING-LIFECYCLE-20261026.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Frontend / Sol sole writer",
       "status": "working-baseline",
       "revision_history": [
@@ -3596,14 +3840,294 @@
           "size_bytes": 6751,
           "superseded_at": "2026-10-26T02:46:29.267518+00:00",
           "reason": "Record UI_ONLY validation results and reconcile source metadata count after adding task admission sources"
+        },
+        {
+          "revision": 2,
+          "sha256": "b17ed470b43799ad3cd9ace0867de572aab12d4f7e9ebe0582dea8d87c74326d",
+          "size_bytes": 6798,
+          "superseded_at": "2026-10-27T02:46:10.262483+00:00",
+          "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
         }
       ],
       "dependencies": [
         "USER-FE-BOOKING-LIFECYCLE-20261026",
         "ASTRA-BACKEND-ADMISSION-20261026"
       ],
-      "sha256": "b17ed470b43799ad3cd9ace0867de572aab12d4f7e9ebe0582dea8d87c74326d",
-      "size_bytes": 6798
+      "sha256": "954ca0723c3a8dcddde26337332ada53629eb4362a104440d9e9c9782560c488",
+      "size_bytes": 7196
+    },
+    {
+      "document_id": "AUSTIN27-001",
+      "path": "backend/src/files/router.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "5a22e46e6f319aa83de549d10b7d39516ee50f143c56a26b9164f7bca1f793a2",
+      "size_bytes": 1955
+    },
+    {
+      "document_id": "AUSTIN27-002",
+      "path": "backend/src/files/schemas.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "0ef94a99c0ce611c03f3bdc71e0c43ecb6a840d67f717b0818c74eb668424104",
+      "size_bytes": 429
+    },
+    {
+      "document_id": "AUSTIN27-003",
+      "path": "backend/src/files/storage.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "aed547779ed8d3f9e9ae8f43d121f9444db4d804a436884297b610eae73444d0",
+      "size_bytes": 2298
+    },
+    {
+      "document_id": "AUSTIN27-004",
+      "path": "backend/src/offline_sync/router.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "87219f1cd4f56abbb49c5d6098c068789a0991fa5805539fafe1680afba8429c",
+      "size_bytes": 2054
+    },
+    {
+      "document_id": "AUSTIN27-005",
+      "path": "backend/src/offline_sync/schemas.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "1cd719074e4350a425a8cf319e50057b9720f52fd184f20a246f9e008c7b3e76",
+      "size_bytes": 1316
+    },
+    {
+      "document_id": "AUSTIN27-006",
+      "path": "backend/src/offline_sync/service.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "06a1478960e26f3c5990fe70aa4241f9d3f74666300a2b4c4842c661a7cedc57",
+      "size_bytes": 1844
+    },
+    {
+      "document_id": "AUSTIN27-007",
+      "path": "backend/src/registrations/__init__.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "AUSTIN27-008",
+      "path": "backend/src/registrations/models.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "45d43ef0e64fbf938d584d0da4fb4929762bbd650ab1e0f561aec40909721b12",
+      "size_bytes": 3934
+    },
+    {
+      "document_id": "AUSTIN27-009",
+      "path": "backend/src/registrations/router.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "24e2a130748d7968abd0620afe549fd3af8fd3903dcb7953342dcc54e9127726",
+      "size_bytes": 7785
+    },
+    {
+      "document_id": "AUSTIN27-010",
+      "path": "backend/src/registrations/schemas.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "e60ae822192f40035e429b2eec27f56e7d742a300d4c0df10eee1b955a0b325d",
+      "size_bytes": 1639
+    },
+    {
+      "document_id": "AUSTIN27-011",
+      "path": "backend/src/registrations/service.py",
+      "revision": 1,
+      "owner": "Austin Backend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "632b005bd384c669ec31acb99dc08e2e931552f101e49efcde75d45656ed8640",
+      "size_bytes": 18570
+    },
+    {
+      "document_id": "AUSTIN27-012",
+      "path": "docs/dev/tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "758a845df196d1e0d4c4e0291ee9d40833bda473e8ede0b95a0002a07dc7c296",
+      "size_bytes": 8780
+    },
+    {
+      "document_id": "AUSTIN27-013",
+      "path": "frontend/live/edit-event.html",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "8c05103b8308398772bda94ce7a94de42124fb7bc8d8cfacdaa26fe11e108abb",
+      "size_bytes": 4946
+    },
+    {
+      "document_id": "AUSTIN27-014",
+      "path": "frontend/live/edit-event.mjs",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "fd173d382c1eadff980510d8871f93bf20bd97494d1d3d9470af9b8ef790a0c7",
+      "size_bytes": 11293
+    },
+    {
+      "document_id": "AUSTIN27-015",
+      "path": "frontend/live/image-path.mjs",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "d1a01268d25e67f3143fcfc58621e18188a11ec655276f34a0c57e5c1c3dcee7",
+      "size_bytes": 1003
+    },
+    {
+      "document_id": "AUSTIN27-016",
+      "path": "frontend/live/my-registrations.html",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "dd3aa19294ce1269e8ddcfc3b6475c808d352ffb1d4c64161f25285f7faf215c",
+      "size_bytes": 3052
+    },
+    {
+      "document_id": "AUSTIN27-017",
+      "path": "frontend/live/organizer-registrations.html",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "8e263cf869381a407fc775c6a278ee6f2a1ab77d12d1305ba4aa886aeaa55a0c",
+      "size_bytes": 3045
+    },
+    {
+      "document_id": "AUSTIN27-018",
+      "path": "frontend/live/registrations-page.mjs",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "70e8c2aac0ad7007cd462b3e96e40ce97b9f043ede7bdedafdff54f24655aa00",
+      "size_bytes": 12910
+    },
+    {
+      "document_id": "AUSTIN27-019",
+      "path": "frontend/live/tests/austin-api-session.test.mjs",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "89d7f24ab13006c883d2b0723bce4852b21da200a0816bb94914d2283c051d6f",
+      "size_bytes": 9342
+    },
+    {
+      "document_id": "AUSTIN27-020",
+      "path": "frontend/live/tests/event-media.test.mjs",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "0394f5d7a3984d9c573d99e193a2fb3c3b7d3e7d0c9f773335f4cc59dc61b0d0",
+      "size_bytes": 20365
+    },
+    {
+      "document_id": "AUSTIN27-021",
+      "path": "frontend/live/tests/lifecycle-page.test.mjs",
+      "revision": 1,
+      "owner": "Astra Frontend",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
+      ],
+      "sha256": "e31d15db2523cb48d0305a28ae47d75f512048522457b1da2f2543ae48c22557",
+      "size_bytes": 16782
     }
   ]
 }

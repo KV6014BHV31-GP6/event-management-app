@@ -1,5 +1,21 @@
 # 真實 API+DB 最小驗收計畫
 
+## Current Austin integration matrix — 2026-10-27
+
+Source and authorization: [current task](tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md). Fixed Backend `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`; updated Frontend is the PR #38 increment. Earlier tables below are historical UI_ONLY results, not the current integration status.
+
+| Requirement / risk | Current implementation and test | Actual result / limit |
+| --- | --- | --- |
+| Separate image/event writes; no duplicate uncertain retry | Multipart upload, strict201 URL; independent Create; controller and real UI | Upload201/Create201 once each; image GET/Reload200. No GCS/production storage claim. |
+| Edit identity, partial fields, timestamp precision, trusted readback | Owner GET, minimal PATCH, matching fresh GET; controller fixtures | Fixture PASS; native GET500 disables form, zero UI PATCH; direct PATCH500. |
+| Own read/cancel, stale identity, no fabricated persistence | Fresh profile and own GET, confirm action, refresh, identity/epoch tests | Browser GET/Reload200, DB cancelled; exact cancellation POST response not captured. |
+| Organizer list/detail/Approve | Role guard, minimal fields, per-record uncertain lock | Reads200; one Approve500, GET still pending. Full waitlist/refill BLOCKED. |
+| Quota/status truthfulness | Retained five-state component, strict Austin aggregates, no client allocation | Component PASS. Create response has credible zeros; event aggregate GET500, no live quota/readback success. |
+| Existing Signup/Login/Guest/search | Existing tests retained; bounded actual Browser/API regression | Signup201/profile200 and public_id preserved; real search500; Guest/User API201 separately, UI blocked by detail GET500. |
+| Proxy containment and method boundary | Exact PATCH, raw multipart, signature/MIME, traversal/junction/body-limit tests | Node HTTP tests PASS; local PNG GET200. No Cookie downgrade or arbitrary proxy methods. |
+
+Final frontend command: `node --test frontend/dev-server.test.mjs <explicit sorted frontend/live/tests/*.test.mjs paths>` ->237/237 PASS, zero skipped, exit0. This includes original10 status fixtures and prior Signup/Guest/W7 checks. Native DB/browser results are not inferred from fixtures. Original bootstrap failed; HARNESS_SCHEMA_SETUP is preparation only. Full E2E/Security/UAT/Backend suite/old migration/video/deployment NOT_RUN. Actual tool capture failures are preserved in the task/external ledger. Required document-control and working/staged/committed diff checks are recorded with the final receipt.
+
 ## Developer feature matrix — 2026-10-26
 
 **UI preparation only. Live integration is BLOCKED by the backend admission gate.** Sources: `USER-FE-BOOKING-LIFECYCLE-20261026` and `ASTRA-BACKEND-ADMISSION-20261026`, from Astra run20261026-095026. New verified self-read/cancel/approve/waitlist/quota HTTP contracts=0; READY Backend=null. Sol owns Frontend implementation; Austin owns Backend; Astra owns admission and independent acceptance.

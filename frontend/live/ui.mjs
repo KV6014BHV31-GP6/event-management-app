@@ -40,6 +40,13 @@ export function mountAccount(session, { loginPage = false, loginHref = './login.
         const create = element('a', 'nav-link', 'Create event');
         create.href = './create-event.html';
         account.append(create);
+        const registrations = element('a', 'nav-link', 'Manage registrations');
+        registrations.href = './organizer-registrations.html';
+        account.append(registrations);
+      } else if (session.user.role === 'user') {
+        const registrations = element('a', 'nav-link', 'My registrations');
+        registrations.href = './my-registrations.html';
+        account.append(registrations);
       }
       account.append(name);
     } else if (failed) {

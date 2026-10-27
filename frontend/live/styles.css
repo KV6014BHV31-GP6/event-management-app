@@ -190,6 +190,14 @@ select { border: 1px solid var(--border); border-radius: 6px; background: var(--
 @media (max-width: 720px) { .masthead { flex-wrap: wrap; padding-block: 16px; } .header-nav { flex-wrap: wrap; } }
 
 /* W7 keeps the existing ROSE surface, with one task and action per page. */
+.event-image { display: block; width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px; margin-block: 14px; }
+.event-card .event-image { max-height: 180px; }
+.account { flex-wrap: wrap; }
+#registrations-list { margin-block: 24px; }
+#registrations-list .application-receipt { padding: 24px; }
+#registrations-list .application-receipt h2 { font-size: 26px; }
+#registrations-list dl, #registration-detail dl { overflow-wrap: anywhere; }
+#registrations-filter-form { display: flex; align-items: center; flex-wrap: wrap; gap: 12px; }
 #signup-fields { border: 0; padding: 0; margin: 0; min-width: 0; }
 .signup-page .visually-hidden { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .signup-result { margin-top: 24px; border-top: 1px solid var(--border); padding-top: 22px; overflow-wrap: anywhere; }

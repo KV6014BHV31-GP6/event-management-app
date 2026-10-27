@@ -1,5 +1,13 @@
 # NU Developer 當前狀態
 
+## Austin dev integration — 2026-10-27 (current)
+
+**PARTIAL_LIVE / BACKEND_BLOCKED.** [Current task](tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md) supersedes the earlier UI_ONLY scope by explicit user authorization for Astra's Frontend implementation. Same Draft PR #38/branch `dev_fe_booking_lifecycle`, base dev; Austin Backend fixed at `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`. PR #39 remains untouched Plan B. No Backend tracked changes or remote merge.
+
+New upload/Create, own-read/cancel and organizer-read UI are connected. Real Chrome confirmed upload201, Create201, local image GET/Reload200, own GET/Reload200 and cancelled persistence; cancellation's exact response code was not captured. Search/detail/Edit/Approve and nonempty Offline still encounter actual Austin500; the A/B approved/waiting/refill demonstration is BLOCKED. Node237/237 PASS is a separate evidence layer. New dedicated native PostgreSQL17 database uses HARNESS_SCHEMA_SETUP after the original bootstrap failed. Candidate5196 ->8023 ->5434 is retained without switching the old primary Demo. Design/PM/full Issue acceptance remains pending.
+
+All sections below describe historical runs and retain their original version/scope. Their old READY-null, UI_ONLY, sole-writer and runtime claims do not describe this current increment.
+
 ## Booking lifecycle preparation — 2026-10-26
 
 **UI preparation only. Live integration is BLOCKED by the backend admission gate.** Current task: [FE-BOOKING-LIFECYCLE-20261026](tasks/FE-BOOKING-LIFECYCLE-20261026.md), Refs #36/#37. Freshly verified base: `dev@4541c948f8aec68dbbb9500630abc8282a62abca`; PRs #27–30 are already MERGED. Earlier Draft/stack/native statements below are historical. This work is isolated on `dev_fe_booking_lifecycle`; all16 pre-existing worktrees are preserved.

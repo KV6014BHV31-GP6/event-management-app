@@ -1,5 +1,9 @@
 # FE-BOOKING-LIFECYCLE-20261026
 
+## Historical task boundary
+
+This task records the UI_ONLY stage completed on2026-10-26. The later [Austin integration task](FE-AUSTIN-DEV-INTEGRATION-20261027.md), explicitly authorized on2026-10-27, supersedes its writer/live-integration restrictions for the current PR #38 increment. The original scope, failures and results below are preserved as history, not current admission or acceptance.
+
 Status: working-baseline, **UI_ONLY**. **UI preparation only. Live integration is BLOCKED by the backend admission gate.** Sole Frontend writer: Sol. Austin owns Backend; Astra owns stage A/admission and stage C/independent acceptance. Refs [#36](https://github.com/KV6014BHV31-GP6/event-management-app/issues/36) / [#37](https://github.com/KV6014BHV31-GP6/event-management-app/issues/37); neither Issue is complete. No actual quota display, so no Refs #32.
 
 ## Source and writer lock

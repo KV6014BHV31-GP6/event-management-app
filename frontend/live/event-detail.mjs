@@ -2,6 +2,8 @@ import { createApi } from './api.mjs';
 import { createSession, browserSessionStorage } from './session.mjs';
 import { mountAccount } from './ui.mjs';
 import { selectedPublicId, registrationRoute, loginRoute } from './event-navigation.mjs';
+import { createEventImage } from './image-path.mjs';
+import { createQuotaView } from './booking-state-view.mjs';
 
 export function createDetailController({ api, onChange = () => {} }) {
   let state = { status: 'idle', event: null, error: null };
@@ -26,6 +28,9 @@ export function createDetailController({ api, onChange = () => {} }) {
 
 /** Render only fields needed to choose this event; no HTML supplied by the API. */
 export function renderEventDetail(event) {
+  const picture = document.querySelector('#detail-image');
+  if (picture) { picture.replaceChildren(); const image = createEventImage(event.image_path); if (image) picture.append(image); }
+  document.querySelector('#detail-quota')?.replaceChildren(createQuotaView(event.quota));
   document.querySelector('#detail-title').textContent = event.title;
   document.querySelector('#detail-overview').textContent = event.overview || 'The organiser has not added an overview yet.';
   document.querySelector('#detail-status').textContent = event.status;
@@ -45,8 +50,16 @@ export function mountEventDetail() {
   const status = document.querySelector('#detail-message');
   const content = document.querySelector('#detail-content');
   const apply = document.querySelector('#choose-event');
-  mountAccount(session, { loginHref: id ? loginRoute(id) : './login.html' }).check();
+  let loaded = null;
+  function renderEdit() {
+    const edit = document.querySelector('#edit-event-link');
+    if (!edit) return;
+    edit.hidden = !loaded || session.user?.role !== 'organizer' || session.user.id !== loaded.organizer_id;
+    if (!edit.hidden) edit.href = `./edit-event.html?event=${encodeURIComponent(loaded.public_id)}`;
+  }
+  mountAccount(session, { loginHref: id ? loginRoute(id) : './login.html', onChange: renderEdit }).check();
   const controller = createDetailController({ api, onChange(state) {
+    loaded = state.event; renderEdit();
     content.hidden = state.status !== 'ready';
     status.hidden = state.status === 'ready';
     status.textContent = state.status === 'loading' ? 'Loading event details…' : state.error?.message || '';

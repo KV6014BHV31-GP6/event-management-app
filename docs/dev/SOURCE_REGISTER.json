@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 27,
+  "source_count": 28,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -312,6 +312,28 @@
       "content_status": "BLOCKED_source_only_candidates_not_live_contracts",
       "ready_backend": null,
       "verified_new_http_contract_count": 0
+    },
+    {
+      "source_id": "USER-ASTRA-AUSTIN-INTEGRATION-20261027",
+      "title": "User-authorized Astra Frontend integration on existing PR38 using Austin latest dev only",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "sha256": "0e562b405f3f297cecdd0fe02a47c69f4ca548cce9208b99c12323c7a35486a0",
+      "locator": "Current user attachment,2026-10-27; final local run20261027-100514",
+      "content_status": "supersedes_prior_UI_ONLY_scope_for_current_increment_only",
+      "permissions": [
+        "merge_latest_dev_into_own_PR38_branch",
+        "necessary_Frontend_proxy_tests_docs",
+        "isolated_native_environment_candidate_launcher",
+        "commit_push_update_same_Draft_PR38"
+      ],
+      "not_authorized": [
+        "Backend_product_or_pin_changes",
+        "PR39_changes_or_adoption",
+        "remote_PR_merge",
+        "Ready_Approve_Issue_Board_reviewer_changes",
+        "deployment"
+      ]
     }
   ]
 }

@@ -71,15 +71,16 @@ test('account navigation uses verified organizer role, never the username', asyn
     await withDOM(async nodes => {
       const account = mountAccount({ user: profile, hasToken: true });
       account.render();
-      assert.deepEqual(labels(nodes), [profile.username, 'Log out']);
+      assert.deepEqual(labels(nodes), [...(profile.role === 'user' ? ['My registrations'] : []), profile.username, 'Log out']);
       assert(!labels(nodes).includes('Create event'));
     });
   }
   await withDOM(async nodes => {
     mountAccount({ user: organizer, hasToken: true }).render();
-    assert.deepEqual(labels(nodes), ['Create event', organizer.username, 'Log out']);
+    assert.deepEqual(labels(nodes), ['Create event', 'Manage registrations', organizer.username, 'Log out']);
     assert.equal(nodes['#account'].children[0].href, './create-event.html');
-    assert.equal(nodes['#account'].children[1].title, `Logged in as ${organizer.username}`);
+    assert.equal(nodes['#account'].children[1].href, './organizer-registrations.html');
+    assert.equal(nodes['#account'].children[2].title, `Logged in as ${organizer.username}`);
   });
 });
 
@@ -148,7 +149,7 @@ test('direct create page remains blocked for a verified ordinary user even if fi
     assert.equal(nodes['#login-prompt'].hidden, true);
     assert.equal(nodes['#organizer-prompt'].hidden, false);
     assert.equal(nodes['#organizer-prompt'].textContent, 'Organizer account required.');
-    assert.deepEqual(labels(nodes), [ordinary.username, 'Log out']);
+    assert.deepEqual(labels(nodes), ['My registrations', ordinary.username, 'Log out']);
     nodes['#event-fields'].disabled = false; submit(nodes); submit(nodes);
     await tick(); assert.equal(posts, 0); assert.equal(nodes['#create-result'].hidden, true);
   }, { sessionStorage: { getItem: () => 'synthetic-token', removeItem() {} },
