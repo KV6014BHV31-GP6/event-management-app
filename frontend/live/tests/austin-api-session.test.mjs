@@ -17,7 +17,12 @@ test('read contract accepts five states separately from strict pending POST and 
     const data=validateRegistrationRead({...reg,status});assert.equal(data.status,status);
     assert(!Object.hasOwn(data,'national_id'));assert(!Object.hasOwn(data,'medical_record'));
   }
-  for(const patch of [{status:'confirmed'},{event_id:'7'},{id:123},{created_by_user_id:'anonymous'},{channel:'offline'}])assert.throws(()=>validateRegistrationRead({...reg,...patch}),ApiError);
+  for(const patch of [{status:'confirmed'},{event_id:'7'},{id:123},{created_by_user_id:'anonymous'},{channel:'unknown'}])assert.throws(()=>validateRegistrationRead({...reg,...patch}),ApiError);
+});
+test('offline readback is accepted without changing strict online creation receipts',async()=>{
+  assert.equal(validateRegistrationRead({...reg,channel:'offline'}).channel,'offline');
+  const api=createApi({fetchImpl:async()=>json([{...reg,channel:'offline'}])});
+  assert.equal((await api.getOrganizerRegistrations('token'))[0].channel,'offline');
 });
 test('own and organizer reads call different real routes with allowed status and bearer',async()=>{
   const calls=[];const api=createApi({fetchImpl:async(url,options)=>{calls.push({url,options});return json([reg]);}});

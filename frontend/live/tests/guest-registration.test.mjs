@@ -123,11 +123,18 @@ test('Guest API uses reviewed duplicate, quota, inactive, missing-event and vali
     [400, 'Registration full. Online quota limits for this event are exhausted.', 'full'],
     [400, 'Registration rejected. This event is not currently accepting entries.', 'inactive'],
     [404, `Event with public identifier '${publicId}' was not found.`, 'not_found'],
+    [409, 'UNIT_PRIVATE_DETAIL', 'validation'],
     [422, [{ input: 'UNIT_PRIVATE_DETAIL', msg: 'UNIT_PRIVATE_DETAIL' }], 'validation'],
   ]) {
     await assert.rejects(returning({ detail }, status).registerGuestForEvent(publicId, payload, event.id), error =>
       error.kind === kind && error.status === status && !error.message.includes('UNIT_PRIVATE_DETAIL'));
   }
+});
+
+test('signed-in identity conflicts are controlled rejections without exposing identity details', async () => {
+  await assert.rejects(returning({ detail: 'UNIT_PRIVATE_DETAIL' }, 409)
+    .registerForEvent(publicId, payload, 'test-token'), error =>
+    error.kind === 'validation' && error.status === 409 && !error.message.includes('UNIT_PRIVATE_DETAIL'));
 });
 
 test('Guest API does not echo arbitrary server details or credentials into errors', async () => {

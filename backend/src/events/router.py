@@ -1,5 +1,8 @@
 from fastapi import APIRouter, Depends, status, HTTPException, Query
+from datetime import timezone
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy import select
+from src.events.models import EventModel
 from src.core.database import get_async_db
 from src.auth.deps import get_current_user
 from src.users.models import UserModel
@@ -77,8 +80,11 @@ async def update_event_endpoint(
             detail="Invalid identifier structure. Expected a 21-character public NanoID ID."
         )
 
-    # Fetch simple object instance to quickly verify owner permissions
-    base_event = await event_service.db.execute(select(EventModel).where(EventModel.public_id == public_id))
+    if current_user.role.value != "organizer":
+        raise HTTPException(status_code=403, detail="Organizer account required.")
+    # Share the same event lock as approval/cancellation; re-read after waiting.
+    base_event = await event_service.db.execute(select(EventModel).where(EventModel.public_id == public_id)
+        .with_for_update().execution_options(populate_existing=True))
     db_event = base_event.scalar_one_or_none()
 
     if not db_event:
@@ -95,6 +101,11 @@ async def update_event_endpoint(
 
     proposed_start = payload.start_time or db_event.start_time
     proposed_end = payload.end_time or db_event.end_time
+    # Native PG returns aware values; preserve compatibility with legacy/SQLite reads.
+    if proposed_start.tzinfo is None:
+        proposed_start = proposed_start.replace(tzinfo=timezone.utc)
+    if proposed_end.tzinfo is None:
+        proposed_end = proposed_end.replace(tzinfo=timezone.utc)
     if proposed_end <= proposed_start:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,

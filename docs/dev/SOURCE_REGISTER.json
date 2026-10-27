@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 28,
+  "source_count": 29,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -333,6 +333,28 @@
         "remote_PR_merge",
         "Ready_Approve_Issue_Board_reviewer_changes",
         "deployment"
+      ]
+    },
+    {
+      "source_id": "USER-PR38-DEMO-READINESS-20261027",
+      "title": "User-authorized direct PR38 successor repair, native Demo and video-only handoff",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "sha256": "edc0a863c3b21d1d17a7d1b21891a150a2ff0596baacd7f0dd8806873ebb7c1f",
+      "locator": "Current user attachment2026-10-27; run20261027-141421",
+      "content_status": "supersedes_prior_Backend_repair_prohibition_for_this_new_branch_only",
+      "permissions": [
+        "necessary_Backend_Frontend_schema_tests_docs",
+        "isolated_native_Demo_and_launchers",
+        "commit_push_one_stacked_Draft_PR",
+        "video_prompt_only"
+      ],
+      "not_authorized": [
+        "merge_rebase_cherry_pick",
+        "PR38_PR39_mutation_or_PR39_adoption",
+        "Ready_Approve_Issue_Board_changes",
+        "deployment",
+        "video_production"
       ]
     }
   ]

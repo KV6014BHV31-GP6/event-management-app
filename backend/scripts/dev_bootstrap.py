@@ -70,7 +70,8 @@ async def bootstrap() -> None:
     from src.core.database import AsyncSessionLocal, Base, async_engine
     from src.core.security import hash_password
     from src.users.models import UserModel, UserRoleEnum
-    from src.events.models import EventModel
+    from src.events.models import EventModel, EventStatusEnum
+    from src.registrations.models import RegistrationModel
     from src.participants.models import ParticipantModel  # noqa: F401; register every table before create_all
 
     # Development engine defaults to SQL echo; keep seed hashes out of console logs.
@@ -128,7 +129,7 @@ async def bootstrap() -> None:
                         offline_quota=10,
                         start_time=start_time,
                         end_time=start_time + timedelta(hours=3),
-                        status="ACTIVE",
+                        status=EventStatusEnum.active,
                     ))
                     events_created += 1
         print("Development schema ready (missing tables created; no tables dropped).")

@@ -1,6 +1,6 @@
-from datetime import datetime
+from datetime import datetime, timezone
 from enum import Enum
-from pydantic import BaseModel, Field, model_validator
+from pydantic import BaseModel, Field, model_validator, field_validator
 from typing import Optional
 
 
@@ -20,6 +20,11 @@ class EventCreate(BaseModel):
     end_time: datetime
     image_path: Optional[str] = Field(default=None, max_length=512)
 
+    @field_validator("start_time", "end_time")
+    @classmethod
+    def normalize_time(cls, value: datetime) -> datetime:
+        return value.replace(tzinfo=timezone.utc) if value.tzinfo is None else value
+
     @model_validator(mode="after")
     def validate_timestamps(self) -> "EventCreate":
         if self.end_time <= self.start_time:
@@ -37,6 +42,15 @@ class EventUpdate(BaseModel):
     end_time: Optional[datetime] = None
     status: Optional[EventStatus] = None
     image_path: Optional[str] = Field(None, max_length=512)
+
+    @field_validator("title", "location", "online_quota", "offline_quota", "start_time", "end_time", "status")
+    @classmethod
+    def reject_explicit_null(cls, value):
+        if value is None:
+            raise ValueError("This field cannot be null; omit it to retain the current value.")
+        if isinstance(value, datetime) and value.tzinfo is None:
+            return value.replace(tzinfo=timezone.utc)
+        return value
 
     @model_validator(mode="after")
     def validate_update_timestamps(self) -> "EventUpdate":
