@@ -15,13 +15,15 @@
     <a class="back-link" href="./index.html">← Back to events</a>
     <p id="detail-message" class="notice" role="status">Loading event details…</p><button id="detail-retry" class="button button-quiet" type="button" hidden>Try again</button>
     <article id="detail-content" class="detail-layout" hidden>
-      <div><p class="eyebrow">COMMUNITY EVENT</p><h1 id="detail-title"></h1><p id="detail-overview" class="detail-overview"></p></div>
+      <div><p class="eyebrow">COMMUNITY EVENT</p><h1 id="detail-title"></h1><div id="detail-image"></div><p id="detail-overview" class="detail-overview"></p></div>
       <aside class="detail-facts">
         <span id="detail-status" class="status-badge"></span>
         <dl><dt>Starts</dt><dd><time id="detail-start"></time></dd><dt>Ends</dt><dd><time id="detail-end"></time></dd><dt>Location</dt><dd id="detail-location"></dd></dl>
         <a id="choose-event" class="button" href="./index.html">Apply for this event →</a>
         <p id="not-accepting" class="muted" hidden>This event is not currently accepting applications.</p>
         <p class="muted">An application does not confirm a place. The organiser determines the final outcome.</p>
+        <div id="detail-quota" aria-label="Server quota"></div>
+        <a id="edit-event-link" class="back-link" hidden>Edit event</a>
       </aside>
     </article>
   </main>

@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="referrer" content="no-referrer">
+  <title>Edit event | ROSE</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./edit-event.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="masthead shell">
+    <a class="brand" href="./index.html" aria-label="ROSE community events"><span class="brand-mark" aria-hidden="true">R</span><span><strong>ROSE</strong><small>Community event access</small></span></a>
+    <nav class="header-nav" aria-label="Main navigation"><a class="nav-link" href="./index.html">Events</a><div id="account" class="account"><a class="button button-small" href="./login.html">Log in <span aria-hidden="true">↗</span></a></div></nav>
+  </header>
+  <main id="main" class="shell create-main" tabindex="-1">
+    <div id="auth-notice" class="notice" role="status" hidden></div>
+    <section class="login-card create-card" aria-labelledby="edit-heading">
+      <p class="eyebrow">EVENT DETAILS</p>
+      <h1 id="edit-heading">Edit event</h1>
+      <p id="edit-timezone" class="muted"></p>
+      <p id="login-prompt" class="notice">Please <a href="./login.html">log in</a> as this event's organizer, then return to this page.</p>
+      <p id="organizer-prompt" class="notice" role="status" hidden>Organizer account required.</p>
+      <div id="edit-progress" class="notice" role="status" aria-live="polite">Event details must be loaded from the server before editing.</div>
+      <button id="edit-retry" class="button button-quiet" type="button" hidden>Retry loading event</button>
+      <form id="edit-event-form" method="dialog" hidden>
+        <fieldset id="event-fields" disabled>
+          <legend class="muted">Event details</legend>
+          <div class="field"><label for="title">Event title</label><input id="title" name="title" type="text" required maxlength="255"></div>
+          <div class="field"><label for="overview">Overview (optional)</label><textarea id="overview" name="overview" rows="4"></textarea></div>
+          <div class="field"><label for="location">Location</label><input id="location" name="location" type="text" required maxlength="255"></div>
+          <div class="field"><label for="start_time">Start date and time</label><input id="start_time" name="start_time" type="datetime-local" required aria-describedby="edit-timezone"></div>
+          <div class="field"><label for="end_time">End date and time</label><input id="end_time" name="end_time" type="datetime-local" required aria-describedby="edit-timezone"></div>
+          <div class="field"><label for="online_quota">Online quota</label><input id="online_quota" name="online_quota" type="number" required min="0" max="2147483647" step="1"></div>
+          <div class="field"><label for="offline_quota">Offline quota</label><input id="offline_quota" name="offline_quota" type="number" required min="0" max="2147483647" step="1"></div>
+          <div class="field"><label for="status">Event status</label><select id="status" name="status" required><option value="active">Active</option><option value="cancelled">Cancelled</option><option value="completed">Completed</option></select></div>
+          <div id="current-event-image" hidden></div>
+          <div id="remove-image-field" class="field" hidden><label><input id="remove-image" type="checkbox"> Remove the current image</label></div>
+          <div class="field"><label for="event-image-file">Replacement image (optional)</label><input id="event-image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" aria-describedby="image-guidance"><p id="image-guidance" class="muted">PNG, JPEG, WebP or GIF, up to 900 KiB. Upload the selected replacement before saving, or clear the selection.</p></div>
+          <button id="upload-event-image" class="button button-quiet" type="button" disabled>Upload selected image</button>
+          <button id="clear-event-image" class="button button-quiet" type="button" disabled>Clear image selection</button>
+          <div id="upload-progress" class="notice" role="status" aria-live="polite" hidden></div>
+          <p id="uploaded-image-url" class="muted" hidden></p>
+          <div id="upload-preview" hidden></div>
+          <p class="muted">Uploads and event updates are separate. An uploaded image is kept if saving fails; no file is deleted automatically.</p>
+          <button id="edit-submit" class="button" type="submit">Save changes</button>
+        </fieldset>
+      </form>
+      <div class="application-actions"><a id="edited-view" class="button button-quiet" href="./index.html" hidden>View event</a><a class="back-link" href="./index.html">Back to events</a></div>
+    </section>
+    <noscript><p class="notice">Enable JavaScript to edit an event.</p></noscript>
+  </main>
+</body>
+</html>
