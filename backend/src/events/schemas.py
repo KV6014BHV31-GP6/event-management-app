@@ -1,80 +1,98 @@
 from datetime import datetime
-from pydantic import BaseModel, Field, model_validator
-from typing import Optional
+from typing import List, Optional
+from pydantic import BaseModel, ConfigDict, Field
+from src.events.models import EventStatusEnum, EventFileTypeEnum
+
+
+class EventFileAssociation(BaseModel):
+    file_id: str = Field(..., max_length=26,
+                         description="The ULID of the uploaded file")
+    file_type: EventFileTypeEnum
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class EventFileResponseDetail(BaseModel):
+    file_id: str
+    file_type: EventFileTypeEnum
+    url: str
+
+    model_config = ConfigDict(from_attributes=True)
+
+
+class QuotaDetail(BaseModel):
+    approved: int = Field(..., ge=0)
+    capacity: int = Field(..., ge=0)
+
+
+class EventQuotaResponseDetail(BaseModel):
+    online: QuotaDetail
+    offline: QuotaDetail
+
+
+class PoolDetail(BaseModel):
+    approved_count: int = Field(..., ge=0)
+    waiting_list: int = Field(..., ge=0)
+    quota: int = Field(..., ge=0)
+
+
+class EventQuotaDetail(BaseModel):
+    online: PoolDetail
+    offline: PoolDetail
 
 
 class EventCreate(BaseModel):
     title: str = Field(..., max_length=255)
     overview: Optional[str] = None
     location: str = Field(..., max_length=255)
-    online_quota: int = Field(default=0, ge=0)
-    offline_quota: int = Field(default=0, ge=0)
+    online_quota: int = Field(..., ge=0)
+    offline_quota: int = Field(..., ge=0)
     start_time: datetime
     end_time: datetime
-
-    @model_validator(mode="after")
-    def validate_timestamps(self) -> "EventCreate":
-        if self.end_time <= self.start_time:
-            raise ValueError("end_time must be later than start_time.")
-        return self
+    files: List[EventFileAssociation] = Field(default_factory=list)
 
 
-class EventResponse(EventCreate):
-    id: int
+class EventCreateResponse(BaseModel):
     public_id: str
-    organizer_id: str
-    status: str
-    created_at: datetime
-    updated_at: datetime
+    title: str
+    status: EventStatusEnum
 
-    class Config:
-        from_attributes = True
-
-
-class QuotaDetailItem(BaseModel):
-    approved: int
-    capacity: int
-
-
-class EventQuotaAggregate(BaseModel):
-    online: QuotaDetailItem
-    offline: QuotaDetailItem
-    total: QuotaDetailItem
-    waiting_count: int = Field(..., alias="waitingCount")
-
-    model_config = {"populate_by_name": True}
+    model_config = ConfigDict(from_attributes=True)
 
 
 class EventResponse(BaseModel):
-    id: int
-    public_id: str = Field(..., max_length=21,
-                           description="Unique 21-character NanoID structural string")
-    organizer_id: str
+    public_id: str
     title: str
     overview: Optional[str] = None
     location: str
-    online_quota: int
-    offline_quota: int
     start_time: datetime
     end_time: datetime
-    status: EventStatus
-    created_at: datetime
-    updated_at: datetime
-    image_path: Optional[str] = None
-    quota: EventQuotaAggregate  # Real-time computed quota summary block
+    status: EventStatusEnum
+    files: List[EventFileResponseDetail] = Field(default_factory=list)
+    quota: EventQuotaResponseDetail
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PaginatedEventResponse(BaseModel):
-    total_count: int = Field(...,
-                             description="Total number of events matching the filter criteria")
-    page: int = Field(..., description="Current page number")
-    page_size: int = Field(..., description="Number of items per page")
-    total_pages: int = Field(..., description="Total pages available")
-    data: list[EventResponse] = Field(...,
-                                      description="List of events for the current page")
+    data: List[EventResponse]
+    total_count: int
+    page: int
+    page_size: int
+    total_pages: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
+
+
+class EventDetailResponse(BaseModel):
+    public_id: str
+    title: str
+    overview: Optional[str] = None
+    location: str
+    start_time: datetime
+    end_time: datetime
+    status: EventStatusEnum
+    files: List[EventFileResponseDetail] = Field(default_factory=list)
+    quota: EventQuotaDetail  # Tracks two distinct detached pool objects
+
+    model_config = ConfigDict(from_attributes=True)
