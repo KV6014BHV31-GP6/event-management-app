@@ -8,7 +8,6 @@ from src.files.router import router as files_router
 from src.registrations.router import router as registration_router
 from src.offline_sync.router import router as offline_sync_router
 
-
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version="1.0.0",
@@ -19,9 +18,9 @@ app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(users_router, prefix=settings.API_V1_STR)
 app.include_router(events_router, prefix=settings.API_V1_STR)
 app.include_router(participant_router, prefix=settings.API_V1_STR)
-app.include_router(files_router, prefix=settings.API_V1_STR)
 app.include_router(registration_router, prefix=settings.API_V1_STR)
 app.include_router(offline_sync_router, prefix=settings.API_V1_STR)
+app.include_router(files_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")
