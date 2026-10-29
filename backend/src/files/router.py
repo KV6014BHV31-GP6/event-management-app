@@ -1,52 +1,64 @@
-from fastapi import APIRouter, Depends, status, UploadFile, File, Form, HTTPException
-from src.auth.deps import get_current_user
-from src.users.models import UserModel
-from src.files.schemas import FileUploadResponse
-from src.files.storage import get_storage_provider, BaseStorage
-from src.core.config import settings
+import os
+from fastapi import APIRouter, Depends, status, UploadFile, File, HTTPException
+from fastapi.responses import FileResponse as FastAPIFileResponse
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from src.core.database import get_async_db
+from src.files.schemas import FileResponse
+from src.files.repo import FileRepository
+from src.files.service import FileService
 
 router = APIRouter(prefix="/files", tags=["Files"])
-
-ALLOWED_EXTENSIONS = {"png", "jpg", "jpeg", "webp", "gif", "pdf", "csv"}
 
 
 @router.post(
     "",
-    response_model=FileUploadResponse,
-    status_code=status.HTTP_201_CREATED,
-    summary="Upload any supported binary asset to active storage engine"
+    response_model=FileResponse,
+    status_code=status.HTTP_201_CREATED
 )
-async def upload_file_endpoint(
+async def upload_file(
     file: UploadFile = File(...),
-    folder: str = Form(
-        default="general", description="Target subdirectory category (e.g. 'events', 'avatars')"),
-    current_user: UserModel = Depends(get_current_user),
-    storage_provider: BaseStorage = Depends(get_storage_provider)
+    db: AsyncSession = Depends(get_async_db)
 ):
     """
-    Unified file processor endpoint. Seamlessly switches between local filesystem operations 
-    and Google Cloud Storage based on server application configurations.
+    Upload a file to local storage and save its metadata in the database.
     """
-    extension = file.filename.split(
-        ".")[-1].lower() if "." in file.filename else ""
-    if extension not in ALLOWED_EXTENSIONS:
+    repo = FileRepository(db)
+    service = FileService(repo)
+    return await service.upload_file(file)
+
+
+@router.get(
+    "/{file_id}/content",
+    response_class=FastAPIFileResponse
+)
+async def download_file(
+    file_id: str,
+    db: AsyncSession = Depends(get_async_db)
+):
+    """
+    Retrieve file metadata and stream the actual binary content from local storage.
+    """
+    repo = FileRepository(db)
+
+    # 1. Fetch file record from database
+    file_record = await repo.get_by_id(file_id)
+    if not file_record:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Unsupported file extension format. Allowed: {', '.join(ALLOWED_EXTENSIONS)}"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="File records not found"
         )
 
-    try:
-        file_url = await storage_provider.upload(file=file, folder=folder)
-    except Exception as e:
+    # 2. Verify physical file existence on local storage
+    if not os.path.exists(file_record.storage_path):
         raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Storage upload operation failed: {str(e)}"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Physical file missing from storage"
         )
-    finally:
-        await file.close()
 
-    return FileUploadResponse(
-        filename=file.filename,
-        url=file_url,
-        provider=settings.STORAGE_PROVIDER
+    # 3. Stream the file back with correct original filename and media type
+    return FastAPIFileResponse(
+        path=file_record.storage_path,
+        media_type=file_record.mime_type,
+        filename=file_record.original_file_name
     )
