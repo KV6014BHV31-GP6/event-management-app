@@ -177,6 +177,12 @@ class RegistrationService:
         """
         event, registration = await lock_registration(db, registration_id)
 
+        if organizer_owner:
+            actor=await db.scalar(select(UserModel).where(UserModel.id==user_id)
+                .with_for_update().execution_options(populate_existing=True))
+            if actor is None or actor.role.value!='organizer':
+                raise HTTPException(status_code=403,detail="Current organizer role required.")
+
         # 3. Validate Ownership constraint
         if (organizer_owner and event.organizer_id != user_id) or (not organizer_owner and registration.created_by_user_id != user_id):
             raise HTTPException(

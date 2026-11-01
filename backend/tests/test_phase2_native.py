@@ -2,6 +2,8 @@
 import asyncio
 import os
 import uuid
+import json
+from pathlib import Path
 from datetime import datetime,timezone
 import pytest
 import ulid
@@ -18,6 +20,13 @@ from src.registrations.service import RegistrationService
 from src.phase2.models import SyncBatchModel,SyncSubmissionModel
 from src.phase2.schemas import SyncBatch
 from src.phase2 import sync
+
+def native_evidence(name,data):
+    target=os.environ.get('NU_PHASE2_NATIVE_EVIDENCE_DIR')
+    if target:
+        path=Path(target);path.mkdir(parents=True,exist_ok=True)
+        label=os.environ.get('NU_PHASE2_EVIDENCE_LABEL','native')
+        (path/(label+'-'+name+'.json')).write_text(json.dumps(data,indent=2,default=str)+'\n',encoding='utf-8')
 
 @pytest.fixture
 async def setup_native():
@@ -139,3 +148,71 @@ async def test_native_closed_full_replay_and_online_claim_refusal(setup_native):
     async with sessions() as db:await RegistrationService.approve_registration(db,online.id,actors[2].id)
     assert (await send(sessions,events[1],actors[0],payload('FULL-'+stamp)))['items'][0]['code']=='EVENT_FULL'
     assert (await send(sessions,events[2],actors[0],payload('ONLINE-'+stamp)))['items'][0]['code']=='IDENTITY_CONFLICT'
+
+async def test_native_organizer_cancel_role_change_while_event_locked(setup_native):
+    sessions,actors,events,stamp=setup_native;event=events[0];org_id=actors[2].id;regs=[]
+    for i in range(2):
+        async with sessions() as db:regs.append(await RegistrationService.create_online_registration(db,event.public_id,RegistrationCreate(**form('CANCEL-ROLE-'+stamp+str(i))),actors[i].id))
+        async with sessions() as db:await RegistrationService.approve_registration(db,regs[-1].id,org_id)
+    async with sessions() as blocker, sessions() as cancel_db:
+        await blocker.scalar(select(EventModel).where(EventModel.id==event.id).with_for_update())
+        before=await cancel_db.scalar(select(UserModel).where(UserModel.id==org_id).execution_options(populate_existing=True));assert before.role==UserRoleEnum.organizer
+        cancel_pid=await cancel_db.scalar(text('SELECT pg_backend_pid()'))
+        async def cancel():
+            try:return (await RegistrationService.cancel_user_registration(cancel_db,regs[0].id,org_id,organizer_owner=True)).status.value
+            except HTTPException as exc:return exc.status_code
+        task=asyncio.create_task(cancel());waiting=False
+        for _ in range(300):
+            async with sessions() as monitor:waiting=await monitor.scalar(text("SELECT wait_event_type='Lock' FROM pg_stat_activity WHERE pid=:pid"),{'pid':cancel_pid})
+            if waiting:break
+            await asyncio.sleep(.01)
+        assert waiting,'Cancel never reached the held event lock.'
+        async with sessions() as demoter:
+            actor=await demoter.get(UserModel,org_id);actor.role=UserRoleEnum.user;await demoter.commit()
+        await blocker.commit();result=await asyncio.wait_for(task,10)
+    async with sessions() as db:
+        a=await db.get(RegistrationModel,regs[0].id);b=await db.get(RegistrationModel,regs[1].id)
+        status={'A':a.status.value,'B':b.status.value,'cancelled_at':a.cancelled_at,'cancelled_by':a.cancelled_by_user_id}
+    native_evidence('BE-R1',{'event_lock_wait_observed':waiting,'role_before_wait':'organizer','demotion_committed_before_unlock':True,'result':result,'state_after':status,'expected_result':403})
+    assert result==403 and status=={'A':'approved','B':'waiting','cancelled_at':None,'cancelled_by':None}
+    async with sessions() as db:
+        actor=await db.get(UserModel,org_id);actor.role=UserRoleEnum.organizer;await db.commit()
+    async with sessions() as db:assert (await RegistrationService.cancel_user_registration(db,regs[0].id,org_id,organizer_owner=True)).status.value=='cancelled'
+    async with sessions() as db:
+        a=await db.get(RegistrationModel,regs[0].id);b=await db.get(RegistrationModel,regs[1].id)
+        assert a.cancelled_by_user_id==org_id and b.status.value=='approved'
+    native_evidence('BE-R1',{'event_lock_wait_observed':True,'role_before_wait':'organizer','demotion_committed_before_unlock':True,'result':403,'state_after_refusal':status,'restored_role_authorized_cancel_and_promotion':'PASS'})
+
+@pytest.mark.parametrize('collision',['submission','identity'])
+async def test_native_reverse_order_deadlock_controlled_whole_batch(setup_native,monkeypatch,collision):
+    from sqlalchemy.ext.asyncio import AsyncSession
+    from sqlalchemy.exc import DBAPIError
+    sessions,actors,events,stamp=setup_native;ids=[str(uuid.uuid4()),str(uuid.uuid4())];ps=[]
+    for i in range(2):
+        order=[0,1] if i==0 else [1,0]
+        items=[]
+        for n in order:
+            sub=ids[n] if collision=='submission' else str(uuid.uuid4())
+            identity=('REVERSE-'+stamp+str(n)) if collision=='identity' else ('REVERSE-'+stamp+str(i)+str(n))
+            items.append({'client_submission_id':sub,'application':form(identity)})
+        ps.append(SyncBatch(contract_version='rose.offline-sync.v2',batch_id=str(uuid.uuid4()),items=items))
+    original=AsyncSession.flush;arrivals=set();gate=asyncio.Event();classified=[]
+    async def flush(self,*args,**kwargs):
+        receipt=any(isinstance(row,SyncSubmissionModel) and row.actor_id in [a.id for a in actors[:2]] for row in self.new)
+        try:result=await original(self,*args,**kwargs)
+        except DBAPIError as exc:
+            classified.append({'type':type(exc).__name__,'sqlstate':getattr(exc.orig,'sqlstate',None) or getattr(getattr(exc.orig,'__cause__',None),'sqlstate',None),'stage':'receipt' if receipt else 'business'})
+            raise
+        if receipt and id(self) not in arrivals:
+            arrivals.add(id(self))
+            if len(arrivals)==2:gate.set()
+            await asyncio.wait_for(gate.wait(),10)
+        return result
+    monkeypatch.setattr(AsyncSession,'flush',flush)
+    results=await asyncio.gather(*(send(sessions,events[i],actors[i],ps[i]) for i in range(2)),return_exceptions=True)
+    actual_counts=await counts(sessions,events,actors)
+    kinds=[r if isinstance(r,int) else ('receipt' if isinstance(r,dict) else type(r).__name__) for r in results]
+    native_evidence('BE-R2-'+collision,{'barrier_after_first_receipt_flush':len(arrivals)==2,'classified':classified,'results':kinds,'counts':actual_counts,'expected_loser':409,'expected_counts':{'registrations':2,'batches':1,'submissions':2}})
+    assert len(arrivals)==2 and any(c['sqlstate']=='40P01' for c in classified),(kinds,classified)
+    assert sum(isinstance(r,dict) for r in results)==1 and 409 in results,(kinds,classified,actual_counts)
+    assert actual_counts=={'registrations':2,'batches':1,'submissions':2}

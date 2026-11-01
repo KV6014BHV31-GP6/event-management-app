@@ -4,7 +4,7 @@ from datetime import datetime,timezone
 from fastapi import HTTPException
 from pydantic import ValidationError
 from sqlalchemy import select,func
-from sqlalchemy.exc import IntegrityError
+from sqlalchemy.exc import IntegrityError,DBAPIError
 from src.users.models import UserModel
 from src.events.models import EventModel,EventStatusEnum
 from src.participants.models import ParticipantModel
@@ -108,5 +108,13 @@ async def submit(db,public,payload,actor_id):
             if existing:authorize(existing,actor_id,event.id,digest(item.application))
         await db.rollback()
         raise HTTPException(409,'Concurrent synchronization conflict; reconcile the original identifiers.') from None
+    except DBAPIError as exc:
+        await db.rollback()
+        state=getattr(exc.orig,'sqlstate',None) or getattr(getattr(exc.orig,'__cause__',None),'sqlstate',None)
+        if state in {'40P01','40001'}:
+            # Opposite global-ID/identity ordering can deadlock across independent events.
+            # The entire batch has rolled back; never automatically repeat domain writes.
+            raise HTTPException(409,'Concurrent synchronization conflict; reconcile the original identifiers.') from None
+        raise
     except Exception:
         await db.rollback();raise
