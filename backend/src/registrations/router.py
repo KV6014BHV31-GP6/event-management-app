@@ -7,6 +7,7 @@ from src.core.database import get_async_db
 from src.registrations.schemas import RegistrationCreate, RegistrationResponse, RegistrationStatus
 from src.registrations.service import RegistrationService
 from src.users.models import UserModel
+from src.phase2.assets import registration_payload
 
 router = APIRouter(tags=["Registrations"])
 
@@ -39,12 +40,13 @@ async def create_registration_endpoint(
 
     operator_id = current_user.id if current_user else None
 
-    return await RegistrationService.create_online_registration(
+    registration = await RegistrationService.create_online_registration(
         db=db,
         event_public_id=public_id,
         form_in=payload,
         current_user_id=operator_id
     )
+    return await registration_payload(db,registration,operator_id)
 
 
 @router.get(
@@ -67,11 +69,12 @@ async def get_my_registrations_endpoint(
     - **Filtering**: Supports optional filtering by registration status via query parameter.
     - **Authentication**: Requires a valid user access token.
     """
-    return await RegistrationService.get_user_registrations(
+    registrations = await RegistrationService.get_user_registrations(
         db=db,
         user_id=current_user.id,
         status=status
     )
+    return [await registration_payload(db,row,current_user.id) for row in registrations]
 
 
 @router.post(
@@ -94,11 +97,12 @@ async def cancel_my_registration_endpoint(
     - **Queue Auto-Promotion**: If an approved registration is dropped, the oldest waiting participant
       (sorted by waitlisted_at ascending) is automatically elevated to approved.
     """
-    return await RegistrationService.cancel_user_registration(
+    registration = await RegistrationService.cancel_user_registration(
         db=db,
         registration_id=registration_id,
         user_id=current_user.id
     )
+    return await registration_payload(db,registration,current_user.id)
 
 
 @router.get(
@@ -129,10 +133,11 @@ async def list_all_registrations_endpoint(
             detail="Access denied. This endpoint is restricted to system organizers only."
         )
 
-    return await RegistrationService.get_all_registrations(
+    registrations = await RegistrationService.get_all_registrations(
         db=db,
         status=status
     )
+    return [await registration_payload(db,row,current_user.id) for row in registrations]
 
 
 @router.get(
@@ -160,10 +165,11 @@ async def get_registration_detail_endpoint(
             detail="Access denied. This endpoint is restricted to system organizers only."
         )
 
-    return await RegistrationService.get_registration_by_id(
+    registration = await RegistrationService.get_registration_by_id(
         db=db,
         registration_id=registration_id
     )
+    return await registration_payload(db,registration,current_user.id)
 
 
 @router.post(
@@ -191,8 +197,9 @@ async def approve_registration_endpoint(
             detail="Access denied. This endpoint is restricted to system organizers only."
         )
 
-    return await RegistrationService.approve_registration(
+    registration = await RegistrationService.approve_registration(
         db=db,
         registration_id=registration_id,
         organizer_id=current_user.id
     )
+    return await registration_payload(db,registration,current_user.id)

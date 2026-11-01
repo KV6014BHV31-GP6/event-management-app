@@ -2,6 +2,7 @@ from datetime import datetime, date
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel, Field, ConfigDict
+from src.files.schemas import FileReference
 
 
 class RegistrationChannel(str, Enum):
@@ -37,11 +38,12 @@ class RegistrationCreate(BaseModel):
     gender: UserGender
     date_of_birth: date
     phone: str = Field(..., max_length=20)
-    address: str
+    address: Optional[str] = None
     national_id: str = Field(..., max_length=50)
-    income_band_code: str = Field(..., max_length=20)
+    income_band_code: Optional[str] = Field(None, max_length=20)
     medical_record: Optional[str] = None
-    marriage_status: MarriageStatusType
+    marriage_status: Optional[MarriageStatusType] = None
+    file_ids: list[str] = Field(default_factory=list, max_length=3)
 
 
 class RegistrationResponse(BaseModel):
@@ -56,11 +58,12 @@ class RegistrationResponse(BaseModel):
     gender: UserGender
     date_of_birth: date
     phone: str
-    address: str
+    address: Optional[str]
     national_id: str
-    income_band_code: str
+    income_band_code: Optional[str]
     medical_record: Optional[str]
-    marriage_status: MarriageStatusType
+    marriage_status: Optional[MarriageStatusType]
+    supporting_documents: list[FileReference] = Field(default_factory=list)
     created_at: datetime
     updated_at: datetime
 

@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from enum import Enum
 from pydantic import BaseModel, Field, model_validator, field_validator
 from typing import Optional
+from src.files.schemas import FileReference
 
 
 class EventStatus(str, Enum):
@@ -19,6 +20,7 @@ class EventCreate(BaseModel):
     start_time: datetime
     end_time: datetime
     image_path: Optional[str] = Field(default=None, max_length=512)
+    image_file_ids: list[str] = Field(default_factory=list, max_length=3)
 
     @field_validator("start_time", "end_time")
     @classmethod
@@ -42,6 +44,13 @@ class EventUpdate(BaseModel):
     end_time: Optional[datetime] = None
     status: Optional[EventStatus] = None
     image_path: Optional[str] = Field(None, max_length=512)
+    image_file_ids: Optional[list[str]] = Field(None, max_length=3)
+
+    @field_validator('image_file_ids')
+    @classmethod
+    def reject_null_image_ids(cls,value):
+        if value is None:raise ValueError('Omit image_file_ids to retain images; use [] to clear.')
+        return value
 
     @field_validator("title", "location", "online_quota", "offline_quota", "start_time", "end_time", "status")
     @classmethod
@@ -104,6 +113,7 @@ class EventResponse(BaseModel):
     updated_at: datetime
     image_path: Optional[str] = None
     quota: EventQuotaAggregate  # Real-time computed quota summary block
+    image_files: list[FileReference] = Field(default_factory=list)
 
     class Config:
         from_attributes = True
