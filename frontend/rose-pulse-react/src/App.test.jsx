@@ -199,7 +199,7 @@ describe("React application workflows (controlled API fixtures)", () => {
     expect(api.login).toHaveBeenCalledTimes(1);
     expect(window.location.search).toContain("view=apply");
   });
-  it("blocks leader create without sending a write and explains unavailable leader tools", async () => {
+  it("blocks leader create without sending a write and opens the synthetic local workspace", async () => {
     const createEvent = vi.fn();
     const { user } = await setup({
       view: "create",
@@ -215,7 +215,7 @@ describe("React application workflows (controlled API fixtures)", () => {
     expect(createEvent).not.toHaveBeenCalled();
     await user.click(screen.getByRole("link", { name: "Leader workspace" }));
     expect(
-      screen.getByText("Leader tools are not available yet."),
+      screen.getByRole("heading", { name: "Offline registration drafts" }),
     ).toBeVisible();
   });
   it("clears a selected upload before Create and enables an explicit second event after success", async () => {

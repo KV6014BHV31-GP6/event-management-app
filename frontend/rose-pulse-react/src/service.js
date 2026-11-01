@@ -1,5 +1,8 @@
 import { ApiError, createApi } from "../../live/api.mjs";
 import { browserSessionStorage, createSession } from "../../live/session.mjs";
+import { createOfflineStore } from "./offline/queue.js";
+
+const OFFLINE_ACTOR_KEY = "rose.offline.synthetic-actor";
 import {
   createEventController,
   createEventImageController,
@@ -108,7 +111,48 @@ export function createRuntime({
   api = createApi(),
   storage = browserSessionStorage(),
 } = {}) {
-  const session = createSession({ api, storage });
+  let bearer = null;
+  let offlineActor = null;
+  try {
+    bearer = storage?.getItem("rose.live.access-token") || null;
+    const saved = JSON.parse(storage?.getItem(OFFLINE_ACTOR_KEY) || "null");
+    if (
+      bearer &&
+      saved &&
+      typeof saved.id === "string" &&
+      ["leader", "organizer"].includes(saved.role)
+    )
+      offlineActor = saved;
+  } catch {
+    /* unavailable storage never unlocks another actor */
+  }
+  const sessionApi = {
+    ...api,
+    async login(values) {
+      const token = await api.login(values);
+      bearer = token;
+      return token;
+    },
+  };
+  const session = createSession({ api: sessionApi, storage });
+  const offline = createOfflineStore();
+  const rememberActor = (profile) => {
+    offlineActor =
+      profile && ["leader", "organizer"].includes(profile.role)
+        ? {
+            id: profile.id,
+            role: profile.role,
+            verified_at: new Date().toISOString(),
+          }
+        : null;
+    try {
+      if (offlineActor)
+        storage?.setItem(OFFLINE_ACTOR_KEY, JSON.stringify(offlineActor));
+      else storage?.removeItem(OFFLINE_ACTOR_KEY);
+    } catch {
+      /* offline workspace will remain page-scoped */
+    }
+  };
   const listeners = new Set();
   const stores = new Map();
   let identityBlocked = false;
@@ -119,6 +163,7 @@ export function createRuntime({
     persistent: session.persistent,
     checking: true,
     identityBlocked,
+    offlineActor,
     message: "",
   };
   const publish = (patch) => {
@@ -129,6 +174,7 @@ export function createRuntime({
       revision: session.revision,
       persistent: session.persistent,
       identityBlocked,
+      offlineActor: session.hasToken ? offlineActor : null,
       ...patch,
     };
     for (const listener of listeners) listener();
@@ -149,6 +195,7 @@ export function createRuntime({
   return {
     api,
     session,
+    offline,
     sync,
     subscribe: (listener) => {
       listeners.add(listener);
@@ -160,7 +207,10 @@ export function createRuntime({
         const hadIdentity = session.hasToken;
         restorePromise = session
           .restore()
-          .then(() => publish({ checking: false, message: "" }))
+          .then(() => {
+            if (session.user) rememberActor(session.user);
+            publish({ checking: false, message: "" });
+          })
           .catch((error) => {
             if (hadIdentity) identityBlocked = true;
             publish({ checking: false, message: error.message });
@@ -171,6 +221,7 @@ export function createRuntime({
     async signIn(values) {
       try {
         const result = await session.signIn(values);
+        rememberActor(result.user);
         identityBlocked = false;
         publish({
           checking: false,
@@ -189,13 +240,56 @@ export function createRuntime({
     },
     logout() {
       const removed = session.logout();
+      bearer = null;
+      rememberActor(null);
       identityBlocked = false;
       publish({
         checking: false,
         message: removed
-          ? "You have logged out on this device."
+          ? "You have logged out on this device. Offline synthetic drafts are retained but locked until the same account logs in."
           : "Logged out in memory. Close this tab to clear unavailable browser storage.",
       });
+    },
+    async freshOfflineIdentity(expectedActor) {
+      if (!bearer || !session.hasToken || !expectedActor?.id)
+        throw new ApiError(
+          "unauthorized",
+          "Log in online before syncing local drafts.",
+          401,
+        );
+      const revision = session.revision;
+      try {
+        const profile = await api.getMe(bearer);
+        if (
+          revision !== session.revision ||
+          profile.id !== expectedActor.id ||
+          !["leader", "organizer"].includes(profile.role)
+        )
+          throw new ApiError(
+            "forbidden",
+            "The account or permissions changed. Local drafts are locked.",
+            403,
+          );
+        rememberActor(profile);
+        publish({});
+        return { actor: { id: profile.id, role: profile.role }, token: bearer };
+      } catch (error) {
+        if ([401, 403].includes(error.status)) {
+          if (error.status === 401) session.logout();
+          identityBlocked = true;
+          rememberActor(null);
+          publish({});
+        }
+        throw error;
+      }
+    },
+    blockOfflineAuth(status) {
+      if ([401, 403].includes(status)) {
+        if (status === 401) session.logout();
+        identityBlocked = true;
+        rememberActor(null);
+        publish({});
+      }
     },
     beginAnotherEvent() {
       const prefix = `${session.revision}:${session.user?.id ?? "guest"}:`;

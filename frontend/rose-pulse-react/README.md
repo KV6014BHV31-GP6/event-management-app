@@ -1,8 +1,18 @@
 # ROSE · PULSE React V2
 
+## Phase 2 work in progress
+
+This isolated increment uses **5205 → 5206 → 8028**. The production bundle emits a Service Worker that caches only the finite public AppShell build assets, never APIs, authentication, uploaded content or participant records. Vite development mode does not register it. Build with `npm run build`, then use `npm run preview`; load once online before testing a disconnected reload. A localhost test does not establish LAN or iPhone support.
+
+`?view=offline` provides a synthetic-only local workspace for a previously verified leader/organizer. Selected public event details require a fresh online identity check before download. Versioned IndexedDB partitions drafts/queues by actor, saves then reads each draft back, retains stable UUID submission/batch IDs, and changes interrupted `syncing` to `needs_review` on restart. No background sync runs. The admitted official sync adapter and Malay resource coverage are being completed in the next increment; this early commit does not claim those gates.
+
+Local records are unencrypted. Logout locks retained records and clears the cached local actor; the same account must log in again to unlock them. Another account cannot select that actor through this UI. Browser tools/device access remain outside this UI boundary. Explicit per-account deletion, browser persistence requests, storage estimates, 1/7-day maximum retention and eviction/private-browsing warnings are visible. Expired batches and their immutable request snapshots are deleted together; no local retention or encryption compliance claim is made.
+
+Early author checks: 46 controlled tests passed (retained31 plus11 IndexedDB and4 public-worker tests); the first42PASS/4FAIL result is preserved in external `evidence/frontend/phase2-first-tests.txt`. Worker harness URL/path corrections and the intentionally changed leader-workspace expectation explain those four failures. Native offline production-preview/restart acceptance remains pending.
+
 Additive React/Vite frontend, based on the PR40 backend contract. The legacy `frontend/live` app is preserved. This app imports the existing `api.mjs`, `session.mjs` and guarded write controllers. It does not substitute mock data when the API fails.
 
-From this directory run `npm ci`, `npm run dev` and open **http://127.0.0.1:5201**. Node 24 is the validated local runtime. Vite binds only loopback, uses a strict port and proxies `/api/v1` and `/uploads` through the existing reviewed development proxy at **http://127.0.0.1:5202**. Both development and preview use `changeOrigin: false`, preserving Host/Origin for the proxy's same-origin guard. Start that proxy separately from the repository root with `PORT=5202`, `BACKEND_URL=http://127.0.0.1:8026` and an absolute dedicated `UPLOAD_DIR`; use the matching isolated backend runtime, not an existing demo database. Do not use a generic static server for API access.
+From this directory run `npm ci`, `npm run dev` and open **http://127.0.0.1:5205**. Node 24 is the validated local runtime. Vite binds only loopback, uses a strict port and proxies `/api/v1`, `/api/v2` and `/uploads` through the development proxy at **http://127.0.0.1:5206**. Both development and preview use `changeOrigin: false`, preserving Host/Origin for the proxy's same-origin guard. Start that proxy separately from the repository root with `PORT=5206`, `BACKEND_URL=http://127.0.0.1:8028` and an absolute dedicated `UPLOAD_DIR`; use the matching isolated backend runtime, not an existing demo database. Do not use a generic static server for API access.
 
 Run `npm test` for React/component and adapter tests. Run `npm run build` for the production bundle. `npm run preview` serves the built bundle with the same local proxy. The `dist` and `node_modules` directories are ignored by the repository.
 
