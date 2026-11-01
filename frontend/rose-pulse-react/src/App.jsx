@@ -1,4 +1,12 @@
 import { tr } from "./i18n/index.js";
+import {
+  i18n,
+  locale,
+  changeLanguage,
+  localizeInvalid,
+  clearInvalid,
+} from "./i18n/index.js";
+import { useTranslation } from "react-i18next";
 import React, {
   createContext,
   useContext,
@@ -11,6 +19,19 @@ import React, {
 import { eventFormValues, safeImagePath } from "./service.js";
 import { validatedQuota } from "../../live/api.mjs";
 import OfflineWorkspace from "./offline/OfflineWorkspace.jsx";
+import { FilePicker, PrivateDocuments } from "./FilePicker.jsx";
+import { validateFileReference } from "./phase2-api.js";
+const OrganizerEvents = React.lazy(() =>
+  import("./OrganizerWorkspace.jsx").then((module) => ({
+    default: module.OrganizerEvents,
+  })),
+);
+const OrganizerAnalytics = React.lazy(() =>
+  import("./OrganizerWorkspace.jsx").then((module) => ({
+    default: module.OrganizerAnalytics,
+  })),
+);
+import EventShare from "./EventShare.jsx";
 const Context = createContext(null);
 const useApp = () => useContext(Context);
 export const hrefFor = (view = "home", params = {}) =>
@@ -35,18 +56,18 @@ const readLocation = () => {
   };
 };
 const date = (value) =>
-  new Intl.DateTimeFormat("en-GB", {
+  new Intl.DateTimeFormat(locale(), {
     dateStyle: "medium",
   }).format(new Date(value));
 const time = (value) =>
-  new Intl.DateTimeFormat("en-GB", {
+  new Intl.DateTimeFormat(locale(), {
     timeStyle: "short",
   }).format(new Date(value));
 const locked = (state) =>
   ["submitting", "success", "uncertain"].includes(state.status);
 const titleCase = (value) =>
   typeof value === "string"
-    ? value.charAt(0).toUpperCase() + value.slice(1)
+    ? tr(value.charAt(0).toUpperCase() + value.slice(1))
     : "Unknown";
 export function Icon({ name, size = 20, ...rest }) {
   const paths = {
@@ -162,7 +183,9 @@ export function Notice({ children, error = false, ...rest }) {
       role={error ? "alert" : "status"}
       {...rest}
     >
-      {children}
+      {React.Children.map(children, (child) =>
+        typeof child === "string" && child.length > 12 ? tr(child) : child,
+      )}
     </div>
   ) : null;
 }
@@ -269,6 +292,18 @@ function Shell({ children }) {
       role: "organizer",
     },
     {
+      view: "organizer-events",
+      icon: "calendar",
+      label: "Your events",
+      role: "organizer",
+    },
+    {
+      view: "analytics",
+      icon: "users",
+      label: "Registration overview",
+      role: "organizer",
+    },
+    {
       view: "leader",
       icon: "users",
       label: "Leader workspace",
@@ -322,11 +357,11 @@ function Shell({ children }) {
               key={item.view}
               view={item.view}
               className={`nav-item ${route.view === item.view ? "is-active" : ""}`}
-              aria-label={item.label}
+              aria-label={tr(item.label)}
               aria-current={route.view === item.view ? "page" : undefined}
             >
               <Icon name={item.icon} />
-              <span>{item.label}</span>
+              <span>{tr(item.label)}</span>
             </Link>
           ))}
         </nav>
@@ -425,14 +460,38 @@ function Shell({ children }) {
                 onClick={() => setLanguageOpen(!languageOpen)}
               >
                 <Icon name="globe" size={18} />
-                EN
+                {i18n.resolvedLanguage === "ms" ? tr("MS") : "EN"}
               </button>
               {languageOpen && (
                 <div className="language-popover" role="status">
-                  <strong>{tr("Language: English")}</strong>
+                  <strong>{tr("Choose language")}</strong>
+                  <div className="language-options">
+                    <button
+                      className="text-button"
+                      lang="en"
+                      aria-pressed={i18n.resolvedLanguage === "en"}
+                      onClick={() => {
+                        changeLanguage("en");
+                        setLanguageOpen(false);
+                      }}
+                    >
+                      {tr("English")}
+                    </button>
+                    <button
+                      className="text-button"
+                      lang="ms"
+                      aria-pressed={i18n.resolvedLanguage === "ms"}
+                      onClick={() => {
+                        changeLanguage("ms");
+                        setLanguageOpen(false);
+                      }}
+                    >
+                      {tr("Bahasa Melayu")}
+                    </button>
+                  </div>
                   <p>
                     {tr(
-                      "This version is available in English. More languages are not yet available.",
+                      "Malay wording is an engineering draft. NGO language and sensitive-consent review are pending.",
                     )}
                   </p>
                   <button
@@ -469,7 +528,13 @@ function Shell({ children }) {
             )}
           </div>
         </div>
-        <main id="main" tabIndex={-1}>
+        <main
+          id="main"
+          tabIndex={-1}
+          onInvalidCapture={localizeInvalid}
+          onInputCapture={clearInvalid}
+          onChangeCapture={clearInvalid}
+        >
           {auth.checking && (
             <Notice>{tr("Verifying your saved login\u2026")}</Notice>
           )}
@@ -519,8 +584,18 @@ function Shell({ children }) {
     </div>
   );
 }
-function EventImage({ event, className = "", detail = false }) {
-  const source = safeImagePath(event.image_path);
+function EventImage({ event, className = "", detail = false, index = 0 }) {
+  let gallery = [];
+  try {
+    gallery = (event.image_files || []).map((file) =>
+      validateFileReference(file, "event_image"),
+    );
+  } catch {
+    gallery = [];
+  }
+  const source = gallery.length
+    ? gallery[Math.min(index, gallery.length - 1)].url
+    : safeImagePath(event.image_path);
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [source]);
   return source && !failed ? (
@@ -549,7 +624,9 @@ export function EventCard({ event }) {
           event: event.public_id,
         }}
         className="card-image-link"
-        aria-label={`View ${event.title}`}
+        aria-label={tr("View {{title}}", {
+          title: event.title,
+        })}
       >
         <EventImage event={event} className="card-image" />
         <span className="image-status">
@@ -956,6 +1033,7 @@ function Quota({ event }) {
 }
 function EventDetail() {
   const { route, auth } = useApp();
+  const [imageIndex, setImageIndex] = useState(0);
   const [state, reload] = useEvent(route.event);
   const event = state.event;
   return (
@@ -978,9 +1056,34 @@ function EventDetail() {
       {event && (
         <article className="event-detail">
           <div className="detail-photo">
-            <EventImage event={event} detail />
+            <EventImage event={event} detail index={imageIndex} />
             <Status value={event.status} />
           </div>
+          {event.image_files?.length > 1 && (
+            <div
+              className="gallery-thumbnails"
+              aria-label={tr("Event image gallery")}
+            >
+              {event.image_files.map((file, index) => (
+                <button
+                  key={file.id}
+                  className={index === imageIndex ? "is-active" : ""}
+                  aria-label={tr("Show event image {{number}}", {
+                    number: index + 1,
+                  })}
+                  aria-pressed={index === imageIndex}
+                  onClick={() => setImageIndex(index)}
+                >
+                  <img
+                    src={file.url}
+                    alt={tr("Event image {{number}}", {
+                      number: index + 1,
+                    })}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
           <div className="detail-layout">
             <div>
               <p className="eyebrow">{tr("A MOMENT TO CONNECT")}</p>
@@ -1153,9 +1256,9 @@ function AuthForm({ signup = false }) {
             </span>
             <h3>{tr("You\u2019re ready to connect.")}</h3>
             <p>
-              {tr("Account")}
-              {state.user.username}
-              {tr("was created. Log in to continue.")}
+              {tr("Account {{username}} was created. Log in to continue.", {
+                username: state.user.username,
+              })}
             </p>
             <Link
               view="login"
@@ -1287,7 +1390,11 @@ function RoleGate({ role, children }) {
       <Icon name="user" size={40} />
       <h2>
         {auth.user
-          ? `${role === "user" ? "Participant" : "Organizer"} account required`
+          ? tr(
+              role === "user"
+                ? "Participant account required"
+                : "Organizer account required",
+            )
           : tr("Log in to continue")}
       </h2>
       <p>
@@ -1407,14 +1514,8 @@ function EventEditorForm({ edit, onAnother }) {
     },
   });
   const [state, controller] = useController(store);
-  const imageStore = runtime.store("image", {
-    event: {
-      public_id: edit ? route.event : "create",
-    },
-  });
-  const [imageState] = useController(imageStore);
-  const [imageUrl, setImageUrl] = useState(undefined);
-  const [fileSelected, setFileSelected] = useState(false);
+  const [galleryFiles, setGalleryFiles] = useState(null);
+  const [mediaBlocked, setMediaBlocked] = useState(false);
   const [removeImage, setRemoveImage] = useState(false);
   const form = useRef(null);
   useEffect(() => {
@@ -1438,20 +1539,15 @@ function EventEditorForm({ edit, onAnother }) {
         end_time: "",
       };
   const disabled =
-    locked(state) ||
-    (edit && !original) ||
-    ["submitting", "uncertain"].includes(imageState.status) ||
-    auth.user?.role !== "organizer";
-  const mediaBlocked =
-    imageState.status === "uncertain" ||
-    imageState.status === "submitting" ||
-    (fileSelected && imageState.status !== "success");
+    locked(state) || (edit && !original) || auth.user?.role !== "organizer";
   const submit = (event) => {
     event.preventDefault();
     if (disabled || mediaBlocked) return;
     const next = Object.fromEntries(new FormData(event.currentTarget));
-    if (imageUrl !== undefined) next.image_path = imageUrl;
-    else if (edit && removeImage) next.image_path = null;
+    next.image_file_ids = (galleryFiles || original?.image_files || []).map(
+      (file) => file.id,
+    );
+    if (edit && removeImage) next.image_path = null;
     controller.submit(next);
   };
   return (
@@ -1514,10 +1610,6 @@ function EventEditorForm({ edit, onAnother }) {
             method="dialog"
             onSubmit={submit}
             key={original?.public_id || "new"}
-            onChange={(event) => {
-              if (event.target.id === "event-image-file")
-                setFileSelected(Boolean(event.target.files?.[0]));
-            }}
           >
             <fieldset disabled={disabled}>
               <legend className="form-section-title">
@@ -1600,13 +1692,15 @@ function EventEditorForm({ edit, onAnother }) {
                 {Intl.DateTimeFormat().resolvedOptions().timeZone}
                 {tr(". Quotas are capacities, not remaining places.")}
               </p>
-              <ImageUpload
-                store={imageStore}
+              <FilePicker
+                runtime={runtime}
+                purpose="event_image"
+                initialFiles={original?.image_files || []}
+                onChange={setGalleryFiles}
+                onBlocked={setMediaBlocked}
                 disabled={disabled}
-                onUploaded={setImageUrl}
-                onSelected={setFileSelected}
               />
-              {edit && original?.image_path && imageUrl === undefined && (
+              {edit && original?.image_path && (
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
@@ -1696,6 +1790,8 @@ function Apply() {
 function Application({ event }) {
   const { auth, runtime } = useApp();
   const [guest, setGuest] = useState(false);
+  const [supportingFiles, setSupportingFiles] = useState([]);
+  const [documentsBlocked, setDocumentsBlocked] = useState(false);
   const guestStore = runtime.store("guest", {
       event,
     }),
@@ -1712,10 +1808,11 @@ function Application({ event }) {
   const active = event.status.toLowerCase() === "active";
   const submit = (submitEvent) => {
     submitEvent.preventDefault();
-    if (!allowed || !active || locked(state)) return;
-    controller.submit(
-      Object.fromEntries(new FormData(submitEvent.currentTarget)),
-    );
+    if (!allowed || !active || locked(state) || documentsBlocked) return;
+    const values = Object.fromEntries(new FormData(submitEvent.currentTarget));
+    if (!guest && supportingFiles.length)
+      values.file_ids = supportingFiles.map((file) => file.id);
+    controller.submit(values);
   };
   return (
     <div className="editor-layout">
@@ -1802,7 +1899,12 @@ function Application({ event }) {
             <Notice>
               {guest
                 ? tr("You are applying as a guest, without an account.")
-                : `Applying with your verified participant account: ${auth.user?.username}`}
+                : tr(
+                    "Applying with your verified participant account: {{username}}",
+                    {
+                      username: auth.user?.username,
+                    },
+                  )}
             </Notice>
             <Notice error={["error", "uncertain"].includes(state.status)}>
               {state.message}
@@ -1819,6 +1921,7 @@ function Application({ event }) {
                     "A place is not confirmed. Keep this reference and contact the organiser if you need help.",
                   )}
                 </p>
+                <EventShare event={event} />
                 <dl className="receipt">
                   <dt>{tr("Event")}</dt>
                   <dd>{event.title}</dd>
@@ -1829,6 +1932,12 @@ function Application({ event }) {
                     <Status value={state.receipt.status} />
                   </dd>
                 </dl>
+                {!guest && (
+                  <PrivateDocuments
+                    runtime={runtime}
+                    files={state.receipt.supporting_documents || []}
+                  />
+                )}
                 {guest ? (
                   <Notice>
                     {tr(
@@ -1851,11 +1960,13 @@ function Application({ event }) {
                   <div className="form-grid">
                     <Field
                       name="first_name"
+                      required
                       label={tr("First name")}
                       maxLength={20}
                     />
                     <Field
                       name="last_name"
+                      required
                       label={tr("Last name")}
                       maxLength={20}
                     />
@@ -1877,51 +1988,53 @@ function Application({ event }) {
                       <option value="male">{tr("Male")}</option>
                       <option value="female">{tr("Female")}</option>
                     </Field>
-                    <Field name="phone" label={tr("Phone")} maxLength={20} />
+                    <Field
+                      name="phone"
+                      required
+                      label={tr("Phone")}
+                      maxLength={20}
+                    />
                     <Field
                       name="national_id"
+                      required
                       label={tr("National ID")}
                       maxLength={50}
                       help={tr(
                         "Use the same participant details for each event.",
                       )}
                     />
-                    <Field
-                      name="address"
-                      label={tr("Address")}
-                      type="textarea"
-                      wide
-                    />
-                    <Field
-                      name="income_band_code"
-                      label={tr("Income band code")}
-                      maxLength={20}
-                      help={tr("Enter the code supplied for your application.")}
-                    />
-                    <Field
-                      name="marriage_status"
-                      label={tr("Marital status")}
-                      required
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        {tr("Choose an option")}
-                      </option>
-                      {["single", "married", "divorced", "widowed"].map(
-                        (value) => (
-                          <option key={value} value={value}>
-                            {titleCase(value)}
-                          </option>
-                        ),
-                      )}
-                    </Field>
                   </div>
+                  {!guest && (
+                    <details className="optional-documents">
+                      <summary>
+                        {tr("Supporting documents")} {tr("(optional)")}
+                      </summary>
+                      <FilePicker
+                        runtime={runtime}
+                        purpose="supporting_document"
+                        onChange={setSupportingFiles}
+                        onBlocked={setDocumentsBlocked}
+                        disabled={!allowed || !active || locked(state)}
+                      />
+                    </details>
+                  )}
+                  {guest && (
+                    <p className="small muted">
+                      {tr(
+                        "Guest applications cannot upload private documents. Supporting documents are optional in this version.",
+                      )}
+                    </p>
+                  )}
                   <p className="form-disclaimer">
                     {tr(
                       "Submitting sends an application. A place is not confirmed.",
                     )}
                   </p>
-                  <button className="button" type="submit">
+                  <button
+                    className="button"
+                    type="submit"
+                    disabled={documentsBlocked}
+                  >
                     {tr("Submit application")}
                     <Icon name="arrow" size={17} />
                   </button>
@@ -1981,11 +2094,52 @@ function RegistrationList({ organizer }) {
     }),
   );
   const [confirm, setConfirm] = useState(null);
+  const [cancelBusy, setCancelBusy] = useState(false);
+  const [cancelMessage, setCancelMessage] = useState("");
+  const uncertainCancel = useRef(new Set());
+  const cancelFlight = useRef(false);
+  const organizerCancel = async (record) => {
+    if (cancelFlight.current || uncertainCancel.current.has(record.id)) return;
+    cancelFlight.current = true;
+    setCancelBusy(true);
+    setCancelMessage("");
+    try {
+      const result = await runtime.withVerifiedAccount(
+        (token) => runtime.api.organizerCancelRegistration(record.id, token),
+        {
+          roles: ["organizer"],
+        },
+      );
+      if (
+        result.id !== record.id ||
+        result.event_id !== record.event_id ||
+        result.participant_id !== record.participant_id ||
+        result.created_by_user_id !== record.created_by_user_id ||
+        result.status !== "cancelled"
+      )
+        throw new Error("Unknown cancellation result");
+      setCancelMessage(
+        "The server cancelled this registration. Current records have been read again.",
+      );
+      await controller.load();
+    } catch (error) {
+      const known = [400, 401, 403, 404, 409, 422, 429].includes(error.status);
+      if (!known) uncertainCancel.current.add(record.id);
+      setCancelMessage(
+        known
+          ? error.message
+          : "The action result is unknown. Do not send it again. Refresh the records and ask the organiser to check.",
+      );
+    } finally {
+      cancelFlight.current = false;
+      setCancelBusy(false);
+    }
+  };
   useEffect(() => {
     controller.accountChanged();
     controller.load();
   }, [controller, auth.user?.id, auth.revision]);
-  const busy = controller.busy;
+  const busy = controller.busy || cancelBusy;
   return (
     <section className="registrations">
       <div
@@ -2019,6 +2173,7 @@ function RegistrationList({ organizer }) {
       </div>
       <Notice error={state.status === "error"}>{state.message}</Notice>
       <Notice error={state.actionError}>{state.actionMessage}</Notice>
+      <Notice>{cancelMessage}</Notice>
       {state.status === "loading" && (
         <div className="loading-state">
           <span className="spinner" />
@@ -2087,6 +2242,21 @@ function RegistrationList({ organizer }) {
                       {tr("Approve")}
                     </button>
                   )}
+                  {["pending", "approved", "waiting"].includes(
+                    record.status,
+                  ) && (
+                    <button
+                      className="button button-quiet button-small"
+                      disabled={
+                        busy ||
+                        controller.locked(record.id) ||
+                        uncertainCancel.current.has(record.id)
+                      }
+                      onClick={() => setConfirm(record.id)}
+                    >
+                      {tr("Cancel")}
+                    </button>
+                  )}
                 </>
               ) : (
                 ["pending", "approved", "waiting"].includes(record.status) && (
@@ -2112,9 +2282,11 @@ function RegistrationList({ organizer }) {
                   disabled={controller.locked(record.id)}
                   onClick={() => {
                     setConfirm(null);
-                    controller.cancel(record.id, {
-                      confirmed: true,
-                    });
+                    if (organizer) organizerCancel(record);
+                    else
+                      controller.cancel(record.id, {
+                        confirmed: true,
+                      });
                   }}
                 >
                   {tr("Confirm cancellation")}
@@ -2126,6 +2298,12 @@ function RegistrationList({ organizer }) {
                   {tr("Keep registration")}
                 </button>
               </div>
+            )}
+            {!organizer && (
+              <PrivateDocuments
+                runtime={runtime}
+                files={record.supporting_documents || []}
+              />
             )}
           </article>
         ))}
@@ -2165,6 +2343,10 @@ function RegistrationList({ organizer }) {
                 <dt>{tr("Channel")}</dt>
                 <dd>{titleCase(state.detail.channel)}</dd>
               </dl>
+              <PrivateDocuments
+                runtime={runtime}
+                files={state.detail.supporting_documents || []}
+              />
             </section>
           )}
         </div>
@@ -2286,7 +2468,7 @@ function Help({ leader = false }) {
             <h2>{tr("Available in this version")}</h2>
             <p>
               {tr(
-                "English event browsing, account access, online applications and organizer registration review require an internet connection to the local server. Offline mode, translations, messages and analytics are not available.",
+                "Public browsing, account access and online writes require a connection. Synthetic local capture is available only in Offline drafts. Messages and automated notifications are not connected.",
               )}
             </p>
           </>
@@ -2296,6 +2478,9 @@ function Help({ leader = false }) {
   );
 }
 export default function App({ runtime }) {
+  useTranslation(undefined, {
+    i18n,
+  });
   const [route, setRoute] = useState(readLocation);
   const auth = useSyncExternalStore(runtime.subscribe, runtime.getSnapshot);
   const navigate = (view, params = {}) => {
@@ -2320,7 +2505,7 @@ export default function App({ runtime }) {
     };
   }, [runtime]);
   useEffect(() => {
-    document.title = `${
+    document.title = `${tr(
       {
         home: "Community events",
         events: "Explore events",
@@ -2334,10 +2519,13 @@ export default function App({ runtime }) {
         manage: "Manage registrations",
         profile: "Profile",
         help: "Help",
-        leader: "Leader workspace",
-      }[route.view] || "Page not found"
-    } | ROSE · PULSE`;
-  }, [route.view]);
+        leader: "Offline drafts",
+        offline: "Offline drafts",
+        "organizer-events": "Your events",
+        analytics: "Registration overview",
+      }[route.view] || "Page not found",
+    )} | ROSE · PULSE`;
+  }, [route.view, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
     case "home":
@@ -2369,6 +2557,16 @@ export default function App({ runtime }) {
       break;
     case "manage":
       content = <Registrations organizer />;
+      break;
+    case "organizer-events":
+      content = (
+        <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate} />
+      );
+      break;
+    case "analytics":
+      content = (
+        <OrganizerAnalytics runtime={runtime} auth={auth} navigate={navigate} />
+      );
       break;
     case "profile":
       content = <Profile />;
@@ -2411,7 +2609,15 @@ export default function App({ runtime }) {
           className="view-transition"
           key={`${route.view}:${route.event}:${auth.revision}`}
         >
-          {content}
+          <React.Suspense
+            fallback={
+              <div className="loading-state" role="status">
+                {"Loading current workspace…"}
+              </div>
+            }
+          >
+            {content}
+          </React.Suspense>
         </div>
       </Shell>
     </Context.Provider>

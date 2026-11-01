@@ -76,7 +76,7 @@ beforeEach(() => {
 });
 
 describe("React application workflows (controlled API fixtures)", () => {
-  it("renders the live list and an honest English-only language control", async () => {
+  it("renders the live list and explicit EN/MS choices with formal review still pending", async () => {
     const { user, api } = await setup();
     expect(
       await screen.findByRole("heading", { name: event.title }),
@@ -86,8 +86,10 @@ describe("React application workflows (controlled API fixtures)", () => {
     );
     await user.click(screen.getByRole("button", { name: "EN" }));
     expect(
-      screen.getByText(/More languages are not yet available/),
+      screen.getByText(/NGO language and sensitive-consent review are pending/),
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "English" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Bahasa Melayu" })).toBeEnabled();
     expect(screen.queryByText("5,000")).not.toBeInTheDocument();
   });
   it("uses only the server keyword search contract and resets pagination", async () => {
@@ -139,11 +141,14 @@ describe("React application workflows (controlled API fixtures)", () => {
     await user.click(screen.getByRole("button", { name: /Continue as guest/ }));
     await user.type(screen.getByLabelText("First name"), "Synthetic");
     await user.type(screen.getByLabelText("Last name"), "Example");
+    await user.type(screen.getByLabelText('Phone'),'TEST');
+    await user.type(screen.getByLabelText('National ID'),'SYNTHETIC-ONLY-001');
     fireEvent.change(screen.getByLabelText("Date of birth"), {
       target: { value: "1990-01-01" },
     });
     await user.selectOptions(screen.getByLabelText("Gender"), "female");
-    await user.selectOptions(screen.getByLabelText("Marital status"), "single");
+    for (const field of ["Marital status", "Address", "Income band code"])
+      expect(screen.queryByLabelText(field)).not.toBeInTheDocument();
     await user.click(
       screen.getByRole("button", { name: /Submit application/ }),
     );
@@ -157,10 +162,18 @@ describe("React application workflows (controlled API fixtures)", () => {
       event.public_id,
       expect.objectContaining({
         first_name: "Synthetic",
-        medical_record: null,
       }),
       1,
     );
+    for (const field of [
+      "address",
+      "income_band_code",
+      "marriage_status",
+      "medical_record",
+    ])
+      expect(Object.hasOwn(registerGuestForEvent.mock.calls[0][1], field)).toBe(
+        false,
+      );
     expect(storage.setItem).not.toHaveBeenCalled();
     expect(
       screen.getByText(

@@ -15,13 +15,30 @@ function translated(value) {
     types.stringLiteral(value),
   ]);
 }
-for (const file of ["src/App.jsx", "src/offline/OfflineWorkspace.jsx"]) {
+for (const file of [
+  "src/App.jsx",
+  "src/offline/OfflineWorkspace.jsx",
+  "src/FilePicker.jsx",
+  "src/OrganizerWorkspace.jsx",
+  "src/EventShare.jsx",
+]) {
   const source = readFileSync(file, "utf8").replace(
     /^import \{ tr \} from ["']\.\.?\/i18n\/index\.js["'];?\r?\n/gm,
     "",
   );
   const ast = parse(source, { sourceType: "module", plugins: ["jsx"] });
   traverse(ast, {
+    StringLiteral(path) {
+      const value = path.node.value;
+      if (
+        value.length > 10 &&
+        value.includes(" ") &&
+        /^[A-Z][a-z]/.test(value) &&
+        !value.includes("<") &&
+        !value.startsWith("Bearer ")
+      )
+        keys.add(value);
+    },
     CallExpression(path) {
       if (
         types.isIdentifier(path.node.callee, { name: "tr" }) &&
@@ -92,14 +109,21 @@ for (const file of ["src/App.jsx", "src/offline/OfflineWorkspace.jsx"]) {
         path.replaceWith(path.node.arguments[0]);
     },
   });
-  ast.program.body.unshift(
-    types.importDeclaration(
-      [types.importSpecifier(types.identifier("tr"), types.identifier("tr"))],
-      types.stringLiteral(
-        file.includes("/offline/") ? "../i18n/index.js" : "./i18n/index.js",
+  if (
+    !ast.program.body.some(
+      (node) =>
+        types.isImportDeclaration(node) &&
+        node.specifiers.some((specifier) => specifier.local.name === "tr"),
+    )
+  )
+    ast.program.body.unshift(
+      types.importDeclaration(
+        [types.importSpecifier(types.identifier("tr"), types.identifier("tr"))],
+        types.stringLiteral(
+          file.includes("/offline/") ? "../i18n/index.js" : "./i18n/index.js",
+        ),
       ),
-    ),
-  );
+    );
   writeFileSync(file, generate(ast, { retainLines: false }).code + "\n");
 }
 for (const file of [
@@ -110,6 +134,10 @@ for (const file of [
   "frontend/live/registration.mjs",
   "frontend/live/registrations-page.mjs",
   "frontend/rose-pulse-react/src/service.js",
+  "frontend/rose-pulse-react/src/phase2-api.js",
+  "frontend/rose-pulse-react/src/minimum-registration.js",
+  "frontend/rose-pulse-react/src/gallery-controller.js",
+  "frontend/rose-pulse-react/src/offline/sync.js",
 ]) {
   const path = "../" + file.replace(/^frontend\//, "");
   const ast = parse(readFileSync(path, "utf8"), { sourceType: "module" });
@@ -130,6 +158,8 @@ for (const file of [
 mkdirSync("src/i18n", { recursive: true });
 const previous = JSON.parse(readFileSync("src/i18n/en.json", "utf8") || "{}");
 for (const key of keys) previous[key] = key;
+const malay = JSON.parse(readFileSync("src/i18n/ms.json", "utf8"));
+for (const key of Object.keys(malay)) previous[key] = key;
 for (const key of [
   "alert",
   "status",
@@ -151,6 +181,8 @@ for (const key of [
   "ticket",
   "user",
   "users",
+  "image/png,image/jpeg,image/webp,image/gif,application/pdf",
+  "image/png,image/jpeg,image/webp,image/gif",
 ])
   delete previous[key];
 writeFileSync(

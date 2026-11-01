@@ -2428,3 +2428,239 @@ legend {
     justify-content: flex-start;
   }
 }
+.sidebar {
+  overflow-y: auto;
+}
+.file-previews {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin: 15px 0;
+}
+.file-preview {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  overflow: hidden;
+  min-width: 0;
+  padding-bottom: 8px;
+}
+.file-preview > img {
+  width: 100%;
+  height: 105px;
+  object-fit: cover;
+}
+.file-preview > span,
+.file-preview > small {
+  display: block;
+  padding: 0 9px;
+  font-size: 10px;
+  overflow-wrap: anywhere;
+  margin: 6px 0;
+}
+.file-preview > small {
+  color: var(--muted);
+  font-size: 9px;
+}
+.file-preview > .text-button {
+  font-size: 10px;
+  margin-left: 4px;
+}
+.document-symbol {
+  height: 75px;
+  background: #eceee4;
+  color: #62735a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+.gallery-thumbnails {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+.gallery-thumbnails > button {
+  border: 2px solid transparent;
+  padding: 0;
+  background: none;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 90px;
+  height: 64px;
+}
+.gallery-thumbnails > button.is-active {
+  border-color: var(--green);
+}
+.gallery-thumbnails img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.private-documents {
+  border-top: 1px solid var(--line);
+  padding-top: 15px;
+  margin-top: 15px;
+  flex-basis: 100%;
+}
+.private-documents h4 {
+  font-size: 12px;
+}
+.private-documents > .text-button {
+  display: block;
+  margin: 5px 0;
+  font-size: 11px;
+  overflow-wrap: anywhere;
+  text-align: left;
+}
+.language-options {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 14px 0;
+}
+.event-share {
+  border-top: 1px solid var(--line);
+  margin-top: 25px;
+  padding-top: 22px;
+}
+.event-share h3 {
+  font-size: 15px;
+}
+.event-share .form-actions {
+  margin-top: 14px;
+  gap: 10px;
+}
+.event-share > .small {
+  font-size: 10px;
+  margin-top: 14px;
+}
+.public-share-link {
+  display: block;
+  width: 100%;
+  border: 1px solid #dce3d4;
+  background: white;
+  border-radius: 5px;
+  padding: 8px;
+  margin-top: 10px;
+  font-size: 10px;
+}
+.analytics-workspace {
+  padding: 0 0 30px;
+}
+.analytics-workspace > .small {
+  margin-top: 17px;
+}
+.analytics-totals {
+  display: flex;
+  gap: 45px;
+  margin: 25px 0 40px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 25px 0;
+}
+.analytics-totals > div {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.analytics-totals strong {
+  font-size: 38px;
+  line-height: 1;
+  color: var(--forest);
+}
+.analytics-totals span {
+  font-size: 12px;
+  color: var(--muted);
+}
+.analytics-sections {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 35px;
+}
+.analytics-sections h2,
+.analytics-events h2 {
+  font-size: 19px;
+}
+.analytics-bar {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin: 17px 0;
+  font-size: 11px;
+}
+.analytics-bar > span {
+  width: 100px;
+  color: var(--muted);
+}
+.analytics-bar > div {
+  flex: 1;
+  height: 9px;
+  background: #e9eee3;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.analytics-bar i {
+  height: 100%;
+  display: block;
+  background: var(--green);
+  border-radius: 8px;
+}
+.analytics-bar > strong {
+  width: 30px;
+  text-align: right;
+}
+.analytics-events {
+  margin-top: 35px;
+}
+.analytics-event {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+  padding: 15px 0;
+  font-size: 12px;
+}
+.offline-workspace .empty-state .checkbox-label {
+  max-width: 440px;
+  text-align: left;
+  margin-bottom: 20px;
+}
+@media (max-width: 700px) {
+  .file-previews {
+    gap: 8px;
+  }
+  .file-preview > img {
+    height: 75px;
+  }
+  .file-preview > span {
+    font-size: 8px;
+    padding: 0 6px;
+  }
+  .file-preview > small {
+    font-size: 8px;
+    padding: 0 6px;
+  }
+  .analytics-sections {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .analytics-totals {
+    gap: 30px;
+  }
+  .analytics-totals strong {
+    font-size: 32px;
+  }
+  .event-share .form-actions {
+    gap: 8px;
+  }
+  .event-share .button {
+    font-size: 10px;
+  }
+  .language-popover {
+    right: -50px;
+  }
+  .file-picker .checkbox-label {
+    font-size: 10px;
+  }
+}

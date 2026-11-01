@@ -9,6 +9,18 @@ const TYPES = {'.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf
   '.mjs':'text/javascript; charset=utf-8', '.js':'text/javascript; charset=utf-8',
   '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.md':'text/plain; charset=utf-8'};
 const MAX_BODY = 1024 * 1024;
+const MAX_V2_FILE_BODY = 8 * 1024 * 1024 + 64 * 1024;
+const V2_ID = '[0-7][0-9A-HJKMNP-TV-Z]{25}';
+const V2_UUID = '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
+const V2_EVENT = '[A-Za-z0-9_-]{21}';
+const v2Allowed = (method, path) => {
+  if (method === 'POST' && path === '/api/v2/files') return true;
+  if (['GET', 'HEAD'].includes(method) && new RegExp(`^/api/v2/files/${V2_ID}/content$`).test(path)) return true;
+  if (method === 'GET' && ['/api/v2/me/events', '/api/v2/me/registrations', '/api/v2/analytics/registrations'].includes(path)) return true;
+  if (method === 'POST' && new RegExp(`^/api/v2/registrations/${V2_ID}/cancel$`).test(path)) return true;
+  if (method === 'POST' && new RegExp(`^/api/v2/events/${V2_EVENT}/offline-batches$`).test(path)) return true;
+  return method === 'GET' && new RegExp(`^/api/v2/events/${V2_EVENT}/(?:offline-batches|offline-submissions)/${V2_UUID}$`).test(path);
+};
 const IMAGE_TYPES = {'.png':'image/png', '.jpg':'image/jpeg', '.jpeg':'image/jpeg',
   '.webp':'image/webp', '.gif':'image/gif'};
 const hasImageSignature = (bytes, extension) => {
@@ -46,13 +58,15 @@ export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT
       const decoded = decodeURIComponent(rawPath);
       if (decoded.split('/').some(p => p === '..' || p.startsWith('.')) || decoded.includes('\\')) return json(response, 403, 'Path not allowed.');
       const url = new URL(request.url, 'http://localhost');
-      if (url.pathname.startsWith('/api/v1/')) {
+      if (url.pathname.startsWith('/api/v1/') || url.pathname.startsWith('/api/v2/')) {
+        const v2 = url.pathname.startsWith('/api/v2/');
         const eventPatch = request.method === 'PATCH' && /^\/api\/v1\/events\/[A-Za-z0-9_-]{21}$/.test(rawPath);
-        if (!['GET', 'HEAD', 'POST'].includes(request.method) && !eventPatch) return json(response, 405, 'Method not supported by this development proxy.');
+        if (v2 ? !v2Allowed(request.method, rawPath) : !['GET', 'HEAD', 'POST'].includes(request.method) && !eventPatch) return json(response, 405, 'Method or route not supported by this development proxy.');
+        const bodyLimit = request.method === 'POST' && rawPath === '/api/v2/files' ? MAX_V2_FILE_BODY : MAX_BODY;
         const parts = []; let size = 0;
         for await (const part of request) {
           size += part.length;
-          if (size > MAX_BODY) return json(response, 413, 'Request too large.');
+          if (size > bodyLimit) return json(response, 413, 'Request too large.');
           parts.push(part);
         }
         const headers = {'Accept':'application/json'};
@@ -65,7 +79,9 @@ export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT
             body:['GET','HEAD'].includes(request.method) ? undefined : Buffer.concat(parts)
           });
           const data = Buffer.from(await result.arrayBuffer());
-          response.writeHead(result.status, {'Content-Type':result.headers.get('content-type') || 'application/json'});
+          const responseHeaders = {'Content-Type':result.headers.get('content-type') || 'application/json'};
+          if (v2 && /\/content$/.test(rawPath) && result.headers.get('content-disposition')) responseHeaders['Content-Disposition'] = result.headers.get('content-disposition');
+          response.writeHead(result.status, responseHeaders);
           response.end(request.method === 'HEAD' ? undefined : data);
         } catch (error) {
           const write = !['GET', 'HEAD'].includes(request.method);

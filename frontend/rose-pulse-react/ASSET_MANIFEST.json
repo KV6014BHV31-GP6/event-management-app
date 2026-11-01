@@ -1,0 +1,32 @@
+{
+  "roles": {
+    "flyer": "NOT_IMPLEMENTED: sharing uses public text/link only",
+    "thumbnail": "Branded inline SVG placeholder in src/App.jsx when actual event image is absent",
+    "gallery": "Actual authenticated uploads from runtime FileReference IDs; source hashes belong to the external synthetic fixture evidence, not inferred NGO photos",
+    "hero": "lake-demo"
+  },
+  "schema_version": 1,
+  "assets": [
+    {
+      "path": "public/images/community-lake.jpg",
+      "license": "https://unsplash.com/license",
+      "demoStatus": "Decorative demo image, not verified NGO people, activity or venue",
+      "id": "lake-demo",
+      "sha256": "8d3cba510166fd408dbbfac0ddff6437c2facff18f1c0726e12f9cd4b0ed4b0f",
+      "alt": "Mountain lake surrounded by a green forest",
+      "usage": ["hero", "optional synthetic gallery fixture source"],
+      "source": "https://images.unsplash.com/photo-1501785888041-af3ef285b470"
+    },
+    {
+      "path": "public/icon.svg",
+      "license": "Repository original code asset",
+      "demoStatus": "Original brand illustration; no photograph",
+      "id": "leaf-icon",
+      "sha256": "e236393a135cea7dc0035ba2e0466b6447b79b3ab711adcbd7a0a4f78d772dab",
+      "alt": "ROSE PULSE leaf brand",
+      "usage": ["PWA icon"],
+      "source": "Original ROSE PULSE SVG authored in this repository"
+    }
+  ],
+  "boundary": "No paid API, generated NGO photography, or claims that stock imagery depicts actual participants."
+}

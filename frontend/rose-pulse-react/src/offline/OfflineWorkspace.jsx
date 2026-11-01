@@ -1,5 +1,6 @@
 import { tr } from "../i18n/index.js";
 import React, { useEffect, useRef, useState } from "react";
+import { minimumRegistrationPayload } from "../minimum-registration.js";
 const messages = {
   offline_storage_full:
     "Device storage is full. This draft was not confirmed saved. Free space and check the local queue before saving again.",
@@ -35,6 +36,7 @@ export default function OfflineWorkspace({
   const actor = auth.offlineActor;
   const [events, setEvents] = useState([]);
   const [drafts, setDrafts] = useState([]);
+  const [batches, setBatches] = useState([]);
   const [eventId, setEventId] = useState(initialEvent);
   const [downloadId, setDownloadId] = useState(initialEvent);
   const [message, setMessage] = useState("");
@@ -45,6 +47,7 @@ export default function OfflineWorkspace({
   const [retentionDays, setRetentionDays] = useState(7);
   const [deleteConfirm, setDeleteConfirm] = useState(false);
   const [consent, setConsent] = useState(false);
+  const [unlockConfirmed, setUnlockConfirmed] = useState(false);
   const form = useRef(null);
   const submission = useRef(crypto.randomUUID());
   const lock = useRef(false);
@@ -52,14 +55,18 @@ export default function OfflineWorkspace({
     if (!actor) {
       setEvents([]);
       setDrafts([]);
+      setBatches([]);
       return;
     }
-    const [savedEvents, savedDrafts] = await Promise.all([
+    const [savedEvents, savedDrafts, savedBatches] = await Promise.all([
       runtime.offline.events(actor),
       runtime.offline.drafts(actor),
+      runtime.offline.batches(actor),
     ]);
+    if (runtime.getSnapshot().offlineActor?.id !== actor.id) return;
     setEvents(savedEvents);
     setDrafts(savedDrafts);
+    setBatches(savedBatches);
   };
   useEffect(() => {
     const changed = () => setOnline(navigator.onLine);
@@ -75,6 +82,7 @@ export default function OfflineWorkspace({
     if (!actor) {
       setEvents([]);
       setDrafts([]);
+      setBatches([]);
       return;
     }
     (async () => {
@@ -125,7 +133,7 @@ export default function OfflineWorkspace({
     operate(async () => {
       await runtime.offline.saveDraft(actor, {
         event_public_id: eventId,
-        application: values,
+        application: minimumRegistrationPayload(values),
         client_submission_id: submission.current,
         syntheticConfirmed: consent,
         retentionDays,
@@ -189,7 +197,47 @@ export default function OfflineWorkspace({
       </div>
       {!actor ? (
         <div className="empty-state">
-          <h2>{tr("Online login required to unlock local drafts")}</h2>
+          <h2>
+            {tr(
+              auth.offlineCandidate && !auth.identityBlocked
+                ? "Unlock synthetic local workspace"
+                : "Online login required to unlock local drafts",
+            )}
+          </h2>
+          {auth.offlineCandidate && !auth.identityBlocked && (
+            <>
+              <p>
+                {tr(
+                  "A previously verified local actor is available for synthetic capture only. This is not current server authentication and does not protect data from another person using this device.",
+                )}
+              </p>
+              <label className="checkbox-label">
+                <input
+                  type="checkbox"
+                  checked={unlockConfirmed}
+                  onChange={(event) => setUnlockConfirmed(event.target.checked)}
+                />
+                {tr(
+                  "I understand this unlocks unencrypted synthetic local data only.",
+                )}
+              </label>
+              <button
+                className="button"
+                disabled={!unlockConfirmed}
+                onClick={() => {
+                  try {
+                    runtime.unlockSyntheticWorkspace({
+                      syntheticConfirmed: unlockConfirmed,
+                    });
+                  } catch (failure) {
+                    setError(localMessage(failure));
+                  }
+                }}
+              >
+                {tr("Unlock local synthetic drafts")}
+              </button>
+            </>
+          )}
           <p>
             {tr(
               "Log in as the same leader or organizer that captured them. Logout retains drafts but locks access. A different account cannot open that queue through this app.",
@@ -215,12 +263,12 @@ export default function OfflineWorkspace({
           </div>
           {message && (
             <div className="notice" role="status">
-              {message}
+              {tr(message)}
             </div>
           )}
           {error && (
             <div className="notice notice-error" role="alert">
-              {error}
+              {tr(error)}
             </div>
           )}
           <section className="form-surface offline-download">
@@ -294,7 +342,7 @@ export default function OfflineWorkspace({
                       ["national_id", "National ID"],
                     ].map(([name, label]) => (
                       <label className="field" key={name}>
-                        <span>{label}</span>
+                        <span>{tr(label)}</span>
                         <input
                           name={name}
                           required
@@ -315,10 +363,6 @@ export default function OfflineWorkspace({
                     <label className="field">
                       <span>{tr("Date of birth")}</span>
                       <input name="date_of_birth" type="date" required />
-                    </label>
-                    <label className="field field-wide">
-                      <span>{tr("Address")}</span>
-                      <textarea name="address" required rows={2} />
                     </label>
                   </div>
                   <label className="field">
@@ -382,7 +426,10 @@ export default function OfflineWorkspace({
                     ? tr("Persistence granted by browser.")
                     : tr("Persistence not granted; eviction remains possible.")}
                   {storage.quota !== null &&
-                    ` ${Math.round(storage.usage / 1024)} KiB used of ${Math.round(storage.quota / 1024)} KiB reported.`}
+                    tr("{{used}} KiB used of {{quota}} KiB reported.", {
+                      used: Math.round(storage.usage / 1024),
+                      quota: Math.round(storage.quota / 1024),
+                    })}
                 </p>
               )}
             </aside>
@@ -421,7 +468,7 @@ export default function OfflineWorkspace({
                     <p className="small muted">
                       {events.find(
                         (row) => row.event.public_id === draft.event_public_id,
-                      )?.event.title || "Downloaded event"}
+                      )?.event.title || tr("Downloaded event")}
                     </p>
                     {draft.reason_code && (
                       <p className="small muted">
@@ -435,7 +482,7 @@ export default function OfflineWorkspace({
                       </p>
                     )}
                   </div>
-                  <span className="status">{stateLabels[draft.state]}</span>
+                  <span className="status">{tr(stateLabels[draft.state])}</span>
                   <div className="record-actions">
                     {draft.state === "draft" && (
                       <button
@@ -456,7 +503,7 @@ export default function OfflineWorkspace({
                         {tr("Queue for manual sync")}
                       </button>
                     )}
-                    {!["syncing", "needs_review"].includes(draft.state) && (
+                    {!draft.batch_id && (
                       <button
                         className="text-button"
                         disabled={busy}
@@ -479,12 +526,81 @@ export default function OfflineWorkspace({
             <div className="form-actions">
               <button
                 className="button"
-                disabled
-                title={tr("The admitted sync adapter is being connected.")}
+                disabled={
+                  busy ||
+                  !online ||
+                  !drafts.some(
+                    (row) =>
+                      row.event_public_id === eventId &&
+                      row.state === "pending_sync" &&
+                      !row.batch_id,
+                  )
+                }
+                onClick={() =>
+                  operate(async () => {
+                    await runtime.manualSync.sync(actor, eventId);
+                    setMessage(
+                      "Server batch receipt verified. Synced records are pending, not approved.",
+                    );
+                  })
+                }
               >
-                {tr("Manual sync \u2014 not connected yet")}
+                {tr("Manually sync selected event")}
               </button>
             </div>
+            {batches
+              .filter((batch) => batch.state === "needs_review")
+              .map((batch) => (
+                <div className="notice" key={batch.batch_id}>
+                  <strong>{tr("Saved batch needs reconciliation")}</strong>
+                  <p>
+                    {tr(
+                      "No new IDs will be created. Read the server receipt before another send.",
+                    )}{" "}
+                    · {batch.batch_id.slice(-8)}
+                  </p>
+                  <div className="form-actions">
+                    <button
+                      className="button button-quiet"
+                      disabled={busy || !online}
+                      onClick={() =>
+                        operate(async () => {
+                          const result = await runtime.manualSync.reconcile(
+                            actor,
+                            batch.batch_id,
+                          );
+                          setMessage(
+                            result.state === "not_found"
+                              ? "No receipt found. You may explicitly retry the exact saved batch with the same IDs."
+                              : "Existing server receipt verified. No application was sent again.",
+                          );
+                        })
+                      }
+                    >
+                      {tr("Reconcile saved batch")}
+                    </button>
+                    {batch.reconcile_status === "not_found" && (
+                      <button
+                        className="button"
+                        disabled={busy || !online}
+                        onClick={() =>
+                          operate(async () => {
+                            await runtime.manualSync.replayExact(
+                              actor,
+                              batch.batch_id,
+                            );
+                            setMessage(
+                              "Same-ID batch result verified. No new submission IDs were created.",
+                            );
+                          })
+                        }
+                      >
+                        {tr("Retry exact saved batch (same IDs)")}
+                      </button>
+                    )}
+                  </div>
+                </div>
+              ))}
           </section>
           <section className="offline-data-controls">
             <h2>{tr("Delete local data")}</h2>

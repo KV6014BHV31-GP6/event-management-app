@@ -269,14 +269,12 @@ export function createOfflineStore({
           },
         };
         for (const row of entries)
-          await transaction
-            .objectStore("drafts")
-            .put({
-              ...row,
-              batch_id: batchId,
-              state: "syncing",
-              updated_at: timestamp,
-            });
+          await transaction.objectStore("drafts").put({
+            ...row,
+            batch_id: batchId,
+            state: "syncing",
+            updated_at: timestamp,
+          });
         await transaction.objectStore("batches").put(batch);
         await transaction.done;
         return await api.batch(actor, batchId);
@@ -317,27 +315,61 @@ export function createOfflineStore({
         const timestamp = now();
         for (const item of batch.items)
           if (item.state !== "synced")
-            await transaction
-              .objectStore("drafts")
-              .put({
-                ...item,
-                state: "needs_review",
-                reason_code: reason,
-                updated_at: timestamp,
-              });
+            await transaction.objectStore("drafts").put({
+              ...item,
+              state: "needs_review",
+              reason_code: reason,
+              updated_at: timestamp,
+            });
         const { items, ...saved } = batch;
-        await transaction
-          .objectStore("batches")
-          .put({
-            ...saved,
-            state: "needs_review",
-            reason_code: reason,
-            updated_at: timestamp,
-          });
+        await transaction.objectStore("batches").put({
+          ...saved,
+          state: "needs_review",
+          reason_code: reason,
+          updated_at: timestamp,
+        });
         await transaction.done;
       } catch (error) {
         return safeFailure(error);
       }
+    },
+    async markReconciledMissing(actor, id) {
+      const batch = await api.batch(actor, id);
+      const { items, ...saved } = batch;
+      await api.markUnknown(actor, id);
+      return saveReadback("batches", {
+        ...saved,
+        state: "needs_review",
+        reconcile_status: "not_found",
+        updated_at: now(),
+      });
+    },
+    async markReplayStarted(actor, id) {
+      const batch = await api.batch(actor, id);
+      if (
+        batch.state !== "needs_review" ||
+        batch.reconcile_status !== "not_found"
+      )
+        throw new LocalStoreError("offline_record_locked");
+      const transaction = (await db()).transaction(
+        ["drafts", "batches"],
+        "readwrite",
+      );
+      const timestamp = now();
+      for (const item of batch.items)
+        await transaction
+          .objectStore("drafts")
+          .put({ ...item, state: "syncing", updated_at: timestamp });
+      const { items, ...saved } = batch;
+      await transaction
+        .objectStore("batches")
+        .put({
+          ...saved,
+          state: "syncing",
+          reconcile_status: null,
+          updated_at: timestamp,
+        });
+      await transaction.done;
     },
     async recover(actor) {
       try {
@@ -373,20 +405,18 @@ export function createOfflineStore({
           const receipt = receipts.find(
             (row) => row.client_submission_id === item.client_submission_id,
           );
-          await transaction
-            .objectStore("drafts")
-            .put({
-              ...item,
-              state:
-                receipt.outcome === "accepted"
-                  ? "synced"
-                  : receipt.outcome === "duplicate"
-                    ? "needs_review"
-                    : "failed",
-              receipt: structuredClone(receipt),
-              reason_code: receipt.code ?? null,
-              updated_at: timestamp,
-            });
+          await transaction.objectStore("drafts").put({
+            ...item,
+            state:
+              receipt.outcome === "accepted"
+                ? "synced"
+                : receipt.outcome === "duplicate"
+                  ? "needs_review"
+                  : "failed",
+            receipt: structuredClone(receipt),
+            reason_code: receipt.code ?? null,
+            updated_at: timestamp,
+          });
         }
         const { items, ...saved } = batch;
         await transaction

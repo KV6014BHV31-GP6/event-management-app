@@ -1,8 +1,15 @@
 import { ApiError, createApi } from "../../live/api.mjs";
 import { browserSessionStorage, createSession } from "../../live/session.mjs";
 import { createOfflineStore } from "./offline/queue.js";
+import { createManualSync } from "./offline/sync.js";
+import { createPhase2Api } from "./phase2-api.js";
+import { createMinimumRegistrationController } from "./minimum-registration.js";
+import { createSyntheticAccess } from "./offline/access.js";
+import {
+  createGalleryEventController,
+  createGalleryEditController,
+} from "./gallery-controller.js";
 
-const OFFLINE_ACTOR_KEY = "rose.offline.synthetic-actor";
 import {
   createEventController,
   createEventImageController,
@@ -108,24 +115,21 @@ export function createSignupController({ api, onChange = () => {} }) {
 
 /** React owns presentation; reviewed API, Session and write controllers own contracts. */
 export function createRuntime({
-  api = createApi(),
+  api = createPhase2Api(),
   storage = browserSessionStorage(),
+  offlineAccessStorage,
 } = {}) {
   let bearer = null;
   let offlineActor = null;
   try {
     bearer = storage?.getItem("rose.live.access-token") || null;
-    const saved = JSON.parse(storage?.getItem(OFFLINE_ACTOR_KEY) || "null");
-    if (
-      bearer &&
-      saved &&
-      typeof saved.id === "string" &&
-      ["leader", "organizer"].includes(saved.role)
-    )
-      offlineActor = saved;
   } catch {
     /* unavailable storage never unlocks another actor */
   }
+  const syntheticAccess = createSyntheticAccess({
+    storage: offlineAccessStorage,
+  });
+  if (bearer) offlineActor = syntheticAccess.candidate;
   const sessionApi = {
     ...api,
     async login(values) {
@@ -137,21 +141,11 @@ export function createRuntime({
   const session = createSession({ api: sessionApi, storage });
   const offline = createOfflineStore();
   const rememberActor = (profile) => {
-    offlineActor =
-      profile && ["leader", "organizer"].includes(profile.role)
-        ? {
-            id: profile.id,
-            role: profile.role,
-            verified_at: new Date().toISOString(),
-          }
-        : null;
-    try {
-      if (offlineActor)
-        storage?.setItem(OFFLINE_ACTOR_KEY, JSON.stringify(offlineActor));
-      else storage?.removeItem(OFFLINE_ACTOR_KEY);
-    } catch {
-      /* offline workspace will remain page-scoped */
-    }
+    offlineActor = syntheticAccess.remember(profile);
+  };
+  const lockOfflineActor = () => {
+    syntheticAccess.lock();
+    offlineActor = null;
   };
   const listeners = new Set();
   const stores = new Map();
@@ -164,6 +158,7 @@ export function createRuntime({
     checking: true,
     identityBlocked,
     offlineActor,
+    offlineCandidate: syntheticAccess.candidate,
     message: "",
   };
   const publish = (patch) => {
@@ -174,7 +169,8 @@ export function createRuntime({
       revision: session.revision,
       persistent: session.persistent,
       identityBlocked,
-      offlineActor: session.hasToken ? offlineActor : null,
+      offlineActor,
+      offlineCandidate: syntheticAccess.candidate,
       ...patch,
     };
     for (const listener of listeners) listener();
@@ -183,7 +179,10 @@ export function createRuntime({
     // Session intentionally clears rejected credentials on 401. Preserve the
     // failed-identity latch until an explicit local logout, so that clearing a
     // token cannot silently turn an authenticated operation into Guest mode.
-    if (snapshot.hasToken && !session.hasToken) identityBlocked = true;
+    if (snapshot.hasToken && !session.hasToken) {
+      identityBlocked = true;
+      lockOfflineActor();
+    }
     if (
       snapshot.user !== session.user ||
       snapshot.revision !== session.revision ||
@@ -192,10 +191,18 @@ export function createRuntime({
       publish({});
   };
   let restorePromise;
-  return {
+  let runtime;
+  const manualSync = createManualSync({
+    store: offline,
+    api,
+    verifyIdentity: (actor) => runtime.freshOfflineIdentity(actor),
+    blockAuth: (status) => runtime.blockOfflineAuth(status),
+  });
+  runtime = {
     api,
     session,
     offline,
+    manualSync,
     sync,
     subscribe: (listener) => {
       listeners.add(listener);
@@ -213,12 +220,14 @@ export function createRuntime({
           })
           .catch((error) => {
             if (hadIdentity) identityBlocked = true;
+            if (error.status === 401) lockOfflineActor();
             publish({ checking: false, message: error.message });
           });
       }
       return restorePromise;
     },
     async signIn(values) {
+      lockOfflineActor();
       try {
         const result = await session.signIn(values);
         rememberActor(result.user);
@@ -241,7 +250,7 @@ export function createRuntime({
     logout() {
       const removed = session.logout();
       bearer = null;
-      rememberActor(null);
+      lockOfflineActor();
       identityBlocked = false;
       publish({
         checking: false,
@@ -249,6 +258,17 @@ export function createRuntime({
           ? "You have logged out on this device. Offline synthetic drafts are retained but locked until the same account logs in."
           : "Logged out in memory. Close this tab to clear unavailable browser storage.",
       });
+    },
+    unlockSyntheticWorkspace(options) {
+      if (session.user || identityBlocked)
+        throw new ApiError(
+          "forbidden",
+          "Log in online again to unlock this account.",
+          403,
+        );
+      offlineActor = syntheticAccess.unlock(options);
+      publish({});
+      return offlineActor;
     },
     async freshOfflineIdentity(expectedActor) {
       if (!bearer || !session.hasToken || !expectedActor?.id)
@@ -277,7 +297,7 @@ export function createRuntime({
         if ([401, 403].includes(error.status)) {
           if (error.status === 401) session.logout();
           identityBlocked = true;
-          rememberActor(null);
+          lockOfflineActor();
           publish({});
         }
         throw error;
@@ -287,8 +307,46 @@ export function createRuntime({
       if ([401, 403].includes(status)) {
         if (status === 401) session.logout();
         identityBlocked = true;
-        rememberActor(null);
+        lockOfflineActor();
         publish({});
+      }
+    },
+    async withVerifiedAccount(operation, { roles } = {}) {
+      const expected = session.user;
+      const revision = session.revision;
+      if (!expected || !bearer || !session.hasToken)
+        throw new ApiError(
+          "unauthorized",
+          "Please log in and verify your account first.",
+          401,
+        );
+      try {
+        const profile = await api.getMe(bearer);
+        if (
+          revision !== session.revision ||
+          profile.id !== expected.id ||
+          (roles && !roles.includes(profile.role))
+        )
+          throw new ApiError(
+            "forbidden",
+            "Your account identity or permissions changed. Log in again.",
+            403,
+          );
+        const result = await operation(bearer, profile);
+        if (revision !== session.revision || session.user?.id !== expected.id)
+          throw new ApiError(
+            "uncertain",
+            "Your session changed while submitting. Do not send this action again.",
+          );
+        return result;
+      } catch (error) {
+        if (error.status === 401) {
+          session.logout();
+          identityBlocked = true;
+          lockOfflineActor();
+          publish({});
+        }
+        throw error;
       }
     },
     beginAnotherEvent() {
@@ -323,18 +381,23 @@ export function createRuntime({
           if (kind === "signup")
             return createSignupController({ api, onChange });
           if (kind === "create")
-            return createEventController({ session, onChange });
+            return createGalleryEventController({ session, onChange });
           if (kind === "image")
             return createEventImageController({ session, onChange });
           if (kind === "edit")
-            return createEditEventController({ api, session, onChange });
+            return createGalleryEditController({ api, session, onChange });
           if (kind === "registration")
-            return createRegistrationController({ session, event, onChange });
+            return createMinimumRegistrationController({
+              session,
+              event,
+              onChange,
+            });
           if (kind === "guest")
-            return createGuestRegistrationController({
+            return createMinimumRegistrationController({
               api,
               session,
               event,
+              guest: true,
               canSubmit: () => !identityBlocked && !snapshot.checking,
               onChange,
             });
@@ -347,4 +410,5 @@ export function createRuntime({
       return stores.get(key);
     },
   };
+  return runtime;
 }
