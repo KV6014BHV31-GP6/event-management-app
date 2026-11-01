@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 29,
+  "source_count": 30,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -356,6 +356,14 @@
         "deployment",
         "video_production"
       ]
+    },
+    {
+      "source_id": "USER-ROSE-PULSE-V2-20261102",
+      "title": "Owner ROSE PULSE V2 implementation authorization and visual reference",
+      "classification": "user_authorization_and_design_reference",
+      "raw_in_repository": false,
+      "content_status": "task_authorized_not_team_acceptance",
+      "locator": "Owner request 2026-11-02; private reference image SHA256170fe004d69253f2d9168df29185c03036f473b0f4a03890a32f3017764afc40"
     }
   ]
 }
