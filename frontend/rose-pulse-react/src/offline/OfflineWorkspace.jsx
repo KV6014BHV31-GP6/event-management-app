@@ -104,12 +104,18 @@ export default function OfflineWorkspace({
     setBusy(true);
     setError("");
     setMessage("");
+    let operationFailed = false;
     try {
       await operation();
-      await refresh();
     } catch (failure) {
+      operationFailed = true;
       setError(localMessage(failure));
     } finally {
+      try {
+        await refresh();
+      } catch (failure) {
+        if (!operationFailed) setError(localMessage(failure));
+      }
       lock.current = false;
       setBusy(false);
     }
