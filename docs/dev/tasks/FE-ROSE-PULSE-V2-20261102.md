@@ -1,6 +1,6 @@
 # ROSE PULSE V2 React integration
 
-Status: working-baseline; implementation and independent local acceptance in progress. Source namespace `USER-ROSE-PULSE-V2-20261102`; no team approval or merge authorization.
+Status: working-baseline; LOCAL_VERIFIED with bounded independent Browser/API/native PostgreSQL acceptance. Draft PR55 is delivered; no team acceptance. Source namespace `USER-ROSE-PULSE-V2-20261102`; no team approval or merge authorization.
 
 ## Source and ownership
 
@@ -30,7 +30,7 @@ All paths below start `/api/v1`. Signup `POST /users` sends username/password wi
 
 A01 React start; A02 actual desktop/mobile; A03 identity; A04 API events/search; A05 organizer upload/create/edit; A06 user/Guest registration; A07 own read/cancel; A08 organizer approve/waiting/refill; A09 fresh PostgreSQL linkage; A10 auth/cross-user refusals; A11 legacy/component regression; A12 fixed source/independent review/remote readback.
 
-Initial legacy regression:239/239 Node tests PASS, unchanged assertions. New component/build/browser/native results remain pending until their exact logs exist. Command evidence, source snapshots, private settings and detailed current checkpoint live outside Git at `E:\NU_Local_Environment_20261014\rose-pulse-v2\20261102-032509`. This is a local path, not a public reviewer download. Public summary will be updated after acceptance; raw credentials, database, large logs and video are excluded.
+Final results: React31/31 controlled checks and production build; legacy239/239; Backend29 (26ASGI/SQLite+3native);38 direct HTTP/DB checks; independent browser106 observed HTTP responses with21 passing steps and3 retained harness failures; read-only follow-up23/23 assertions and17GETs. Four independent P2 findings were repaired and rechecked. Native Signup/Login/Create/Edit/image/User/Guest/own-read/Approve/Cancel/promotion/DB linkage passed at frontend `6ddb485a28f6d94230481ce14db45b721c63ca00` / backend `dcbdf47ed8e4d9b816676df97aaa80015c9e1928`. [Independent acceptance summary and actual screenshots](../frontend/rose-pulse-v2/ACCEPTANCE.md) distinguish native, controlled and unrun scopes. Final docs-only delivery binds unchanged product bytes to that tested commit. Raw evidence and private settings remain outside Git at `E:\NU_Local_Environment_20261014\rose-pulse-v2\20261102-032509`; that local path is not a public download. Original failures are retained. No credentials, database, large raw logs or video are committed.
 
 ## Run and boundaries
 

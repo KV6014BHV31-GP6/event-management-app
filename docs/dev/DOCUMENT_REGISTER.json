@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-01T19:42:34.485901+00:00",
-  "reason": "Register ROSE PULSE React source, component tests and verified backend compatibility contract",
-  "document_count": 211,
+  "reviewed_at": "2026-11-01T19:54:38.532113+00:00",
+  "reason": "Finalize independent verdict and verified Chrome/transport boundaries without product changes",
+  "document_count": 214,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -267,7 +267,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 31,
+      "revision": 32,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -450,6 +450,13 @@
           "size_bytes": 19659,
           "superseded_at": "2026-11-01T19:42:34.485901+00:00",
           "reason": "Register ROSE PULSE React source, component tests and verified backend compatibility contract"
+        },
+        {
+          "revision": 31,
+          "sha256": "005ed1c030a0a07a944c9bde7a0e87d551e1d13a37d59469037e66f55bdd1aff",
+          "size_bytes": 20556,
+          "superseded_at": "2026-11-01T19:53:03.567621+00:00",
+          "reason": "Record bounded independent React browser/API/native PostgreSQL acceptance and actual sanitized desktop/mobile screenshots"
         }
       ],
       "import_lineage": {
@@ -462,8 +469,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "005ed1c030a0a07a944c9bde7a0e87d551e1d13a37d59469037e66f55bdd1aff",
-      "size_bytes": 20556,
+      "sha256": "05c41ebf4f5906e7107ed72c8a53327a08f925bde1627c70ccffc38147b15e01",
+      "size_bytes": 20889,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -4396,15 +4403,23 @@
     {
       "document_id": "ROSE-V2-b8338198ad37",
       "path": "docs/dev/tasks/FE-ROSE-PULSE-V2-20261102.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9f954e4034f60b4dcc2d28bb797763a7705693a7c5e43f461a688940f9c4b5af",
+          "size_bytes": 5868,
+          "superseded_at": "2026-11-01T19:53:03.567621+00:00",
+          "reason": "Record bounded independent React browser/API/native PostgreSQL acceptance and actual sanitized desktop/mobile screenshots"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "9f954e4034f60b4dcc2d28bb797763a7705693a7c5e43f461a688940f9c4b5af",
-      "size_bytes": 5868
+      "sha256": "0822ba09db7d829d3a69456936c657d96860a36c21fa4c5207e673e8656db6c5",
+      "size_bytes": 6478
     },
     {
       "document_id": "ROSE-V2-90611dc6391e",
@@ -4574,6 +4589,53 @@
       ],
       "sha256": "927564bd8c96f9b7beab862579177ceaa61631ba089e959ba49b16b898852716",
       "size_bytes": 618
+    },
+    {
+      "document_id": "ROSE-V2-13f063948403",
+      "path": "docs/dev/frontend/rose-pulse-v2/ACCEPTANCE.md",
+      "revision": 2,
+      "owner": "NU ROSE PULSE V2 workstream",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b248665dcca972021a18cf6c5bd7d9572bc45edcadbfcf6b3ca3aff8d2faf8de",
+          "size_bytes": 8702,
+          "superseded_at": "2026-11-01T19:54:38.532113+00:00",
+          "reason": "Finalize independent verdict and verified Chrome/transport boundaries without product changes"
+        }
+      ],
+      "dependencies": [
+        "USER-ROSE-PULSE-V2-20261102"
+      ],
+      "sha256": "c6350589d49ee06c0328664c0c5061ebacded4c205f8ef517c96fc7dd22fa0a1",
+      "size_bytes": 9048
+    },
+    {
+      "document_id": "ROSE-V2-da4b8f1fc323",
+      "path": "docs/dev/frontend/rose-pulse-v2/desktop.png",
+      "revision": 1,
+      "owner": "NU ROSE PULSE V2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PULSE-V2-20261102"
+      ],
+      "sha256": "d8b5adc8887ad98c156e0f0a7a5a30c609208c246e46b332fb3850823712dcc5",
+      "size_bytes": 704809
+    },
+    {
+      "document_id": "ROSE-V2-db9b6524396a",
+      "path": "docs/dev/frontend/rose-pulse-v2/mobile.png",
+      "revision": 1,
+      "owner": "NU ROSE PULSE V2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PULSE-V2-20261102"
+      ],
+      "sha256": "202dc4076f409c6087d3ac2e6fe011d028104d5391944b2fd48e6d871330bac1",
+      "size_bytes": 199629
     }
   ]
 }
