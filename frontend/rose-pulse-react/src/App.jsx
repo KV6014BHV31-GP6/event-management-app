@@ -1119,6 +1119,7 @@ function EventDetail() {
                 {tr("Times use")}
                 {Intl.DateTimeFormat().resolvedOptions().timeZone}.
               </p>
+              <EventShare event={event} />
             </div>
             <aside className="detail-action">
               <Quota event={event} />

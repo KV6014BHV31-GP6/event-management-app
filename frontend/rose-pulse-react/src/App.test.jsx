@@ -10,6 +10,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import App from "./App.jsx";
 import { ApiError, createRuntime } from "./service.js";
+import { changeLanguage, tr } from "./i18n/index.js";
 
 const ID = "01K00000000000000000000001";
 const event = {
@@ -76,6 +77,62 @@ beforeEach(() => {
 });
 
 describe("React application workflows (controlled API fixtures)", () => {
+  it.each([
+    [undefined, "en"],
+    ["user", "ms"],
+  ])(
+    "shows public detail sharing before application for role %s in %s",
+    async (role, language) => {
+      await changeLanguage(language);
+      const canary = "synthetic-private-must-not-share";
+      const registerGuestForEvent = vi.fn();
+      const registerForEvent = vi.fn();
+      const { user, api } = await setup({
+        view: "event",
+        role,
+        params: `&event=${event.public_id}&token=${canary}&registration=${canary}&national_id=${canary}`,
+        methods: {
+          getEvent: vi
+            .fn()
+            .mockResolvedValue({
+              ...event,
+              national_id: canary,
+              token: canary,
+              registration_id: canary,
+            }),
+          registerGuestForEvent,
+          registerForEvent,
+        },
+      });
+      const copy = vi
+        .spyOn(navigator.clipboard, "writeText")
+        .mockResolvedValue();
+      const share = await screen.findByRole("link", {
+        name: tr("Share on WhatsApp"),
+      });
+      const publicUrl = `${window.location.origin}/?view=event&event=${event.public_id}`;
+      const destination = new URL(share.href);
+      expect(destination.origin).toBe("https://wa.me");
+      expect([...destination.searchParams.keys()]).toEqual(["text"]);
+      expect(destination.searchParams.get("text")).toBe(
+        `${event.title}\n${publicUrl}`,
+      );
+      expect(share.href).not.toContain(canary);
+      expect(copy).not.toHaveBeenCalled();
+      expect(api.getEvent).toHaveBeenCalledWith(
+        event.public_id,
+        expect.objectContaining({ signal: expect.any(AbortSignal) }),
+      );
+      expect(registerGuestForEvent).not.toHaveBeenCalled();
+      expect(registerForEvent).not.toHaveBeenCalled();
+      await user.click(
+        screen.getByRole("button", { name: tr("Copy event link") }),
+      );
+      expect(copy).toHaveBeenCalledExactlyOnceWith(publicUrl);
+      expect(registerGuestForEvent).not.toHaveBeenCalled();
+      expect(registerForEvent).not.toHaveBeenCalled();
+    },
+  );
   it("renders the live list and explicit EN/MS choices with formal review still pending", async () => {
     const { user, api } = await setup();
     expect(
@@ -141,8 +198,8 @@ describe("React application workflows (controlled API fixtures)", () => {
     await user.click(screen.getByRole("button", { name: /Continue as guest/ }));
     await user.type(screen.getByLabelText("First name"), "Synthetic");
     await user.type(screen.getByLabelText("Last name"), "Example");
-    await user.type(screen.getByLabelText('Phone'),'TEST');
-    await user.type(screen.getByLabelText('National ID'),'SYNTHETIC-ONLY-001');
+    await user.type(screen.getByLabelText("Phone"), "TEST");
+    await user.type(screen.getByLabelText("National ID"), "SYNTHETIC-ONLY-001");
     fireEvent.change(screen.getByLabelText("Date of birth"), {
       target: { value: "1990-01-01" },
     });
