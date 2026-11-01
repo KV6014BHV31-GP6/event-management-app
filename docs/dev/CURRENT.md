@@ -1,5 +1,11 @@
 # NU Developer 當前狀態
 
+## ROSE PULSE Phase2 Backend — 2026-11-02
+
+**ACCEPT_BOUNDED_NATIVE_SYNTHETIC_PHASE2** for backend `54ab71d29852df26f17fb32317e405e5a48353ea` with frontend `4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e`. [Task](tasks/BE-ROSE-PHASE2-20261102.md), [acceptance](phase2/BACKEND_ACCEPTANCE.md). DraftPR57 remains based on PR40; frontend companion is DraftPR56. Native idempotency/role/deadlock/migration evidence and independent Browser/API/READ ONLY DB verification are separate layers. Only the stated synthetic runtime is accepted; no merge/team approval/production migration or sensitive Offline permission.
+
+Candidate8028→nativePostgreSQL5439, frontend5205→proxy5206 in separate worktree. Local root `E:\NU_Local_Environment_20261014\rose-pulse-phase2\20261102-050245`; original23worktrees/configurations and Phase1 listeners preserved. Old PR40 checkout/evidence remain unchanged. Historical sections below retain their own source/scope.
+
 ## PR38 successor Demo readiness — 2026-10-27 (current)
 
 **DEMO_READY for the limited author-validated local flow.** [Current task](tasks/BE-FE-DEMO-READINESS-20261027.md) supersedes the prior Backend-blocked status only on new branch `fix/pr38-demo-readiness`, starting exactly at PR38 `ff6e5d4fcdfb2f71103eac6769b376eca64bf843`. The new Draft PR is stacked on `dev_fe_booking_lifecycle`; PR38/PR39 and their environments remain unchanged. Astra directly implemented the necessary repair; no branch merge or PR39 adoption.

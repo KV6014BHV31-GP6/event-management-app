@@ -1,0 +1,89 @@
+{
+  "candidate_backend": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "tested_frontend": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+  "independent_verdict": "ACCEPT_BOUNDED_NATIVE_SYNTHETIC_PHASE2",
+  "source_review": {
+    "frontend": "FRONTEND_SOURCE_REVIEW.json",
+    "backend": "BACKEND_SOURCE_REVIEW.json",
+    "final_state": "No unresolved blocking finding in reviewed scope; four product findings repaired",
+    "evaluation": "EVALUATION_SOURCE_REVIEW.json"
+  },
+  "backend_findings": [
+    {
+      "id": "BE-R1",
+      "severity": "P2",
+      "found_at": "5be160144f6c63282f8c87e88f54420062a85083:backend/src/phase2/router.py:59-61; backend/src/registrations/service.py:178-181",
+      "title": "Organizer cancellation retained stale role while waiting for event lock",
+      "reproduction": "Hold event FOR UPDATE, start cancel after organizer role preread, wait until cancel waits on lock, commit organizer demotion, release event lock.",
+      "before": "Cancelled A and promoted B despite current role=user.",
+      "fixed_at": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/registrations/service.py:180-185",
+      "repair": "After event/registration lock, actor FOR UPDATE with populate_existing rechecks organizer role before ownership or mutation.",
+      "source_recheck": "RESOLVED",
+      "writer_native_recheck": "RED reproduced then GREEN403 with Aapproved/Bwaiting and no cancellation audit; restored controlled organizer role subsequently cancels/promotes.",
+      "independent_runtime_recheck": "NOT_RUN",
+      "final_status": "RESOLVED_IN_BOUNDED_REVIEW"
+    },
+    {
+      "id": "BE-R2",
+      "severity": "P2",
+      "found_at": "5be160144f6c63282f8c87e88f54420062a85083:backend/src/phase2/sync.py:59-91,97-112",
+      "title": "Reverse global UUID or national-identity order leaked deadlock DBAPIError as500",
+      "reproduction": "Different actors/events submit two-item batches in opposite shared-ID order; barrier after each first receipt flush forces40P01 at second receipt or domain identity insert.",
+      "before": "Loser rolled back but DBAPIError escaped instead of controlled envelope409.",
+      "fixed_at": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/sync.py:111-119",
+      "repair": "Catch DBAPIError SQLSTATE40P01/40001, roll back whole batch and return409 with original-ID reconciliation instruction. No domain write retry.",
+      "source_recheck": "RESOLVED",
+      "writer_native_recheck": "Both receipt and identity deadlocks captured as actual40P01; loser409, winner2 registrations/1batch/2receipts; extra read-only evidence confirms no loser participant prefix.",
+      "independent_runtime_recheck": "NOT_RUN",
+      "final_status": "RESOLVED_IN_BOUNDED_REVIEW"
+    }
+  ],
+  "native_counts": {
+    "steps": 45,
+    "pass": 42,
+    "retained_fail": 3,
+    "javascript_errors": 0,
+    "observed_http_responses": 230,
+    "actual_forwarded_sync_200_discarded_before_browser": 2,
+    "observed_http_breakdown": {
+      "GET 200": 179,
+      "POST 200": 20,
+      "POST 201": 16,
+      "PATCH 200": 2,
+      "GET 401": 5,
+      "GET 403": 8
+    },
+    "screenshots": 24,
+    "horizontal_overflow_failures": 0,
+    "final_global_tables": {
+      "users": 7,
+      "events": 7,
+      "participants": 11,
+      "registrations": 12,
+      "phase2_files": 14,
+      "phase2_event_images": 6,
+      "phase2_registration_documents": 6,
+      "phase2_sync_batches": 3,
+      "phase2_sync_submissions": 6
+    },
+    "independent_selected_event_registrations": 9,
+    "independent_offline_batches": 2,
+    "independent_offline_submissions": 4,
+    "deliberate_same_ID_replay_added_business_effects": 0
+  },
+  "limits": [
+    "Physical iPhone/Safari install",
+    "Physical hotspot or firewall/network disconnection",
+    "Two physical devices",
+    "Real humans, SEQ/SUS or human task timing",
+    "Formal Malay translation approval",
+    "NGO/funder signoff and external providers",
+    "5000-user load, production SLA or ROI",
+    "Comprehensive security certification",
+    "Independent destructive migration execution",
+    "Native mid-flight Chrome kill before unknown persisted"
+  ],
+  "source_report_sha256": "97879c77bc6002f59dfafd0537cf94e8ec8ba9e45e0ee81fd3d369ba6f9e4fc0",
+  "raw_originals_local": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+  "public_companion": "https://github.com/KV6014BHV31-GP6/event-management-app/pull/56"
+}
