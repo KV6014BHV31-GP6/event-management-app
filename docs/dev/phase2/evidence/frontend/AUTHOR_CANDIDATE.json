@@ -1,0 +1,97 @@
+{
+  "backend_candidate": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "runtime": {
+    "mode": "production preview required",
+    "backend": 8028,
+    "service_worker_cache": "rose-public-shell-30ed78162f89171a",
+    "proxy": 5206,
+    "frontend": 5205
+  },
+  "created_at_utc": "2026-11-01T21:54:41.8791497Z",
+  "product_state": "FROZEN_FOR_INDEPENDENT_NATIVE_ACCEPTANCE",
+  "retained_red": [
+    "phase2-first-tests.txt",
+    "phase2-integrated-tests-first.txt",
+    "phase2-integrated-tests.txt",
+    "phase2-required-fields-red.txt"
+  ],
+  "source_commit": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+  "commands": [
+    {
+      "exit_code": 0,
+      "tests_passed": 77,
+      "log": "phase2-final-react-tests.txt",
+      "files": 11,
+      "command": "npm.cmd test",
+      "tests_failed": 0
+    },
+    {
+      "tests_passed": 241,
+      "command": "node --test frontend/dev-server.test.mjs frontend/live/tests/*.test.mjs",
+      "tests_failed": 0,
+      "log": "phase2-final-legacy-tests.txt",
+      "exit_code": 0
+    },
+    {
+      "log": "phase2-final-build.txt",
+      "command": "npm.cmd run build",
+      "advisory": "Main chunk524.54kB, gzip150.49kB; not a performance acceptance claim",
+      "exit_code": 0
+    },
+    {
+      "command": "git diff --check -- frontend/rose-pulse-react frontend/dev-server.mjs frontend/dev-server.test.mjs",
+      "exit_code": 0
+    }
+  ],
+  "branch": "dev_fe_rose_pulse_phase2",
+  "artifacts": [
+    {
+      "sha256": "e236393a135cea7dc0035ba2e0466b6447b79b3ab711adcbd7a0a4f78d772dab",
+      "bytes": 508,
+      "path": "frontend\\rose-pulse-react\\dist\\icon.svg"
+    },
+    {
+      "sha256": "7993584e2f369e669ce3ad27cac7d8a1f52bd84bcd2944d5a38963421a2972c9",
+      "bytes": 788,
+      "path": "frontend\\rose-pulse-react\\dist\\index.html"
+    },
+    {
+      "sha256": "c48966b8c5c2ef3a718608e25ab5db480cf794486816265a70be2e63ef17c4a7",
+      "bytes": 296,
+      "path": "frontend\\rose-pulse-react\\dist\\manifest.webmanifest"
+    },
+    {
+      "sha256": "ac301e27eb3e6839f1eba4f180b675f321cb30fc20c576e3fed019c070bee346",
+      "bytes": 1960,
+      "path": "frontend\\rose-pulse-react\\dist\\sw.js"
+    },
+    {
+      "sha256": "079833407af03e9c877f439837dac0436ba276451f0bcb6e6239c43992ba9d79",
+      "bytes": 524549,
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\index-CF12iELa.js"
+    },
+    {
+      "sha256": "ce5d22057da08633951dea606f587aa60fe864eb5f6db130ba79a4aa770c86d4",
+      "bytes": 34785,
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\index-DCe3DumD.css"
+    },
+    {
+      "sha256": "2bcae3fea02ec3fbb0a618e54ceed4d3308d47cbf19be2b5bd42e9d546f06789",
+      "bytes": 6465,
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\OrganizerWorkspace-CYK-PdY4.js"
+    },
+    {
+      "sha256": "8d3cba510166fd408dbbfac0ddff6437c2facff18f1c0726e12f9cd4b0ed4b0f",
+      "bytes": 607912,
+      "path": "frontend\\rose-pulse-react\\dist\\images\\community-lake.jpg"
+    }
+  ],
+  "native_author_acceptance": "NOT_RUN; controller and independent reviewer own live/browser/database writes",
+  "base_commit": "9525dd748acaabf9989c3c37cb42b6bfdf54409f",
+  "schema_version": 1,
+  "languages": {
+    "ms_keys": 566,
+    "formal_ngo_signoff": "PENDING",
+    "en_keys": 566
+  }
+}

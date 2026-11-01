@@ -1,0 +1,85 @@
+{
+  "previous_candidate": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+  "schema_version": 1,
+  "finding": "FE-R2",
+  "change": "Read local IndexedDB after success and failure in finally; preserve original operation failure if local readback also fails; keep actor guard and no automatic POST retry",
+  "service_worker_cache": "rose-public-shell-bff9e9c306b014f4",
+  "source_commit": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+  "validation": [
+    {
+      "exit_code": 1,
+      "meaning": "Durable needs_review already exists but rendered pending state/reconcile controls were stale",
+      "command": "npm.cmd test -- src/offline/OfflineWorkspace.test.jsx",
+      "failed": 2,
+      "passed": 0,
+      "log": "FE-R2-workspace-red.txt"
+    },
+    {
+      "exit_code": 0,
+      "meaning": "Three durable unknown items render needs_review; Sync disabled; explicit reconcile makes oneGET and no secondPOST; original error survives failed readback",
+      "command": "npm.cmd test -- src/offline/OfflineWorkspace.test.jsx src/offline/sync.test.js src/offline/queue.test.js src/offline/access.test.js",
+      "failed": 0,
+      "passed": 24,
+      "log": "FE-R2-workspace-green.txt"
+    },
+    {
+      "log": "FE-R2-workspace-build.txt",
+      "command": "npm.cmd run build",
+      "advisory": "Main524.61kB gzip150.51kB, existing chunk advisory",
+      "exit_code": 0
+    },
+    {
+      "exit_code": 0,
+      "command": "git diff --check -- frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx frontend/rose-pulse-react/src/offline/OfflineWorkspace.test.jsx"
+    }
+  ],
+  "native_boundary": "No live Browser/HTTP/database writes by author. Original committed native batch remains controller/reviewer-owned; never resent by author.",
+  "files": [
+    "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
+    "frontend/rose-pulse-react/src/offline/OfflineWorkspace.test.jsx"
+  ],
+  "artifacts": [
+    {
+      "bytes": 508,
+      "path": "frontend\\rose-pulse-react\\dist\\icon.svg",
+      "sha256": "e236393a135cea7dc0035ba2e0466b6447b79b3ab711adcbd7a0a4f78d772dab"
+    },
+    {
+      "bytes": 788,
+      "path": "frontend\\rose-pulse-react\\dist\\index.html",
+      "sha256": "50e4d6de741f5f06a59c43d4b2c69cb3cb85dfa809ef2418abe5731234d09524"
+    },
+    {
+      "bytes": 296,
+      "path": "frontend\\rose-pulse-react\\dist\\manifest.webmanifest",
+      "sha256": "c48966b8c5c2ef3a718608e25ab5db480cf794486816265a70be2e63ef17c4a7"
+    },
+    {
+      "bytes": 1960,
+      "path": "frontend\\rose-pulse-react\\dist\\sw.js",
+      "sha256": "248662d052f5aeb3951bab740d65d4ad9e6aeeb246919c5d5464950f0e78016b"
+    },
+    {
+      "bytes": 524616,
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\index-CLziLkbe.js",
+      "sha256": "92b8d1339ddedf78f1d1c5ac4dc46d57498a6c00541514ef17b39e72d548ccaf"
+    },
+    {
+      "bytes": 34785,
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\index-DCe3DumD.css",
+      "sha256": "ce5d22057da08633951dea606f587aa60fe864eb5f6db130ba79a4aa770c86d4"
+    },
+    {
+      "bytes": 6465,
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\OrganizerWorkspace-DOwehgJL.js",
+      "sha256": "01b089e65c651affc8fab58a222a89d2cd1cc2eb9036152457295ae3ec60d5a7"
+    },
+    {
+      "bytes": 607912,
+      "path": "frontend\\rose-pulse-react\\dist\\images\\community-lake.jpg",
+      "sha256": "8d3cba510166fd408dbbfac0ddff6437c2facff18f1c0726e12f9cd4b0ed4b0f"
+    }
+  ],
+  "baseline": "77React/241legacy at82b1927, R1targeted17 at2ccb832 retained, no broad rerun",
+  "state": "FROZEN_FOR_INDEPENDENT_CONTINUATION"
+}

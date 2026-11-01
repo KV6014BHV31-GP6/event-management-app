@@ -1,0 +1,133 @@
+{
+  "reviewed_pair": {
+    "frontend": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+    "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+  },
+  "published": [
+    {
+      "public_path": "evidence/frontend/AUTHOR_CANDIDATE.json",
+      "source_local": "evidence/frontend/AUTHOR_CANDIDATE.json",
+      "sha256": "a1cb5e7cb154707cff145019788d3846ac10ab741dc8f90c5f0f91f1befd1c7a",
+      "bytes": 3349
+    },
+    {
+      "public_path": "evidence/frontend/FE-R1-DELIVERY.json",
+      "source_local": "evidence/frontend/FE-R1-DELIVERY.json",
+      "sha256": "c5b44949f05792556e68afea344132685c137d079acbe53eed0bfc9d037dd10b",
+      "bytes": 3019
+    },
+    {
+      "public_path": "evidence/frontend/FE-R2-DELIVERY.json",
+      "source_local": "evidence/frontend/FE-R2-DELIVERY.json",
+      "sha256": "48c38ecb6d31d8e079fad02f4dc6ed689c97597b7b26e75f02285c8c239c8537",
+      "bytes": 3653
+    },
+    {
+      "public_path": "evidence/backend/BACKEND_REPORT.json",
+      "source_local": "BACKEND_REPORT.json",
+      "sha256": "71f42b593a6be17d9847424bc67c8a0c9001670a92b4b67a339b47859d9801bc",
+      "bytes": 7389
+    },
+    {
+      "public_path": "evidence/backend/VALIDATION_MATRIX_BACKEND.json",
+      "source_local": "VALIDATION_MATRIX_BACKEND.json",
+      "sha256": "7407cd81bde9bed35fa5b7243d82d360118628d5b8345a7f27c61a82985cd880",
+      "bytes": 5362
+    },
+    {
+      "public_path": "evidence/backend/COMMAND_LEDGER_BACKEND.json",
+      "source_local": "COMMAND_LEDGER_BACKEND.json",
+      "sha256": "82c8638b06cf819ceb497ab3329d20c93f2a9d13955c0f673b7561ed617cd0e7",
+      "bytes": 25583
+    },
+    {
+      "public_path": "evidence/independent/ACCEPTANCE.json",
+      "source_local": "evidence/independent/ACCEPTANCE.json",
+      "sha256": "97879c77bc6002f59dfafd0537cf94e8ec8ba9e45e0ee81fd3d369ba6f9e4fc0",
+      "bytes": 17226
+    },
+    {
+      "public_path": "evidence/independent/FRONTEND_SOURCE_REVIEW.json",
+      "source_local": "evidence/independent/FRONTEND_SOURCE_REVIEW.json",
+      "sha256": "417940c021646df593b6b48daca377995579bd72f86ce19d94af66cdb84e0500",
+      "bytes": 8084
+    },
+    {
+      "public_path": "evidence/independent/BACKEND_SOURCE_REVIEW.json",
+      "source_local": "evidence/independent/BACKEND_SOURCE_REVIEW.json",
+      "sha256": "2834e559c955905f380eb0105159afffac2aee5cdb1fb2834eea964e63a89638",
+      "bytes": 14323
+    },
+    {
+      "public_path": "evidence/independent/EVALUATION_SOURCE_REVIEW.json",
+      "source_local": "evidence/independent/EVALUATION_SOURCE_REVIEW.json",
+      "sha256": "3a819fbedf567b351bf670c27b16ca81596a2e9d5c622a57dd3d7a757d591abd",
+      "bytes": 1088
+    },
+    {
+      "public_path": "evidence/independent/FINAL_EFFECT_ASSERTIONS.json",
+      "source_local": "evidence/independent/FINAL_EFFECT_ASSERTIONS.json",
+      "sha256": "bfec49b999f4dc7275ba1776f24bdd50b69155f906135070fc4824cb111a6696",
+      "bytes": 1435
+    },
+    {
+      "public_path": "evidence/independent/phase2-db-final.json",
+      "source_local": "evidence/independent/phase2-db-final.json",
+      "sha256": "6b931b3b40bf665611732fe9a43de38ccf079a23d986e39353f31e52605dedb9",
+      "bytes": 12060
+    },
+    {
+      "public_path": "evidence/controller/service-isolation-stop.json",
+      "source_local": "evidence/controller/service-isolation-stop.json",
+      "sha256": "bdf94436862299024f8ed6d62259bc8731ea43a34a2a6f1550733ea6132931b8",
+      "bytes": 1780
+    },
+    {
+      "public_path": "evidence/controller/service-isolation-resume.json",
+      "source_local": "evidence/controller/service-isolation-resume.json",
+      "sha256": "3f32ebbe6a4f55eed338f6d64f195e697df6c86d91614d6845d41701cd7c511c",
+      "bytes": 1779
+    },
+    {
+      "public_path": "evidence/controller/runtime-binding.json",
+      "source_local": "evidence/controller/runtime-binding.json",
+      "sha256": "5bb6afef36e28ee2184cb65b08946555650e850fd1c7e73a5f2cd529ed6cc55f",
+      "bytes": 4146
+    },
+    {
+      "public_path": "evidence/controller/evaluation-peer-red.txt",
+      "source_local": "evidence/controller/evaluation-peer-red.txt",
+      "sha256": "9cd094b185b7bc4e1ba06dddaedbb6c309770ef0eb743aadb29c2f3d2443eacb",
+      "bytes": 1370
+    },
+    {
+      "public_path": "evidence/controller/evaluation-peer-green.txt",
+      "source_local": "evidence/controller/evaluation-peer-green.txt",
+      "sha256": "d7f29622e89e6a2504fbb2ae2439b83f3798696e7ced9712f31c60a5eaa652e3",
+      "bytes": 115
+    },
+    {
+      "public_path": "evidence/independent/browser-http-observations.json",
+      "source_local": "derived metadata from independent state",
+      "sha256": "2b549574f492c5f21721f55ea04f80dca32df472076d32cbc19e76c9ae732622",
+      "bytes": 51113
+    },
+    {
+      "public_path": "screenshots/phase2-desktop-home-en.png",
+      "source_local": "evidence/independent/phase2-desktop-home-en.png",
+      "sha256": "a50bfb1bef83834a268a36ba35332c6529f9df847fc915f7055439957a76c6cf",
+      "bytes": 703337,
+      "caption": "82b home capture; home/styles unchanged by two later focused fixes; public synthetic content only"
+    },
+    {
+      "public_path": "screenshots/phase2-mobile-home-ms.png",
+      "source_local": "evidence/independent/phase2-mobile-home-ms.png",
+      "sha256": "327e215b2ea6d59e3a5292132d7a009f8a9fc6a98fcbc20dcad2da34d6b1844d",
+      "bytes": 235645,
+      "caption": "82b home capture; home/styles unchanged by two later focused fixes; public synthetic content only"
+    }
+  ],
+  "raw_originals_location": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+  "raw_originals_public": false,
+  "privacy": "Selected metadata/empty-form-free public home screenshots only; no private profiles, form payloads, passwords, tokens, HAR, raw SQL or document content"
+}

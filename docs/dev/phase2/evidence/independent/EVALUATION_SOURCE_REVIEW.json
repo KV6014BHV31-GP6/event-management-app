@@ -1,0 +1,24 @@
+{
+  "status": "BOUNDED_MATH_AND_SOURCE_REVIEW_PASS",
+  "source_path": "frontend/scripts/evaluate_phase2.py",
+  "source_sha256": "a39202d137dbcaeb16dd7193038f69a70b1f2449324563d8a93ce9314bd9a66d",
+  "independent_test_command": "python -B -m unittest discover -s scripts/tests -p test_evaluate_phase2.py -v",
+  "independent_tests": 9,
+  "result": "PASS",
+  "evidence": {
+    "path": "evidence/independent/evaluation-independent-unittest.txt",
+    "sha256": "2ba4ca760872a4a53f25de8d49394d9b61294904cbc78f7458454b3a1964318d",
+    "bytes": 1142
+  },
+  "checks": [
+    "SUS odd/even scoring and0/50/100anchors; missing values retainednull",
+    "Attempted success denominator; separate timed-success denominator; failed/all time medians",
+    "Unknown cost remainsnull and nonmonthly period rejected",
+    "Synthetic pilot explicitly not human findings; consent not inferred"
+  ],
+  "peer_original_failures_retained": [
+    "evidence/controller/evaluation-peer-red.txt",
+    "evidence/controller/evaluation-peer-green.txt"
+  ],
+  "human_ratings_or_cost_claim": false
+}

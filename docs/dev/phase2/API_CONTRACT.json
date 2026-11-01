@@ -1,0 +1,190 @@
+{
+  "contract_version": "rose.offline-sync.v2",
+  "state": "CONTROLLER_ADMITTED_ENGINEERING_CONTRACT",
+  "legacy": "POST /api/v1/events/{public_id}/offline-registrations remains unchanged",
+  "submit": {
+    "method": "POST",
+    "path": "/api/v2/events/{public_id}/offline-batches",
+    "permission": "fresh authenticated leader or organizer; actor comes from server token, never leaderId",
+    "body": {
+      "contract_version": "rose.offline-sync.v2",
+      "batch_id": "client-generated UUID, immutable for this batch",
+      "items": [
+        {
+          "client_submission_id": "client-generated UUID, stable per application across batch IDs, retries and devices",
+          "application": {
+            "first_name": "Synthetic",
+            "last_name": "Person",
+            "gender": "female",
+            "date_of_birth": "1990-01-01",
+            "phone": "TEST",
+            "address": "Synthetic only",
+            "national_id": "synthetic-identity",
+            "income_band_code": null,
+            "marriage_status": null,
+            "medical_record": null,
+            "file_ids": []
+          }
+        }
+      ]
+    },
+    "bounds": "1..25 items; maximum128KiB canonical envelope; canonical UUID IDs; up to3 file IDs; reject duplicate IDs inside one request",
+    "HTTP": "200 persisted partial outcomes;401 invalid/expired/deleted-user authentication;403 wrong current role/cross-actor;404 event;409 global-ID/event/payload or transaction conflict (whole batch rollback);422 invalid envelope/version/nonfinite JSON",
+    "response": {
+      "contract_version": "rose.offline-sync.v2",
+      "batch_id": "same UUID",
+      "event_public_id": "same event",
+      "actor_id": "authenticated actor",
+      "recorded_at": "server UTC",
+      "items": [
+        {
+          "client_submission_id": "same UUID",
+          "outcome": "accepted | rejected | duplicate",
+          "code": "RECORDED | INVALID_APPLICATION | EVENT_CLOSED | EVENT_FULL | IDENTITY_CONFLICT | ALREADY_REGISTERED | FILE_NOT_OWNED",
+          "registration_id": "ULID when actor owns this business effect, otherwise null",
+          "recorded_at": "server UTC",
+          "registration_status_at_recording": "pending when accepted; synchronized never means approved"
+        }
+      ],
+      "fingerprint_version": "raw-json-sortkeys-v1"
+    }
+  },
+  "reconcile": [
+    {
+      "method": "GET",
+      "path": "/api/v2/events/{public_id}/offline-batches/{batch_id}",
+      "permission": "same authenticated actor and current leader/organizer role",
+      "response": "same persisted batch receipt; 404 unknown;403 another actor"
+    },
+    {
+      "method": "GET",
+      "path": "/api/v2/events/{public_id}/offline-submissions/{client_submission_id}",
+      "permission": "same authenticated actor and current leader/organizer role",
+      "response": "persisted individual receipt;404 unknown;403 another actor"
+    }
+  ],
+  "durability": {
+    "submission_unique": "global client_submission_id UUID unique; reuse by another actor/event refused403/409 without exposing receipt",
+    "batch_unique": "global batch_id UUID unique; same actor/event/request fingerprint replays original receipt",
+    "fingerprint": "raw-json-sortkeys-v1: SHA256 UTF8 of version + newline + canonical RAW request/application JSON for valid and invalid applications, sorted object keys, preserved array order, compact separators, ensure_ascii=false, allow_nan=false; omitted/null/empty distinct. No raw payload stored/logged.",
+    "transaction": "Event row then fresh actor FOR UPDATE (matches legacy lock order); preflight every global ID; accepted effects plus all item/batch receipts atomic commit; global-ID collisions403/409 roll back whole batch; unexpected error also whole rollback, fresh receipt readback before any retry.",
+    "cross_device_identity": "another submission ID with same event/identity produces duplicate with no business insert; conflicting claimed participant identity is rejected; do not reveal other actor registration ID",
+    "client_unknown": "unknown is only client uncertainty after transport loss; query GET before resend with same IDs; never convert unknown to rejected or automatically create new IDs",
+    "existing_policy": "accepted item creates offline pending only; existing total quota/waitlist/Approve policy unchanged; full means approved total already reaches total capacity, rejected before new pending creation",
+    "replay_policy": "fresh auth and same actor required on every POST/GET; already committed same-ID replay returns historical outcome even if event later closes/fills; new items recheck current event/identity/schema",
+    "auth": "Invalid/expired JWT or deleted user401; current DB role changed403. No JWT revocation ledger claim. Re-read actor under row lock on write/replay and GET.",
+    "receipt_status": "registration_status_at_recording is immutable historical status. Replays never change accepted to duplicate. Current lifecycle comes from authorized fresh registration GET.",
+    "identity_reuse": "Only unclaimed participant previously registered offline by the same actor, with exact seven core identity fields, may be reused across events. Other actor or online-user identity claims rejected; no participant mutation.",
+    "collision": "Global ID collisions across actors/events produce controlled403/409; nested savepoints isolate per-item identity races; unexpected failures roll back whole batch. Native collision tests required.",
+    "concurrent_abort": "PostgreSQL40P01 deadlock or40001 serialization abort rolls back whole losing batch and returns409; no automatic business retry. Opposite submission/identity ordering native40P01 cases tested; reconcile original identifiers.",
+    "transaction_conflict": "PostgreSQL40P01 deadlock/40001 serialization abort rolls back losing batch and returns controlled409; no automatic business retry. Client first reconciles original IDs."
+  },
+  "additive_W8_proposal": {
+    "files": "POST /api/v2/files authenticated multipart(file,purpose=event_image|supporting_document) -> id,name,mime_type,size,url; GET /api/v2/files/{id}/content requires owner or associated event organizer; associated event images public; no private document under public uploads path",
+    "gallery": "existing EventCreate/EventUpdate gains image_file_ids[0..3]; EventResponse gains image_files[]; retain legacy image_path and all routes",
+    "documents": "Private supporting_document content accessible only file owner or associated event-owner organizer. Authenticated uploads; up to3 file_ids per registration. Guest with no authentication may submit no files.",
+    "simplification": "Six default visible fields: first_name,last_name,gender,date_of_birth,phone,national_id (provisional engineering contract, not NGO mandatory policy). address,income_band_code,marriage_status,medical_record nullable optional with actual NULL persistence. React baseline9 to6 visible fields=33.3%; legacy provided values preserved. Nullable address in BOTH participants and registrations, exact reuse comparison None != text.",
+    "organizer_cancel": "POST /api/v2/registrations/{id}/cancel, organizer owning event; reuse atomic existing cancellation/promotion with actual cancellation actor",
+    "analytics": "GET /api/v2/analytics/registrations organizer only, own-event real DB aggregates by status/channel/event; source, definition, actor_id, as_of_utc, no attendance/conversion claims"
+  },
+  "source_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "additive_API": {
+    "POST /api/v2/files": {
+      "auth": "Bearer any current user",
+      "multipart": {
+        "file": "8MiB maximum PNG/JPEG/GIF/WEBP; PDF also for supporting_document",
+        "purpose": "event_image | supporting_document"
+      },
+      "201": {
+        "id": "ULID",
+        "name": "sanitized original basename",
+        "mime_type": "sniffed and matched declared MIME/extension",
+        "size": "bytes",
+        "purpose": "immutable purpose",
+        "url": "/api/v2/files/{id}/content"
+      }
+    },
+    "GET /api/v2/files/{id}/content": {
+      "auth": "Public only event_image currently associated with an event; otherwise owner. supporting_document owner OR organizer owning associated event, never all organizers. Invalid present token401.",
+      "headers": "Cache-Control:no-store;X-Content-Type-Options:nosniff;Content-Disposition attachment for document, inline for event_image",
+      "failure": "401 anonymous private;403 wrong actor;404 missing"
+    },
+    "POST/PATCH /api/v1/events": {
+      "request_addition": "image_file_ids:[ULID],0..3 unique owned event_image IDs; omitted PATCH retains,[] clears,null422",
+      "response_addition": "image_files:[FileReference] on create/list/detail/PATCH; all legacy fields including image_path retained"
+    },
+    "POST /api/v1/events/{public_id}/registrations": {
+      "request_addition": "file_ids:[ULID],0..3 owned supporting_document IDs; Guest can onlysubmit[]",
+      "optional_fields": "address,income_band_code,marriage_status,medical_record defaultNULL; sixfields first_name,last_name,gender,date_of_birth,phone,national_id retained",
+      "response_addition": "supporting_documents:[FileReference],metadata visible only fileowner/eventowner; all prior flat fields and IDs retained"
+    },
+    "GET /api/v2/me/events": {
+      "auth": "organizer",
+      "query": "page=1,pageSize=20(max100)",
+      "200": "same PaginatedEventResponse aspubliceventlist, serverfiltersorganizer_id=currentuser.id"
+    },
+    "GET /api/v2/me/registrations": {
+      "auth": "Current organizer; SQL filters event.organizer_id to authenticated actor",
+      "query": "Optional status=pending|approved|waiting|rejected|cancelled",
+      "200": "Array of existing flat RegistrationResponse plus permitted supporting_documents; no other-organizer rows",
+      "failure": "401 invalid/expired authentication;403 other roles;422 unknown status"
+    },
+    "POST /api/v2/registrations/{id}/cancel": {
+      "auth": "organizer owning registration event",
+      "200": "same flat RegistrationResponse; existing atomic Cancel+promotion reused; actual organizer cancellation actor persisted",
+      "failure": "403 otherorganizer/user;400 alreadycancelled/rejected;404 missing"
+    },
+    "GET /api/v2/analytics/registrations": {
+      "auth": "organizer own events only",
+      "200": {
+        "actor_id": "server-derived ULID",
+        "as_of_utc": "UTC timestamp",
+        "source": "PostgreSQL registrations/events",
+        "definition": "Counts persisted registration rows across own events including all statuses; not attendance/reach/conversion/ROI",
+        "totals": {
+          "events": 0,
+          "registrations": 0
+        },
+        "by_status": {
+          "pending": 0,
+          "approved": 0,
+          "waiting": 0,
+          "rejected": 0,
+          "cancelled": 0
+        },
+        "by_channel": {
+          "online": 0,
+          "offline": 0,
+          "walkin": 0,
+          "ocr": 0
+        },
+        "events": [
+          {
+            "public_id": "21chars",
+            "title": "eventtitle",
+            "registrations": 0
+          }
+        ]
+      }
+    }
+  },
+  "FileReference": {
+    "id": "ULID",
+    "name": "basename",
+    "mime_type": "MIME",
+    "size": "bytes",
+    "purpose": "event_image|supporting_document",
+    "url": "/api/v2/files/{id}/content"
+  },
+  "known_policy_limits": [
+    "Legacy organizer-global v1 registration list remains; v2 own-event index and private-file ACL do not repair that legacy policy.",
+    "Active event status is checked; no deadline/eligibility or mixed-pool approval policy is newly accepted.",
+    "Synthetic-only offline storage; encryption/key lifecycle and production privacy acceptance incomplete."
+  ],
+  "migration": {
+    "id": "rose_phase2_20261102_v1",
+    "entry": "backend/scripts/migrate_phase2.py",
+    "boundary": "Explicit database acknowledgement, advisory lock and migration ledger; additive phase2 tables and nullable address/income/marriage. Dedicated legacy-shape synthetic migration only, not an original Demo/production database upgrade."
+  },
+  "validation_state": "Implementation contract; fixed-source independent acceptance recorded separately. No NGO policy sign-off."
+}

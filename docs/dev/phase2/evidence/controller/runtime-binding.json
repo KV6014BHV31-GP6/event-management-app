@@ -1,0 +1,124 @@
+{
+  "time": "2026-11-01T22:17:45.670290+00:00",
+  "status": "PASS",
+  "frontend_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+  "backend_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "assets": [
+    {
+      "path": "assets/index-CLziLkbe.js",
+      "sha256": "92b8d1339ddedf78f1d1c5ac4dc46d57498a6c00541514ef17b39e72d548ccaf",
+      "served_matches": true
+    },
+    {
+      "path": "assets/index-DCe3DumD.css",
+      "sha256": "ce5d22057da08633951dea606f587aa60fe864eb5f6db130ba79a4aa770c86d4",
+      "served_matches": true
+    },
+    {
+      "path": "assets/OrganizerWorkspace-DOwehgJL.js",
+      "sha256": "01b089e65c651affc8fab58a222a89d2cd1cc2eb9036152457295ae3ec60d5a7",
+      "served_matches": true
+    },
+    {
+      "path": "icon.svg",
+      "sha256": "e236393a135cea7dc0035ba2e0466b6447b79b3ab711adcbd7a0a4f78d772dab",
+      "served_matches": true
+    },
+    {
+      "path": "images/community-lake.jpg",
+      "sha256": "8d3cba510166fd408dbbfac0ddff6437c2facff18f1c0726e12f9cd4b0ed4b0f",
+      "served_matches": true
+    },
+    {
+      "path": "index.html",
+      "sha256": "50e4d6de741f5f06a59c43d4b2c69cb3cb85dfa809ef2418abe5731234d09524",
+      "served_matches": true
+    },
+    {
+      "path": "manifest.webmanifest",
+      "sha256": "c48966b8c5c2ef3a718608e25ab5db480cf794486816265a70be2e63ef17c4a7",
+      "served_matches": true
+    },
+    {
+      "path": "sw.js",
+      "sha256": "248662d052f5aeb3951bab740d65d4ad9e6aeeb246919c5d5464950f0e78016b",
+      "served_matches": true
+    }
+  ],
+  "listeners": [
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 8028,
+      "OwningProcess": 22792
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5439,
+      "OwningProcess": 22116
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5206,
+      "OwningProcess": 34220
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5205,
+      "OwningProcess": 36212
+    }
+  ],
+  "ui_configured_processes": {
+    "proxy": {
+      "pid": 34220,
+      "port": 5206,
+      "script": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\frontend\\frontend\\dev-server.mjs",
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\frontend"
+    },
+    "react": {
+      "pid": 36212,
+      "port": 5205,
+      "script": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\frontend\\frontend\\rose-pulse-react\\node_modules\\vite\\bin\\vite.js",
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\frontend\\frontend\\rose-pulse-react"
+    }
+  },
+  "backend_native_cwd_proof": {
+    "time": "2026-11-01T22:10:49.448421+00:00",
+    "backend_url": "http://127.0.0.1:8028",
+    "PG_port": 5439,
+    "source": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend",
+    "source_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+    "backend_status_short": "",
+    "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\runtime\\backend",
+    "backend_pid": 22792,
+    "launcher_pid": 25864,
+    "backend_cwd_verified_native": true,
+    "loopback_listener_verified": true,
+    "standard_bootstrap": true
+  },
+  "runtime": {
+    "interpreter": "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+    "python": "3.14.8 (tags/v3.14.8:8e6e75d, Sep 30 2026, 18:19:33) [MSC v.1944 64 bit (AMD64)]",
+    "packages": {
+      "fastapi": "0.142.4",
+      "sqlalchemy": "2.1.4",
+      "asyncpg": "0.32.0",
+      "uvicorn": "0.54.0",
+      "pytest": "9.1.1"
+    }
+  },
+  "node": "v24.14.0",
+  "database": {
+    "database": "nu_rose_phase2_20261102_050245",
+    "db_role": "nu_rose_phase2_app_20261102",
+    "server_version_num": "170011",
+    "rolsuper": false,
+    "rolcreatedb": false,
+    "rolcreaterole": false
+  },
+  "migration_ids": [
+    "rose_phase2_20261102_v1"
+  ],
+  "public_event_direct_proxy_equal": true,
+  "private_values_published": false,
+  "note": "Owned production preview and direct/proxy read identity. No business writes; DB counts may advance during independent browser acceptance."
+}

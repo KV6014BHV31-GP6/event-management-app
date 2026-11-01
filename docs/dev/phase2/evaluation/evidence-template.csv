@@ -1,0 +1,1 @@
+acceptance_id,frontend_sha,backend_sha,migration_id,contract_version,command,exit_code,environment,start,end,numerator,denominator,evidence_path,sha256,status,reviewer,limitations

@@ -1,0 +1,147 @@
+{
+  "status": "NO_UNRESOLVED_BLOCKING_FINDING_IN_REVIEWED_SCOPE",
+  "base": "9525dd748acaabf9989c3c37cb42b6bfdf54409f",
+  "candidate": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+  "comparison": "PR55 baseline to final product, plus both minimal repair diffs",
+  "full_frontend_diff_sha256": "2eb0f1dafa7b5b5084a7b81a51300ceba647b0452aa90ec9ab5b61a84275b495",
+  "reviewed_paths": [
+    {
+      "path": "frontend/rose-pulse-react/src/App.jsx",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "0b304cec86c1acffb3b8e6826890766b5ad8436f",
+      "sha256": "a13120b6764b24b232b14d45bc51b3caa318e92578dd506323b3c33db51de01b",
+      "lines": 2626,
+      "review_scope": "Role and route gates, session revision remount, ordinary/guest application, gallery/editor ownership and uncertain writes, EventShare entry."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/service.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "ec02e3634f6d4b06e2dc262e775cc67141e498a0",
+      "sha256": "a72f263fff19f2c9d83dee508d6b392372f9b4282690f22e5390b35f3729774c",
+      "lines": 414,
+      "review_scope": "Runtime/session adapter, sticky identity block, fresh server identity, offline actor/account-switch handling and controller wiring."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/phase2-api.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "714c33d868ce3250a6f6983c8a0248e9a142bba3",
+      "sha256": "68eb270e8635052738f46c55fb158278f0c9bcbf58451f3f2674c009e8f339c5",
+      "lines": 565,
+      "review_scope": "Receipt actor/event/submission-ID validation, immutable request replay, optional nullable fields, private file response parsing."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/minimum-registration.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "4e04bdd59751ea6327fef1abcc8f511b01b98e6d",
+      "sha256": "edc583d4e08819bc9a71b91235b1a53df847a23d8db89a536f3c8f6de90129a4",
+      "lines": 135,
+      "review_scope": "Six visible fields; trimmed required identity input; no fabricated address/income/marriage/medical values."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/offline/access.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "0b9bda0b1680f91135702162f52dc87f6a0c6d8e",
+      "sha256": "e98f234ed8b77c820b9a1f67a9313ccf03e2a0972075045098a0b44dfd1780cb",
+      "lines": 79,
+      "review_scope": "Explicit synthetic local unlock, seven-day cached actor metadata, persistent logout lock; cache is not server authentication."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/offline/queue.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "603b23f68a2de6ab30e7251df9d7b55c1f759ea3",
+      "sha256": "49bec6b0f5b655e406b5af0dae8c83e28734f7203f06ec69fc3fc53a92188c00",
+      "lines": 495,
+      "review_scope": "IndexedDB actor partition, transactional draft/batch persistence, saved immutable UUID/request before send, unknown recovery and retention."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/offline/sync.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "63946c8c3142700db6fdd8a7ecb43f9d19ab449a",
+      "sha256": "64cf9ac1faddc31b775d6fcd58bd65a1c63b46da0942bf3bb791beadea304edd",
+      "lines": 121,
+      "review_scope": "Fresh identity for each manual operation; GET reconciliation; exact-ID explicit replay only after missing receipt; no background send/retry."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "b606c878f233467db35730e2479515ed103eb133",
+      "sha256": "8257839b424cccdc33a5bcc8191930d8c0822d6225df6b90a45d41eab1a0b424",
+      "lines": 658,
+      "review_scope": "Actor-guarded readback, unknown-state controls, fixed failure-path refresh in finally with primary error preserved."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/pwa/sw-template.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "2cdf9936336ceedc47f44970614a9596fd1111ed",
+      "sha256": "943512a9d46ca84b495452025ab7e6a0b21e04b165b79e8fae7f5b6d8650009a",
+      "lines": 69,
+      "review_scope": "Explicit public build asset allowlist; excludes Authorization/API/uploads; no private response runtime cache."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/pwa/register.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "7046fa36984bff7b21dcfc71e88016592e22dc83",
+      "sha256": "46e5fd12d62b27b0b98a10e43392a02e0a24910503de35fe25400ed344f10563",
+      "lines": 21,
+      "review_scope": "Service worker registration and explicit update activation."
+    },
+    {
+      "path": "frontend/rose-pulse-react/vite.config.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "d5532583be055733152853da412656808bd5cad3",
+      "sha256": "434376b61ecff07b809d3f762966aabbce3adf919486434b0ec4f7d8f2d2059c",
+      "lines": 59,
+      "review_scope": "Build manifest/hash binding and generated public service worker cache."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/FilePicker.jsx",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "15f4cea5f5d032c35f6682833c99cfc87853f8be",
+      "sha256": "eaae9e514c72da1657c04b3825e7e61138a8e51c3e4e6ca3419515ec2b34ef5b",
+      "lines": 333,
+      "review_scope": "Three-file/size/type constraints, verified actor, upload ambiguity lock, private authenticated blob reads and object URL revocation."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/gallery-controller.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "ce0b608bc7efb10cecdf315d61d29c20fcb48ac9",
+      "sha256": "8aec862f1078bafe6953f15fdfc3b1b9d45aa38d65e80e473086076e2ef3876e",
+      "lines": 233,
+      "review_scope": "Owned event edit, actor/session revision check, association IDs/readback and uncertain mutation lock."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/OrganizerWorkspace.jsx",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "4ef8d20350c29445dddabbf9288cc9de9ac25e22",
+      "sha256": "ec2cbffb135a78f1cb84f01e55cf0a94486967a4a16e23f9316bc4a0aa77d7f9",
+      "lines": 346,
+      "review_scope": "Owned event listing and registration analytics, role gates and actual API results."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/EventShare.jsx",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "4cec9659bdaed27e100e324d98cc8697f2e881e4",
+      "sha256": "6abf9bf4198924aaba33470208e07e0fe5b3384285fd8e247b2be739f285cf96",
+      "lines": 74,
+      "review_scope": "Share text limited to event title and canonical public event URL; localhost boundary warning."
+    },
+    {
+      "path": "frontend/rose-pulse-react/src/i18n/index.js",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "852d4694ac8cad7a92567f9ec8d355c71ceb8dca",
+      "sha256": "17e0b110c28f4a3a74890d8017c56c91e8c63e31d1a5a8387b507146367db814",
+      "lines": 75,
+      "review_scope": "English/Malay selection and locale persistence; no formal translation approval inferred."
+    },
+    {
+      "path": "frontend/dev-server.mjs",
+      "source_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "blob": "0ac037b4a09c7c2ba389754ab43ff1528b9c8f60",
+      "sha256": "21ce9560b359c28aed7615329ab1d0a98dba6d5935d1f84d36c728484e2a003a",
+      "lines": 140,
+      "review_scope": "Additive v2 proxy allowlist, bounded request bodies and inherited no-store/nosniff/referrer controls."
+    }
+  ],
+  "tree_oid": "ea8c8bd375688c351220b7b2c54a9e3689fc891e",
+  "remaining_boundary": "Bounded review; not comprehensive security certification."
+}

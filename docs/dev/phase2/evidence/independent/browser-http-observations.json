@@ -1,0 +1,1882 @@
+{
+  "candidate": {
+    "frontend": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+    "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+  },
+  "counts": {
+    "steps": 45,
+    "pass": 42,
+    "retained_fail": 3,
+    "javascript_errors": 0,
+    "observed_http_responses": 230,
+    "actual_forwarded_sync_200_discarded_before_browser": 2,
+    "observed_http_breakdown": {
+      "GET 200": 179,
+      "POST 200": 20,
+      "POST 201": 16,
+      "PATCH 200": 2,
+      "GET 401": 5,
+      "GET 403": 8
+    },
+    "screenshots": 24,
+    "horizontal_overflow_failures": 0,
+    "final_global_tables": {
+      "users": 7,
+      "events": 7,
+      "participants": 11,
+      "registrations": 12,
+      "phase2_files": 14,
+      "phase2_event_images": 6,
+      "phase2_registration_documents": 6,
+      "phase2_sync_batches": 3,
+      "phase2_sync_submissions": 6
+    },
+    "independent_selected_event_registrations": 9,
+    "independent_offline_batches": 2,
+    "independent_offline_submissions": 4,
+    "deliberate_same_ID_replay_added_business_effects": 0
+  },
+  "responses": [
+    {
+      "actor": "public",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:54:58.129Z"
+    },
+    {
+      "actor": "public",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CG1RETR0NVTWRAR511MF3G/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:54:58.328Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:54:59.932Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CG1RETR0NVTWRAR511MF3G/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:00.015Z"
+    },
+    {
+      "actor": "public",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:01.089Z"
+    },
+    {
+      "actor": "public",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CG1RETR0NVTWRAR511MF3G/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:01.172Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:02.052Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CG1RETR0NVTWRAR511MF3G/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:02.121Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:04.396Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:04.420Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:04.629Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:04.675Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CG1RETR0NVTWRAR511MF3G/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:04.702Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:04.890Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:05.564Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:05.618Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:05.646Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:05.680Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:05.703Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:05.739Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "POST",
+      "path": "/api/v1/events",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:06.030Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "POST",
+      "path": "/api/v1/events",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:06.461Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:06.636Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:06.841Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:06.898Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:06.932Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:07.007Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:07.153Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:07.170Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:07.293Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:07.626Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:07.741Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:07.813Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:07.823Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:07.836Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:08.197Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "PATCH",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:08.374Z"
+    },
+    {
+      "actor": "organizer",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:08.410Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v1/users",
+      "status": 201,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:11.806Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:13.436Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:13.462Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:13.741Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:13.776Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:13.817Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:13.828Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:14.667Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:14.728Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:14.754Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:14.794Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:14.818Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:14.857Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:15.182Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8/registrations",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:15.311Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:15.524Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/events/QtgOsOdTXS0deIe3pvbQL",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:15.578Z"
+    },
+    {
+      "actor": "A",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:16.175Z"
+    },
+    {
+      "actor": "A",
+      "method": "POST",
+      "path": "/api/v1/events/QtgOsOdTXS0deIe3pvbQL/registrations",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:16.263Z"
+    },
+    {
+      "actor": "B",
+      "method": "POST",
+      "path": "/api/v1/users",
+      "status": 201,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:18.020Z"
+    },
+    {
+      "actor": "B",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:19.344Z"
+    },
+    {
+      "actor": "B",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:19.363Z"
+    },
+    {
+      "actor": "B",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:19.610Z"
+    },
+    {
+      "actor": "B",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:19.613Z"
+    },
+    {
+      "actor": "B",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:19.644Z"
+    },
+    {
+      "actor": "B",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:19.723Z"
+    },
+    {
+      "actor": "B",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:20.282Z"
+    },
+    {
+      "actor": "B",
+      "method": "POST",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8/registrations",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T21:55:20.399Z"
+    },
+    {
+      "actor": "guest",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:20.812Z"
+    },
+    {
+      "actor": "guest",
+      "method": "POST",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8/registrations",
+      "status": 201,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:21.570Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:21.934Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:21.984Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:21.994Z"
+    },
+    {
+      "actor": "mobile",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T21:55:21.996Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:56.708Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:56.774Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v1/events/QtgOsOdTXS0deIe3pvbQL",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:56.824Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:56.908Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:58.520Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:02:58.545Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:58.763Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:02:58.828Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:00.339Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:00.359Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:00.538Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:00.604Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.031Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:02.051Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:02.229Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.242Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.347Z"
+    },
+    {
+      "actor": "mobile-continuation",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.672Z"
+    },
+    {
+      "actor": "mobile-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.765Z"
+    },
+    {
+      "actor": "mobile-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.770Z"
+    },
+    {
+      "actor": "mobile-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:02.774Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v1/events/QtgOsOdTXS0deIe3pvbQL",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:03.898Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "POST",
+      "path": "/api/v1/events/QtgOsOdTXS0deIe3pvbQL/registrations",
+      "status": 201,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:05.769Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:07.261Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:07.288Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:07.344Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:07.669Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:07.707Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:07.746Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:08.312Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:09.183Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:09.354Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:09.403Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:09.416Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:09.419Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:11.343Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.362Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR34DYYHRBH8EPYMBK5AM/content",
+      "status": 401,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:11.502Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR34DYYHRBH8EPYMBK5AM/content",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.536Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:11.547Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR34DYYHRBH8EPYMBK5AM/content",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.595Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:11.606Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR36N94MZPKG5PRRJV10P/content",
+      "status": 401,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:11.619Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR36N94MZPKG5PRRJV10P/content",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.644Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR36N94MZPKG5PRRJV10P/content",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.674Z"
+    },
+    {
+      "actor": "guest-readonly",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR38NP0A260TZE2NW54GB/content",
+      "status": 401,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:11.707Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR38NP0A260TZE2NW54GB/content",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.738Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR38NP0A260TZE2NW54GB/content",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.767Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.940Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:11.986Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.054Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.505Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/registrations/01M6CHR3N7VZA7341QJR5WV5TM",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.571Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.683Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHR34DYYHRBH8EPYMBK5AM/content",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.729Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.798Z"
+    },
+    {
+      "actor": "other_organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.828Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:12.987Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.019Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.073Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.497Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "POST",
+      "path": "/api/v1/registrations/01M6CHR3N7VZA7341QJR5WV5TM/approve",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.552Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.579Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.624Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.746Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "POST",
+      "path": "/api/v1/registrations/01M6CHR8MJNZ5AMPPFEM4VM432/approve",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.791Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.827Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:13.923Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:14.354Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:14.382Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:14.414Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:14.999Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "POST",
+      "path": "/api/v1/me/registrations/01M6CHR3N7VZA7341QJR5WV5TM/cancel",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.066Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.095Z"
+    },
+    {
+      "actor": "B-continuation",
+      "method": "GET",
+      "path": "/api/v1/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.113Z"
+    },
+    {
+      "actor": "A-continuation",
+      "method": "GET",
+      "path": "/api/v1/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.153Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.275Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.304Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:15.361Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:16.609Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "POST",
+      "path": "/api/v2/registrations/01M6CHR9T4WTGG3BW9ZKTYMZ7R/cancel",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:16.656Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:16.678Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:16.824Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:16.854Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/me/events?page=1&pageSize=6",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:16.902Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:17.129Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:17.161Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/analytics/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:17.201Z"
+    },
+    {
+      "actor": "organizer-continuation",
+      "method": "GET",
+      "path": "/api/v2/analytics/registrations",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:17.289Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:24.176Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:24.275Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:24.379Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:24.417Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:24.633Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:26.089Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/events/QtgOsOdTXS0deIe3pvbQL",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:03:26.125Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:26.342Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:03:27.680Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:40.174Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:40.191Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:40.536Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:40.591Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT7JR0K2DJNP5916QA80/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:40.647Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:40.658Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:40.661Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.348Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "POST",
+      "path": "/api/v2/files",
+      "status": 201,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.378Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.530Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "PATCH",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.574Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:41.603Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.729Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:41.734Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:41.770Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.883Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:41.891Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:41.897Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v1/events/4_pI7-FIph05pcqISqEL8",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:43.332Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:43.337Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQTBTWTE0C8YPN4J6GCP6/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:43.343Z"
+    },
+    {
+      "actor": "organizer-gallery-replace",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CJEW9N5BDK2NBQJWWYGPEG/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:43.347Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:48.776Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:48.872Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:50.599Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:50.653Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:07:50.713Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:50.895Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:07:51.367Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:11:33.141Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:11:33.196Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:11:33.421Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:11:34.706Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:21.014Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:21.037Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:21.281Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:21.885Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:21.931Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:23.193Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:25.530Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:27.388Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/79ccc7dc-fd5c-469a-81a1-93df8c5e1fd2",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:27.422Z"
+    },
+    {
+      "actor": "leader-second-context",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:31.527Z"
+    },
+    {
+      "actor": "leader-second-context",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:31.549Z"
+    },
+    {
+      "actor": "leader-second-context",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:31.961Z"
+    },
+    {
+      "actor": "leader-second-context",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:33.453Z"
+    },
+    {
+      "actor": "leader-second-context",
+      "method": "POST",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:33.491Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:35.393Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:37.199Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:37.247Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:37.282Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:37.493Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:38.992Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 401,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:39.019Z"
+    },
+    {
+      "actor": "leader-persistent",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 401,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:39.046Z"
+    },
+    {
+      "actor": "ordinary-user-auth-negative",
+      "method": "POST",
+      "path": "/api/v1/auth/login",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:41.012Z"
+    },
+    {
+      "actor": "ordinary-user-auth-negative",
+      "method": "GET",
+      "path": "/api/v1/users/me",
+      "status": 200,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:41.030Z"
+    },
+    {
+      "actor": "ordinary-user-auth-negative",
+      "method": "GET",
+      "path": "/api/v1/events?page=1&pageSize=3",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:41.212Z"
+    },
+    {
+      "actor": "ordinary-user-auth-negative",
+      "method": "GET",
+      "path": "/api/v2/events/QtgOsOdTXS0deIe3pvbQL/offline-batches/3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "status": 403,
+      "authorization_present": true,
+      "at": "2026-11-01T22:22:41.255Z"
+    },
+    {
+      "actor": "ordinary-user-auth-negative",
+      "method": "GET",
+      "path": "/api/v2/files/01M6CHQT9YHGC5K97GJFGVRQ6N/content",
+      "status": 200,
+      "authorization_present": false,
+      "at": "2026-11-01T22:22:42.676Z"
+    }
+  ],
+  "boundary": "Observed browser response metadata only; no request bodies, tokens, private fixture data or raw profile. Two forwarded successful sync responses were deliberately aborted and are separately described in acceptance."
+}
