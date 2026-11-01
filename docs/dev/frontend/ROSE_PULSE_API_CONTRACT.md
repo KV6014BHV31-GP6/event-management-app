@@ -1,3 +1,5 @@
+> Phase 2 is a separate candidate: see [additive contract](../phase2/API_CONTRACT.md). The historical PR55 contract and evidence below remain source-qualified.
+
 # Rose Pulse backend API contract
 
 State: **SOURCE + OPENAPI OBSERVED; bounded direct HTTP/native checks PASS.**

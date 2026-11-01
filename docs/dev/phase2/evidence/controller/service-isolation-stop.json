@@ -1,0 +1,83 @@
+{
+  "time": "2026-11-01T22:09:20.393990+00:00",
+  "status": "PASS",
+  "action": "stop",
+  "layer": "SERVICE_PROCESS_ISOLATION",
+  "before": {
+    "8028": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 8028,
+      "OwningProcess": 47208
+    },
+    "8026": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 8026,
+      "OwningProcess": 47092
+    },
+    "5439": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5439,
+      "OwningProcess": 22116
+    },
+    "5437": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5437,
+      "OwningProcess": 37736
+    },
+    "5206": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5206,
+      "OwningProcess": 16152
+    },
+    "5205": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5205,
+      "OwningProcess": 48184
+    },
+    "5202": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5202,
+      "OwningProcess": 34240
+    },
+    "5201": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5201,
+      "OwningProcess": 25692
+    }
+  },
+  "after": {
+    "8026": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 8026,
+      "OwningProcess": 47092
+    },
+    "5439": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5439,
+      "OwningProcess": 22116
+    },
+    "5437": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5437,
+      "OwningProcess": 37736
+    },
+    "5202": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5202,
+      "OwningProcess": 34240
+    },
+    "5201": {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 5201,
+      "OwningProcess": 25692
+    }
+  },
+  "tcp_connect": {
+    "5205": false,
+    "5206": false,
+    "8028": false,
+    "5439": true
+  },
+  "phase1_and_postgresql_preserved": true,
+  "physical_network_or_iphone_claim": false
+}

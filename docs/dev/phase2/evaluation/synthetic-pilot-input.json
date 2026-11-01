@@ -1,0 +1,374 @@
+{
+  "kind": "synthetic_pilot",
+  "frontend_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+  "backend_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "migration_id": "rose_phase2_20261102_v1",
+  "contract_version": "rose.offline-sync.v2",
+  "sessions": [
+    {
+      "anonymous_id": "P001",
+      "version": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "role": "participant",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online",
+        "name": "Public desktop browsing and design capture",
+        "started": "2026-11-01T21:54:57.647Z",
+        "candidate": {
+          "frontend": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U1",
+          "attempted": true,
+          "result": "success",
+          "seconds": 2.9678090000000004,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P002",
+      "version": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "role": "guest",
+      "language": "ms",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online",
+        "name": "English/Malay toggle and reload persistence",
+        "started": "2026-11-01T21:55:00.618Z",
+        "candidate": {
+          "frontend": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U9",
+          "attempted": true,
+          "result": "success",
+          "seconds": 2.029127,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P003",
+      "version": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "role": "organizer",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online",
+        "name": "Organizer create gallery and offline target events",
+        "started": "2026-11-01T21:55:02.650Z",
+        "candidate": {
+          "frontend": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U5",
+          "attempted": true,
+          "result": "success",
+          "seconds": 5.736140000000001,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P004",
+      "version": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "role": "participant",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online",
+        "name": "A/B UI signup, login and six-field applications",
+        "started": "2026-11-01T21:55:10.005Z",
+        "candidate": {
+          "frontend": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U3",
+          "attempted": true,
+          "result": "success",
+          "seconds": 10.425795,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P005",
+      "version": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "role": "guest",
+      "language": "en",
+      "device": "Installed Chrome automation 390x844 mobile viewport",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online",
+        "name": "Anonymous mobile Guest application",
+        "started": "2026-11-01T21:55:20.435Z",
+        "candidate": {
+          "frontend": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U2",
+          "attempted": true,
+          "result": "success",
+          "seconds": 1.338234,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P006",
+      "version": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "role": "guest",
+      "language": "en",
+      "device": "Installed Chrome automation 390x844 mobile viewport",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online",
+        "name": "Mobile event detail and privacy-limited WhatsApp share",
+        "started": "2026-11-01T21:55:21.775Z",
+        "candidate": {
+          "frontend": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U10",
+          "attempted": true,
+          "result": "fail",
+          "seconds": 20.341676,
+          "seq": null,
+          "errors": [
+            "navigation"
+          ]
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P007",
+      "version": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "role": "guest",
+      "language": "en",
+      "device": "Installed Chrome automation 390x844 mobile viewport",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online-continue",
+        "name": "New fixed EventDetail mobile share entry and public-only link",
+        "started": "2026-11-01T22:03:02.236Z",
+        "candidate": {
+          "frontend": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U10",
+          "attempted": true,
+          "result": "success",
+          "seconds": 1.401083,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P008",
+      "version": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "role": "organizer",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online-continue",
+        "name": "Organizer approves one and waitlists another",
+        "started": "2026-11-01T22:03:12.835Z",
+        "candidate": {
+          "frontend": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U6",
+          "attempted": true,
+          "result": "success",
+          "seconds": 1.3617739999999998,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P009",
+      "version": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "role": "participant",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "online-continue",
+        "name": "Own cancellation, refill and organizer-owned cancellation",
+        "started": "2026-11-01T22:03:14.201Z",
+        "candidate": {
+          "frontend": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U4",
+          "attempted": true,
+          "result": "success",
+          "seconds": 2.4653989999999997,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P010",
+      "version": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "role": "leader",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "isolation",
+        "name": "Three UI drafts saved with real HTTP services absent",
+        "started": "2026-11-01T22:09:38.610Z",
+        "candidate": {
+          "frontend": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U7",
+          "attempted": true,
+          "result": "success",
+          "seconds": 2.7988899999999997,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P011",
+      "version": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "role": "leader",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "isolation",
+        "name": "Reload and whole Chrome restart preserve three drafts without token",
+        "started": "2026-11-01T22:09:41.414Z",
+        "candidate": {
+          "frontend": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U8",
+          "attempted": true,
+          "result": "success",
+          "seconds": 7.295614,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "anonymous_id": "P012",
+      "version": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "role": "leader",
+      "language": "en",
+      "device": "Installed Chrome automation 1440x1000 desktop",
+      "consent": false,
+      "sus": null,
+      "measurement_kind": "Synthetic automated subtask observation, not a human participant or human task time",
+      "completion_scope": "Only the named automation step; U-number maps to the study script, not complete human-task acceptance",
+      "evidence_step": {
+        "stage": "reconnect",
+        "name": "Actual backend commits once; browser response intentionally lost",
+        "started": "2026-11-01T22:11:33.473Z",
+        "candidate": {
+          "frontend": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+          "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+        }
+      },
+      "tasks": [
+        {
+          "task_id": "U8",
+          "attempted": true,
+          "result": "fail",
+          "seconds": 21.563155,
+          "seq": null,
+          "errors": [
+            "uncertain_recovery"
+          ]
+        }
+      ]
+    }
+  ],
+  "provenance": "Observed automation steps only. Anonymous codes identify scenario runs, not people. Original feature failures remain; harness-only label failures remain in engineering evidence, not invented human error events. Mixed before/after samples are not causal usability comparisons."
+}

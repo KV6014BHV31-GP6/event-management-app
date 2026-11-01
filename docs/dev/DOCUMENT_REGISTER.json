@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-01T19:54:38.532113+00:00",
-  "reason": "Finalize independent verdict and verified Chrome/transport boundaries without product changes",
-  "document_count": 214,
+  "reviewed_at": "2026-11-01T22:32:46.225801+00:00",
+  "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries",
+  "document_count": 289,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -267,7 +267,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 32,
+      "revision": 33,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -457,6 +457,13 @@
           "size_bytes": 20556,
           "superseded_at": "2026-11-01T19:53:03.567621+00:00",
           "reason": "Record bounded independent React browser/API/native PostgreSQL acceptance and actual sanitized desktop/mobile screenshots"
+        },
+        {
+          "revision": 32,
+          "sha256": "05c41ebf4f5906e7107ed72c8a53327a08f925bde1627c70ccffc38147b15e01",
+          "size_bytes": 20889,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
         }
       ],
       "import_lineage": {
@@ -469,8 +476,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "05c41ebf4f5906e7107ed72c8a53327a08f925bde1627c70ccffc38147b15e01",
-      "size_bytes": 20889,
+      "sha256": "0143c605bf760062f2d7c6fc011f4a051b97e904383fb013e09886acd74cb490",
+      "size_bytes": 22303,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1111,7 +1118,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 15,
+      "revision": 16,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1189,6 +1196,13 @@
           "size_bytes": 14233,
           "superseded_at": "2026-11-01T19:42:34.485901+00:00",
           "reason": "Register ROSE PULSE React source, component tests and verified backend compatibility contract"
+        },
+        {
+          "revision": 15,
+          "sha256": "215e1705a4b58c6b2a9259b9cb47aff60c564235a48b97ca7ff36b6e13e3b89a",
+          "size_bytes": 14688,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
         }
       ],
       "import_lineage": {
@@ -1199,8 +1213,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "215e1705a4b58c6b2a9259b9cb47aff60c564235a48b97ca7ff36b6e13e3b89a",
-      "size_bytes": 14688
+      "sha256": "813310516fd4bcc8f1731efc4dad10ff0b9c38ea1950e344f48d1537a508b82f",
+      "size_bytes": 15492
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -1459,7 +1473,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 18,
+      "revision": 19,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1581,13 +1595,20 @@
           "size_bytes": 19564,
           "superseded_at": "2026-11-01T19:42:34.485901+00:00",
           "reason": "Register ROSE PULSE React source, component tests and verified backend compatibility contract"
+        },
+        {
+          "revision": 18,
+          "sha256": "6216b69e7566e47d93dc51b574dc10a6db99bbd617b7e85060d31bb85dd38577",
+          "size_bytes": 20479,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6216b69e7566e47d93dc51b574dc10a6db99bbd617b7e85060d31bb85dd38577",
-      "size_bytes": 20479,
+      "sha256": "16aa0d8634525d2ccdfb654d9f3d91516e6a98ec3c266d140e139a610ad05fc1",
+      "size_bytes": 22157,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -2904,7 +2925,7 @@
     {
       "document_id": "FE-LIVE-20261014-043",
       "path": "frontend/dev-server.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2914,19 +2935,26 @@
           "size_bytes": 5515,
           "superseded_at": "2026-10-27T02:46:10.262483+00:00",
           "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        },
+        {
+          "revision": 2,
+          "sha256": "dbeb1715c38b1262508484a9c2730c51ed62fbb2d3b232af10464903c93eb06d",
+          "size_bytes": 8194,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "dbeb1715c38b1262508484a9c2730c51ed62fbb2d3b232af10464903c93eb06d",
-      "size_bytes": 8194
+      "sha256": "21ce9560b359c28aed7615329ab1d0a98dba6d5935d1f84d36c728484e2a003a",
+      "size_bytes": 9621
     },
     {
       "document_id": "FE-LIVE-20261014-044",
       "path": "frontend/dev-server.test.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -2936,14 +2964,21 @@
           "size_bytes": 3229,
           "superseded_at": "2026-10-27T02:46:10.262483+00:00",
           "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        },
+        {
+          "revision": 2,
+          "sha256": "8027bfe35523659035ab5ec172268912412f1bfdbcb296ea35d6e498d3beae2e",
+          "size_bytes": 12348,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "8027bfe35523659035ab5ec172268912412f1bfdbcb296ea35d6e498d3beae2e",
-      "size_bytes": 12348
+      "sha256": "e8a3bfdf3b883b635ac90239d9ce3ddd2535e8158f1b105a9c2b0c550ef8377e",
+      "size_bytes": 15473
     },
     {
       "document_id": "FE-LIVE-20261014-045",
@@ -4390,15 +4425,23 @@
     {
       "document_id": "ROSE-V2-a23d4b174913",
       "path": "docs/dev/frontend/ROSE_PULSE_API_CONTRACT.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a4b1924b90bfa725e880726c6a3fd19f13ee51660bbf703660d893bc3bd2c7c4",
+          "size_bytes": 5252,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "a4b1924b90bfa725e880726c6a3fd19f13ee51660bbf703660d893bc3bd2c7c4",
-      "size_bytes": 5252
+      "sha256": "11e6fa7cfcde64e8ab81bdbf92022651f603f80e0723435a845db5c543c0138e",
+      "size_bytes": 5413
     },
     {
       "document_id": "ROSE-V2-b8338198ad37",
@@ -4424,54 +4467,86 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a2c22cf3b3360fe0a6993c6d4da8070bff011687f5195da27b95370b77a21d21",
+          "size_bytes": 4691,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "a2c22cf3b3360fe0a6993c6d4da8070bff011687f5195da27b95370b77a21d21",
-      "size_bytes": 4691
+      "sha256": "c211a717d15af9b7e7a3010225fab0811d6359e76d36706224a59eccb82662d2",
+      "size_bytes": 9528
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
       "path": "frontend/rose-pulse-react/index.html",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9d03182cfa9ddde86a6063e03876763967dda2fb39e16580682cb886e2bd6745",
+          "size_bytes": 571,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "9d03182cfa9ddde86a6063e03876763967dda2fb39e16580682cb886e2bd6745",
-      "size_bytes": 571
+      "sha256": "58776bd521a2c45e6b34babcb669fde909ea5fc668a2396d078e41f3710fe438",
+      "size_bytes": 690
     },
     {
       "document_id": "ROSE-V2-dd5a175fb6c9",
       "path": "frontend/rose-pulse-react/package-lock.json",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0e51058273b9e3411b8c1b00544bf2493563143b3de1169ca8622333a42c2a0b",
+          "size_bytes": 65170,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "0e51058273b9e3411b8c1b00544bf2493563143b3de1169ca8622333a42c2a0b",
-      "size_bytes": 65170
+      "sha256": "9912718c3a9b55cf4f7459cbcc0515c2e949dfb950aa50a2fbe40c2ac1a7fa1d",
+      "size_bytes": 73979
     },
     {
       "document_id": "ROSE-V2-3a8e61d9b9ef",
       "path": "frontend/rose-pulse-react/package.json",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "74c42a2cba58e6b4c00597ab9f6a6f3a47145b9849ba7cc07f289a72dd64b144",
+          "size_bytes": 595,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "74c42a2cba58e6b4c00597ab9f6a6f3a47145b9849ba7cc07f289a72dd64b144",
-      "size_bytes": 595
+      "sha256": "a7769d8f5a0a2f51db20bbe8fb1b973e333f7da102facfea10e3212b3e6e00a3",
+      "size_bytes": 831
     },
     {
       "document_id": "ROSE-V2-536854369390",
@@ -4489,106 +4564,170 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "660063965eac74d7125423d6a4220352f51e0fe0098b8f86cc8f5b176af163d4",
+          "size_bytes": 71527,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "660063965eac74d7125423d6a4220352f51e0fe0098b8f86cc8f5b176af163d4",
-      "size_bytes": 71527
+      "sha256": "a13120b6764b24b232b14d45bc51b3caa318e92578dd506323b3c33db51de01b",
+      "size_bytes": 84048
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f437a1c0293c4b3e15aafa89287d54fe4aa8a99806cf8b120ff7367beb6433eb",
+          "size_bytes": 15701,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "f437a1c0293c4b3e15aafa89287d54fe4aa8a99806cf8b120ff7367beb6433eb",
-      "size_bytes": 15701
+      "sha256": "b026f233ff5b313413d007443d423ae8fab47849e72c25d9d878738cccd9898a",
+      "size_bytes": 18437
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
       "path": "frontend/rose-pulse-react/src/main.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "38be3adff363d91e77c8741a66d0c4a8b2deb2f57af26dff9646d8337f926eb2",
+          "size_bytes": 265,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "38be3adff363d91e77c8741a66d0c4a8b2deb2f57af26dff9646d8337f926eb2",
-      "size_bytes": 265
+      "sha256": "f1b8f311c5b1bad4871efdf16f5085f958cd6c038f50633ce2111c8ce1526dc1",
+      "size_bytes": 345
     },
     {
       "document_id": "ROSE-V2-f3d8228e1767",
       "path": "frontend/rose-pulse-react/src/service.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3b0805da40115dddc0f3a12dba193910e7ee9da95ed6473dd6169fdd05e9f8cf",
+          "size_bytes": 8232,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "3b0805da40115dddc0f3a12dba193910e7ee9da95ed6473dd6169fdd05e9f8cf",
-      "size_bytes": 8232
+      "sha256": "a72f263fff19f2c9d83dee508d6b392372f9b4282690f22e5390b35f3729774c",
+      "size_bytes": 13148
     },
     {
       "document_id": "ROSE-V2-8b91d6743535",
       "path": "frontend/rose-pulse-react/src/service.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "544daffb8919b68c23132be688b60489d51b257140bb481cd7a89dbd574c2f5f",
+          "size_bytes": 15289,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "544daffb8919b68c23132be688b60489d51b257140bb481cd7a89dbd574c2f5f",
-      "size_bytes": 15289
+      "sha256": "3eb52dfbcaffcdebb14c92c7cffd8cd44acff61208a5ab3a743532c10aa5984a",
+      "size_bytes": 15165
     },
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "503c967013d269279a237bf6fe95d0492c8eb922c5d6b0c7d6011ad5fe266289",
+          "size_bytes": 39800,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "503c967013d269279a237bf6fe95d0492c8eb922c5d6b0c7d6011ad5fe266289",
-      "size_bytes": 39800
+      "sha256": "a90b5aa70f5abc036f4142f945b6de3c126764ec4865e46903c9c604b33c6b0d",
+      "size_bytes": 45227
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
       "path": "frontend/rose-pulse-react/src/test-setup.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4986b5dbd3cc493ce3f91f02612131f0b82d817cc3af9d5d289d621074f2e238",
+          "size_bytes": 188,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "4986b5dbd3cc493ce3f91f02612131f0b82d817cc3af9d5d289d621074f2e238",
-      "size_bytes": 188
+      "sha256": "2350922e01a4f7a4718206662cf6a01a1325fcfd6c5066ba665759819d127d1e",
+      "size_bytes": 508
     },
     {
       "document_id": "ROSE-V2-07f1f563f112",
       "path": "frontend/rose-pulse-react/vite.config.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "927564bd8c96f9b7beab862579177ceaa61631ba089e959ba49b16b898852716",
+          "size_bytes": 618,
+          "superseded_at": "2026-11-01T22:32:46.225801+00:00",
+          "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "927564bd8c96f9b7beab862579177ceaa61631ba089e959ba49b16b898852716",
-      "size_bytes": 618
+      "sha256": "434376b61ecff07b809d3f762966aabbce3adf919486434b0ec4f7d8f2d2059c",
+      "size_bytes": 1920
     },
     {
       "document_id": "ROSE-V2-13f063948403",
@@ -4636,6 +4775,981 @@
       ],
       "sha256": "202dc4076f409c6087d3ac2e6fe011d028104d5391944b2fd48e6d871330bac1",
       "size_bytes": 199629
+    },
+    {
+      "document_id": "ROSE-P2-3a584203dce4",
+      "path": "docs/dev/phase2/ACCEPTANCE.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "3c3e5270af5f3a6d3a8f273b688515657f14498952f4643dd4222a75623f7d96",
+      "size_bytes": 9742
+    },
+    {
+      "document_id": "ROSE-P2-f7eb52be36e4",
+      "path": "docs/dev/phase2/ADR-001-OFFLINE-WEB.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "7efa75be0de9b07b6276c11ff8b1038444c53e6bbfcd6303fb8e2478923d81fd",
+      "size_bytes": 3817
+    },
+    {
+      "document_id": "ROSE-P2-1091cd01ccc7",
+      "path": "docs/dev/phase2/API_CONTRACT.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e1643e47a78a5f6c04f9411e9193d39fe4b65c9d071a6a7d2aa8026f1fba1764",
+      "size_bytes": 12266
+    },
+    {
+      "document_id": "ROSE-P2-905e01a0036f",
+      "path": "docs/dev/phase2/API_CONTRACT.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "bf51b1519a19d94c27e3d4e008d34aafd64c77af897233a5e8ffe3edd3a8f77c",
+      "size_bytes": 5789
+    },
+    {
+      "document_id": "ROSE-P2-cf2681f3a0b3",
+      "path": "docs/dev/phase2/INDEPENDENT_REVIEW.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e2b772dca96fc6a18723ae76669f2b4b55c1c173db70e65e3ee963e3beed0c40",
+      "size_bytes": 10603
+    },
+    {
+      "document_id": "ROSE-P2-1e98796d7882",
+      "path": "docs/dev/phase2/INTEGRATION.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "4f59f0f47f0ec9c048371ff268541569736234b8caaa136f838b0ac329a5f4ac",
+      "size_bytes": 3753
+    },
+    {
+      "document_id": "ROSE-P2-41fbe016b174",
+      "path": "docs/dev/phase2/PHYSICAL-HOTSPOT-SCRIPT.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "5f5f1fafd7b0d65179b2258f9918ba0642d4e52b68427e15ec186851e0fd9181",
+      "size_bytes": 3116
+    },
+    {
+      "document_id": "ROSE-P2-660c9f9d03c6",
+      "path": "docs/dev/phase2/PUBLIC_EVIDENCE_INDEX.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e77beef3e2152f01c92e02f29c951e2ac6772fe51a63120b786f370e02d50f18",
+      "size_bytes": 5751
+    },
+    {
+      "document_id": "ROSE-P2-a0bb6a98a7d2",
+      "path": "docs/dev/phase2/W8-ADMISSION.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "d42d2f1bfac2507aff18873f3aecbfbc88c20d95967dfca0ad1e9b24a2180b07",
+      "size_bytes": 4459
+    },
+    {
+      "document_id": "ROSE-P2-cefe6611f294",
+      "path": "docs/dev/phase2/evaluation/FUNDER_ASSESSMENT.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "562cd934764748da9a131d06c06e8f7b977d38e299929cf749c90917685c5afd",
+      "size_bytes": 6522
+    },
+    {
+      "document_id": "ROSE-P2-7a494810cba3",
+      "path": "docs/dev/phase2/evaluation/PILOT_RESULTS.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "7abfbda297e5f15b250d22611450ca5e4dabdb04e7ca49edf14eba29da84e6df",
+      "size_bytes": 2211
+    },
+    {
+      "document_id": "ROSE-P2-a490e80d6d54",
+      "path": "docs/dev/phase2/evaluation/SCALABILITY.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "3a065aa4623a63c71a79514003671d97133bfed8eb683d8934a7ba1c5e715e87",
+      "size_bytes": 3192
+    },
+    {
+      "document_id": "ROSE-P2-e8e36755f949",
+      "path": "docs/dev/phase2/evaluation/USER_STUDY.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "00c6daf0a5def4734e94980a38d906ad6c18e5bcbcff9fc1c7bb6e8dcebb0a46",
+      "size_bytes": 7429
+    },
+    {
+      "document_id": "ROSE-P2-c5be4f183ec1",
+      "path": "docs/dev/phase2/evaluation/anonymous-session-template.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "adacb5abe31549cb794f8f169a59545ae923cd383064dac2bba91a708bf4497b",
+      "size_bytes": 2292
+    },
+    {
+      "document_id": "ROSE-P2-d327a4ccbc0a",
+      "path": "docs/dev/phase2/evaluation/cost-final-results.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "f138084d6b276c4ce4590159b0882b771a74724648c824fa3bfc65c69bf0ef11",
+      "size_bytes": 1446
+    },
+    {
+      "document_id": "ROSE-P2-fd59b2f15473",
+      "path": "docs/dev/phase2/evaluation/cost-template.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "867d95a08055cd89dd52a02c03b162156ee49de97c79c0a0d149f7c3ddc32d5f",
+      "size_bytes": 1581
+    },
+    {
+      "document_id": "ROSE-P2-96678ec818ec",
+      "path": "docs/dev/phase2/evaluation/evidence-template.csv",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "aed3f4ee52caf2e41195bb798fbb84d57cbb0d4fabf889727a38f576d7b906b7",
+      "size_bytes": 180
+    },
+    {
+      "document_id": "ROSE-P2-9c2f695877eb",
+      "path": "docs/dev/phase2/evaluation/read-benchmark.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "5b420d44ef7627d602520bb56e2fdcf6aecaa4bd816f9179fb8dcdbede65ddbe",
+      "size_bytes": 9668
+    },
+    {
+      "document_id": "ROSE-P2-e9384f64cab7",
+      "path": "docs/dev/phase2/evaluation/severity-before-after.csv",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "a75f3e199641e0712fd195742eea31279d08d5d9a64dd3cd4dbcbb2bd9ef1af4",
+      "size_bytes": 1382
+    },
+    {
+      "document_id": "ROSE-P2-60ea8fdf48cb",
+      "path": "docs/dev/phase2/evaluation/severity-template.csv",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "3fc87f2de939fd586734842226a1a779e6021c8a80291af8219bb36bd472564c",
+      "size_bytes": 155
+    },
+    {
+      "document_id": "ROSE-P2-df6a91953d97",
+      "path": "docs/dev/phase2/evaluation/sus-response-template.csv",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "89118ab261204aae7196b06dab89c70358b07deb259fe67eb47dbf47a8690daf",
+      "size_bytes": 124
+    },
+    {
+      "document_id": "ROSE-P2-36e8b2370629",
+      "path": "docs/dev/phase2/evaluation/synthetic-pilot-input.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "8afd6b61e8c450bee45ee6bf3d8459c14a1dcea345784a25055b4e6860cf325f",
+      "size_bytes": 13423
+    },
+    {
+      "document_id": "ROSE-P2-d3805a384eee",
+      "path": "docs/dev/phase2/evaluation/synthetic-pilot-results.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e00ea64119ddd9b7cac30de794fab5392e05f45288a3aa6cc5ed071cd8b4a20e",
+      "size_bytes": 5812
+    },
+    {
+      "document_id": "ROSE-P2-03c8b8e24f9a",
+      "path": "docs/dev/phase2/evidence/backend/BACKEND_REPORT.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "71f42b593a6be17d9847424bc67c8a0c9001670a92b4b67a339b47859d9801bc",
+      "size_bytes": 7389
+    },
+    {
+      "document_id": "ROSE-P2-eaf11f95c6e8",
+      "path": "docs/dev/phase2/evidence/backend/COMMAND_LEDGER_BACKEND.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "82c8638b06cf819ceb497ab3329d20c93f2a9d13955c0f673b7561ed617cd0e7",
+      "size_bytes": 25583
+    },
+    {
+      "document_id": "ROSE-P2-fe00443e9c3c",
+      "path": "docs/dev/phase2/evidence/backend/VALIDATION_MATRIX_BACKEND.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "7407cd81bde9bed35fa5b7243d82d360118628d5b8345a7f27c61a82985cd880",
+      "size_bytes": 5362
+    },
+    {
+      "document_id": "ROSE-P2-607514929e46",
+      "path": "docs/dev/phase2/evidence/controller/evaluation-peer-green.txt",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "d7f29622e89e6a2504fbb2ae2439b83f3798696e7ced9712f31c60a5eaa652e3",
+      "size_bytes": 115
+    },
+    {
+      "document_id": "ROSE-P2-de8e6f93df49",
+      "path": "docs/dev/phase2/evidence/controller/evaluation-peer-red.txt",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "9cd094b185b7bc4e1ba06dddaedbb6c309770ef0eb743aadb29c2f3d2443eacb",
+      "size_bytes": 1370
+    },
+    {
+      "document_id": "ROSE-P2-08634fecf3f0",
+      "path": "docs/dev/phase2/evidence/controller/runtime-binding.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "5bb6afef36e28ee2184cb65b08946555650e850fd1c7e73a5f2cd529ed6cc55f",
+      "size_bytes": 4146
+    },
+    {
+      "document_id": "ROSE-P2-4a235c1fd9d0",
+      "path": "docs/dev/phase2/evidence/controller/service-isolation-resume.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "3f32ebbe6a4f55eed338f6d64f195e697df6c86d91614d6845d41701cd7c511c",
+      "size_bytes": 1779
+    },
+    {
+      "document_id": "ROSE-P2-7e1ee47c1fba",
+      "path": "docs/dev/phase2/evidence/controller/service-isolation-stop.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "bdf94436862299024f8ed6d62259bc8731ea43a34a2a6f1550733ea6132931b8",
+      "size_bytes": 1780
+    },
+    {
+      "document_id": "ROSE-P2-d7ec9ccac4fd",
+      "path": "docs/dev/phase2/evidence/frontend/AUTHOR_CANDIDATE.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "a1cb5e7cb154707cff145019788d3846ac10ab741dc8f90c5f0f91f1befd1c7a",
+      "size_bytes": 3349
+    },
+    {
+      "document_id": "ROSE-P2-10e494e16761",
+      "path": "docs/dev/phase2/evidence/frontend/FE-R1-DELIVERY.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "c5b44949f05792556e68afea344132685c137d079acbe53eed0bfc9d037dd10b",
+      "size_bytes": 3019
+    },
+    {
+      "document_id": "ROSE-P2-a90d819e2af9",
+      "path": "docs/dev/phase2/evidence/frontend/FE-R2-DELIVERY.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "48c38ecb6d31d8e079fad02f4dc6ed689c97597b7b26e75f02285c8c239c8537",
+      "size_bytes": 3653
+    },
+    {
+      "document_id": "ROSE-P2-c92d1a003970",
+      "path": "docs/dev/phase2/evidence/independent/ACCEPTANCE.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "97879c77bc6002f59dfafd0537cf94e8ec8ba9e45e0ee81fd3d369ba6f9e4fc0",
+      "size_bytes": 17226
+    },
+    {
+      "document_id": "ROSE-P2-80b43a10e0a3",
+      "path": "docs/dev/phase2/evidence/independent/BACKEND_SOURCE_REVIEW.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "2834e559c955905f380eb0105159afffac2aee5cdb1fb2834eea964e63a89638",
+      "size_bytes": 14323
+    },
+    {
+      "document_id": "ROSE-P2-728b68cf1133",
+      "path": "docs/dev/phase2/evidence/independent/EVALUATION_SOURCE_REVIEW.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "3a819fbedf567b351bf670c27b16ca81596a2e9d5c622a57dd3d7a757d591abd",
+      "size_bytes": 1088
+    },
+    {
+      "document_id": "ROSE-P2-cb3d109be1e3",
+      "path": "docs/dev/phase2/evidence/independent/FINAL_EFFECT_ASSERTIONS.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "bfec49b999f4dc7275ba1776f24bdd50b69155f906135070fc4824cb111a6696",
+      "size_bytes": 1435
+    },
+    {
+      "document_id": "ROSE-P2-c4f5b961f0d6",
+      "path": "docs/dev/phase2/evidence/independent/FRONTEND_SOURCE_REVIEW.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "417940c021646df593b6b48daca377995579bd72f86ce19d94af66cdb84e0500",
+      "size_bytes": 8084
+    },
+    {
+      "document_id": "ROSE-P2-c9d361b970d4",
+      "path": "docs/dev/phase2/evidence/independent/browser-http-observations.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "2b549574f492c5f21721f55ea04f80dca32df472076d32cbc19e76c9ae732622",
+      "size_bytes": 51113
+    },
+    {
+      "document_id": "ROSE-P2-d06ae26c0376",
+      "path": "docs/dev/phase2/evidence/independent/phase2-db-final.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "6b931b3b40bf665611732fe9a43de38ccf079a23d986e39353f31e52605dedb9",
+      "size_bytes": 12060
+    },
+    {
+      "document_id": "ROSE-P2-5b25b52cbae7",
+      "path": "docs/dev/phase2/screenshots/phase2-desktop-home-en.png",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "a50bfb1bef83834a268a36ba35332c6529f9df847fc915f7055439957a76c6cf",
+      "size_bytes": 703337
+    },
+    {
+      "document_id": "ROSE-P2-24ee33bf53a2",
+      "path": "docs/dev/phase2/screenshots/phase2-mobile-home-ms.png",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "327e215b2ea6d59e3a5292132d7a009f8a9fc6a98fcbc20dcad2da34d6b1844d",
+      "size_bytes": 235645
+    },
+    {
+      "document_id": "ROSE-P2-2a6a1b4a297e",
+      "path": "docs/dev/tasks/FE-BE-ROSE-PHASE2-20261102.md",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "7e560968b4658ab672a22414b20071eb809833129d2d219905007f2639c47f10",
+      "size_bytes": 2693
+    },
+    {
+      "document_id": "ROSE-P2-74255edf6843",
+      "path": "frontend/rose-pulse-react/ASSET_MANIFEST.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "277015339d829a2a606de3838f41b104b92b0a465c099ee4f10b5018db452a76",
+      "size_bytes": 1464
+    },
+    {
+      "document_id": "ROSE-P2-e71c0a60bba1",
+      "path": "frontend/rose-pulse-react/public/icon.svg",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e236393a135cea7dc0035ba2e0466b6447b79b3ab711adcbd7a0a4f78d772dab",
+      "size_bytes": 508
+    },
+    {
+      "document_id": "ROSE-P2-05fab9df1791",
+      "path": "frontend/rose-pulse-react/public/manifest.webmanifest",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "c48966b8c5c2ef3a718608e25ab5db480cf794486816265a70be2e63ef17c4a7",
+      "size_bytes": 296
+    },
+    {
+      "document_id": "ROSE-P2-20e6a2ef8af1",
+      "path": "frontend/rose-pulse-react/scripts/extract-i18n.mjs",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "fa0f898a037946dd862e6bf5e5c5775f561e7fbea4860bca7c6d054b0d738cb7",
+      "size_bytes": 5885
+    },
+    {
+      "document_id": "ROSE-P2-370e9c1895ba",
+      "path": "frontend/rose-pulse-react/src/EventShare.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "6abf9bf4198924aaba33470208e07e0fe5b3384285fd8e247b2be739f285cf96",
+      "size_bytes": 2211
+    },
+    {
+      "document_id": "ROSE-P2-8d511394a1a5",
+      "path": "frontend/rose-pulse-react/src/EventShare.test.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "6d8c3e45b3e2ab8053eeefecac82dec78c6d08e686ef2e84a7e4db041b4b3d73",
+      "size_bytes": 1658
+    },
+    {
+      "document_id": "ROSE-P2-650d560abc95",
+      "path": "frontend/rose-pulse-react/src/FilePicker.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "eaae9e514c72da1657c04b3825e7e61138a8e51c3e4e6ca3419515ec2b34ef5b",
+      "size_bytes": 9664
+    },
+    {
+      "document_id": "ROSE-P2-78e229b4c24d",
+      "path": "frontend/rose-pulse-react/src/FilePicker.test.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "f752e3401ca548911fecdd37f14755bb02732139da9b137ff2ea2fd806cfcff6",
+      "size_bytes": 4550
+    },
+    {
+      "document_id": "ROSE-P2-28e512608732",
+      "path": "frontend/rose-pulse-react/src/OrganizerWorkspace.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "ec2cbffb135a78f1cb84f01e55cf0a94486967a4a16e23f9316bc4a0aa77d7f9",
+      "size_bytes": 10180
+    },
+    {
+      "document_id": "ROSE-P2-3f53d6ed49f4",
+      "path": "frontend/rose-pulse-react/src/gallery-controller.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "8aec862f1078bafe6953f15fdfc3b1b9d45aa38d65e80e473086076e2ef3876e",
+      "size_bytes": 7226
+    },
+    {
+      "document_id": "ROSE-P2-7132da30064e",
+      "path": "frontend/rose-pulse-react/src/i18n/en.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "def37b8af801830cd7762a9b6f88d55ee255125d1c7fa5badb9518dcbb841d78",
+      "size_bytes": 50165
+    },
+    {
+      "document_id": "ROSE-P2-79c57f8a6fe4",
+      "path": "frontend/rose-pulse-react/src/i18n/i18n.test.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "8ab42bf6515ba488f67f0a86216779815bde1cf87edb3d2cb110abd0732dd28f",
+      "size_bytes": 4251
+    },
+    {
+      "document_id": "ROSE-P2-0b9828150d85",
+      "path": "frontend/rose-pulse-react/src/i18n/index.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "17e0b110c28f4a3a74890d8017c56c91e8c63e31d1a5a8387b507146367db814",
+      "size_bytes": 2591
+    },
+    {
+      "document_id": "ROSE-P2-c434e275cd26",
+      "path": "frontend/rose-pulse-react/src/i18n/ms.json",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e3f349a976d3e60557ecc9dbc512694bd31a1210e46e7150d85028429aabfa80",
+      "size_bytes": 52014
+    },
+    {
+      "document_id": "ROSE-P2-cc4c1302c538",
+      "path": "frontend/rose-pulse-react/src/minimum-registration.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "edc583d4e08819bc9a71b91235b1a53df847a23d8db89a536f3c8f6de90129a4",
+      "size_bytes": 4220
+    },
+    {
+      "document_id": "ROSE-P2-a30383c34683",
+      "path": "frontend/rose-pulse-react/src/minimum-registration.test.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "5d2e8340d93c1efcfac484071f569be2a836df952b03d0b9e122e8ff99f96514",
+      "size_bytes": 1033
+    },
+    {
+      "document_id": "ROSE-P2-4d5ba300321d",
+      "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "8257839b424cccdc33a5bcc8191930d8c0822d6225df6b90a45d41eab1a0b424",
+      "size_bytes": 25230
+    },
+    {
+      "document_id": "ROSE-P2-a74207d91712",
+      "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.test.jsx",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "ced5ef7ccd83432df276df9b712875bc907603792b194801780613644688cbbb",
+      "size_bytes": 5109
+    },
+    {
+      "document_id": "ROSE-P2-7d0ca7caa536",
+      "path": "frontend/rose-pulse-react/src/offline/access.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "e98f234ed8b77c820b9a1f67a9313ccf03e2a0972075045098a0b44dfd1780cb",
+      "size_bytes": 2246
+    },
+    {
+      "document_id": "ROSE-P2-019f6ffb4095",
+      "path": "frontend/rose-pulse-react/src/offline/access.test.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "49d7dd6a211d7e90a6e0428d197aeed06827e183e10f552f5ceaeedfb30cb969",
+      "size_bytes": 4344
+    },
+    {
+      "document_id": "ROSE-P2-86fc1a8cec1e",
+      "path": "frontend/rose-pulse-react/src/offline/queue.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "49bec6b0f5b655e406b5af0dae8c83e28734f7203f06ec69fc3fc53a92188c00",
+      "size_bytes": 15459
+    },
+    {
+      "document_id": "ROSE-P2-94b0d36b0565",
+      "path": "frontend/rose-pulse-react/src/offline/queue.test.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "c70b28784df6723521923386d06dc5fd8ee704cda0395e409fb329de56e33e5d",
+      "size_bytes": 7625
+    },
+    {
+      "document_id": "ROSE-P2-b7b597a64062",
+      "path": "frontend/rose-pulse-react/src/offline/sync.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "64cf9ac1faddc31b775d6fcd58bd65a1c63b46da0942bf3bb791beadea304edd",
+      "size_bytes": 3464
+    },
+    {
+      "document_id": "ROSE-P2-7797bb26b032",
+      "path": "frontend/rose-pulse-react/src/offline/sync.test.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "89afcc0d1d8205405d5871bca7e0417c11a30f4882c359438abf64a0b2e04bff",
+      "size_bytes": 6602
+    },
+    {
+      "document_id": "ROSE-P2-43290066b2df",
+      "path": "frontend/rose-pulse-react/src/phase2-api.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "68eb270e8635052738f46c55fb158278f0c9bcbf58451f3f2674c009e8f339c5",
+      "size_bytes": 17855
+    },
+    {
+      "document_id": "ROSE-P2-b56089bda207",
+      "path": "frontend/rose-pulse-react/src/phase2-api.test.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "3e53dde7c6e7af3b4e06df00150e34779beeb907cd819c3f54ab6ed4e1926e40",
+      "size_bytes": 5559
+    },
+    {
+      "document_id": "ROSE-P2-fb47741f4205",
+      "path": "frontend/rose-pulse-react/src/pwa/register.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "46e5fd12d62b27b0b98a10e43392a02e0a24910503de35fe25400ed344f10563",
+      "size_bytes": 549
+    },
+    {
+      "document_id": "ROSE-P2-0dd0b00d4982",
+      "path": "frontend/rose-pulse-react/src/pwa/sw-template.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "943512a9d46ca84b495452025ab7e6a0b21e04b165b79e8fae7f5b6d8650009a",
+      "size_bytes": 1794
+    },
+    {
+      "document_id": "ROSE-P2-f008b7cca8d5",
+      "path": "frontend/rose-pulse-react/src/pwa/worker.test.js",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "b15affb88b9dddd85be3ef5c2e636ff852c690087297a1467fedb9f3df103b90",
+      "size_bytes": 3801
+    },
+    {
+      "document_id": "ROSE-P2-0a434015aad3",
+      "path": "scripts/evaluate_phase2.py",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "a39202d137dbcaeb16dd7193038f69a70b1f2449324563d8a93ce9314bd9a66d",
+      "size_bytes": 8847
+    },
+    {
+      "document_id": "ROSE-P2-af8952b759ec",
+      "path": "scripts/tests/test_evaluate_phase2.py",
+      "revision": 1,
+      "owner": "NU ROSE PULSE Phase2 workstream",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-ROSE-PHASE2-20261102"
+      ],
+      "sha256": "dd2a00b06cb10a2ded6e5218a18f5570af4db265a822904c32dea91765e9b21b",
+      "size_bytes": 4312
     }
   ]
 }

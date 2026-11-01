@@ -1,0 +1,34 @@
+{
+  "status": "PASS",
+  "basis": "Static assertions against final fresh native READ ONLY snapshot; no new DB action or write",
+  "timestamp_comparison": "recorded_at parsed as ISO datetime; API Z and DB +00:00 denote the same instant. All other receipt fields compared exactly.",
+  "first_postprocessing_failure": "postprocessing-first-failure.json",
+  "snapshot_sha256": "6b931b3b40bf665611732fe9a43de38ccf079a23d986e39353f31e52605dedb9",
+  "online_registration_ID_status_actor_matches": 5,
+  "offline_receipt_and_registration_matches": [
+    {
+      "batch_id": "3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "submission_id": "4496b294-5418-4ced-a5bb-6ae793adb484",
+      "registration_id": "01M6CJP090VKA5RY399GX23QMZ",
+      "one_effect": true
+    },
+    {
+      "batch_id": "3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "submission_id": "5cf763f6-0d45-4ff4-bca3-dfee37265773",
+      "registration_id": "01M6CJP0AAM5YCKWZ2C175WCBQ",
+      "one_effect": true
+    },
+    {
+      "batch_id": "3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "submission_id": "b8368c7d-f43f-47ef-b7f1-6f66d5c13a1f",
+      "registration_id": "01M6CJP0ASXG2BDMGKVXNPAP9B",
+      "one_effect": true
+    },
+    {
+      "batch_id": "79ccc7dc-fd5c-469a-81a1-93df8c5e1fd2",
+      "submission_id": "1832025f-3536-42e1-b287-d4cb85782451",
+      "registration_id": "01M6CK9VSXRHCQHNMXD4QYH4JX",
+      "one_effect": true
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+finding_id,task_id,category,before_observation,after_change,fix_source,boundary
+BE-R1,U6,authorization,Demotion while waiting still cancelled/promoted,Fresh actor lock returns403 without mutation,54ab71d29852df26f17fb32317e405e5a48353ea,Engineering/synthetic observation; not a human usability finding
+BE-R2,U8,uncertain_recovery,Opposite receipt/identity order returned uncontrolled500,Whole losing transaction rollback with controlled409,54ab71d29852df26f17fb32317e405e5a48353ea,Engineering/synthetic observation; not a human usability finding
+FE-R1,U10,navigation,Share entry existed only after application,Public detail EN/MS share before application,2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6,Engineering/synthetic observation; not a human usability finding
+FE-R2,U8,uncertain_recovery,Durable needs_review not reflected after failed sync,Refresh local state on failure; retain original error,4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e,Engineering/synthetic observation; not a human usability finding
+EVAL-R1,evaluation,provenance,Annual amounts mislabeled monthly,Reject non-month accounting period,CONTROLLER_DELIVERY,Engineering/synthetic observation; not a human usability finding
+EVAL-R2,evaluation,denominator,Success median lacked its own sample count,Report timed_success_attempts,CONTROLLER_DELIVERY,Engineering/synthetic observation; not a human usability finding

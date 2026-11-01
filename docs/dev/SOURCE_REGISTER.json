@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 30,
+  "source_count": 32,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -364,6 +364,22 @@
       "raw_in_repository": false,
       "content_status": "task_authorized_not_team_acceptance",
       "locator": "Owner request 2026-11-02; private reference image SHA256170fe004d69253f2d9168df29185c03036f473b0f4a03890a32f3017764afc40"
+    },
+    {
+      "source_id": "USER-W8-MEETING-20261102",
+      "title": "Owner-provided W8 meeting overview",
+      "classification": "owner_provided_meeting_record",
+      "raw_in_repository": false,
+      "content_status": "reported_supervisor_feedback_not_raw_teacher_or_NGO_signoff",
+      "locator": "Owner message2026-11-02; external evidence/independent/sources/USER-W8-MEETING-20261102.json"
+    },
+    {
+      "source_id": "USER-ROSE-PHASE2-20261102",
+      "title": "Owner ROSE PULSE Phase2 implementation authorization",
+      "classification": "user_authorization",
+      "raw_in_repository": false,
+      "content_status": "task_authorized_not_team_acceptance",
+      "locator": "Owner Phase2 request 2026-11-02; synthetic Offline, English/Malay, selective W8 and independent evaluation"
     }
   ]
 }

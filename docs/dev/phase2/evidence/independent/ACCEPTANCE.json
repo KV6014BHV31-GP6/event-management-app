@@ -1,0 +1,313 @@
+{
+  "schema": "nu.independent.phase2-acceptance/1",
+  "reviewed_at_utc": "2026-11-01T22:30:10.556781+00:00",
+  "verdict": "ACCEPT_BOUNDED_NATIVE_SYNTHETIC_PHASE2",
+  "role": "Independent reviewer; product and repositories read-only; no remote approval/merge/deployment",
+  "candidate": {
+    "frontend": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+    "backend": "54ab71d29852df26f17fb32317e405e5a48353ea"
+  },
+  "baselines": {
+    "frontend": "9525dd748acaabf9989c3c37cb42b6bfdf54409f",
+    "backend": "dcbdf47ed8e4d9b816676df97aaa80015c9e1928"
+  },
+  "product_trees": {
+    "frontend": "ea8c8bd375688c351220b7b2c54a9e3689fc891e",
+    "backend": "01d65b241e5c394741cfc0c4ce2f774a78f473e6"
+  },
+  "source_review": {
+    "frontend": "FRONTEND_SOURCE_REVIEW.json",
+    "backend": "BACKEND_SOURCE_REVIEW.json",
+    "final_state": "No unresolved blocking finding in reviewed scope; four product findings repaired",
+    "evaluation": "EVALUATION_SOURCE_REVIEW.json"
+  },
+  "versions": [
+    {
+      "from": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "to": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "backend": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "reason": "Controller-authorized EventDetail share entry repair after preserved U10 failure",
+      "at": "2026-11-01T22:02:46.525Z",
+      "diff": "phase2-source-transition-82b1927-2ccb832.diff",
+      "sha256": "e64e604fd3e8cfe07b81a856da76959c206f8c4c09776820f2f62b22f11f7789"
+    },
+    {
+      "from": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "to": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "backend": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "reason": "FE-R2 failure-path local refresh",
+      "at": "2026-11-01T22:22:09.017Z",
+      "diff": "phase2-source-transition-2ccb832-4f2bb20.diff",
+      "sha256": "8d1c9c59f0f8e7bc4c3c59203770b0036c2d4181592dd27d98bb77b253a83cf5"
+    }
+  ],
+  "mixed_SHA_applicability": "Initial82b core passes remain explicitly82b.2ccb adds only EventDetail share plus targeted tests.4f2 changes only OfflineWorkspace failure readback plus targeted tests. Unchanged relevant product blobs/diffs reviewed; affected U10 and native failure path rechecked on their repair SHAs. This is not a full all-scenarios rerun on4f2.",
+  "current_shell": {
+    "source": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+    "cache": "rose-public-shell-bff9e9c306b014f4",
+    "loaded_asset": "/assets/index-CLziLkbe.js",
+    "profile_retained": true
+  },
+  "findings": [
+    {
+      "id": "BE-R1",
+      "severity": "P2",
+      "found_at": "5be160144f6c63282f8c87e88f54420062a85083:backend/src/phase2/router.py:59-61; backend/src/registrations/service.py:178-181",
+      "title": "Organizer cancellation retained stale role while waiting for event lock",
+      "reproduction": "Hold event FOR UPDATE, start cancel after organizer role preread, wait until cancel waits on lock, commit organizer demotion, release event lock.",
+      "before": "Cancelled A and promoted B despite current role=user.",
+      "fixed_at": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/registrations/service.py:180-185",
+      "repair": "After event/registration lock, actor FOR UPDATE with populate_existing rechecks organizer role before ownership or mutation.",
+      "source_recheck": "RESOLVED",
+      "writer_native_recheck": "RED reproduced then GREEN403 with Aapproved/Bwaiting and no cancellation audit; restored controlled organizer role subsequently cancels/promotes.",
+      "independent_runtime_recheck": "NOT_RUN",
+      "final_status": "RESOLVED_IN_BOUNDED_REVIEW"
+    },
+    {
+      "id": "BE-R2",
+      "severity": "P2",
+      "found_at": "5be160144f6c63282f8c87e88f54420062a85083:backend/src/phase2/sync.py:59-91,97-112",
+      "title": "Reverse global UUID or national-identity order leaked deadlock DBAPIError as500",
+      "reproduction": "Different actors/events submit two-item batches in opposite shared-ID order; barrier after each first receipt flush forces40P01 at second receipt or domain identity insert.",
+      "before": "Loser rolled back but DBAPIError escaped instead of controlled envelope409.",
+      "fixed_at": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/sync.py:111-119",
+      "repair": "Catch DBAPIError SQLSTATE40P01/40001, roll back whole batch and return409 with original-ID reconciliation instruction. No domain write retry.",
+      "source_recheck": "RESOLVED",
+      "writer_native_recheck": "Both receipt and identity deadlocks captured as actual40P01; loser409, winner2 registrations/1batch/2receipts; extra read-only evidence confirms no loser participant prefix.",
+      "independent_runtime_recheck": "NOT_RUN",
+      "final_status": "RESOLVED_IN_BOUNDED_REVIEW"
+    },
+    {
+      "id": "FE-R1",
+      "severity": "P2",
+      "title": "Public event detail lacked the W8 WhatsApp sharing entry",
+      "found_at": "82b1927b61be6c1cffb1c88b660340e2e7e48c87:frontend/rose-pulse-react/src/App.jsx (EventDetail)",
+      "reproduction": "Open public mobile event detail before applying; only the post-application receipt had EventShare. Initial locator expectation exposed the actual missing public entry.",
+      "repair": "Mount existing public-only EventShare on EventDetail.",
+      "fixed_sha": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "source_recheck": "RESOLVED",
+      "independent_runtime_recheck": "PASS: public mobile EN/MS detail links contain event title/public URL only; no external WhatsApp message sent.",
+      "evidence": [
+        "phase2-first-failure.json",
+        "phase2-mobile-event-share.png",
+        "phase2-mobile-event-share-ms.png"
+      ],
+      "final_status": "RESOLVED_IN_BOUNDED_REVIEW"
+    },
+    {
+      "id": "FE-R2",
+      "severity": "P2",
+      "title": "Unknown sync outcome persisted but error path left stale Pending Sync UI",
+      "found_at": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6:frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx:101-117",
+      "reproduction": "Forward POST to actual backend; verify committed batch/three registrations in a fresh read-only transaction, then abort browser response. IndexedDB held needs_review while UI still showed pending_sync and no reconciliation button.",
+      "repair": "Refresh local state in finally on both success and failure, preserving the original operation error if refresh also fails; actor guard retained.",
+      "fixed_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+      "source_recheck": "RESOLVED",
+      "independent_runtime_recheck": "PASS: original three recovered by GET only; one distinct new draft/batch committed once and response discarded, then Reconcile/Needs review appeared immediately and Sync disabled without reload; GET reconciled the fourth.",
+      "evidence": [
+        "phase2-failure-35.json",
+        "phase2-FE-R2-diagnosis.json",
+        "phase2-FE-R2-immediate-reconciliation-controls.png",
+        "phase2-db-after-FE-R2-affected-retest.json"
+      ],
+      "final_status": "RESOLVED_IN_BOUNDED_REVIEW"
+    }
+  ],
+  "gates": [
+    {
+      "id": "O01",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Original same batch/submission IDs replayed deliberately from separate real Chrome context with empty independent IndexedDB; exact original receipt and all nine table fingerprints unchanged. Physical cross-device test not run."
+    },
+    {
+      "id": "O02",
+      "status": "PASS_BOUNDED_NATIVE_AND_SOURCE",
+      "evidence_boundary": "Cached local actor could not send before fresh login; other organizer/normal user403, absent/invalid token401 for original receipt; private documents anonymous401 and foreign actors403. Backend role-lock counterexample reviewed from writer native RED/GREEN, not independently re-executed."
+    },
+    {
+      "id": "O03",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Two POSTs forwarded to actual backend, each committed and freshly read from native DB before discarding browser response. Original three recovered by GET only; separate fourth affected retest also GET-reconciled. No automatic resend."
+    },
+    {
+      "id": "O04",
+      "status": "REVIEWED_AUTHOR_NATIVE_PLUS_INDEPENDENT_READONLY",
+      "evidence_boundary": "Reviewed writer raw populated-legacy first/repeat migration hashes and injected-DDL rollback. Independent final native read-only check confirms nullable columns and additive tables. Independent migration execution NOT_RUN."
+    },
+    {
+      "id": "P01",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Installed production app shell tested with Chrome emulated offline and separately actual owned HTTP service processes absent; no API/uploads in cache. This is service-process isolation, not physical network/hotspot isolation."
+    },
+    {
+      "id": "P02",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Three synthetic UI drafts saved with5205/5206/8028 absent, reloaded and survived complete Chrome process exit/relaunch in persistent profile; no tab token, explicit local unlock, same IDs and data; PG5439 retained."
+    },
+    {
+      "id": "P03",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Manual send requires fresh same-actor login; immutable original batch persists; GET recovery completed without resend. Four distinct offline registrations across two batches."
+    },
+    {
+      "id": "P04",
+      "status": "PASS_BOUNDED_NATIVE_AND_SOURCE",
+      "evidence_boundary": "Persisted unknown state survived full Chrome restart before GET recovery. Fixed immediate failure-refresh path independently exercised with one new batch. Logout/account switch hides retained queue. Mid-flight process kill is controlled/source coverage only, not a native claim."
+    },
+    {
+      "id": "L01",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "EN/MS home reload, actual Malay guest six-field submission201 with DB identity hash, My Registrations/Create/Edit/Offline translated views and mobile no-overflow. Formal Malay translator/NGO approval NOT_RUN."
+    },
+    {
+      "id": "W01",
+      "status": "PASS_BOUNDED_NATIVE_AND_SOURCE",
+      "evidence_boundary": "Actual UI upload three event images, Create, remove one/upload replacement/PATCH/reload and fresh DB exact three associations. Picker disabled at three; upper bounds inspected in source/controlled author tests."
+    },
+    {
+      "id": "W02",
+      "status": "PASS_BOUNDED_NATIVE_AND_SOURCE",
+      "evidence_boundary": "Actual UI upload three supporting documents, registration/readback associations, private authenticated UI download and negative actor access. Optional documents collapsed; no invented eligibility policy."
+    },
+    {
+      "id": "W03",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Original visible9 to current6 fields =33.3% reduction. Actual guest/accounted registrations persist omitted optional address/income/marriage/medical asNULL; repeated A on another event preserves participant identity."
+    },
+    {
+      "id": "W04",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Own event list, own registration index and registration analytics use actual API/native data. External NGO/funder identity/provider/notification integrations NOT_RUN."
+    },
+    {
+      "id": "R01",
+      "status": "PASS_BOUNDED_NATIVE",
+      "evidence_boundary": "Guest/account signup/login/application, owner gallery create/edit, organizer approve/waitlist, own cancellation with refill and organizer-owned cancellation passed on native API/PG. Final READ ONLY reconciliation confirms exact IDs/status/null fields."
+    }
+  ],
+  "independent_failure_ledger": [
+    {
+      "step": 8,
+      "gate": "U10",
+      "source_sha": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+      "name": "Mobile event detail and privacy-limited WhatsApp share",
+      "classification": "LOCATOR_ASSUMPTION_EXPOSED_REAL_MISSING_FEATURE_FE-R1",
+      "repair_or_continuation": "FE-R1 fixed2ccb; affected U10 native PASS",
+      "evidence": {
+        "path": "evidence/independent/phase2-first-failure.json",
+        "sha256": "63cc2907517c6e6d488a2c9af295484344a33c7466dcba9ca258b6cba1a33436",
+        "bytes": 945
+      }
+    },
+    {
+      "step": 21,
+      "gate": "L01",
+      "source_sha": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "name": "Malay offline form labels and language reload",
+      "classification": "HARNESS_EXACT_LABEL_FALSE_NEGATIVE",
+      "repair_or_continuation": "Partial-label locator grounded in actual rendered wrapped select; no product change",
+      "evidence": {
+        "path": "evidence/independent/phase2-failure-21.json",
+        "sha256": "06c32c11845f3e7a24dfc822f363cf0d923bae9a7692e0544b16bc99b5e3f8b1",
+        "bytes": 1251
+      }
+    },
+    {
+      "step": 35,
+      "gate": "O03",
+      "source_sha": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+      "name": "Actual backend commits once; browser response intentionally lost",
+      "classification": "PRODUCT_FE-R2_REAL_COMMIT_LOST_RESPONSE_UI_FAILURE",
+      "repair_or_continuation": "FE-R2 fixed4f2; original GET recovery and one new distinct native affected retest PASS",
+      "evidence": {
+        "path": "evidence/independent/phase2-failure-35.json",
+        "sha256": "5a75ccfa87990bc6eff3365dd2c7d2cc014584bce07638a7091b8b0b9dc8ef5f",
+        "bytes": 1115
+      }
+    }
+  ],
+  "counts": {
+    "steps": 45,
+    "pass": 42,
+    "retained_fail": 3,
+    "javascript_errors": 0,
+    "observed_http_responses": 230,
+    "actual_forwarded_sync_200_discarded_before_browser": 2,
+    "observed_http_breakdown": {
+      "GET 200": 179,
+      "POST 200": 20,
+      "POST 201": 16,
+      "PATCH 200": 2,
+      "GET 401": 5,
+      "GET 403": 8
+    },
+    "screenshots": 24,
+    "horizontal_overflow_failures": 0,
+    "final_global_tables": {
+      "users": 7,
+      "events": 7,
+      "participants": 11,
+      "registrations": 12,
+      "phase2_files": 14,
+      "phase2_event_images": 6,
+      "phase2_registration_documents": 6,
+      "phase2_sync_batches": 3,
+      "phase2_sync_submissions": 6
+    },
+    "independent_selected_event_registrations": 9,
+    "independent_offline_batches": 2,
+    "independent_offline_submissions": 4,
+    "deliberate_same_ID_replay_added_business_effects": 0
+  },
+  "last_business_activity": "Separate-context deliberately authorized same-ID replay; all table fingerprints unchanged. Final stage was READ ONLY.",
+  "private_handoff": {
+    "path": "private/demo-participants.json",
+    "keys": [
+      "A",
+      "B"
+    ],
+    "fields": [
+      "first_name",
+      "last_name",
+      "gender",
+      "date_of_birth",
+      "phone",
+      "national_id"
+    ],
+    "values_public": false,
+    "account_created_metadata": "A/B true only after fresh native one-user-row checks"
+  },
+  "screenshots_public_suitability": {
+    "approved_for_public_PR": [
+      "phase2-desktop-home-en.png",
+      "phase2-mobile-home-ms.png"
+    ],
+    "assessment": "Visually inspected: public branding, lake photograph and synthetic event titles/date/location only; no credentials, participant forms, receipts or private documents. Other captures are local synthetic evidence and not blanket-approved for public release.",
+    "design": "Dark green/gold/warm neutral palette, leaf branding, lake hero, readable card/sidebar hierarchy and responsive bottom navigation conform to the supplied design direction. Adapted implementation; no pixel-perfect claim.",
+    "source": "82b screenshots; home/styles unchanged by subsequent two repair diffs."
+  },
+  "not_run": [
+    "Physical iPhone/Safari install",
+    "Physical hotspot or firewall/network disconnection",
+    "Two physical devices",
+    "Real humans, SEQ/SUS or human task timing",
+    "Formal Malay translation approval",
+    "NGO/funder signoff and external providers",
+    "5000-user load, production SLA or ROI",
+    "Comprehensive security certification",
+    "Independent destructive migration execution",
+    "Native mid-flight Chrome kill before unknown persisted"
+  ],
+  "privacy_boundary": "Synthetic-only unencrypted IndexedDB; local device/browser access can read retained data. Explicit UI disclosure and local unlock are not encryption or server authorization.",
+  "evidence_split": "Independent native browser/API/read-only DB is separate from writer unit/native migration/concurrency evidence and controller service isolation/read benchmark.",
+  "remote_decision": "No merge, deployment or remote approval performed.",
+  "postprocessing_failure_ledger": [
+    {
+      "evidence": "postprocessing-first-failure.json",
+      "classification": "Receipt timestamp serialization false negative (+00:00 versus Z), corrected with ISO datetime comparison only; all other fields exact.",
+      "native_actions": 0,
+      "browser_counts_unchanged": true
+    }
+  ],
+  "final_receipt_effect_assertions": "FINAL_EFFECT_ASSERTIONS.json"
+}

@@ -1,0 +1,137 @@
+{
+  "time": "2026-11-01T21:54:38.155718+00:00",
+  "state": "AUTHOR_LOCAL_VERIFIED_PENDING_INDEPENDENT",
+  "branch": "dev_be_rose_pulse_phase2",
+  "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "initial_product_sha": "5be160144f6c63282f8c87e88f54420062a85083",
+  "head_now": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "backend_status_short": "",
+  "product_files": [
+    "backend/.env.example",
+    "backend/README.md",
+    "backend/scripts/dev_bootstrap.py",
+    "backend/scripts/migrate_phase2.py",
+    "backend/src/core/config.py",
+    "backend/src/core/database.py",
+    "backend/src/events/schemas.py",
+    "backend/src/events/service.py",
+    "backend/src/files/schemas.py",
+    "backend/src/main.py",
+    "backend/src/offline_sync/schemas.py",
+    "backend/src/participants/models.py",
+    "backend/src/phase2/__init__.py",
+    "backend/src/phase2/assets.py",
+    "backend/src/phase2/models.py",
+    "backend/src/phase2/router.py",
+    "backend/src/phase2/schemas.py",
+    "backend/src/phase2/sync.py",
+    "backend/src/registrations/models.py",
+    "backend/src/registrations/router.py",
+    "backend/src/registrations/schemas.py",
+    "backend/src/registrations/service.py",
+    "backend/tests/test_phase2.py",
+    "backend/tests/test_phase2_native.py"
+  ],
+  "runtime": {
+    "time": "2026-11-01T21:51:06.453173+00:00",
+    "backend_url": "http://127.0.0.1:8028",
+    "PG_port": 5439,
+    "source": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend",
+    "source_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+    "backend_status_short": "",
+    "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\runtime\\backend",
+    "backend_pid": 47208,
+    "launcher_pid": 42612,
+    "backend_cwd_verified_native": true,
+    "loopback_listener_verified": true,
+    "standard_bootstrap": true
+  },
+  "controller_publication": "Controller reports DraftPR57 OPEN,basefix/pr38-demo-readiness,pushed54ab71d; backend writer performed no push/merge/deploy",
+  "PR_url": "https://github.com/KV6014BHV31-GP6/event-management-app/pull/57",
+  "database": {
+    "host": "127.0.0.1",
+    "port": 5439,
+    "main": "nu_rose_phase2_20261102_050245",
+    "test": "nu_rose_phase2_20261102_050245_test",
+    "migration": "nu_rose_phase2_20261102_050245_migration",
+    "fault_fixture": "nu_rose_phase2_20261102_050245_duplicate",
+    "app_role": "nu_rose_phase2_app_20261102",
+    "non_superuser": true,
+    "migration_id": "rose_phase2_20261102_v1"
+  },
+  "private_paths": {
+    "settings": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\settings.json",
+    "accounts": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\accounts.json",
+    "account_keys": [
+      "organizer",
+      "other_organizer",
+      "leader",
+      "A",
+      "B"
+    ],
+    "A_B_note": "Planned browser accounts were0rows each at captured author baseline. Backend HTTP used separate p2h_a_/p2h_b_ synthetic accounts. Do not infer creation from static created=false flag."
+  },
+  "operations": {
+    "controller": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend_control.py",
+    "actions": [
+      "status",
+      "start",
+      "stop-http",
+      "stop"
+    ],
+    "stop_http_scope": "owned8028only;PG5439left running;PID/creation/cmd/nativecwd checked",
+    "stop_scope": "ownedHTTP+ownedPG5439only",
+    "readonly": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend_readonly.py",
+    "readonly_modes": [
+      "default identity/counts/plannedA_B/migration IDs",
+      "links [event_public_id]:bounded ID/actor/channel/status/null links, no formPII",
+      "receipt UUID:bounded persisted batch receipt"
+    ],
+    "public_uploads": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\runtime\\backend\\uploads",
+    "private_assets": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\runtime\\backend\\private_assets",
+    "interpreter": "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe"
+  },
+  "counts": {
+    "unique_pytest_cases_across_separate_runs": 49,
+    "single49_case_command": false,
+    "groups": [
+      "36passed(retained29+7ASGI)",
+      "8passed(newnative)",
+      "1passed(ownindex)",
+      "1passed(addresspreservation)",
+      "3passed(newreviewcounterexamples)"
+    ],
+    "repeated_subsets": [
+      "initialfixedSHA4passed",
+      "reviewaffected6passed",
+      "finalreviewfixedSHA3passed"
+    ],
+    "authorHTTP": 71,
+    "final_readonly_HTTP": 11,
+    "nonfinite_HTTP": "NaN/Infinity/-Infinity422, sanitized, canaryabsentlog,0businesswrites",
+    "pins_matched": 82
+  },
+  "acceptance_matrix": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\VALIDATION_MATRIX_BACKEND.json",
+  "evidence": {
+    "native_http": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-http-validation.json",
+    "DB": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-http-db-readback.json",
+    "restart": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-owned-http-restart.json",
+    "postfix_native_HTTP": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-fixed-native-http.json",
+    "native_R1_R2": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review",
+    "migration": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-migration-proof.json",
+    "DDL_rollback": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-migration-fault-rollback.json",
+    "W8": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-w8-audit.json",
+    "whitespace": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-whitespace-check.json",
+    "ledger": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\COMMAND_LEDGER_BACKEND.json"
+  },
+  "limits": [
+    "Independent code/browser verdict remains separate. No production/Security/UAT/merge/deploy claim.",
+    "Legacyv1organizer-globalregistration policy remains; newv2index filtersown eventsonserver.",
+    "Accepted sync means offlinepending, not approved. Receiptstatus is immutable status-at-recording.",
+    "Eventvalidity active-statusonly; no deadline/eligibility/medical/provider/SMS/OCR/check-in policy implemented. Aggregatepool approvalretained; mixedpoolacceptanceunclaimed.",
+    "Address/DOB/sixcoreinputs are approved provisionalengineeringcontract, not NGOmandatorypolicy.",
+    "Local54timedHTTPsamples are not load/performanceSLA. Actualfreshpartialbatch66.1ms,replay21.51ms in boundedauthorrun.",
+    "Defaultdiff--check flags inheritedCRLF; explicitcore.whitespace=cr-at-eol diff--check passed, preservingminimaldiff and realwhitespacechecks.",
+    "PostgreSQL40P01 reproduced+controlled;40001handledbycodebutnot separatelyreproduced."
+  ]
+}

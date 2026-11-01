@@ -1,0 +1,66 @@
+{
+  "currency": "MYR",
+  "period": "month",
+  "baseline_status": "NO_INVOICE_QUOTE_OR_NGO_STAFF_BASELINE",
+  "monthly_costs": {
+    "hosting": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    },
+    "database": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    },
+    "storage": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    },
+    "support": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    },
+    "training": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    },
+    "notifications": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    },
+    "security": {
+      "basis": "unknown",
+      "amount": null,
+      "source": null,
+      "as_of": null
+    }
+  },
+  "scenarios": [
+    {
+      "registrations_per_month": 100,
+      "variable_cost_per_registration": 0,
+      "basis": "hypothetical volume; zero variable component is a calculator placeholder, not a provider quote"
+    },
+    {
+      "registrations_per_month": 1000,
+      "variable_cost_per_registration": 0,
+      "basis": "hypothetical volume; zero variable component is a calculator placeholder, not a provider quote"
+    },
+    {
+      "registrations_per_month": 5000,
+      "variable_cost_per_registration": 0,
+      "basis": "hypothetical volume; zero variable component is a calculator placeholder, not a provider quote"
+    }
+  ]
+}

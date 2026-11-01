@@ -1,0 +1,517 @@
+{
+  "time": "2026-11-01T21:54:37.968874+00:00",
+  "commands": [
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\bootstrap-first.json",
+      "time": "2026-11-01T21:07:27.824681+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.dev_bootstrap",
+        "--acknowledge-development"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\bootstrap-first.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\bootstrap-repeat.json",
+      "time": "2026-11-01T21:07:31.058992+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.dev_bootstrap",
+        "--acknowledge-development"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\bootstrap-repeat.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\initdb.json",
+      "time": "2026-11-01T21:07:19.483626+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\runtime\\PostgreSQL17\\pgsql\\bin\\initdb.exe",
+        "-D",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\pgdata-backend",
+        "-U",
+        "nu_rose_phase2_admin_20261102",
+        "--pwfile",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\pg-password.txt",
+        "--auth-host=scram-sha-256",
+        "--auth-local=scram-sha-256",
+        "--encoding=UTF8",
+        "--locale=C"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\initdb.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\pg-initial-start.json",
+      "time": "2026-11-01T21:07:20.623645+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\runtime\\PostgreSQL17\\pgsql\\bin\\pg_ctl.exe",
+        "-D",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\pgdata-backend",
+        "-l",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\postgres.log",
+        "-w",
+        "-t",
+        "45",
+        "start"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\pg-initial-start.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-address-preservation-green.json",
+      "time": "2026-11-01T21:34:18.953496+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2.py::test_omitted_address_does_not_erase_legacy_participant",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-address-preservation-green"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-address-preservation-green.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-address-preservation-red.json",
+      "time": "2026-11-01T21:33:10.622814+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2.py::test_omitted_address_does_not_erase_legacy_participant",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-address-preservation-red"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 1,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-address-preservation-red.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-baseline-bootstrap_duplicate.json",
+      "time": "2026-11-01T21:27:15.058413+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.dev_bootstrap",
+        "--acknowledge-development"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-v2\\20261102-032509\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-baseline-bootstrap_duplicate.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-baseline-bootstrap_migration.json",
+      "time": "2026-11-01T21:26:55.067136+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.dev_bootstrap",
+        "--acknowledge-development"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-v2\\20261102-032509\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-baseline-bootstrap_migration.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-fixed-sha-checks.json",
+      "time": "2026-11-01T21:37:42.160501+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2.py::test_sync_replay_reconcile_and_modified_payload",
+        "tests/test_phase2.py::test_owned_registration_index",
+        "tests/test_phase2.py::test_omitted_address_does_not_erase_legacy_participant",
+        "tests/test_phase2_native.py::test_native_v2_same_id_concurrent_exactly_once",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-fixed-sha-checks"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-fixed-sha-checks.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-injected-migration-fault.json",
+      "time": "2026-11-01T21:27:24.849486+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\phase2_migration_proof.py",
+        "fault",
+        "nu_rose_phase2_20261102_050245_duplicate"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-injected-migration-fault.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-domain-fixture_duplicate.json",
+      "time": "2026-11-01T21:27:18.818075+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\phase2_migration_proof.py",
+        "fixture",
+        "nu_rose_phase2_20261102_050245_duplicate"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-legacy-domain-fixture_duplicate.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-domain-fixture_migration.json",
+      "time": "2026-11-01T21:26:59.659350+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\phase2_migration_proof.py",
+        "fixture",
+        "nu_rose_phase2_20261102_050245_migration"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-legacy-domain-fixture_migration.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-migration-first_duplicate.json",
+      "time": "2026-11-01T21:27:30.634476+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245_duplicate"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-legacy-migration-first_duplicate.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-migration-first_migration.json",
+      "time": "2026-11-01T21:27:05.793359+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245_migration"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-legacy-migration-first_migration.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-migration-repeat_duplicate.json",
+      "time": "2026-11-01T21:27:36.553360+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245_duplicate"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-legacy-migration-repeat_duplicate.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-legacy-migration-repeat_migration.json",
+      "time": "2026-11-01T21:27:10.964532+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245_migration"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-legacy-migration-repeat_migration.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-migration-first.json",
+      "time": "2026-11-01T21:19:08.389963+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-migration-first.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-migration-repeat.json",
+      "time": "2026-11-01T21:19:13.494962+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-migration-repeat.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-migration-wrong.json",
+      "time": "2026-11-01T21:19:03.524385+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245_WRONG"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 1,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-migration-wrong.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-native.json",
+      "time": "2026-11-01T21:21:48.300789+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2_native.py",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-native"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-native.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-owner-index-green.json",
+      "time": "2026-11-01T21:31:11.835446+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2.py::test_owned_registration_index",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-owner-index-green"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-owner-index-green.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-owner-index-red.json",
+      "time": "2026-11-01T21:29:49.299488+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2.py::test_owned_registration_index",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-owner-index-red"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 1,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-owner-index-red.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-red.json",
+      "time": "2026-11-01T21:09:40.107856+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2.py",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-red"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 1,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-red.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-review-fixed-checks.json",
+      "time": "2026-11-01T21:48:50.781523+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2_native.py::test_native_organizer_cancel_role_change_while_event_locked",
+        "tests/test_phase2_native.py::test_native_reverse_order_deadlock_controlled_whole_batch",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-review-fixed-checks"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-review-fixed-checks.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-review-R1-R2-green.json",
+      "time": "2026-11-01T21:47:10.654637+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2_native.py::test_native_organizer_cancel_role_change_while_event_locked",
+        "tests/test_phase2_native.py::test_native_reverse_order_deadlock_controlled_whole_batch",
+        "tests/test_phase2.py::test_owner_analytics_and_organizer_cancel",
+        "tests/test_demo_readiness_native.py::test_native_last_slot_and_repeated_cancel_race",
+        "tests/test_phase2_native.py::test_native_v2_same_id_concurrent_exactly_once",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-review-R1-R2-green"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-review-R1-R2-green.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-review-R1-R2-red.json",
+      "time": "2026-11-01T21:45:38.999198+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests/test_phase2_native.py::test_native_organizer_cancel_role_change_while_event_locked",
+        "tests/test_phase2_native.py::test_native_reverse_order_deadlock_controlled_whole_batch",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-review-R1-R2-red"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 1,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-review-R1-R2-red.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-test-migration.json",
+      "time": "2026-11-01T21:21:00.421480+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "scripts.migrate_phase2",
+        "--acknowledge-development",
+        "--database",
+        "nu_rose_phase2_20261102_050245_test"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-test-migration.log",
+      "output_restricted": true
+    },
+    {
+      "record": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\phase2-unit.json",
+      "time": "2026-11-01T21:19:10.607246+00:00",
+      "argv": [
+        "E:\\NU_Local_Environment_20261014\\demo-readiness\\20261027-141421\\venv\\Scripts\\python.exe",
+        "-B",
+        "-m",
+        "pytest",
+        "-q",
+        "tests",
+        "-p",
+        "no:cacheprovider",
+        "--basetemp",
+        "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\test-cache\\phase2-unit"
+      ],
+      "cwd": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\backend\\backend",
+      "exit_code": 0,
+      "output": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\private\\backend\\phase2-unit.log",
+      "output_restricted": true
+    }
+  ],
+  "test_wrappers": "phase2_verify.py red/unit/native/owner-red/owner-green/address-red/address-green/fixed/review-red/review-green/review-fixed; raw outputs ACL-private, safe summaries in evidence/backend",
+  "credential_values_recorded": false
+}
