@@ -1,5 +1,11 @@
 # NU Developer 當前狀態
 
+## ROSE PULSE V2 — 2026-11-02 (current workstream)
+
+**LOCAL_VERIFIED for bounded independent React/Browser/API/native PostgreSQL flows.** Draft PR55 on `dev_fe_rose_pulse_react` is stacked on PR40 `dcbdf47ed8e4d9b816676df97aaa80015c9e1928`, preserving legacy pages. See [active task](tasks/FE-ROSE-PULSE-V2-20261102.md) and [independent acceptance/screenshots](frontend/rose-pulse-v2/ACCEPTANCE.md). Tested frontend `6ddb485a28f6d94230481ce14db45b721c63ca00`; later delivery changes only evidence/docs, with unchanged product bytes proven in the release receipt. React31/31, legacy239/239, Backend29, directHTTP/DB38 and independent native lifecycle passed; failures and unrun boundaries remain explicit. Latest dev is `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`; PR40 dependency and W8 module merges are not dev integration. Local independent acceptance is not team approval, merge or deployment.
+
+Dedicated environment: React5201 → proxy5202 → Backend8026 → native PostgreSQL5437. Evidence and persistent launchers are outside Git at `E:\NU_Local_Environment_20261014\rose-pulse-v2\20261102-032509`. No original Demo services or database are replaced. Historical sections below apply only to their named branch/version.
+
 ## PR38 successor Demo readiness — 2026-10-27 (current)
 
 **DEMO_READY for the limited author-validated local flow.** [Current task](tasks/BE-FE-DEMO-READINESS-20261027.md) supersedes the prior Backend-blocked status only on new branch `fix/pr38-demo-readiness`, starting exactly at PR38 `ff6e5d4fcdfb2f71103eac6769b376eca64bf843`. The new Draft PR is stacked on `dev_fe_booking_lifecycle`; PR38/PR39 and their environments remain unchanged. Astra directly implemented the necessary repair; no branch merge or PR39 adoption.
