@@ -16,6 +16,7 @@ class Settings(BaseSettings):
 
     STORAGE_PROVIDER: str = "local"  # "local" or "gcs"
     UPLOAD_DIR: str = "uploads"      # Root directory for local storage
+    PRIVATE_UPLOAD_DIR: str = "private_assets"  # Never expose through the public uploads proxy
 
     # Google Cloud Storage configurations
     GCS_BUCKET_NAME: str = "your-gcs-bucket-name"

@@ -22,7 +22,7 @@ class ParticipantModel(Base):
     date_of_birth: Mapped[date] = mapped_column(Date, nullable=False)
 
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
-    address: Mapped[str] = mapped_column(Text, nullable=False)
+    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     national_id: Mapped[str] = mapped_column(
         String(50), unique=True, nullable=False)
 

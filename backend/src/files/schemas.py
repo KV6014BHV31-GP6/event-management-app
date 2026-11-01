@@ -1,4 +1,13 @@
 from pydantic import BaseModel, Field
+from typing import Literal
+
+class FileReference(BaseModel):
+    id:str
+    name:str
+    mime_type:str
+    size:int
+    purpose:Literal['event_image','supporting_document']
+    url:str
 
 
 class FileUploadResponse(BaseModel):
