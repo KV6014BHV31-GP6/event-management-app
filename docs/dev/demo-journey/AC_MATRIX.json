@@ -661,16 +661,22 @@
       ],
       "FE_sha": "7bd06d8b749c63601dfdc246030fd37703a560b1",
       "BE_sha": "568f1bcacd29942b17cfdbc00401f6be6a2ae238",
-      "native": "52declared; receipt required, not inferred",
+      "native": "52hosted native fixtureFAIL on4637;35previous nativePASS separate. Corrected fixture requires actual new native result.",
       "native_fixture_sha": "fe9ac19437eb71ac4d703e6679cf63d8d603d730"
     },
     "runtime_identity": {
       "sha": "4a6ea696d561dbf30501a5c09d32b9c4f1d6583d",
       "counterexamples": "18initialRED15controls then33GREEN; final39RIR+11LF50PASS38filtered",
       "full": "305PASS1timeout306 before copy-only fix; final full NOT_RUN",
-      "query_scope_successor": "Registration-review positive queries scoped; original race/global negative/5000ms unchanged;5affected PASS. Final candidate full still pending."
+      "query_scope_successor": "Registration-review positive queries scoped; original race/global negative/5000ms unchanged;5affected PASS. Final candidate full still pending.",
+      "fixed4637": {
+        "full_synthetic_default": "294PASS12FAIL retained",
+        "full_synthetic_maxWorkers2": "306PASS; explicit changed resource profile",
+        "hosted_frontend": "306default ReactPASS+25syntheticAccountPASS+284legacyPASS",
+        "independent_original_eight": "8PASS on4637; original cases/5000ms/maxWorkers1 unchanged; no native/Browser inference"
+      }
     },
     "historical439": "See GATES.json and external ci-439/final439-browser/independent/ac439-mapping original receipts",
-    "final_candidate_acceptance": "NOT_RUN; fixed SHA independent review/CI/Browser required"
+    "final_candidate_acceptance": "PARTIAL4637 bounded8 independentPASS; native52fixtureFAIL; corrected fixedSHA CI/native/full40ACBrowser pending. G5two supplementalGREEN remainBLOCKED."
   }
 }

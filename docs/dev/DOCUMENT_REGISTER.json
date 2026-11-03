@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T13:16:58.174118+00:00",
-  "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可",
+  "reviewed_at": "2026-11-03T14:04:15.594891+00:00",
+  "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口",
   "document_count": 367,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -295,7 +295,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 36,
+      "revision": 37,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -513,6 +513,13 @@
           "size_bytes": 24424,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 36,
+          "sha256": "360a1283f47c88a3a7b7ad4e425e197ef51785513eb17ba6ba67256ad8fda13d",
+          "size_bytes": 25006,
+          "superseded_at": "2026-11-03T14:04:15.594891+00:00",
+          "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
         }
       ],
       "import_lineage": {
@@ -525,8 +532,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "360a1283f47c88a3a7b7ad4e425e197ef51785513eb17ba6ba67256ad8fda13d",
-      "size_bytes": 25006,
+      "sha256": "7c01826eb375ea83e484b455950d516cc6c193c3fe35b961745d453ad3fb5071",
+      "size_bytes": 26178,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -6572,7 +6579,7 @@
     {
       "document_id": "DEMO-JOURNEY-GATES",
       "path": "docs/dev/demo-journey/GATES.json",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6596,13 +6603,20 @@
           "size_bytes": 1981,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 4,
+          "sha256": "9b3b03fe060cf1d51a4c670b2fa89882d79ac035b50d4f512ef99db917bb76f7",
+          "size_bytes": 2964,
+          "superseded_at": "2026-11-03T14:04:15.594891+00:00",
+          "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "9b3b03fe060cf1d51a4c670b2fa89882d79ac035b50d4f512ef99db917bb76f7",
-      "size_bytes": 2964
+      "sha256": "e7747f76008e97672d15138f97a21c0043da6cd75360863746699b218b023d81",
+      "size_bytes": 3690
     },
     {
       "document_id": "DEMO-JOURNEY-README",
@@ -6914,7 +6928,7 @@
     {
       "document_id": "DEMO-DOC-1613893D489DFFB1",
       "path": "docs/dev/demo-journey/AC_MATRIX.json",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6931,13 +6945,20 @@
           "size_bytes": 32514,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 3,
+          "sha256": "0aabb22d9874f995ac4a7bf5d9531b7c3ea7246db8ef656d78393b9b7ed06687",
+          "size_bytes": 33738,
+          "superseded_at": "2026-11-03T14:04:15.594891+00:00",
+          "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0aabb22d9874f995ac4a7bf5d9531b7c3ea7246db8ef656d78393b9b7ed06687",
-      "size_bytes": 33738
+      "sha256": "f55494e2d9765c193bda0f03eda81ce66d77870d2e344879d61c987207dda7ec",
+      "size_bytes": 34298
     },
     {
       "document_id": "DEMO-DOC-DEECC58DE1D1D511",
@@ -6983,7 +7004,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 8,
+      "revision": 9,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7035,13 +7056,20 @@
           "size_bytes": 15317,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 8,
+          "sha256": "20957bc6b2eb1d00480db76a30d03215b6be0b6aff1ce6cecb8074b078c8dfe0",
+          "size_bytes": 15881,
+          "superseded_at": "2026-11-03T14:04:15.594891+00:00",
+          "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "20957bc6b2eb1d00480db76a30d03215b6be0b6aff1ce6cecb8074b078c8dfe0",
-      "size_bytes": 15881
+      "sha256": "48127a7f5430f5687b842e46ad1161f7038b18dc0b08f932cded7449a87584bb",
+      "size_bytes": 16618
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -7697,15 +7725,23 @@
     {
       "document_id": "DEMO-DOC-B62952E8790263E9",
       "path": "backend/tests/test_journey_attribution.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "5c4e7f3c51d87cb604052da061c0ea552b78c776aea93fa360c464543d795dca",
+          "size_bytes": 19680,
+          "superseded_at": "2026-11-03T14:04:15.594891+00:00",
+          "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5c4e7f3c51d87cb604052da061c0ea552b78c776aea93fa360c464543d795dca",
-      "size_bytes": 19680
+      "sha256": "d92bb9f8a415edab1398d552590b13d967bcf05f2b53f4818dcb44be6d5bc29c",
+      "size_bytes": 19745
     },
     {
       "document_id": "DEMO-DOC-8563497029E7B33E",
