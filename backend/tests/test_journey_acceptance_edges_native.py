@@ -2,7 +2,10 @@
 import pytest
 
 from tests.test_journey_attribution_native import attribution_native_sessions, native_client
-from tests.test_journey_acceptance_edges import reminder_case, event_notice_case, fifo_case, window_case, scope_case, roster_limit_case
+from tests.test_journey_acceptance_edges import (
+    reminder_case, event_notice_case, fifo_case, window_case, scope_case, roster_limit_case,
+    promotion_approval_denial_case, demand_threshold_case, corrected_outcome_case,
+)
 
 
 @pytest.mark.parametrize('position', ['before', 'due', 'start', 'after'])
@@ -44,3 +47,24 @@ async def test_native_roster_response_limit(attribution_native_sessions, monkeyp
     async with attribution_native_sessions() as db:
         async with native_client(attribution_native_sessions) as client:
             await roster_limit_case(client, db, monkeypatch)
+
+
+@pytest.mark.parametrize('approved', [False, True])
+async def test_native_promotion_approval_denial(attribution_native_sessions, monkeypatch, approved):
+    async with attribution_native_sessions() as db:
+        async with native_client(attribution_native_sessions) as client:
+            await promotion_approval_denial_case(client, db, monkeypatch, approved)
+
+
+@pytest.mark.parametrize('approved', [3, 4, 5])
+async def test_native_demand_threshold(attribution_native_sessions, monkeypatch, approved):
+    async with attribution_native_sessions() as db:
+        async with native_client(attribution_native_sessions) as client:
+            await demand_threshold_case(client, db, monkeypatch, approved)
+
+
+@pytest.mark.parametrize('actor', ['one', 'owner'])
+async def test_native_corrected_outcome(attribution_native_sessions, monkeypatch, actor):
+    async with attribution_native_sessions() as db:
+        async with native_client(attribution_native_sessions) as client:
+            await corrected_outcome_case(client, db, monkeypatch, actor)

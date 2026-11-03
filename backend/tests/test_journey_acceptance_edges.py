@@ -9,7 +9,7 @@ from sqlalchemy import select
 
 from src.events.models import EventModel, EventStatusEnum
 from src.journey import allocation, policy
-from src.journey.models import JourneyState
+from src.journey.models import JourneyOperation, JourneyState
 from src.journey.policy import iso, put, state
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum as Status, RegistrationChannelEnum as Channel
 from tests.test_demo_readiness import auth
@@ -36,7 +36,7 @@ async def outbox(db, case, kind):
     return [copy.deepcopy(row.data) for row in rows if row.data['kind'] == kind]
 
 
-async def bound_messages(db, case, kind, expected_ids, message):
+async def bound_messages(db, case, kind, expected_ids, message, expected_hint=None):
     rows = await outbox(db, case, kind)
     assert {row['registration_id'] for row in rows} == set(expected_ids)
     assert len(rows) == len(expected_ids)
@@ -44,6 +44,8 @@ async def bound_messages(db, case, kind, expected_ids, message):
         assert row['event_public_id'] == case['event'].public_id
         assert row['recipient_binding'] == 'registration'
         assert row['recipient_hint'].startswith('***')
+        if expected_hint is not None:
+            assert row['recipient_hint'] == expected_hint
         assert row['message'] == message
         assert row['provider'] == 'DEMO_OUTBOX' and row['external_delivery'] is False
     return rows
@@ -128,6 +130,34 @@ async def event_notice_case(client, db, monkeypatch):
     assert replay.status_code == 200 and replay.json() == response.json()
     await bound_messages(db, case, 'event_changed', affected, data['notice'])
     assert await registration_bindings(db, case) == original
+    resumed = await send(client, db, case, 'resume', {'notice': 'Synthetic resumed schedule'})
+    assert resumed.status_code == 200, resumed.text
+    resumed_receipt = resumed.json()
+    view = await client.get(PREFIX + '/events/' + case['event'].public_id, headers=auth(case['users']['owner']))
+    assert view.status_code == 200
+    value = view.json()
+    assert value['workflow']['state'] == resumed_receipt['effects']['state'] == 'published'
+    assert value['workflow']['version'] == resumed_receipt['resource_version']
+    assert value['workflow']['change_notice'] == 'Synthetic resumed schedule'
+    for key in ['start_time', 'end_time']:
+        assert policy.dt(value['event'][key]) == policy.dt(data[key])
+    assert value['workflow']['registration_closes_at'] == data['registration_closes_at']
+    assert await registration_bindings(db, case) == original
+    await bound_messages(db, case, 'event_changed', affected, data['notice'])
+    await bound_messages(db, case, 'waitlist_offer', [waiting],
+                         'A synthetic booking place is offered; accept before expiry.', expected_hint='***IC')
+    counts = await allocation.counts(db, await db.get(EventModel, case['event'].id, populate_existing=True))
+    assert counts['offline'] == {'capacity': 4, 'approved': 1, 'offer_holds': 1}
+    assert counts['online'] == {'capacity': 4, 'approved': 0, 'offer_holds': 0}
+    before_resume_replay = await store_fingerprint(db)
+    replay = await client.post(resumed.request.url, headers=auth(case['users']['owner']), content=resumed.request.content)
+    assert replay.status_code == 200 and replay.json() == resumed_receipt
+    assert await store_fingerprint(db) == before_resume_replay
+    receipt_read = await client.get(PREFIX + '/receipts/' + resumed_receipt['operation_id'],
+                                    headers=auth(case['users']['owner']))
+    assert receipt_read.status_code == 200 and receipt_read.json() == resumed_receipt
+    await bound_messages(db, case, 'waitlist_offer', [waiting],
+                         'A synthetic booking place is offered; accept before expiry.', expected_hint='***IC')
     cancelled = await send(client, db, case, 'cancel', {'reason': 'Synthetic cancelled event'})
     assert cancelled.status_code == 200, cancelled.text
     after = await registration_bindings(db, case)
@@ -303,3 +333,123 @@ async def roster_limit_case(client, db, monkeypatch):
 
 async def test_roster_response_limit(client, db_session, monkeypatch):
     await roster_limit_case(client, db_session, monkeypatch)
+
+
+async def promotion_approval_denial_case(client, db, monkeypatch, approved):
+    case = await seed_event(db, monkeypatch)
+    url = PREFIX + '/events/' + case['event'].public_id + '/promotion'
+    draft = await client.post(url, headers=auth(case['users']['one']),
+                              json=envelope({'text': 'Synthetic promotion draft'}, 0))
+    assert draft.status_code == 200, draft.text
+    original_receipt = draft.json()
+    if approved:
+        owner = await client.post(url + '/approve', headers=auth(case['users']['owner']),
+                                  json=envelope({}, original_receipt['resource_version']))
+        assert owner.status_code == 200, owner.text
+        original_receipt = owner.json()
+    before_view = await client.get(url, headers=auth(case['users']['owner']))
+    assert before_view.status_code == 200
+    original = before_view.json()
+    assert original['state'] == ('approved' if approved else 'draft')
+    before = await store_fingerprint(db)
+    attempted = envelope({}, original['version'])
+    denied = await client.post(url + '/approve', headers=auth(case['users']['one']), json=attempted)
+    assert denied.status_code == 403, denied.text
+    assert (await client.get(url, headers=auth(case['users']['owner']))).json() == original
+    assert await db.get(JourneyOperation, attempted['operation_id']) is None
+    stored = await db.get(JourneyOperation, original_receipt['operation_id'], populate_existing=True)
+    assert stored.receipt == original_receipt
+    assert await store_fingerprint(db) == before
+
+
+@pytest.mark.parametrize('approved', [False, True])
+async def test_promotion_approval_denial(client, db_session, monkeypatch, approved):
+    await promotion_approval_denial_case(client, db_session, monkeypatch, approved)
+
+
+async def demand_threshold_case(client, db, monkeypatch, approved):
+    case = await seed_event(db, monkeypatch)
+    for index in range(approved):
+        await add_registration(db, case, status=Status.approved,
+                               channel=Channel.online if index < 4 else Channel.offline)
+    await db.commit()
+    before = await store_fingerprint(db)
+    response = await client.get(PREFIX + '/events/' + case['event'].public_id + '/stats',
+                                headers=auth(case['users']['owner']))
+    assert response.status_code == 200
+    alert = response.json()['alert']
+    assert alert == {'policy_id': 'demo-low-demand-v1', 'threshold': 0.5, 'observed_ratio': approved / 8,
+                     'definition': 'approved / total capacity',
+                     'state': 'below_threshold' if approved == 3 else 'normal'}
+    rows = (await db.scalars(select(RegistrationModel).where(RegistrationModel.event_id == case['event'].id)
+                             .execution_options(populate_existing=True))).all()
+    assert sum(row.status == Status.approved for row in rows) == approved
+    assert await store_fingerprint(db) == before
+    first = await send(client, db, case, 'alerts', {})
+    assert first.status_code == 200, first.text
+    rows = await outbox(db, case, 'alert')
+    assert len(rows) == (1 if approved == 3 else 0)
+    if approved == 3:
+        row = rows[0]
+        assert row['id'] == first.json()['effects']['outbox_id']
+        assert row['event_public_id'] == case['event'].public_id and row['registration_id'] is None
+        assert row['recipient_binding'] == 'registration' and row['recipient_hint'] == 'Organizer'
+        assert row['provider'] == 'DEMO_OUTBOX' and row['external_delivery'] is False
+        assert row['message'] == 'Synthetic demand below configured threshold.'
+    else:
+        assert 'outbox_id' not in first.json()['effects']
+    replay = await client.post(first.request.url, headers=auth(case['users']['owner']), content=first.request.content)
+    assert replay.status_code == 200 and replay.json() == first.json()
+    again = await send(client, db, case, 'alerts', {})
+    assert again.status_code == 200
+    assert await outbox(db, case, 'alert') == rows
+    if approved == 3:
+        assert again.json()['effects']['outbox_id'] == first.json()['effects']['outbox_id']
+
+
+@pytest.mark.parametrize('approved', [3, 4, 5])
+async def test_demand_threshold(client, db_session, monkeypatch, approved):
+    await demand_threshold_case(client, db_session, monkeypatch, approved)
+
+
+async def corrected_outcome_case(client, db, monkeypatch, actor):
+    case = await seed_event(db, monkeypatch)
+    reg = await add_registration(db, case, status=Status.approved, leader='one', operator='one')
+    reg.phone = 'SYNTHETIC11'
+    reg_id = reg.id
+    await add_registration(db, case)
+    await db.commit()
+    url = PREFIX + '/registrations/' + reg_id
+    before_view = await client.get(url, headers=auth(case['users'][actor]))
+    assert before_view.status_code == 200
+    original = before_view.json()
+    corrected = await client.post(url + '/correction', headers=auth(case['users'][actor]),
+                                  json=envelope({'phone': 'SYNTHETIC22', 'note': 'Synthetic contact correction'},
+                                                original['version']))
+    assert corrected.status_code == 200, corrected.text
+    receipt = corrected.json()
+    view = await client.get(url, headers=auth(case['users'][actor]))
+    assert view.status_code == 200
+    value = view.json()
+    assert value['booking_state'] == 'pending' and value['review']['state'] == 'awaiting_review'
+    assert value['attribution'] == original['attribution']
+    updated = await db.get(RegistrationModel, reg_id, populate_existing=True)
+    assert updated.phone == 'SYNTHETIC22' and updated.event_id == case['event'].id
+    await bound_messages(db, case, 'correction', [reg_id],
+                         'Synthetic application updated; awaiting review.', expected_hint='***22')
+    operation = await db.get(JourneyOperation, receipt['operation_id'], populate_existing=True)
+    assert operation.actor == case['users'][actor].id and operation.event_id == case['event'].id
+    assert operation.receipt == receipt
+    assert receipt['kind'] == 'registration_correction' and receipt['resource_id'] == reg_id
+    assert receipt['effects'] == {'registration_id': reg_id, 'status': 'pending'}
+    before_replay = await store_fingerprint(db)
+    replay = await client.post(corrected.request.url, headers=auth(case['users'][actor]), content=corrected.request.content)
+    assert replay.status_code == 200 and replay.json() == receipt
+    await bound_messages(db, case, 'correction', [reg_id],
+                         'Synthetic application updated; awaiting review.', expected_hint='***22')
+    assert await store_fingerprint(db) == before_replay
+
+
+@pytest.mark.parametrize('actor', ['one', 'owner'])
+async def test_corrected_outcome(client, db_session, monkeypatch, actor):
+    await corrected_outcome_case(client, db_session, monkeypatch, actor)
