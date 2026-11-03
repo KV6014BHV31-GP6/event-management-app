@@ -10,12 +10,11 @@ class OfflineApplicationItem(BaseModel):
     gender: UserGenderEnum = Field(..., alias="gender")
     date_of_birth: date = Field(..., alias="dateOfBirth")
     phone: str = Field(..., alias="phone", max_length=20)
-    address: str = Field(..., alias="address")
+    address: Optional[str] = Field(None, alias="address")
     national_id: str = Field(..., alias="nationalId", max_length=50)
-    income_level: str = Field(..., alias="incomeLevel", max_length=20)
+    income_level: Optional[str] = Field(None, alias="incomeLevel", max_length=20)
     medical_record: Optional[str] = Field(None, alias="medicalRecord")
-    marriage_status: MarriageStatusTypeEnum = Field(
-        ..., alias="marriageStatus")
+    marriage_status: Optional[MarriageStatusTypeEnum] = Field(None, alias="marriageStatus")
 
     model_config = ConfigDict(populate_by_name=True, from_attributes=True)
 

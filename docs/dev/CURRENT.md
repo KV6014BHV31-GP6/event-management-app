@@ -1,5 +1,11 @@
 # NU Developer 當前狀態
 
+## ROSE PULSE Phase2 Backend — 2026-11-02
+
+**ACCEPT_BOUNDED_NATIVE_SYNTHETIC_PHASE2** for backend `54ab71d29852df26f17fb32317e405e5a48353ea` with frontend `4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e`. [Task](tasks/BE-ROSE-PHASE2-20261102.md), [acceptance](phase2/BACKEND_ACCEPTANCE.md). DraftPR57 remains based on PR40; frontend companion is DraftPR56. Native idempotency/role/deadlock/migration evidence and independent Browser/API/READ ONLY DB verification are separate layers. Only the stated synthetic runtime is accepted; no merge/team approval/production migration or sensitive Offline permission.
+
+Candidate8028→nativePostgreSQL5439, frontend5205→proxy5206 in separate worktree. Local root `E:\NU_Local_Environment_20261014\rose-pulse-phase2\20261102-050245`; original23worktrees/configurations and Phase1 listeners preserved. Old PR40 checkout/evidence remain unchanged. Historical sections below retain their own source/scope.
+
 ## ROSE PULSE V2 — 2026-11-02 (current workstream)
 
 **LOCAL_VERIFIED for bounded independent React/Browser/API/native PostgreSQL flows.** Draft PR55 on `dev_fe_rose_pulse_react` is stacked on PR40 `dcbdf47ed8e4d9b816676df97aaa80015c9e1928`, preserving legacy pages. See [active task](tasks/FE-ROSE-PULSE-V2-20261102.md) and [independent acceptance/screenshots](frontend/rose-pulse-v2/ACCEPTANCE.md). Tested frontend `6ddb485a28f6d94230481ce14db45b721c63ca00`; later delivery changes only evidence/docs, with unchanged product bytes proven in the release receipt. React31/31, legacy239/239, Backend29, directHTTP/DB38 and independent native lifecycle passed; failures and unrun boundaries remain explicit. Latest dev is `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`; PR40 dependency and W8 module merges are not dev integration. Local independent acceptance is not team approval, merge or deployment.

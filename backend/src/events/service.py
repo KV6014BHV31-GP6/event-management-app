@@ -6,6 +6,7 @@ from sqlalchemy.future import select
 from src.events.models import EventModel, EventStatusEnum
 from src.events.schemas import EventCreate, EventUpdate
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum, RegistrationChannelEnum
+from src.phase2 import assets
 
 
 class EventService:
@@ -65,6 +66,8 @@ class EventService:
         """
         generated_public_id = generate(size=21)
         event_data = event_in.model_dump()
+        image_ids=event_data.pop('image_file_ids',[])
+        await assets.validate(self.db,image_ids,organizer_id,'event_image')
 
         db_event = EventModel(
             **event_data,
@@ -74,10 +77,14 @@ class EventService:
         )
 
         self.db.add(db_event)
+        await self.db.flush()
+        await assets.attach_images(self.db,db_event.id,image_ids,organizer_id)
         await self.db.commit()
         await self.db.refresh(db_event)
 
-        return self._format_event_quota_dict(db_event, 0, 0, 0)
+        result=self._format_event_quota_dict(db_event, 0, 0, 0)
+        result['image_files']=await assets.images(self.db,db_event.id)
+        return result
 
     async def get_event_by_public_id(self, public_id: str) -> dict | None:
         """
@@ -96,7 +103,9 @@ class EventService:
             return None
 
         event, online_app, offline_app, waiting = row
-        return self._format_event_quota_dict(event, online_app, offline_app, waiting)
+        result=self._format_event_quota_dict(event, online_app, offline_app, waiting)
+        result['image_files']=await assets.images(self.db,event.id)
+        return result
 
     async def update_event(self, public_id: str, event_update: EventUpdate) -> dict | None:
         """
@@ -110,12 +119,14 @@ class EventService:
             return None
 
         update_data = event_update.model_dump(exclude_unset=True)
+        image_ids=update_data.pop('image_file_ids',None)
         approved = await self.db.scalar(select(func.count()).select_from(RegistrationModel).where(
             RegistrationModel.event_id == db_event.id,
             RegistrationModel.status == RegistrationStatusEnum.approved))
         capacity = update_data.get("online_quota", db_event.online_quota) + update_data.get("offline_quota", db_event.offline_quota)
         if capacity < approved:
             raise HTTPException(status_code=409, detail="Capacity cannot be lower than current approved registrations.")
+        if image_ids is not None:await assets.attach_images(self.db,db_event.id,image_ids,db_event.organizer_id)
         for key, value in update_data.items():
             if key == "status" and value is not None:
                 setattr(db_event, key, EventStatusEnum[value.lower()])
@@ -133,7 +144,8 @@ class EventService:
         page: int = 1,
         page_size: int = 20,
         status_filter: str | None = None,
-        keyword: str | None = None
+        keyword: str | None = None,
+        organizer_id: str | None = None
     ) -> dict:
         """
         Returns a paginated bundle of all matching system event rows, pulling
@@ -141,6 +153,7 @@ class EventService:
         """
         # Build core filtering parameters
         where_conds = []
+        if organizer_id:where_conds.append(EventModel.organizer_id==organizer_id)
         if status_filter:
             if status_filter.lower() not in EventStatusEnum.__members__:
                 raise HTTPException(status_code=422, detail="Unknown event status.")
@@ -184,6 +197,7 @@ class EventService:
             self._format_event_quota_dict(event, online, offline, waiting)
             for event, online, offline, waiting in rows
         ]
+        for event in formatted_events:event['image_files']=await assets.images(self.db,event['id'])
 
         total_pages = (total_count + page_size -
                        1) // page_size if total_count > 0 else 0

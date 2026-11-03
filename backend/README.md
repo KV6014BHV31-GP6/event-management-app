@@ -95,3 +95,59 @@ Run `python -B -m pytest -q tests` from backend with the existing dependencies.2
 One registration per event/participant is enforced across all statuses; re-enrolment after cancellation is not implemented. The existing duplicate400 message remains for frontend compatibility; identity/uniqueness race conflicts return409. Cancel and promotion commit together under an event row lock; pending cancellation releases no approved place, and inactive events do not receive new promotions. Waiting FIFO ties are deterministic. Existing total online+offline capacity behavior is retained but only online1/offline0 is accepted for the core Demo. No new pool lending/eligibility/deadline/offer policy is implied.
 
 The retained Offline service accepts new unclaimed identities with actual channel=offline; it rejects existing identity claims and duplicate batch entries atomically. No Offline UI/OCR workflow is added. Refresh/logout/files routes remain; frontend still uses existing Bearer/local Logout, without Cookie transport integration or a token-revocation claim. Full native E2E, Security/UAT, notifications, GCS, deployment, Guest read/claim/cancel and complete Issue acceptance are outside this repair.
+
+## Additive Phase2 contracts — 2026-11-02
+
+Phase2 preserves `/api/v1` routes and flat response fields while adding `/api/v2` below. It does not merge the W8 module branches wholesale. Image limit3 is the owner-authorized gallery bound; supporting-document limit3 follows the W8 source. These engineering bounds do not establish eligibility, attendance, NGO field policy or mixed-pool acceptance.
+
+The default registration form can omit `address`, `income_band_code`, `marriage_status` and `medical_record`; omitted values persist as actual NULL. Address is nullable in both participant and registration. Existing supplied values remain. Six provisional fields remain: first/last name, gender, date of birth, phone and national ID. This reduces the previous nine visible React inputs to six (33.3%); DOB/eligibility policy remains pending. No hidden mandatory defaults are fabricated.
+
+For a signed-in account reusing its participant, omitted address leaves an existing participant address intact while the new registration snapshot is NULL. An explicitly supplied address (including explicit null) remains an authorized profile update. V2 offline reuse remains stricter: its complete identity snapshot must match exactly.
+
+### Schema setup and explicit migration
+
+Fresh `scripts.dev_bootstrap` registers the new file/association/receipt tables. For an existing **dedicated synthetic development DB**, stop its writers and back it up, then run from backend with private environment variables:
+
+```bash
+python -B -m scripts.migrate_phase2 --acknowledge-development --database EXACT_DEDICATED_DATABASE_NAME
+```
+
+Migration `rose_phase2_20261102_v1` verifies the exact connected DB and non-superuser role, takes an advisory lock plus registration table lock with5-second timeout, creates missing Phase2 tables and drops NOT NULL only on the approved optional fields. It records a schema receipt. It never inserts, rewrites or deletes business rows, never runs at server startup and has no destructive down migration. First/repeat, wrong-DB refusal, original-value preservation and injected-fault transaction rollback are tested separately on dedicated PostgreSQL.
+
+`PRIVATE_UPLOAD_DIR` defaults to `private_assets` relative to backend cwd. Keep it outside any public `/uploads` mapping. Local runtime settings/accounts remain private; do not commit credentials. SQL echo is disabled and driver parameters hidden so forms/password hashes do not enter application SQL logs.
+
+### Durable offline batch v2
+
+`POST /api/v2/events/{public_id}/offline-batches` requires current leader/organizer identity. Body:
+
+```json
+{"contract_version":"rose.offline-sync.v2","batch_id":"canonical-lowercase-UUID","items":[{"client_submission_id":"stable-canonical-lowercase-UUID","application":{"first_name":"Synthetic","last_name":"Person","gender":"female","date_of_birth":"1990-01-01","phone":"TEST","national_id":"SYNTHETIC-ID"}}]}
+```
+
+Use1–25 items, unique IDs inside the envelope, maximum128KiB canonical envelope, and keep the exact submitted JSON/IDs for retry. No `leaderId` is accepted. Valid and invalid applications use the same fingerprint algorithm: `SHA256(UTF8("raw-json-sortkeys-v1\n" + canonical_json))`, with sorted object keys, preserved array order, compact separators, Unicode preserved and nonfinite numbers forbidden. Missing, null and empty values are distinct. Canonical application JSON fingerprints each submission; canonical whole envelope fingerprints the batch. Payload correction under the same ID409, even when parsed defaults would be equivalent. No raw application is stored in receipt tables.
+
+Response200 contains `contract_version`, `fingerprint_version`, `batch_id`, `event_public_id`, authenticated `actor_id`, `recorded_at` and item receipts. Each item has `client_submission_id`, outcome `accepted/rejected/duplicate`, bounded code, authorized `registration_id` or null, immutable `registration_status_at_recording` and timestamp. Accepted creates **offline pending**, never approved. A same-ID replay returns the original accepted receipt even after approval/closure; obtain current lifecycle through the authorized registration API.
+
+`GET .../offline-batches/{batch_id}` and `GET .../offline-submissions/{client_submission_id}` reconcile committed results, with fresh same-actor role checks under row lock. Unknown404; wrong actor/current role403; invalid/expired token or deleted account401. This is not a JWT revocation ledger.
+
+Event and actor row locks, global unique batch/submission IDs, per-item savepoints and transaction rollback protect receipts/effects. Every accepted business effect and all rejected/duplicate receipts commit atomically with the batch. Global ID/event/payload collisions are envelope403/409 and roll back the whole batch. Unexpected500 or transport loss is **unknown to the client**: GET the original batch first, then resend exact IDs/JSON only after reconciliation. Never automatically create new IDs. Lost response after committed headers is tested with one DB effect.
+
+Independent review regressions also force opposite submission/identity orders across two events. PostgreSQL deadlock `40P01` or serialization abort `40001` rolls back the whole losing batch and returns controlled409 with no automatic business retry; the client reconciles its original IDs. The winning batch may commit normally. Organizer cancellation re-reads and locks the actor after acquiring the event lock, so a demotion committed during that wait refuses403 without cancelling or promoting a record.
+
+New items require active status and available aggregate approved capacity (`approved < online_quota+offline_quota`); pending records reserve no capacity. This retains aggregate approval/waitlist behavior, not a mixed-pool or deadline policy. Time-based expiry/medical eligibility is not implemented. Identity reuse is allowed only for an unclaimed participant previously registered offline by the same actor with exact matching fields (including nullable address, where NULL differs from text). Existing identities are never modified. Another ID for the same event/identity yields duplicate without a new row or foreign registration reference; online/other-actor cross-event claims are refused.
+
+### Files, gallery, organizer views
+
+- `POST /api/v2/files`: authenticated multipart `file` plus immutable purpose `event_image` or `supporting_document`. Maximum8MiB; MIME, extension and PNG/JPEG/GIF/WEBP signature must agree (PDF also for supporting documents). Unsafe filenames are rejected. Response is `{id,name,mime_type,size,purpose,url}` with no filesystem path.
+- `GET /api/v2/files/{id}/content`: unassociated images are private. Associated event images are public through this endpoint. Documents require file owner or organizer owning their associated event, not every organizer. Responses use `no-store`, `nosniff` and attachment disposition for documents.
+- Event Create/PATCH accepts up to3 distinct owned `image_file_ids`; full event responses/list retain legacy fields plus `image_files`. Omitted PATCH retains, `[]` clears, null422. Use legacy `image_path` only as fallback when gallery is empty.
+- Online/v2 offline registration accepts up to3 owned `file_ids` of supporting-document purpose. Flat responses add `supporting_documents`, with metadata limited to file owner/event owner. Guest without authenticated upload may submit no files. Purpose cannot be switched by association.
+- Organizer-only `GET /api/v2/me/events` returns the existing paginated event shape filtered by server ownership. `GET /api/v2/me/registrations?status=...` returns the existing flat array, joined/filtering own events on the server. The legacy organizer-global `/api/v1/registrations` policy remains; this increment does not claim that global policy gap is resolved.
+- `POST /api/v2/registrations/{id}/cancel` requires organizer event ownership and reuses atomic cancellation/promotion, recording the actual cancellation actor.
+- `GET /api/v2/analytics/registrations` aggregates own-event rows by status/channel/event, with `actor_id`, `as_of_utc`, `source`, definition and totals. It is registration accounting, not attendance, reach, conversion, ROI or load-test evidence.
+
+### Verification layers
+
+Run `python -B -m pytest -q tests` for ASGI/SQLite contracts. Set private `NU_NATIVE_TEST_DATABASE_URL=postgresql+asyncpg://.../EXACT_DEDICATED_NAME_test` to opt into native tests. Native v2 tests cover same-ID concurrency, global collisions with whole-batch rollback, cross-event National-ID races with persistent partial receipts, pre-commit rollback, raw fingerprint conflict, fresh role changes, NULL storage, exact identity reuse and closed/full/online-claim refusal. Native tests create only synthetic fixtures in the opted-in non-superuser `_test` DB. ASGI tests do not replace native transaction or browser evidence.
+
+Original RED results and harness-only failures are retained externally. Real HTTP/file/DB/restart, local browser, independent acceptance, full Security/UAT and production are separate gates. No provider, SMS, OCR or check-in implementation is introduced.

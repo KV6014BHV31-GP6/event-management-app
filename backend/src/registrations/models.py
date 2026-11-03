@@ -62,12 +62,12 @@ class RegistrationModel(Base):
         SQLEnum(UserGenderEnum, name="user_gender", native_enum=True), nullable=False)
     date_of_birth: Mapped[date] = mapped_column(Date, nullable=False)
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
-    address: Mapped[str] = mapped_column(Text, nullable=False)
+    address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     national_id: Mapped[str] = mapped_column(String(50), nullable=False)
-    income_band_code: Mapped[str] = mapped_column(String(20), nullable=False)
+    income_band_code: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
     medical_record: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
-    marriage_status: Mapped[MarriageStatusTypeEnum] = mapped_column(
-        SQLEnum(MarriageStatusTypeEnum, name="marriage_status_type", native_enum=True), nullable=False
+    marriage_status: Mapped[Optional[MarriageStatusTypeEnum]] = mapped_column(
+        SQLEnum(MarriageStatusTypeEnum, name="marriage_status_type", native_enum=True), nullable=True
     )
 
     # --- Review & Waitlist Entities ---

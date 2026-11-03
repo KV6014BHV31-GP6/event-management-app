@@ -73,6 +73,7 @@ async def bootstrap() -> None:
     from src.events.models import EventModel, EventStatusEnum
     from src.registrations.models import RegistrationModel
     from src.participants.models import ParticipantModel  # noqa: F401; register every table before create_all
+    from src.phase2 import models as phase2_models  # noqa: F401; additive association/receipt tables
 
     # Development engine defaults to SQL echo; keep seed hashes out of console logs.
     async_engine.echo = False
