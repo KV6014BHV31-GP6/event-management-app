@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T12:43:01.645672+00:00",
-  "reason": "R3 CI 增加完整 synthetic account 測試及獨立 JUnit，保留現有零 skip 驗收門檻",
-  "document_count": 362,
+  "reviewed_at": "2026-11-03T13:16:58.174118+00:00",
+  "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可",
+  "document_count": 367,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -4765,7 +4765,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 6,
+      "revision": 7,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4803,13 +4803,20 @@
           "size_bytes": 22569,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 6,
+          "sha256": "b55d52dbd4fa183e4cf9b741b9c34f61221faa2085375e712b16bb6d1ea959c9",
+          "size_bytes": 26624,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "b55d52dbd4fa183e4cf9b741b9c34f61221faa2085375e712b16bb6d1ea959c9",
-      "size_bytes": 26624
+      "sha256": "5b1122a28ab7972879cf9378ce064107626b419813edcac068c59bc869c46e98",
+      "size_bytes": 37992
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -4890,7 +4897,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4914,18 +4921,25 @@
           "size_bytes": 86682,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 4,
+          "sha256": "2450cacbba4a7794a2c59f213cc60ede05230e7c088c435d0f55e243018830df",
+          "size_bytes": 87162,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "2450cacbba4a7794a2c59f213cc60ede05230e7c088c435d0f55e243018830df",
-      "size_bytes": 87162
+      "sha256": "22fad7eb4795186e21ef53027905453de6bc5fea172bc47740d5aaec5b29f504",
+      "size_bytes": 88665
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4949,13 +4963,20 @@
           "size_bytes": 21468,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 4,
+          "sha256": "6183a973fd40a4ceea629cf056ba96fced368ae4ac76603e44934e91dcf785d8",
+          "size_bytes": 23103,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "6183a973fd40a4ceea629cf056ba96fced368ae4ac76603e44934e91dcf785d8",
-      "size_bytes": 23103
+      "sha256": "339a5edc7040547d63593686d0237658b01a407313c5549182b2d9fb432c4809",
+      "size_bytes": 36157
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -4981,7 +5002,7 @@
     {
       "document_id": "ROSE-V2-f3d8228e1767",
       "path": "frontend/rose-pulse-react/src/service.js",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4998,18 +5019,25 @@
           "size_bytes": 13148,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 3,
+          "sha256": "2a4154f9a95a898896892ecc2279dd6381927ca067d647b895991c6fc26d29ef",
+          "size_bytes": 13259,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "2a4154f9a95a898896892ecc2279dd6381927ca067d647b895991c6fc26d29ef",
-      "size_bytes": 13259
+      "sha256": "a8957bc4fafdc9baf69d897daac58b3928ac3f020cf646a08e441385187fef4a",
+      "size_bytes": 15883
     },
     {
       "document_id": "ROSE-V2-8b91d6743535",
       "path": "frontend/rose-pulse-react/src/service.test.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5019,13 +5047,20 @@
           "size_bytes": 15289,
           "superseded_at": "2026-11-01T22:32:46.225801+00:00",
           "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "3eb52dfbcaffcdebb14c92c7cffd8cd44acff61208a5ab3a743532c10aa5984a",
+          "size_bytes": 15165,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "3eb52dfbcaffcdebb14c92c7cffd8cd44acff61208a5ab3a743532c10aa5984a",
-      "size_bytes": 15165
+      "sha256": "07fcad72191be6ac5603d44a0134677f5bdea5573602ae8bcb1c023d6dc6d4ac",
+      "size_bytes": 35749
     },
     {
       "document_id": "ROSE-V2-592e6fa111ee",
@@ -6051,7 +6086,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 5,
+      "revision": 6,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6082,13 +6117,20 @@
           "size_bytes": 72903,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 5,
+          "sha256": "1a2b860dce097b3b71a8467fe10ebb092ac4502ccb408b502c8e7e6533a8c7a1",
+          "size_bytes": 75263,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "1a2b860dce097b3b71a8467fe10ebb092ac4502ccb408b502c8e7e6533a8c7a1",
-      "size_bytes": 75263
+      "sha256": "f6bf090c49d58207090800de3a34f60d7d51b1ce4829e01a1a83ab870f9aa932",
+      "size_bytes": 76435
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6134,7 +6176,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 5,
+      "revision": 6,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6165,13 +6207,20 @@
           "size_bytes": 75547,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 5,
+          "sha256": "0069f86cc81a885fd6f35bef8d88fe018486bfe830edbb3d13bc02ed1e7fcdd8",
+          "size_bytes": 77965,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "0069f86cc81a885fd6f35bef8d88fe018486bfe830edbb3d13bc02ed1e7fcdd8",
-      "size_bytes": 77965
+      "sha256": "80003c566c432b6655093edc87c2825d26ed44b968002b6a3e3420d315475440",
+      "size_bytes": 79171
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -6481,7 +6530,7 @@
     {
       "document_id": "DEMO-JOURNEY-FEATURE-DEMO-MATRIX",
       "path": "docs/dev/demo-journey/FEATURE_DEMO_MATRIX.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6505,18 +6554,25 @@
           "size_bytes": 6922,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 4,
+          "sha256": "492397a1b09a864ee133c4891d97fa340df374d6cf4f45ad3cca03f911eeaa1f",
+          "size_bytes": 8328,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "492397a1b09a864ee133c4891d97fa340df374d6cf4f45ad3cca03f911eeaa1f",
-      "size_bytes": 8328
+      "sha256": "7cb10b4173df72859fbbb566435674173d1c179f1fa90b9ed35bb01b7a119bfb",
+      "size_bytes": 10273
     },
     {
       "document_id": "DEMO-JOURNEY-GATES",
       "path": "docs/dev/demo-journey/GATES.json",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6533,18 +6589,25 @@
           "size_bytes": 620,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 3,
+          "sha256": "e54dd667f24bf58d74573555c53eb414263912b04cb0e291b527cc40aadec073",
+          "size_bytes": 1981,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e54dd667f24bf58d74573555c53eb414263912b04cb0e291b527cc40aadec073",
-      "size_bytes": 1981
+      "sha256": "9b3b03fe060cf1d51a4c670b2fa89882d79ac035b50d4f512ef99db917bb76f7",
+      "size_bytes": 2964
     },
     {
       "document_id": "DEMO-JOURNEY-README",
       "path": "docs/dev/demo-journey/README.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6554,13 +6617,20 @@
           "size_bytes": 893,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 2,
+          "sha256": "a401f71c10a9eb9ecd604fbb39ab3bc9c41f60c991ea4a1148a5e406ec9bbc53",
+          "size_bytes": 2953,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a401f71c10a9eb9ecd604fbb39ab3bc9c41f60c991ea4a1148a5e406ec9bbc53",
-      "size_bytes": 2953
+      "sha256": "aa7a6492d39355069672adfaf88de2497afb5b4b4da053824dac9fd2dd38d88c",
+      "size_bytes": 4001
     },
     {
       "document_id": "DEMO-JOURNEY-ROLE-CONCEPTS",
@@ -6776,15 +6846,23 @@
     {
       "document_id": "DEMO-DOC-6532F7F07E4BB796",
       "path": "backend/src/journey/router.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4ce0d281d1a7c4a26ba81449770e0f28890f90fd41627a3daab99e67b7489b3b",
+          "size_bytes": 51227,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4ce0d281d1a7c4a26ba81449770e0f28890f90fd41627a3daab99e67b7489b3b",
-      "size_bytes": 51227
+      "sha256": "509b5e440b0da3fbdf5978c461fce259e689c33cc9c8b0c93e7305034be7d0e9",
+      "size_bytes": 51371
     },
     {
       "document_id": "DEMO-DOC-807252A5DD52CAE8",
@@ -6836,7 +6914,7 @@
     {
       "document_id": "DEMO-DOC-1613893D489DFFB1",
       "path": "docs/dev/demo-journey/AC_MATRIX.json",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6846,18 +6924,25 @@
           "size_bytes": 11473,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 2,
+          "sha256": "eb0ea26526e0d11cf11f8baeb4b8e589bb50e86e2add25df4af41ddd083a4ad7",
+          "size_bytes": 32514,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "eb0ea26526e0d11cf11f8baeb4b8e589bb50e86e2add25df4af41ddd083a4ad7",
-      "size_bytes": 32514
+      "sha256": "0aabb22d9874f995ac4a7bf5d9531b7c3ea7246db8ef656d78393b9b7ed06687",
+      "size_bytes": 33738
     },
     {
       "document_id": "DEMO-DOC-DEECC58DE1D1D511",
       "path": "docs/dev/demo-journey/API_CONTRACT.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6867,13 +6952,20 @@
           "size_bytes": 21549,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 2,
+          "sha256": "40ade8b29853b1e092d41dfb3158cf02fbcadcf5ca24b13dfaf9bd81368d7c94",
+          "size_bytes": 21865,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "40ade8b29853b1e092d41dfb3158cf02fbcadcf5ca24b13dfaf9bd81368d7c94",
-      "size_bytes": 21865
+      "sha256": "682c10afaa52c09f05d513632bcd8d1caed2e8537d325fa40eb6e505d879db40",
+      "size_bytes": 23923
     },
     {
       "document_id": "DEMO-DOC-E16B1F8BCCCAA68A",
@@ -6891,7 +6983,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 7,
+      "revision": 8,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6936,13 +7028,20 @@
           "size_bytes": 14804,
           "superseded_at": "2026-11-03T12:43:01.645672+00:00",
           "reason": "R3 CI 增加完整 synthetic account 測試及獨立 JUnit，保留現有零 skip 驗收門檻"
+        },
+        {
+          "revision": 7,
+          "sha256": "303afa3e0ca5cb497562a7deda5d637de441b47ad4388632b744ddaa9755d6c9",
+          "size_bytes": 15317,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "303afa3e0ca5cb497562a7deda5d637de441b47ad4388632b744ddaa9755d6c9",
-      "size_bytes": 15317
+      "sha256": "20957bc6b2eb1d00480db76a30d03215b6be0b6aff1ce6cecb8074b078c8dfe0",
+      "size_bytes": 15881
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -6994,7 +7093,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7011,18 +7110,25 @@
           "size_bytes": 37548,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 3,
+          "sha256": "35f1844b7eb2c34910bc3d228dddaed03e1f9880b6e2c4076b4ccbd7c1c5c84e",
+          "size_bytes": 37631,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "35f1844b7eb2c34910bc3d228dddaed03e1f9880b6e2c4076b4ccbd7c1c5c84e",
-      "size_bytes": 37631
+      "sha256": "ef9e0d465c2d8b74f5ade6e64b395c638f5bb52de480d46fd41b9ec9f117fe4a",
+      "size_bytes": 40816
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7032,13 +7138,20 @@
           "size_bytes": 7412,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 2,
+          "sha256": "5e5385310dfb47c4d7c49e8d40a01bbc90323afa8437d7a36b08f93b94223bd1",
+          "size_bytes": 8383,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5e5385310dfb47c4d7c49e8d40a01bbc90323afa8437d7a36b08f93b94223bd1",
-      "size_bytes": 8383
+      "sha256": "41a840c7a29ace52b2dced6180d45eef742b2c7300249bd81ef57e9d50d27048",
+      "size_bytes": 24009
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -7259,15 +7372,23 @@
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
       "path": "frontend/rose-pulse-react/src/recovery-review.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3d7f2cea682273d72a00574fa9bbf31740efa835d7edeeece7e2266b7435ced5",
+          "size_bytes": 9008,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "3d7f2cea682273d72a00574fa9bbf31740efa835d7edeeece7e2266b7435ced5",
-      "size_bytes": 9008
+      "sha256": "a6e20d34f797779e500c27071071fa904b6ea951d22ca68acda22c7fc2161bf7",
+      "size_bytes": 9402
     },
     {
       "document_id": "DEMO-DOC-8CD5CC5E5514D94C",
@@ -7444,7 +7565,7 @@
     {
       "document_id": "DEMO-DOC-A52F37B73B48C016",
       "path": "frontend/rose-pulse-react/src/AccountWorkspace.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7454,13 +7575,20 @@
           "size_bytes": 22082,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 2,
+          "sha256": "defa5bbe72a79ceef5c33d96cb638b29cf4db17dcd86b32d45a6953ab4c02657",
+          "size_bytes": 31108,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "defa5bbe72a79ceef5c33d96cb638b29cf4db17dcd86b32d45a6953ab4c02657",
-      "size_bytes": 31108
+      "sha256": "9c145ce5c678c10df0b470d9954665d466c72c2e717e75c8e65cc0247593f75f",
+      "size_bytes": 32501
     },
     {
       "document_id": "DEMO-DOC-082FDD7FFB632761",
@@ -7552,6 +7680,79 @@
       ],
       "sha256": "37fbae667b3477c90b8f4b59d368f9857e1dac85d8f2c2ca5db1b6c85bb15492",
       "size_bytes": 20968
+    },
+    {
+      "document_id": "DEMO-DOC-E37020DE44D2D004",
+      "path": "backend/src/journey/attribution.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "812dcde6fef26a2d21f8d6c13f8352675f380994f960375237e220661ef3ca1b",
+      "size_bytes": 2364
+    },
+    {
+      "document_id": "DEMO-DOC-B62952E8790263E9",
+      "path": "backend/tests/test_journey_attribution.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5c4e7f3c51d87cb604052da061c0ea552b78c776aea93fa360c464543d795dca",
+      "size_bytes": 19680
+    },
+    {
+      "document_id": "DEMO-DOC-8563497029E7B33E",
+      "path": "backend/tests/test_journey_attribution_native.py",
+      "revision": 2,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9b3100231bd5c8c90ec28df55d35118d563117d7ae985eeb27c5fd57c3d0dbb7",
+          "size_bytes": 11809,
+          "superseded_at": "2026-11-03T13:16:58.174118+00:00",
+          "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "06ee909d5c9bdcb314f554e6c0325dc5a75f7b6faef82aab79acb3f368becce4",
+      "size_bytes": 11809
+    },
+    {
+      "document_id": "DEMO-DOC-84DA8C07B56159D3",
+      "path": "backend/tests/test_journey_acceptance_edges.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "b2e9c5746490f5d5301d1d50eadcc8d04252a0b90b68c6d9cef026376e260053",
+      "size_bytes": 26375
+    },
+    {
+      "document_id": "DEMO-DOC-D4BD4DCE4C474466",
+      "path": "backend/tests/test_journey_acceptance_edges_native.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a8dc10df613fa4cd52d891bf677bfe78cd386770e7316b6f7f5d2e3e6fe825e4",
+      "size_bytes": 3582
     }
   ]
 }

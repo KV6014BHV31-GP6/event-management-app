@@ -11,7 +11,35 @@ it('retains a bound terminal no-intent refusal so a stale cancelled booking can 
 });
 it('ignores a late review A receipt after a programmatic switch to B and then uses B version',async()=>{
  let release;const gate=new Promise(r=>release=r);const rows=[{id:'reg-A',first_name:'Alpha',last_name:'Synthetic',status:'pending',supporting_documents:[]},{id:'reg-B',first_name:'Beta',last_name:'Synthetic',status:'pending',supporting_documents:[]}];const view=r=>({registration:r,version:r.id==='reg-A'?3:7,review:{state:'awaiting_review',reason:''},booking_state:'pending',offer:null,allowed_actions:['reject','request_correction','cancel']});const response=data=>({ok:true,status:200,json:async()=>data});const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async(path,options={})=>{if(options.method==='POST'){const body=JSON.parse(options.body);await gate;return response({contract_version:body.contract_version,operation_id:body.operation_id,outcome:'applied',effects:{registration_id:path.includes('reg-A')?'reg-A':'reg-B'}});}return response(view(rows.find(r=>path.endsWith(r.id))));});const runtime={withVerifiedAccount:fn=>fn('token',{id:'owner'}),api:{getOrganizerRegistrations:async()=>rows}};
- render(<JourneyWorkspace runtime={runtime} auth={{user:{id:'owner',role:'organizer'},revision:1}} navigate={()=>{}}/>);fireEvent.click(screen.getByRole('button',{name:'Choose a registration'}));await screen.findByRole('option',{name:'Alpha Synthetic · pending'});fireEvent.change(screen.getByLabelText('Participant'),{target:{value:'reg-A'}});fireEvent.click(screen.getByRole('button',{name:'Read registration'}));let form=await screen.findByRole('form',{name:'Review application'});fireEvent.change(within(form).getByLabelText('Review reason'),{target:{value:'Synthetic reason'}});fireEvent.submit(form);await waitFor(()=>expect(fetch.mock.calls.some(([,o])=>o?.method==='POST')).toBe(true));fireEvent.change(screen.getByLabelText('Participant'),{target:{value:'reg-B'}});release();await waitFor(()=>expect(screen.getByRole('button',{name:'Read registration'})).toBeEnabled());expect(screen.queryByRole('heading',{name:'Alpha Synthetic'})).not.toBeInTheDocument();expect(screen.getByLabelText('Participant')).toHaveValue('reg-B');fireEvent.click(screen.getByRole('button',{name:'Read registration'}));await screen.findByRole('heading',{name:'Beta Synthetic'});form=screen.getByRole('form',{name:'Review application'});fireEvent.change(within(form).getByLabelText('Review reason'),{target:{value:'Synthetic B reason'}});fireEvent.submit(form);await waitFor(()=>expect(fetch.mock.calls.filter(([,o])=>o?.method==='POST')).toHaveLength(2));const [path,options]=fetch.mock.calls.filter(([,o])=>o?.method==='POST').at(-1);expect(path).toContain('/reg-B/review');expect(JSON.parse(options.body).expected_version).toBe(7);
+ render(<JourneyWorkspace runtime={runtime} auth={{user:{id:'owner',role:'organizer'},revision:1}} navigate={()=>{}}/>);
+ const details=screen.getByText('Registration review and booking',{selector:'summary'}).closest('details');
+ expect(details).not.toBeNull();
+ const review=within(details);
+ fireEvent.click(review.getByRole('button',{name:'Choose a registration'}));
+ const participant=review.getByLabelText('Participant');
+ await within(participant).findByRole('option',{name:'Alpha Synthetic · pending'});
+ fireEvent.change(participant,{target:{value:'reg-A'}});
+ fireEvent.click(review.getByRole('button',{name:'Read registration'}));
+ let form=await review.findByRole('form',{name:'Review application'});
+ fireEvent.change(within(form).getByLabelText('Review reason'),{target:{value:'Synthetic reason'}});
+ fireEvent.submit(form);
+ await waitFor(()=>expect(fetch.mock.calls.some(([,o])=>o?.method==='POST')).toBe(true));
+ // This programmatic record change intentionally occurs while the UI is busy.
+ fireEvent.change(participant,{target:{value:'reg-B'}});
+ release();
+ await waitFor(()=>expect(review.getByRole('button',{name:'Read registration'})).toBeEnabled());
+ // Keep the negative assertion global: a stale A heading must appear nowhere.
+ expect(screen.queryByRole('heading',{name:'Alpha Synthetic'})).not.toBeInTheDocument();
+ expect(review.getByLabelText('Participant')).toHaveValue('reg-B');
+ fireEvent.click(review.getByRole('button',{name:'Read registration'}));
+ await review.findByRole('heading',{name:'Beta Synthetic'});
+ form=review.getByRole('form',{name:'Review application'});
+ fireEvent.change(within(form).getByLabelText('Review reason'),{target:{value:'Synthetic B reason'}});
+ fireEvent.submit(form);
+ await waitFor(()=>expect(fetch.mock.calls.filter(([,o])=>o?.method==='POST')).toHaveLength(2));
+ const [path,options]=fetch.mock.calls.filter(([,o])=>o?.method==='POST').at(-1);
+ expect(path).toContain('/reg-B/review');
+ expect(JSON.parse(options.body).expected_version).toBe(7);
 });
 
 it('unknown intent404 cannot be discarded, while an existing arrival wins over local refusal proof',async()=>{

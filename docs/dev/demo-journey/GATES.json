@@ -5,15 +5,16 @@
   "gates": {
     "G0": "PASS_SOURCE_TEXT_TABLE_IMAGES_LOCK; WORD_PAGE_LAYOUT_NOT_RUN",
     "G1": "PASS_DESIGN_LOCK; FINAL_RENDERED_QA_PENDING_IN_G5",
-    "G2": "PARTIAL_HISTORICAL_AND_CI_AUTHOR_VIEWER; FINAL_INTEGRATED_GATE_PENDING",
-    "G3": "PARTIAL_IMPLEMENTED_AND_AUTHOR_RESULTS; FINAL40AC_PENDING",
-    "G4": "PARTIAL_HISTORICAL_PLUS_CI_AUTHOR; FINAL_INTEGRATED_RESTART_BINDING_PENDING",
+    "G2": "PARTIAL_439_INDEPENDENT_10ACL_AND_BROWSER_VIEWER; FINAL_CANDIDATE_PENDING",
+    "G3": "PARTIAL_ORIGINAL40AC_AND_RELEASED_FOLLOWUPS; FINAL_CANDIDATE_PENDING",
+    "G4": "PARTIAL_439_REAL_IDB_RESTART_LOSTACK_GET_NATIVE; NEW_RUNTIME_GUARDS_PENDING_INTEGRATED_BROWSER",
     "G5": "BLOCKED_NEW_INDEPENDENT_NATIVE_GREEN; OTHER_FINAL_CHECKS_PENDING",
     "G6": "BLOCKED_PREMERGE_GATES; NOT_MERGED_NOT_LOCAL_RELEASED",
     "G7": "NOT_RUN_FORMAL; ENGLISH_FEMALE_PREPRODUCTION_ONLY"
   },
   "blockers": [
     "New independent native GREEN for the repaired event-generation and migration-literal findings remains blocked by prior automatic runtime safety rejection",
+    "Original repeated recovery-review5000ms full-run timeouts retained; scoped-query successor has5affected PASS, final fixed-candidate whole suite/CI still required",
     "Final integrated fixed-SHA Browser/40AC/visual and affected acceptance pending",
     "New candidate required hosted CI pending, including mandatory private-document and Offline E2E",
     "Merge-SHA CI/artifact/localCD and formal same-artifact full video not run"
@@ -23,7 +24,7 @@
     "Full Word page-layout rendering NOT_RUN; original text/tables/embedded images and source hashes admitted",
     "Owner/W8 relay is not NGO policy approval or human UAT"
   ],
-  "observed_at": "2026-11-03T09:45:06.195535+00:00",
+  "observed_at": "2026-11-03T13:16:46.483334+00:00",
   "candidate_identity": "The commit containing this register; execution receipts must independently bind its exact full SHA",
   "narration": {
     "owner_override": "English natural female",
@@ -32,7 +33,22 @@
       "English SRT"
     ],
     "sample_provider": "REAL_LOCAL existing Microsoft Zira Desktop en-US Female",
-    "sample_status": "PREPRODUCTION_TECHNICAL_ONLY",
-    "naturalness": "NOT_MEASURED"
-  }
+    "sample_status": "OWNER_ACCEPTED_FOR_SPEED_AND_NATURALNESS; PREPRODUCTION",
+    "naturalness": "SAMPLE_OWNER_ACCEPTED; FULL_TRACK_NOT_MEASURED"
+  },
+  "historical_candidate": {
+    "sha": "439838ced94373f36874c37d78180c6e9ea978c4",
+    "push_ci_run": 41616347634,
+    "pr_ci_run": 41616359144,
+    "ci": "ALL5JOBS_SUCCESS",
+    "counts": {
+      "React": 221,
+      "legacy": 284,
+      "controlled": 78,
+      "native": 35
+    },
+    "artifact_sha256": "02afae160bbbfc9d1e66e313cd0d82d98c27691abd1d7123667ab16b53aa0fd2",
+    "boundary": "only439 tested source; not subsequent candidate or merge-SHA/CD"
+  },
+  "new_candidate": "Frozen only when this source is committed; receipts must bind resulting exact SHA. Ordinary attribution native setup stopped before pytest on inet text-format check; fixture semantic projection fixed,52native still require actual result."
 }
