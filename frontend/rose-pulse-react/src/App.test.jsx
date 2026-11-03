@@ -2,6 +2,7 @@ import React from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import {
   fireEvent,
+  act,
   render,
   screen,
   waitFor,
@@ -10,6 +11,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import App from "./App.jsx";
 import { ApiError, createRuntime } from "./service.js";
+import { createPhase2Api } from "./phase2-api.js";
 import { changeLanguage, tr } from "./i18n/index.js";
 
 const ID = "01K00000000000000000000001";
@@ -74,6 +76,216 @@ async function setup({ view = "home", params = "", role, methods = {} } = {}) {
 }
 beforeEach(() => {
   window.history.replaceState({}, "", "/");
+});
+
+async function loginApp(fetchImpl, params = '') {
+  window.history.replaceState({}, '', `/?view=login${params}`);
+  const storage = { getItem: vi.fn(() => null), setItem: vi.fn(), removeItem: vi.fn() };
+  const runtime = createRuntime({ api: createPhase2Api({ fetchImpl }), storage });
+  await runtime.restore();
+  const view = render(<App runtime={runtime} />);
+  return { ...view, runtime, storage, user: userEvent.setup() };
+}
+
+it('LF01 keeps the real App401 refusal visible after the real runtime advances its security revision without reading the body', async () => {
+  const json = vi.fn(() => new Promise(() => {}));
+  const fetchImpl = vi.fn(async () => ({ ok: false, status: 401, json }));
+  const { user, runtime, storage } = await loginApp(fetchImpl);
+  const before = runtime.getSnapshot().revision, subtree = document.querySelector('.view-transition');
+  await user.type(screen.getByLabelText('Username'), 'synthetic-denied');
+  const password = crypto.randomUUID();
+  await user.type(screen.getByLabelText('Password'), password);
+  await user.click(screen.getByRole('button', { name: /^Log in/ }));
+  await waitFor(() => expect(runtime.getSnapshot().revision > before).toBe(true), { onTimeout: error => error });
+  expect(fetchImpl).toHaveBeenCalledTimes(1);
+  expect(fetchImpl.mock.calls[0][0]).toBe('/api/v1/auth/login');
+  expect(fetchImpl.mock.calls[0][1].method).toBe('POST');
+  expect(json).not.toHaveBeenCalled();
+  expect(document.querySelector('.view-transition') !== subtree).toBe(true);
+  expect(runtime.getSnapshot()).toMatchObject({ user: null, hasToken: false, identityBlocked: true });
+  expect(screen.getByLabelText('Password').value === '').toBe(true);
+  expect(screen.getByRole('button', { name: /^Log in/ })).toBeEnabled();
+  expect(storage.setItem).not.toHaveBeenCalled();
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes('Incorrect username or password. Please try again.'))).toBe(true);
+});
+
+const loginRefusal = 'Incorrect username or password. Please try again.';
+const httpReply = data => ({ ok: true, status: 200, json: async () => data });
+function publicLoginRead(path, profile = { id: ID, username: 'synthetic-user', role: 'user' }) {
+  if (path === '/api/v1/users/me') return httpReply(profile);
+  if (path.startsWith('/api/v1/events/')) return httpReply(event);
+  if (path.startsWith('/api/v1/events')) {
+    const query = new URL(path, 'http://localhost').searchParams;
+    return httpReply({ data: [event], page: Number(query.get('page')) || 1,
+      page_size: Number(query.get('page_size')) || 24, total_count: 1, total_pages: 1 });
+  }
+  throw new TypeError('Unexpected controlled read.');
+}
+function fillLogin() {
+  fireEvent.change(screen.getByLabelText(tr('Username')), { target: { value: 'synthetic-login' } });
+  fireEvent.change(screen.getByLabelText(tr('Password')), { target: { value: crypto.randomUUID() } });
+  return screen.getByLabelText(tr('Password')).form;
+}
+
+it('LF03 bounds pending double submit and clears old feedback for an intentional successful retry', async () => {
+  let posts = 0, releaseFirst, releaseSecond;
+  const json401 = vi.fn(() => new Promise(() => {}));
+  const fetchImpl = vi.fn(async path => {
+    if (path === '/api/v1/auth/login') {
+      posts++;
+      return new Promise(resolve => {
+        if (posts === 1) releaseFirst = () => resolve({ ok: false, status: 401, json: json401 });
+        else releaseSecond = () => resolve(httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' }));
+      });
+    }
+    return publicLoginRead(path);
+  });
+  const { runtime, storage } = await loginApp(fetchImpl);
+  const form = fillLogin(), submittedPassword = screen.getByLabelText('Password');
+  fireEvent.click(screen.getByRole('button', { name: 'Show' }));
+  fireEvent.submit(form); fireEvent.submit(form);
+  expect(posts).toBe(1);
+  expect(screen.getByRole('button', { name: /^Please wait/ })).toBeDisabled();
+  await act(async () => releaseFirst());
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(true);
+  expect(submittedPassword.value === '').toBe(true);
+  expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'password');
+  fireEvent.submit(fillLogin());
+  expect(posts).toBe(2);
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(false);
+  expect(screen.getByRole('button', { name: /^Please wait/ })).toBeDisabled();
+  await act(async () => releaseSecond());
+  await waitFor(() => expect(runtime.getSnapshot().user?.id === ID).toBe(true), { onTimeout: error => error });
+  expect(window.location.search.includes('view=home')).toBe(true);
+  expect(posts).toBe(2);
+  expect(json401).not.toHaveBeenCalled();
+  expect(Boolean(screen.queryByLabelText('Password'))).toBe(false);
+  expect(storage.setItem.mock.calls.every(([key]) => key === 'rose.live.access-token')).toBe(true);
+});
+
+it.each(['failure', 'success'])('LF04 a late%s cannot navigate or repaint after leaving Login', async outcome => {
+  let release;
+  const fetchImpl = vi.fn(async path => path === '/api/v1/auth/login'
+    ? new Promise(resolve => { release = () => resolve(outcome === 'failure'
+      ? { ok: false, status: 401, json: vi.fn() }
+      : httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' })); }) : publicLoginRead(path));
+  const { user } = await loginApp(fetchImpl);
+  fireEvent.submit(fillLogin());
+  await user.click(screen.getByRole('link', { name: 'Recover account access' }));
+  expect(window.location.search).toBe('?view=recovery');
+  await act(async () => release());
+  expect(window.location.search).toBe('?view=recovery');
+  expect(Boolean(Array.from(document.querySelectorAll('[role="alert"]')).find(node => node.textContent.includes(loginRefusal)))).toBe(false);
+  await user.click(screen.getByRole('button', { name: 'Cancel and return to Login' }));
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(false);
+  expect(screen.getByLabelText('Password').value === '').toBe(true);
+});
+
+it('LF04 popstate exit and re-entry invalidate an older pending failure on the same Login route', async () => {
+  let release;
+  const fetchImpl = vi.fn(async () => new Promise(resolve => { release = () => resolve({ ok: false, status: 401, json: vi.fn() }); }));
+  await loginApp(fetchImpl);
+  fireEvent.submit(fillLogin());
+  act(() => { window.history.pushState({}, '', '?view=help'); window.dispatchEvent(new PopStateEvent('popstate')); });
+  act(() => { window.history.pushState({}, '', '?view=login'); window.dispatchEvent(new PopStateEvent('popstate')); });
+  await act(async () => release());
+  expect(window.location.search).toBe('?view=login');
+  expect(Boolean(screen.queryByRole('alert'))).toBe(false);
+  expect(screen.getByRole('button', { name: /^Log in/ }).disabled).toBe(false);
+});
+
+it('LF04 an older transport failure cannot replace the refusal from a newer explicit login attempt', async () => {
+  let posts = 0, rejectOld;
+  const fetchImpl = vi.fn(async () => {
+    if (++posts === 1) return new Promise((resolve, reject) => { rejectOld = reject; });
+    return { ok: false, status: 401, json: vi.fn() };
+  });
+  const { user } = await loginApp(fetchImpl);
+  fireEvent.submit(fillLogin());
+  await user.click(screen.getByRole('link', { name: 'Recover account access' }));
+  await user.click(screen.getByRole('button', { name: 'Cancel and return to Login' }));
+  fireEvent.submit(fillLogin());
+  await waitFor(() => expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(true), { onTimeout: error => error });
+  await act(async () => rejectOld(new TypeError()));
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(true);
+  expect(posts).toBe(2);
+});
+
+it.each(['logout', 'another actor'])('LF04 late failure cannot repaint after%s changes the session revision', async transition => {
+  let posts = 0, releaseOld;
+  const other = { id: '01K00000000000000000000002', username: 'synthetic-other', role: 'user' };
+  const fetchImpl = vi.fn(async path => {
+    if (path === '/api/v1/auth/login') {
+      if (++posts === 1) return new Promise(resolve => { releaseOld = () => resolve({ ok: false, status: 401, json: vi.fn() }); });
+      return httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' });
+    }
+    return publicLoginRead(path, other);
+  });
+  const { runtime } = await loginApp(fetchImpl);
+  fireEvent.submit(fillLogin());
+  await act(async () => {
+    if (transition === 'logout') runtime.logout();
+    else await runtime.signIn({ username: 'synthetic-other', password: crypto.randomUUID() });
+  });
+  const currentRevision = runtime.getSnapshot().revision;
+  await act(async () => releaseOld());
+  expect(runtime.getSnapshot().revision).toBe(currentRevision);
+  expect(runtime.getSnapshot().user?.id === other.id).toBe(transition === 'another actor');
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(false);
+  expect(window.location.search).toBe('?view=login');
+});
+
+it('LF05 the visible rejected account switch keeps the previous offline actor locked', async () => {
+  let posts = 0;
+  const leader = { id: ID, username: 'synthetic-leader', role: 'leader' };
+  const fetchImpl = vi.fn(async path => path === '/api/v1/auth/login'
+    ? ++posts === 1 ? httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' }) : { ok: false, status: 401, json: vi.fn() }
+    : publicLoginRead(path, leader));
+  const storage = { getItem: () => null, setItem: vi.fn(), removeItem: vi.fn() };
+  const runtime = createRuntime({ api: createPhase2Api({ fetchImpl }), storage });
+  await runtime.signIn({ username: 'synthetic-leader', password: crypto.randomUUID() });
+  await runtime.restore();
+  window.history.replaceState({}, '', '?view=login'); render(<App runtime={runtime} />);
+  const revision = runtime.getSnapshot().revision;
+  fireEvent.submit(fillLogin());
+  await waitFor(() => expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(true), { onTimeout: error => error });
+  expect(runtime.getSnapshot().revision > revision).toBe(true);
+  expect(runtime.getSnapshot()).toMatchObject({ identityBlocked: true, hasToken: false, user: null, offlineActor: null });
+  await expect(runtime.freshOfflineIdentity(leader)).rejects.toMatchObject({ status: 401 });
+  const restarted = createRuntime({ api: createPhase2Api({ fetchImpl }), storage: { getItem: () => null } });
+  expect(() => restarted.unlockSyntheticWorkspace({ syntheticConfirmed: true })).toThrow();
+});
+
+it('LF04 a successful old runtime cannot navigate the App after its runtime prop is replaced', async () => {
+  let releaseOld;
+  const oldFetch = vi.fn(async path => path === '/api/v1/auth/login'
+    ? new Promise(resolve => { releaseOld = () => resolve(httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' })); })
+    : publicLoginRead(path));
+  const view = await loginApp(oldFetch);
+  fireEvent.submit(fillLogin());
+  const other = { id: '01K00000000000000000000002', username: 'synthetic-replacement', role: 'user' };
+  const replacement = createRuntime({ api: createPhase2Api({ fetchImpl: async path => path === '/api/v1/auth/login'
+    ? httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' }) : publicLoginRead(path, other) }),
+    storage: { getItem: () => null, setItem: vi.fn(), removeItem: vi.fn() } });
+  await replacement.signIn({ username: 'synthetic-replacement', password: crypto.randomUUID() });
+  await replacement.restore();
+  view.rerender(<App runtime={replacement} />);
+  await act(async () => releaseOld());
+  expect(window.location.search).toBe('?view=login');
+  expect(replacement.getSnapshot().user?.id === other.id).toBe(true);
+  expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(false);
+});
+
+it('LF06 Malay refusal uses the existing translation and retains the selected event route', async () => {
+  await changeLanguage('ms');
+  const json = vi.fn(() => new Promise(() => {}));
+  const fetchImpl = vi.fn(async () => ({ ok: false, status: 401, json }));
+  await loginApp(fetchImpl, `&event=${event.public_id}`);
+  fireEvent.submit(fillLogin());
+  await waitFor(() => expect(Boolean(screen.queryByRole('alert')?.textContent.includes(tr(loginRefusal)))).toBe(true), { onTimeout: error => error });
+  expect(window.location.search.includes(`event=${event.public_id}`)).toBe(true);
+  expect(screen.getByLabelText(tr('Password')).value === '').toBe(true);
+  expect(fetchImpl).toHaveBeenCalledTimes(1); expect(json).not.toHaveBeenCalled();
 });
 
 it('discovers assisted account recovery from Login and keeps its code out of the route', async () => {

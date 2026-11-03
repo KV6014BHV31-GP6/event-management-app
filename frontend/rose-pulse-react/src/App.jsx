@@ -1164,32 +1164,29 @@ function EventDetail() {
   );
 }
 function AuthForm({ signup = false }) {
-  const { runtime, route, navigate, auth } = useApp();
+  const { runtime, route, navigate, auth, loginFeedback, beginLogin, isCurrentLogin, reportLoginFailure } = useApp();
   const [show, setShow] = useState(false);
   const [, setSignupGeneration] = useState(0);
-  const [loginState, setLoginState] = useState({
-    status: "idle",
-    message: "",
-  });
-  const formRef = useRef(null);
   const busyRef = useRef(false);
   const [signupState, signupController] = useController(
     runtime.store("signup"),
   );
-  const state = signup ? signupState : loginState;
+  const state = signup ? signupState : loginFeedback;
   const submit = async (event) => {
     event.preventDefault();
     if (busyRef.current || locked(state)) return;
     const values = Object.fromEntries(new FormData(event.currentTarget));
+    const submittedPassword = event.currentTarget.elements.namedItem("password");
     busyRef.current = true;
+    let attempt;
     try {
       if (signup) await signupController.submit(values);
       else {
-        setLoginState({
-          status: "submitting",
-          message: "Verifying your account…",
-        });
-        await runtime.signIn(values);
+        attempt = beginLogin();
+        const signingIn = runtime.signIn(values);
+        attempt.revision = runtime.session.revision;
+        await signingIn;
+        if (!isCurrentLogin(attempt)) return;
         navigate(
           route.event ? "apply" : "home",
           route.event
@@ -1200,14 +1197,10 @@ function AuthForm({ signup = false }) {
         );
       }
     } catch (error) {
-      setLoginState({
-        status: "error",
-        message: error.message,
-      });
+      if (!signup) reportLoginFailure(attempt, error);
     } finally {
       values.password = "";
-      const password = formRef.current?.elements.namedItem("password");
-      if (password) password.value = "";
+      if (submittedPassword) submittedPassword.value = "";
       setShow(false);
       busyRef.current = false;
     }
@@ -1283,7 +1276,7 @@ function AuthForm({ signup = false }) {
             </button>
           </div>
         ) : (
-          <form ref={formRef} method="dialog" onSubmit={submit}>
+          <form method="dialog" onSubmit={submit}>
             <fieldset disabled={locked(state)}>
               <legend className="sr-only">
                 {signup ? tr("Create account") : tr("Login")}
@@ -2491,7 +2484,34 @@ export default function App({ runtime }) {
   });
   const [route, setRoute] = useState(readLocation);
   const auth = useSyncExternalStore(runtime.subscribe, runtime.getSnapshot);
+  // Feedback survives the security-keyed form remount; credentials remain in the form.
+  const [loginFeedback, setLoginFeedback] = useState({ status: "idle", message: "" });
+  const loginAttempt = useRef(null);
+  const currentRuntime = useRef(runtime);
+  currentRuntime.current = runtime;
+  const loginScope = () => {
+    const location = readLocation();
+    return JSON.stringify([location.view, location.event, location.ref]);
+  };
+  const clearLoginFeedback = () => {
+    loginAttempt.current = null;
+    setLoginFeedback({ status: "idle", message: "" });
+  };
+  const beginLogin = () => {
+    const attempt = { runtime, scope: loginScope(), revision: null };
+    loginAttempt.current = attempt;
+    setLoginFeedback({ status: "submitting", message: "Verifying your account…" });
+    return attempt;
+  };
+  const isCurrentLogin = attempt => Boolean(attempt && loginAttempt.current === attempt &&
+    attempt.runtime === currentRuntime.current && attempt.scope === loginScope() && attempt.revision === runtime.session.revision);
+  const reportLoginFailure = (attempt, error) => {
+    if (isCurrentLogin(attempt) && !runtime.getSnapshot().user)
+      setLoginFeedback({ status: "error", message: error.message });
+  };
+  const visibleLoginFeedback = isCurrentLogin(loginAttempt.current) ? loginFeedback : { status: "idle", message: "" };
   const navigate = (view, params = {}) => {
+    clearLoginFeedback();
     if(route.ref&&params.event===route.event&&!params.ref)params={...params,ref:route.ref};
     window.history.pushState({}, "", hrefFor(view, params));
     setRoute(readLocation());
@@ -2501,7 +2521,7 @@ export default function App({ runtime }) {
     });
   };
   useEffect(() => {
-    const changed = () => setRoute(readLocation());
+    const changed = () => { clearLoginFeedback(); setRoute(readLocation()); };
     const restored = (event) => {
       if (event.persisted) window.location.reload();
     };
@@ -2618,6 +2638,10 @@ export default function App({ runtime }) {
         auth,
         route,
         navigate,
+        loginFeedback: visibleLoginFeedback,
+        beginLogin,
+        isCurrentLogin,
+        reportLoginFailure,
       }}
     >
       <Shell>
