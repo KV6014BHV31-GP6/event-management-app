@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T09:45:18.567483+00:00",
-  "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲",
+  "reviewed_at": "2026-11-03T10:04:41.738542+00:00",
+  "reason": "R3 CI authentication intent 不保存密碼或登入 body；保留業務原請求及 outcome",
   "document_count": 362,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -6891,7 +6891,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 5,
+      "revision": 6,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6922,13 +6922,20 @@
           "size_bytes": 11153,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 5,
+          "sha256": "047b7a937a6d37c99a265979a7f0909010751e92fc9cf248e2d168bf8590e121",
+          "size_bytes": 14275,
+          "superseded_at": "2026-11-03T10:04:41.738542+00:00",
+          "reason": "R3 CI authentication intent 不保存密碼或登入 body；保留業務原請求及 outcome"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "047b7a937a6d37c99a265979a7f0909010751e92fc9cf248e2d168bf8590e121",
-      "size_bytes": 14275
+      "sha256": "3995f46f9b9434a1f3967dba9bdaf50d7e3e3bbb0ed9379b361dc73aeb3a52a6",
+      "size_bytes": 14804
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -7514,15 +7521,23 @@
     {
       "document_id": "DEMO-DOC-580A20D516BCA136",
       "path": "scripts/demo_browser_e2e.cjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "8c7067b8f7d71fc9264edcb8bd4428d6e1f0fa9a7fb6ce518b7a0d9471700d1c",
+          "size_bytes": 20802,
+          "superseded_at": "2026-11-03T10:04:41.738542+00:00",
+          "reason": "R3 CI authentication intent 不保存密碼或登入 body；保留業務原請求及 outcome"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8c7067b8f7d71fc9264edcb8bd4428d6e1f0fa9a7fb6ce518b7a0d9471700d1c",
-      "size_bytes": 20802
+      "sha256": "37fbae667b3477c90b8f4b59d368f9857e1dac85d8f2c2ca5db1b6c85bb15492",
+      "size_bytes": 20968
     }
   ]
 }

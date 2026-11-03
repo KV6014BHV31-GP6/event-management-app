@@ -75,7 +75,9 @@ async function main() {
   async function api(route,{method='GET',data,token,multipart,expected=200}={}) {
     // Persist intent before any fixture mutation; do not retry unknown outcomes.
     const intent=++fixtureSequence;
-    if(method!=='GET')json(`fixture-intent-${intent}.json`,{route,method,data,multipart:multipart?{purpose:multipart.purpose,file_sha256:hash(multipart.file.buffer)}:undefined},privateDir);
+    // Authentication secrets are transport-only, even in private fixture evidence.
+    const intentData=route.startsWith('/api/v1/auth/')?undefined:data;
+    if(method!=='GET')json(`fixture-intent-${intent}.json`,{route,method,data:intentData,multipart:multipart?{purpose:multipart.purpose,file_sha256:hash(multipart.file.buffer)}:undefined},privateDir);
     const response=await context.request.fetch(new URL(route,base).href,{method,data,multipart,
       headers:token?{Authorization:`Bearer ${token}`}:{},maxRedirects:0});
     report.fixture_api.push({path:route,method,status:response.status()});
