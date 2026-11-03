@@ -905,5 +905,18 @@
   "Retry original assistance request": "Retry original assistance request",
   "The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.": "The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.",
   "The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.": "The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.",
-  "Unknown original Participant. Delivery remains hidden.": "Unknown original Participant. Delivery remains hidden."
+  "Unknown original Participant. Delivery remains hidden.": "Unknown original Participant. Delivery remains hidden.",
+  "Recorded Leader attribution": "Recorded Leader attribution",
+  "Recorded Leader attribution — this event": "Recorded Leader attribution — this event",
+  "Recorded Leader attribution is unavailable for this summary.": "Recorded Leader attribution is unavailable for this summary.",
+  "Counts include applications in every status, not confirmed places or attendance.": "Counts include applications in every status, not confirmed places or attendance.",
+  "Only your recorded attribution is shown. This is not the complete event breakdown.": "Only your recorded attribution is shown. This is not the complete event breakdown.",
+  "Your recorded attribution": "Your recorded attribution",
+  "Applications": "Applications",
+  "Unattributed applications": "Unattributed applications",
+  "All event applications": "All event applications",
+  "Leader name unavailable": "Leader name unavailable",
+  "Recorded Leader reference": "Recorded Leader reference",
+  "No applications are attributed to you in this summary.": "No applications are attributed to you in this summary.",
+  "No applications are recorded for this event.": "No applications are recorded for this event."
 }

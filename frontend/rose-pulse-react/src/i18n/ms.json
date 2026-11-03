@@ -905,5 +905,18 @@
   "Retry original assistance request": "Cuba semula permintaan bantuan asal",
   "The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.": "Data permintaan asal dan Peserta sasaran tidak tersedia. Simpan rujukan ini untuk semakan resit secara manual. Jangan gunakan pilihan semasa sebagai sasarannya.",
   "The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.": "Resit asal telah disahkan, tetapi Peserta sasarannya tidak diketahui. Kekalkan penghantaran tersembunyi dan semak sumber asal secara manual.",
-  "Unknown original Participant. Delivery remains hidden.": "Peserta asal tidak diketahui. Penghantaran kekal tersembunyi."
+  "Unknown original Participant. Delivery remains hidden.": "Peserta asal tidak diketahui. Penghantaran kekal tersembunyi.",
+  "Recorded Leader attribution": "Atribusi ketua yang direkodkan",
+  "Recorded Leader attribution — this event": "Atribusi ketua yang direkodkan — acara ini",
+  "Recorded Leader attribution is unavailable for this summary.": "Atribusi ketua yang direkodkan tidak tersedia untuk ringkasan ini.",
+  "Counts include applications in every status, not confirmed places or attendance.": "Kiraan merangkumi permohonan dalam semua status, bukan tempat yang disahkan atau kehadiran.",
+  "Only your recorded attribution is shown. This is not the complete event breakdown.": "Hanya atribusi anda yang direkodkan dipaparkan. Ini bukan pecahan lengkap acara.",
+  "Your recorded attribution": "Atribusi anda yang direkodkan",
+  "Applications": "Permohonan",
+  "Unattributed applications": "Permohonan tanpa atribusi",
+  "All event applications": "Semua permohonan acara",
+  "Leader name unavailable": "Nama ketua tidak tersedia",
+  "Recorded Leader reference": "Rujukan ketua yang direkodkan",
+  "No applications are attributed to you in this summary.": "Tiada permohonan diatribusi kepada anda dalam ringkasan ini.",
+  "No applications are recorded for this event.": "Tiada permohonan direkodkan untuk acara ini."
 }

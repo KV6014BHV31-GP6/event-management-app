@@ -256,7 +256,7 @@ function JourneySession({
         reported_at: utc(v.reported_at),
         quantity: +v.quantity
       })} />}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outreach', root + '/outreach'))}>{tr('Read outreach reports')}</button>{loaded.outreach?.reports.map(report => <article className="journey-message" key={report.id}><p>{tr(report.channel)} · {report.quantity} · {report.reported_at}</p><p>{report.notes}</p></article>)}</details>}
- {staff && eventId && <details className="journey-section"><summary>{tr('Demand, quota and instructions')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('stats', root + '/stats'))}>{tr('Read current statistics')}</button>{loaded.stats && <Statistics data={loaded.stats} />} {owner && current && <><ActionForm title="Save leader instruction" busy={busy} fields={[field('text', 'Instruction', 'textarea', {
+ {staff && eventId && <details className="journey-section"><summary>{tr('Demand, quota and instructions')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('stats', root + '/stats'))}>{tr('Read current statistics')}</button>{loaded.stats && <Statistics data={loaded.stats} actor={staffActor} />} {owner && current && <><ActionForm title="Save leader instruction" busy={busy} fields={[field('text', 'Instruction', 'textarea', {
           value: loaded.stats?.instruction?.text
         })]} submit={v => mutate(root + '/instruction', v, eventVersion)} /><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/alerts', {}, eventVersion)}>{tr('Process demand alerts')}</button></>}</details>}
  <details className="journey-section" open={!staff}><summary>{tr('Application and source')}</summary>{guestAllowed&&<p className="notice">{tr('Guest application — no account will be created.')} <button className="text-button" onClick={()=>navigate('login',{event:eventId})}>{tr('Log in')}</button></p>}<p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p><ActionForm title="Submit application" busy={busy || !eventId || attachmentBlocked || (!!initialRef&&!loaded.referral) || (!auth.user&&!auth.offlineActor&&!guestAllowed) || (!staff&&!!runtime.api?.getEvent&&!loaded.publicEvent)} fields={[...applicationFields, field('source_kind', 'Source', 'text', {options:initialRef?['leader_referral']:['direct','unknown']})]} submit={v => mutate(root + '/applications', () => ({
@@ -330,7 +330,7 @@ function JourneySession({
           application: appCopy(v),
           eligibility_confirmed: true,
           eligibility_note: v.eligibility_note
-        }), eventVersion)}><p>{tr('Submitting explicitly confirms synthetic eligibility review. A cancelled booking is not reused.')}</p></ActionForm><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('closeout', root + '/closeout'))}>{tr('Read closeout preview')}</button>{loaded.closeout && <Closeout data={loaded.closeout} />} <ActionForm title="Finalize completed event" busy={busy || !loaded.closeout || attendanceBlocked || pending.some(row=>row.path.startsWith(root+"/attendance"))} fields={[field('attestation', 'Local attendance reconciliation', 'text', {
+        }), eventVersion)}><p>{tr('Submitting explicitly confirms synthetic eligibility review. A cancelled booking is not reused.')}</p></ActionForm><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('closeout', root + '/closeout'))}>{tr('Read closeout preview')}</button>{loaded.closeout && <Closeout data={loaded.closeout} actor={staffActor} />} <ActionForm title="Finalize completed event" busy={busy || !loaded.closeout || attendanceBlocked || pending.some(row=>row.path.startsWith(root+"/attendance"))} fields={[field('attestation', 'Local attendance reconciliation', 'text', {
           options: ['not confirmed', 'all local actions reconciled']
         })]} submit={v => run(async()=>{
           const attendanceStore=createAttendanceStore();
@@ -356,14 +356,56 @@ function JourneySession({
  </div>;
 }
 function Statistics({
-  data
+  data, actor
 }) {
-  return <section><p>{tr('As of')}: {data.as_of_utc}</p><div className="journey-metrics">{Object.entries(data.counts).map(([name, value]) => <div key={name}><strong>{value}</strong><span>{tr(name)}</span></div>)}</div>{['online', 'offline'].map(pool => <p key={pool}>{tr(pool)}: {tr('Approved')} {data.quota[pool].approved} / {data.quota[pool].capacity} · {tr('Offer holds')} {data.quota[pool].offer_holds} · {tr('Available')} {data.quota[pool].available}</p>)}<p>{tr('Attribution')}: {tr('direct')} {data.attribution.direct} · {tr('leader_referral')} {data.attribution.leader_referral} · {tr('unknown')} {data.attribution.unknown}</p><p>{tr('Demand alert')}: {tr(data.alert.state)} · {tr('Threshold')} {data.alert.threshold} · {tr('Observed ratio')} {data.alert.observed_ratio}</p><p>{tr('Leader instruction')}: {data.instruction.text || tr('No instruction yet')}</p></section>;
+  return <section><p>{tr('As of')}: {data.as_of_utc}</p><div className="journey-metrics">{Object.entries(data.counts).map(([name, value]) => <div key={name}><strong>{value}</strong><span>{tr(name)}</span></div>)}</div>{['online', 'offline'].map(pool => <p key={pool}>{tr(pool)}: {tr('Approved')} {data.quota[pool].approved} / {data.quota[pool].capacity} · {tr('Offer holds')} {data.quota[pool].offer_holds} · {tr('Available')} {data.quota[pool].available}</p>)}<p>{tr('Attribution')}: {tr('direct')} {data.attribution.direct} · {tr('leader_referral')} {data.attribution.leader_referral} · {tr('unknown')} {data.attribution.unknown}</p><LeaderBreakdown data={data.leader_breakdown} actor={actor} total={data.counts.applications}/><p>{tr('Demand alert')}: {tr(data.alert.state)} · {tr('Threshold')} {data.alert.threshold} · {tr('Observed ratio')} {data.alert.observed_ratio}</p><p>{tr('Leader instruction')}: {data.instruction.text || tr('No instruction yet')}</p></section>;
 }
 function Closeout({
-  data
+  data, actor
 }) {
-  return <section><p>{tr('As of')}: {data.as_of_utc} · {tr(data.state)}</p><div className="journey-metrics">{Object.entries(data.totals).map(([name, value]) => <div key={name}><strong>{value}</strong><span>{tr(name)}</span></div>)}</div><p>{tr('Attribution')}: {tr('direct')} {data.attribution?.direct??'—'} · {tr('leader_referral')} {data.attribution?.leader_referral??'—'} · {tr('unknown')} {data.attribution?.unknown??'—'}</p><p>{tr('Pending attendance')}: {data.pending_attendance_count} · {tr('Active offers')}: {data.active_offer_count}</p>{data.blockers.map(code => <p role="alert" key={code}>{tr(code)}</p>)}</section>;
+  return <section><p>{tr('As of')}: {data.as_of_utc} · {tr(data.state)}</p><div className="journey-metrics">{Object.entries(data.totals).map(([name, value]) => <div key={name}><strong>{value}</strong><span>{tr(name)}</span></div>)}</div><p>{tr('Attribution')}: {tr('direct')} {data.attribution?.direct??'—'} · {tr('leader_referral')} {data.attribution?.leader_referral??'—'} · {tr('unknown')} {data.attribution?.unknown??'—'}</p><LeaderBreakdown data={data.leader_breakdown} actor={actor} total={data.totals.applications}/><p>{tr('Pending attendance')}: {data.pending_attendance_count} · {tr('Active offers')}: {data.active_offer_count}</p>{data.blockers.map(code => <p role="alert" key={code}>{tr(code)}</p>)}</section>;
+}
+
+const applicationCount = value => Number.isSafeInteger(value) && value >= 0;
+function validLeaderBreakdown(data, actor, total) {
+  if (!data || data.basis !== 'all_applications' || !Array.isArray(data.leaders)) return false;
+  const ids = new Set();
+  for (const row of data.leaders) {
+    if (!row || typeof row.leader_id !== 'string' || !row.leader_id.trim() || ids.has(row.leader_id) ||
+      !(row.leader_display_name === null || typeof row.leader_display_name === 'string') || !applicationCount(row.applications)) return false;
+    ids.add(row.leader_id);
+  }
+  if (actor?.role === 'leader') return data.scope === 'self' && data.unattributed_applications === null &&
+    data.leaders.length === 1 && data.leaders[0].leader_id === actor.id;
+  if (actor?.role !== 'organizer' || data.scope !== 'event' || !applicationCount(data.unattributed_applications) || !applicationCount(total)) return false;
+  const sum = data.leaders.reduce((count, row) => count + row.applications, data.unattributed_applications);
+  return applicationCount(sum) && sum === total;
+}
+function LeaderName({row}) {
+  return row.leader_display_name?.trim() ? row.leader_display_name : <>{tr('Leader name unavailable')}<br/><small>{tr('Recorded Leader reference')}: {row.leader_id}</small></>;
+}
+function LeaderBreakdown({data, actor, total}) {
+  const valid = validLeaderBreakdown(data, actor, total);
+  return <section className="journey-facts" aria-label={tr('Recorded Leader attribution')}>
+    <h3>{tr('Recorded Leader attribution')}</h3>
+    {!valid ? <p>{tr('Recorded Leader attribution is unavailable for this summary.')}</p> : <>
+      <p>{tr('Counts include applications in every status, not confirmed places or attendance.')}</p>
+      {data.scope === 'self' ? <>
+        <p>{tr('Only your recorded attribution is shown. This is not the complete event breakdown.')}</p>
+        <ul aria-label={tr('Your recorded attribution')}><li><LeaderName row={data.leaders[0]}/> · {tr('Applications')}: <strong>{data.leaders[0].applications}</strong></li></ul>
+        {data.leaders[0].applications === 0 && <p>{tr('No applications are attributed to you in this summary.')}</p>}
+      </> : <>
+        {total === 0 && <p>{tr('No applications are recorded for this event.')}</p>}
+        <table style={{width:'100%',tableLayout:'fixed',textAlign:'left'}}>
+          <caption>{tr('Recorded Leader attribution — this event')}</caption>
+          <thead><tr><th scope="col">{tr('Leader')}</th><th scope="col">{tr('Applications')}</th></tr></thead>
+          <tbody>{data.leaders.map(row => <tr key={row.leader_id}><th scope="row"><LeaderName row={row}/></th><td>{row.applications}</td></tr>)}
+            <tr><th scope="row">{tr('Unattributed applications')}</th><td>{data.unattributed_applications}</td></tr></tbody>
+          <tfoot><tr><th scope="row">{tr('All event applications')}</th><td>{total}</td></tr></tfoot>
+        </table>
+      </>}
+    </>}
+  </section>;
 }
 
 function PublicEventContext({event}){
