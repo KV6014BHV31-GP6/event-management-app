@@ -14,6 +14,8 @@ from src.participants.models import ParticipantModel
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum, RegistrationChannelEnum, UserGenderEnum, MarriageStatusTypeEnum
 from src.registrations.schemas import RegistrationCreate, RegistrationStatus
 from src.phase2 import assets
+from src.journey import policy as journey
+from src.journey import allocation as allocator
 
 
 DUPLICATE = "This participant already holds an active registration record for this event."
@@ -72,6 +74,7 @@ class RegistrationService:
                 detail=f"Event with public identifier '{event_public_id}' was not found."
             )
 
+        await journey.admission(db,event,current_user_id)
         if event.status != EventStatusEnum.active:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
@@ -134,6 +137,9 @@ class RegistrationService:
         await db.flush()
         await assets.attach_documents(db,new_registration.id,form_in.file_ids,current_user_id)
 
+        if await journey.workflow(db,event):
+            await allocator.meta(db,new_registration)
+            await journey.bump(db,event)
         # 5. Commit Transaction cleanly
         await db.commit()
         await db.refresh(new_registration)
@@ -190,6 +196,13 @@ class RegistrationService:
                 detail="Access denied. You do not possess structural ownership permissions over this registration."
             )
 
+        if await journey.workflow(db,event):
+            await journey.fresh(db,user_id)
+            await allocator.cancel(db,event,registration,user_id)
+            await journey.bump(db,event)
+            await db.commit(); await db.refresh(registration)
+            return registration
+
         # 4. Validate Status criteria (Rejected and Cancelled cannot be changed)
         if registration.status in (RegistrationStatusEnum.rejected, RegistrationStatusEnum.cancelled):
             raise HTTPException(
@@ -243,13 +256,14 @@ class RegistrationService:
     async def get_all_registrations(
         cls,
         db: AsyncSession,
-        status: Optional[RegistrationStatus] = None
+        status: Optional[RegistrationStatus] = None,
+        organizer_id: str | None = None
     ) -> List[RegistrationModel]:
         """
         Retrieves global registration entries across all system events with optional status filtering.
         Ordered chronologically with the newest entries listed first.
         """
-        query = select(RegistrationModel)
+        query = select(RegistrationModel).join(EventModel, EventModel.id == RegistrationModel.event_id).where(EventModel.organizer_id == organizer_id)
 
         # Apply state filtering criteria parameters if explicitly passed by client queries
         if status:
@@ -265,7 +279,8 @@ class RegistrationService:
     @staticmethod
     async def get_registration_by_id(
         db: AsyncSession,
-        registration_id: str
+        registration_id: str,
+        organizer_id: str | None = None
     ) -> RegistrationModel:
         """
         Queries and retrieves a single registration record by its specific ID.
@@ -283,6 +298,9 @@ class RegistrationService:
                 detail=f"Registration record with identifier '{registration_id}' was not found."
             )
 
+        event = await db.get(EventModel, registration.event_id)
+        if event.organizer_id != organizer_id:
+            raise HTTPException(403, "Registration is unavailable to this organizer.")
         return registration
 
     @staticmethod
@@ -296,6 +314,17 @@ class RegistrationService:
         Executes the registration approval workflow after verifying capacity rules.
         """
         event, registration = await lock_registration(db, registration_id)
+
+        actor = await db.scalar(select(UserModel).where(UserModel.id == organizer_id).with_for_update().execution_options(populate_existing=True))
+        if not actor or actor.role.value != "organizer" or event.organizer_id != organizer_id:
+            raise HTTPException(403, "Owning event organizer required.")
+
+        await journey.enabled(db,organizer_id)
+        if await journey.workflow(db,event):
+            await allocator.allocate(db,event,registration,organizer_id)
+            await journey.bump(db,event)
+            await db.commit();await db.refresh(registration)
+            return registration
 
         # 2. Verify the registrations.status = "pending", otherwise -> 409 Conflict
         if registration.status != RegistrationStatusEnum.pending:
@@ -375,6 +404,7 @@ class RegistrationService:
                                 .with_for_update().execution_options(populate_existing=True))
         if not event or event.status != EventStatusEnum.active:
             raise HTTPException(status_code=400, detail="Offline registration requires an active event.")
+        await journey.admission(db,event,leader_id,staff=True)
         identities = [item.national_id for item in applications]
         if len(identities) != len(set(identities)):
             raise HTTPException(status_code=409, detail="Duplicate participant identities in this batch.")
@@ -432,8 +462,11 @@ class RegistrationService:
                 marriage_status=app.marriage_status
             )
             db.add(new_registration)
+            await db.flush()
+            if await journey.workflow(db,event):await allocator.meta(db,new_registration)
             processed_count += 1
 
+        await journey.bump(db,event)
         # Commit transactional states down onto server engines safely
         await db.commit()
         return processed_count
@@ -441,6 +474,7 @@ class RegistrationService:
     @staticmethod
     async def create_offline_v2_item(db,event,form,actor_id):
         """Domain write inside caller transaction; no commit and never mutate an existing identity."""
+        await journey.admission(db,event,actor_id,staff=True)
         person=await db.scalar(select(ParticipantModel).where(ParticipantModel.national_id==form.national_id))
         if person:
             existing=await db.scalar(select(RegistrationModel).where(RegistrationModel.event_id==event.id,RegistrationModel.participant_id==person.id))
@@ -461,4 +495,6 @@ class RegistrationService:
             gender=UserGenderEnum(form.gender.value),date_of_birth=form.date_of_birth,phone=form.phone,address=form.address,national_id=form.national_id,
             income_band_code=form.income_band_code,medical_record=form.medical_record,marriage_status=MarriageStatusTypeEnum(form.marriage_status.value) if form.marriage_status else None)
         db.add(registration); await db.flush(); await assets.attach_documents(db,registration.id,form.file_ids,actor_id)
+        if await journey.workflow(db,event):
+            await allocator.meta(db,registration);await journey.bump(db,event)
         return registration,None

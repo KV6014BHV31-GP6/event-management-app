@@ -11,6 +11,7 @@ from src.files.router import router as files_router
 from src.registrations.router import router as registration_router
 from src.offline_sync.router import router as offline_sync_router
 from src.phase2.router import router as phase2_router
+from src.journey.router import router as journey_router
 
 
 app = FastAPI(
@@ -27,9 +28,12 @@ app.include_router(files_router, prefix=settings.API_V1_STR)
 app.include_router(registration_router, prefix=settings.API_V1_STR)
 app.include_router(offline_sync_router, prefix=settings.API_V1_STR)
 app.include_router(phase2_router)
+app.include_router(journey_router)
 
 @app.exception_handler(RequestValidationError)
 async def bounded_sync_validation(request,exc):
+    if request.url.path.startswith('/api/v2/operations'):
+        return JSONResponse(status_code=422,content={'detail':{'code':'INVALID_INPUT','message':'Invalid operations input'}})
     if request.url.path.startswith('/api/v2/events/') and '/offline-batches' in request.url.path:
         return JSONResponse(status_code=422,content={'detail':'Invalid synchronization envelope; finite JSON and versioned schema required.'})
     return await request_validation_exception_handler(request,exc)

@@ -103,6 +103,9 @@ class EventService:
             return None
 
         event, online_app, offline_app, waiting = row
+        from src.journey.policy import workflow
+        work=await workflow(self.db,event)
+        if work and work.data["state"]=="draft" and not self.db.info.get("journey_private_read"):return None
         result=self._format_event_quota_dict(event, online_app, offline_app, waiting)
         result['image_files']=await assets.images(self.db,event.id)
         return result
@@ -152,7 +155,9 @@ class EventService:
         all structural quota indicators within a single database flight block.
         """
         # Build core filtering parameters
-        where_conds = []
+        from src.journey.models import JourneyState
+        # Draft sidecars are excluded from public and legacy list routes.
+        where_conds = [] if organizer_id else [~EventModel.id.in_(select(JourneyState.event_id).where(JourneyState.kind=="event",JourneyState.data["state"].as_string()=="draft"))]
         if organizer_id:where_conds.append(EventModel.organizer_id==organizer_id)
         if status_filter:
             if status_filter.lower() not in EventStatusEnum.__members__:

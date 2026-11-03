@@ -135,7 +135,7 @@ async def list_all_registrations_endpoint(
 
     registrations = await RegistrationService.get_all_registrations(
         db=db,
-        status=status
+        status=status, organizer_id=current_user.id
     )
     return [await registration_payload(db,row,current_user.id) for row in registrations]
 
@@ -167,7 +167,7 @@ async def get_registration_detail_endpoint(
 
     registration = await RegistrationService.get_registration_by_id(
         db=db,
-        registration_id=registration_id
+        registration_id=registration_id, organizer_id=current_user.id
     )
     return await registration_payload(db,registration,current_user.id)
 

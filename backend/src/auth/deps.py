@@ -44,6 +44,8 @@ async def get_current_user(
     if user is None:
         raise credentials_exception
 
+    from src.journey.policy import enabled
+    await enabled(db,user.id)
     return user
 
 
@@ -105,6 +107,8 @@ async def verify_refresh_token(
                 detail="User associated with token does not exist."
             )
 
+        from src.journey.policy import enabled
+        await enabled(db,user.id)
         return user
 
     except jwt.ExpiredSignatureError:

@@ -65,6 +65,8 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+    from src.journey.policy import enabled
+    await enabled(db,user.id)
     token_payload = {
         "sub": user.username,
         "role": user.role.value
@@ -100,6 +102,8 @@ async def login_via_json(
             headers={"WWW-Authenticate": "Bearer"},
         )
 
+    from src.journey.policy import enabled
+    await enabled(db,user.id)
     token_payload = {
         "sub": user.username,
         "role": user.role.value

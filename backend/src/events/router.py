@@ -99,6 +99,10 @@ async def update_event_endpoint(
             detail="Access Denied. You do not have permission to modify this event record."
         )
 
+    from src.journey.policy import workflow, fresh, fail
+    actor=await fresh(event_service.db,current_user.id)
+    if actor.role.value!="organizer":fail("FORBIDDEN",403)
+    if await workflow(event_service.db,db_event):fail("INVALID_TRANSITION",409,"Use versioned managed event operations")
     proposed_start = payload.start_time or db_event.start_time
     proposed_end = payload.end_time or db_event.end_time
     # Native PG returns aware values; preserve compatibility with legacy/SQLite reads.
