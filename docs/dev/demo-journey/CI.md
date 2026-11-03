@@ -24,6 +24,8 @@ PostgreSQL archive: `https://get.enterprisedb.com/postgresql/postgresql-17.11-5-
 
 Windows Python uses `PYTHONTZPATH` pointing to `share/timezone` from that same hash-verified PostgreSQL archive. The harness verifies `Asia/Hong_Kong` before controlled tests, then preserves the setting for bootstrap, migrations, native tests and the API. It does not silently add a `tzdata` dependency. The API readiness route `/` is the product's actual healthy JSON route; database readiness/identity is verified separately.
 
+The process runner captures stdout/stderr in private temporary files and publishes only sanitized copies. This prevents a Windows PostgreSQL daemon inheriting a pipe from keeping the exited `pg_ctl` launcher's capture open. Command deadlines remain bounded; timeout receipts record observed elapsed time and the requested deadline. Source CI includes real descendant-handle, timeout, stream-separation and redaction regressions before product dependency installation. This repairs the observed run41593627206 start hang; native CI must still rerun on the repaired candidate.
+
 Browser tooling is isolated from product dependencies in a temporary npm workspace, pinned to `playwright@1.65.0-alpha-2026-10-30`, with its generated lock digest recorded. Its bundled Chromium binary is installed and the actual browser version is reported. Hosted Chromium is not presented as identical to the local Chrome or a physical iPhone. The smoke operates on new synthetic data only; it does not send external messages or call providers.
 
 ## Evidence and privacy

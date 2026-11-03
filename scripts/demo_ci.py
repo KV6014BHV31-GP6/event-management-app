@@ -65,25 +65,38 @@ def write_json(path: Path, value: object) -> None:
 
 
 def run(args: list, name: str, *, cwd: Path = ROOT, env: dict | None = None, timeout: int = 600) -> str:
-    """Never echo command arguments or raw subprocess output into Actions logs."""
+    """Bound the launcher, even when a daemon inherits its standard handles.
+
+    Anonymous temporary files avoid Windows pipe-reader joins waiting for the
+    long-lived PostgreSQL child. Only sanitized copies enter artifact evidence.
+    """
     started = time.monotonic()
-    try:
-        result = subprocess.run([str(a) for a in args], cwd=cwd, env=env, capture_output=True,
-                                text=True, encoding="utf-8", errors="replace", timeout=timeout)
-        output = redact(result.stdout + "\n" + result.stderr)
-        (OUT / (name + ".txt")).write_text(output, encoding="utf-8")
+    with tempfile.TemporaryFile() as stdout_file, tempfile.TemporaryFile() as stderr_file:
+        def captured():
+            values = []
+            for stream in (stdout_file, stderr_file):
+                stream.seek(0)
+                values.append(stream.read().decode("utf-8", "replace"))
+            return values
+
+        try:
+            result = subprocess.run([str(a) for a in args], cwd=cwd, env=env,
+                                    stdin=subprocess.DEVNULL, stdout=stdout_file,
+                                    stderr=stderr_file, timeout=timeout)
+        except subprocess.TimeoutExpired:
+            (OUT / (name + ".txt")).write_text(redact("\n".join(captured())), encoding="utf-8")
+            REPORT["commands"].append({"name": name, "exit": "TIMEOUT",
+                                       "seconds": round(time.monotonic() - started, 3),
+                                       "timeout_seconds": timeout})
+            raise RuntimeError(f"{name} exceeded its bounded timeout") from None
+        stdout, stderr = captured()
+        (OUT / (name + ".txt")).write_text(redact(stdout + "\n" + stderr), encoding="utf-8")
         REPORT["commands"].append({"name": name, "exit": result.returncode,
                                    "seconds": round(time.monotonic() - started, 3)})
         print(f"{name}: exit {result.returncode}", flush=True)
         if result.returncode:
             raise RuntimeError(f"{name} failed; see sanitized evidence")
-        return result.stdout.strip()
-    except subprocess.TimeoutExpired as exc:
-        output = "\n".join(x.decode("utf-8", "replace") if isinstance(x, bytes) else x or ""
-                           for x in [exc.stdout, exc.stderr])
-        (OUT / (name + ".txt")).write_text(redact(output), encoding="utf-8")
-        REPORT["commands"].append({"name": name, "exit": "TIMEOUT", "seconds": timeout})
-        raise RuntimeError(f"{name} exceeded its bounded timeout") from None
+        return stdout.strip()
 
 
 def git(*args: str) -> str:
@@ -155,6 +168,7 @@ def source_checks(local: bool) -> None:
     # This runs before npm/pip, because document control intentionally rejects unregistered files.
     run([sys.executable, "-B", "scripts/check_dev_control.py"], "document-control")
     run([sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_document_control.py"], "document-control-tests")
+    run([sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_demo_ci.py"], "ci-process-tests")
     tracked = list(filter(None, git("ls-files", "-z").split("\0")))
     checks = 0
     for name in tracked:
