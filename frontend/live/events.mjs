@@ -3,6 +3,7 @@ import { createSession, browserSessionStorage } from './session.mjs';
 import { createEventsController, paginationModel } from './events-state.mjs';
 import { element, mountAccount } from './ui.mjs';
 import { eventRoute, validPublicId } from './event-navigation.mjs';
+import { createEventImage } from './image-path.mjs';
 
 const api = createApi();
 const session = createSession({ api, storage: browserSessionStorage() });
@@ -40,6 +41,8 @@ function detailIcon(symbol) {
 
 function createCard(event) {
   const article = element('article', 'event-card');
+  const image = createEventImage(event.image_path);
+  if (image) article.append(image);
   const start = new Date(event.start_time);
   const end = new Date(event.end_time);
   const top = element('div', 'event-card-top');

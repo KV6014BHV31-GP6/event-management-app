@@ -1,5 +1,23 @@
 # Frontend workspace
 
+## Austin dev candidate integration — 2026-10-27 (current)
+
+**Partial live integration, with Backend blockers.** See the [current task](../docs/dev/tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md). This supersedes the earlier detached UI_ONLY restriction for this increment. Austin Backend is `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`; do not substitute PR #39. Existing Signup/Login/Guest/navigation remain, with new [My registrations](live/my-registrations.html), [Registration review](live/organizer-registrations.html), [Edit](live/edit-event.html) and optional Create image upload.
+
+Own GET/Reload, pending cancellation readback, organizer list/detail and upload/Create were demonstrated. Events list/detail/search, Edit saving, Approve/refill and Offline remain blocked by real Backend500. Do not interpret the candidate as a complete working Demo. Only numeric event references are shown when no trustworthy public_id mapping is available. Guest own read/cancel is not offered.
+
+Start the existing development server with PORT=5196, BACKEND_URL=http://127.0.0.1:8023 and optional absolute UPLOAD_DIR pointing only to the dedicated runtime uploads directory. The matching Backend uses STORAGE_PROVIDER=local and relative UPLOAD_DIR=uploads with an isolated runtime cwd. Never map the Backend root or an old Demo directory. Raster uploads are capped at900 KiB; multipart remains below the1 MiB proxy limit. Exact Event PATCH is allowlisted; uploads are read-only raster GET/HEAD with containment checks. This is development-only serving. Bearer Login/local Logout remain; Cookie refresh and server logout have not been integrated.
+
+Use the repo-external candidate Start/Stop/Status/Open in run20261027-100514. The original main launcher stays unchanged because core browsing fails. Runtime configuration and credentials stay outside Git. Node237/237 PASS is unit/controller/DOM/proxy evidence; native successes, Backend failures, tool capture failures and NOT_RUN scopes are recorded separately in the task. The historical sections below retain their original dates and claims.
+
+## Booking lifecycle UI preparation — 2026-10-26
+
+**UI preparation only. Live integration is BLOCKED by the backend admission gate.** [booking-state-view.mjs](live/booking-state-view.mjs) is detached and is not imported by live pages. It maps pending/approved/waiting/rejected/cancelled to distinct fixed text; missing/unknown status is Unknown. Quota remains Unavailable even when component fixtures contain capacity settings or unverified aggregates. There are no actions, network, storage or API validation.
+
+Explicit-fixture [component tests](live/tests/booking-state-view.test.mjs) pass10/10; full frontend171/171 PASS. From the repo root use `node --test frontend/live/tests/booking-state-view.test.mjs`. A component harness can inspect the returned node with a supplied DOM; there is no new browser page or live Demo route. See the [current task](../docs/dev/tasks/FE-BOOKING-LIFECYCLE-20261026.md) and [Developer test matrix](../docs/dev/TEST_PLAN.md). Current dev contains merged PRs #27–30; older stack/runtime instructions below remain historical.
+
+READY Backend=null. Self-read/cancel/refill/quota and any organizer Approve remain BLOCKED pending Astra's verified full pairing. Existing development launchers and manual Demo version were not switched.
+
 **Current slice:** public event browsing/search/detail, Signup, Login, organizer-only Create Event and explicit Guest or authenticated-user online applications, using vanilla HTML/CSS/ES modules in [live/](live/index.html). Owner: Benjamin. The branch-qualified [Guest task](../docs/dev/tasks/FE-GUEST-REGISTRATION-20261020.md), [Signup task](../docs/dev/tasks/FE-USER-SIGNUP-20261020.md), [W7 task](../docs/dev/tasks/FE-W7-BROWSE-REGISTRATION-20261020.md) and [CURRENT](../docs/dev/CURRENT.md) identify source versions, validation and gaps. This is not a full registration centre or ROSE Dashboard.
 
 ## Explicit Guest application (2026-10-20)

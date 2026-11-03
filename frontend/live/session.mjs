@@ -18,6 +18,32 @@ export function createSession({ api, storage = null }) {
     try { storage?.removeItem(TOKEN_KEY); return true; } catch { return false; }
   }
 
+  async function verified(operation, { role, write = false, owned = false } = {}) {
+    if (!token || !user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);
+    if (role && user.role !== role) throw new ApiError('forbidden', `${role === 'organizer' ? 'Organizer' : 'Participant'} account required.`, 403);
+    const epoch = revision; const identity = user.id;
+    let sent = false;
+    try {
+      const profile = await api.getMe(token);
+      if (epoch !== revision) throw new ApiError('unauthorized', 'Your account changed. Verify your login again.', 401);
+      if (profile.id !== identity || (role && profile.role !== role)) {
+        clear(); throw new ApiError('forbidden', 'Your account identity or permissions changed. Log in again.', 403);
+      }
+      user = profile; sent = true;
+      const result = await operation(token);
+      if (epoch !== revision || user?.id !== identity) throw new ApiError(write ? 'uncertain' : 'aborted', 'Your account changed. Refresh the server records before another action.');
+      if (owned && (Array.isArray(result) ? result : [result]).some(row => row.created_by_user_id !== identity)) {
+        throw new ApiError(write ? 'uncertain' : 'contract', 'The server returned an application belonging to another account. No result is displayed.');
+      }
+      return result;
+    } catch (error) {
+      if (epoch !== revision && sent && write) throw new ApiError('uncertain', 'Your session changed while submitting. Do not send this action again.');
+      if (error.status === 401 && epoch === revision) clear();
+      if (!sent && !['unauthorized', 'forbidden'].includes(error.kind)) throw new ApiError('verification', 'Your account could not be verified. No action was sent.', error.status);
+      throw error;
+    }
+  }
+
   return {
     get user() { return user; },
     get hasToken() { return Boolean(token); },
@@ -25,6 +51,31 @@ export function createSession({ api, storage = null }) {
     // Read-only identity epoch; controllers can discard receipts after any session transition.
     get revision() { return revision; },
     logout: clear,
+    getMyRegistrations(options = {}) {
+      return verified(token => api.getMyRegistrations(token, options), { role: 'user', owned: true });
+    },
+    getOrganizerRegistrations(options = {}) {
+      return verified(token => api.getOrganizerRegistrations(token, options), { role: 'organizer' });
+    },
+    getRegistration(id) {
+      return verified(token => api.getRegistration(id, token), { role: 'organizer' });
+    },
+    cancelRegistration(id) {
+      return verified(token => api.cancelRegistration(id, token), { role: 'user', write: true, owned: true });
+    },
+    approveRegistration(id) {
+      return verified(token => api.approveRegistration(id, token), { role: 'organizer', write: true });
+    },
+    uploadEventImage(file) {
+      return verified(token => api.uploadEventImage(file, token), { role: 'organizer', write: true });
+    },
+    updateEvent(id, payload) {
+      return verified(async token => {
+        const result = await api.updateEvent(id, payload, token);
+        if (result.organizer_id !== user.id) throw new ApiError('uncertain', 'The updated event identity could not be verified. Refresh before another change.');
+        return result;
+      }, { role: 'organizer', write: true });
+    },
     async registerForEvent(event, payload) {
       if (!token || !user) throw new ApiError('unauthorized', 'Please log in and verify your account first.', 401);
       const current = revision;

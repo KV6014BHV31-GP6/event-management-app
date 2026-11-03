@@ -23,7 +23,7 @@
       <p id="login-prompt" class="notice">Please <a href="./login.html">log in</a> and verify your account before creating an event.</p>
       <p id="organizer-prompt" class="notice" role="status" hidden>Organizer account required.</p>
       <div id="create-progress" class="notice" role="status" aria-live="polite" hidden></div>
-      <form id="create-event-form">
+      <form id="create-event-form" method="dialog">
         <fieldset id="event-fields" disabled>
           <legend class="muted">Event details</legend>
           <div class="field"><label for="title">Event title</label><input id="title" name="title" type="text" required maxlength="255"></div>
@@ -33,11 +33,18 @@
           <div class="field"><label for="end_time">End date and time</label><input id="end_time" name="end_time" type="datetime-local" required aria-describedby="create-timezone"></div>
           <div class="field"><label for="online_quota">Online quota</label><input id="online_quota" name="online_quota" type="number" required min="0" max="2147483647" step="1" value="0"></div>
           <div class="field"><label for="offline_quota">Offline quota</label><input id="offline_quota" name="offline_quota" type="number" required min="0" max="2147483647" step="1" value="0"></div>
-          <button class="button" type="submit">Create event</button>
+          <div class="field"><label for="event-image-file">Event image (optional)</label><input id="event-image-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif" aria-describedby="image-guidance"><p id="image-guidance" class="muted">PNG, JPEG, WebP or GIF, up to 900 KiB. Upload the selected image before creating the event, or clear the selection.</p></div>
+          <button id="upload-event-image" class="button button-quiet" type="button" disabled>Upload selected image</button>
+          <button id="clear-event-image" class="button button-quiet" type="button" disabled>Clear image selection</button>
+          <div id="upload-progress" class="notice" role="status" aria-live="polite" hidden></div>
+          <p id="uploaded-image-url" class="muted" hidden></p>
+          <div id="upload-preview" hidden></div>
+          <p class="muted">An uploaded image is kept if event creation fails. It will not be uploaded again automatically.</p>
+          <button id="create-submit" class="button" type="submit">Create event</button>
         </fieldset>
         <a class="back-link" href="./index.html">Cancel</a>
       </form>
-      <div id="create-result" hidden><h2 id="created-title"></h2><p>Public ID: <span id="created-id"></span></p></div>
+      <div id="create-result" hidden><h2 id="created-title"></h2><p>Public ID: <span id="created-id"></span></p><div class="application-actions"><a id="created-view" class="button" href="./index.html">View event</a><a id="created-edit" class="button button-quiet" href="./index.html">Edit event</a></div></div>
       <a class="back-link" href="./index.html">Back to events</a>
     </section>
     <noscript><p class="notice">Enable JavaScript to create an event.</p></noscript>

@@ -1,3 +1,4 @@
+import { safeImagePath } from './image-path.mjs';
 /** The live client speaks only to the reviewed same-origin backend contract. */
 export class ApiError extends Error {
   constructor(kind, message, status = 0) {
@@ -20,6 +21,28 @@ const signupTimestamp = value => {
   return Number.isFinite(day.valueOf()) && day.toISOString().slice(0, 10) === value.slice(0, 10);
 };
 const registrationFields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'phone', 'address', 'national_id', 'income_band_code', 'marriage_status', 'medical_record'];
+const registrationStates = new Set(['pending', 'approved', 'waiting', 'rejected', 'cancelled']);
+
+export function validatedQuota(value) {
+  if (!value || !nonnegativeInteger(value.waitingCount)) return null;
+  for (const key of ['online', 'offline', 'total']) {
+    if (!value[key] || !nonnegativeInteger(value[key].approved) || !nonnegativeInteger(value[key].capacity)) return null;
+  }
+  if (value.total.capacity !== value.online.capacity + value.offline.capacity
+    || value.total.approved !== value.online.approved + value.offline.approved) return null;
+  return Object.fromEntries(['online', 'offline', 'total'].map(key => [key, { ...value[key] }]).concat([['waitingCount', value.waitingCount]]));
+}
+
+export function validateRegistrationRead(value) {
+  if (!value || !ulid(value.id) || !ulid(value.participant_id)
+    || !Number.isSafeInteger(value.event_id) || value.event_id < 1
+    || !(value.created_by_user_id === null || ulid(value.created_by_user_id))
+    || !['online', 'walkin', 'ocr'].includes(value.channel) || !registrationStates.has(value.status)
+    || !validDate(value.created_at) || !validDate(value.updated_at)) throw contractError();
+  // New read views need identifiers/status and names, not stored medical/identity profiles.
+  return Object.fromEntries(['id', 'event_id', 'participant_id', 'created_by_user_id', 'channel', 'status',
+    'created_at', 'updated_at', 'first_name', 'last_name'].filter(key => key in value).map(key => [key, value[key]]));
+}
 
 function validateEvent(value) {
   validateEventPage({ data: [value], total_count: 1, total_pages: 1, page: 1, page_size: 1 }, 1, 1);
@@ -46,7 +69,7 @@ export function validateEventPage(value, page, pageSize) {
 }
 
 export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = {}) {
-  async function request(path, { method = 'GET', body, token, signal, expectedStatus, operation, eventId } = {}) {
+  async function request(path, { method = 'GET', body, multipart, token, signal, expectedStatus, operation, eventId } = {}) {
     const controller = new AbortController();
     let timedOut = false;
     const cancel = () => controller.abort();
@@ -58,7 +81,7 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
       if (body) headers['Content-Type'] = 'application/json';
       if (token) headers.Authorization = `Bearer ${token}`;
       const response = await fetchImpl(`/api/v1${path}`, {
-        method, headers, body: body ? JSON.stringify(body) : undefined,
+        method, headers, body: multipart ?? (body ? JSON.stringify(body) : undefined),
         signal: controller.signal, cache: 'no-store', credentials: 'omit', redirect: 'error',
       });
       if (!response.ok) {
@@ -69,7 +92,7 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
           if (operation === 'signup' && response.status === 400 && detail === 'Username is already registered.') {
             throw new ApiError('duplicate', 'This username is already registered. Log in or choose another username.', 400);
           }
-          if (operation !== 'signup' && response.status === 400 && detail === 'Invalid identifier structure. Expected a 21-character public NanoID ID.') {
+          if (operation !== 'signup' && response.status === 400 && ['Invalid identifier structure. Expected a 21-character public NanoID ID.', 'Invalid identifier structure. Expected a 21-character public NanoID.'].includes(detail)) {
             throw new ApiError('validation', 'Choose a valid event.', 400);
           }
           const notFound = `Event with public identifier '${eventId}' was not found${operation === 'registration' ? '.' : ''}`;
@@ -87,6 +110,9 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
         if (response.status === 403) throw new ApiError('forbidden', 'Your account cannot access this request.', 403);
         if (response.status === 422) throw new ApiError('validation', 'Please check your details and try again.', 422);
         if (response.status === 429) throw new ApiError('rate_limit', 'Too many requests. Please wait a moment and try again.', 429);
+        if (operation === 'lifecycle' && [400, 404, 409].includes(response.status)) {
+          throw new ApiError('rejected', 'This action was not accepted. Refresh the server records to check the current status.', response.status);
+        }
         throw new ApiError('server', 'The service is temporarily unavailable. Please try again.', response.status);
       }
       if (expectedStatus !== undefined && response.status !== expectedStatus) throw contractError();
@@ -106,6 +132,18 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
     }
   }
 
+  const requireId = id => { if (!ulid(id)) throw new ApiError('validation', 'Choose a valid application reference.'); };
+  const stateQuery = status => {
+    if (status == null || status === '') return '';
+    if (!registrationStates.has(status)) throw new ApiError('validation', 'Choose a valid application status.');
+    return `?status=${encodeURIComponent(status)}`;
+  };
+  async function registrationList(path, token, status) {
+    const data = await request(path + stateQuery(status), { token, expectedStatus: 200 });
+    if (!Array.isArray(data)) throw contractError();
+    return data.map(validateRegistrationRead);
+  }
+
   async function postRegistration(id, payload, token) {
     const body = Object.fromEntries(registrationFields.map(key => [key, key === 'medical_record' ? payload[key] ?? null : payload[key]]));
     const data = await request(`/events/${id}/registrations`, { method: 'POST', token, body,
@@ -120,6 +158,48 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
   }
 
   return {
+    async uploadEventImage(file, token) {
+      if (!nonemptyString(token)) throw new ApiError('unauthorized', 'Please log in to upload an image.', 401);
+      const extensions = { png: 'image/png', jpg: 'image/jpeg', jpeg: 'image/jpeg', webp: 'image/webp', gif: 'image/gif' };
+      const extension = typeof file?.name === 'string' ? file.name.split('.').pop().toLowerCase() : '';
+      if (!extensions[extension] || file.type !== extensions[extension] || !Number.isSafeInteger(file.size)
+        || file.size < 1 || file.size > 900 * 1024) throw new ApiError('validation', 'Choose a PNG, JPEG, WebP or GIF image up to 900 KB.');
+      const multipart = new FormData();
+      multipart.append('file', file); multipart.append('folder', 'events');
+      const data = await request('/files', { method: 'POST', token, multipart, expectedStatus: 201 });
+      const path = safeImagePath(data?.url);
+      if (!data || data.filename !== file.name || !['local', 'gcs'].includes(data.provider) || !path) throw contractError();
+      if (data.provider === 'local' && !path.startsWith('/uploads/events/')) throw contractError();
+      return { filename: data.filename, url: path, provider: data.provider };
+    },
+    getMyRegistrations(token, { status } = {}) { return registrationList('/me/registrations', token, status); },
+    getOrganizerRegistrations(token, { status } = {}) { return registrationList('/registrations', token, status); },
+    async getRegistration(id, token) {
+      requireId(id);
+      const data = validateRegistrationRead(await request(`/registrations/${id}`, { token, expectedStatus: 200 }));
+      if (data.id !== id) throw contractError();
+      return data;
+    },
+    async cancelRegistration(id, token) {
+      requireId(id);
+      const data = validateRegistrationRead(await request(`/me/registrations/${id}/cancel`, { method: 'POST', token, expectedStatus: 200, operation: 'lifecycle' }));
+      if (data.id !== id || data.status !== 'cancelled') throw contractError();
+      return data;
+    },
+    async approveRegistration(id, token) {
+      requireId(id);
+      const data = validateRegistrationRead(await request(`/registrations/${id}/approve`, { method: 'POST', token, expectedStatus: 200, operation: 'lifecycle' }));
+      if (data.id !== id || !['approved', 'waiting'].includes(data.status)) throw contractError();
+      return data;
+    },
+    async updateEvent(id, payload, token) {
+      if (!publicId(id)) throw new ApiError('validation', 'Choose a valid event.');
+      const allowed = ['title', 'overview', 'location', 'online_quota', 'offline_quota', 'start_time', 'end_time', 'status', 'image_path'];
+      const body = Object.fromEntries(allowed.filter(key => Object.hasOwn(payload, key)).map(key => [key, payload[key]]));
+      const data = validateEvent(await request(`/events/${id}`, { method: 'PATCH', body, token, expectedStatus: 200, operation: 'event-update', eventId: id }));
+      if (data.public_id !== id) throw contractError();
+      return data;
+    },
     async createUser(payload) {
       const { username, password } = payload ?? {};
       if (typeof username !== 'string' || typeof password !== 'string') throw new ApiError('validation', 'Enter your username and password.');
@@ -174,9 +254,15 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
     async createEvent(payload, token) {
       if (!nonemptyString(token)) throw new ApiError('unauthorized', 'Please log in to continue.', 401);
       const { title, overview, location, start_time, end_time, online_quota, offline_quota } = payload;
+      const body = { title, overview, location, start_time, end_time, online_quota, offline_quota };
+      if (payload.image_path !== undefined) {
+        const path = safeImagePath(payload.image_path);
+        if (!path) throw new ApiError('validation', 'Upload a valid event image first.');
+        body.image_path = path;
+      }
       const data = await request('/events', {
         method: 'POST', token, expectedStatus: 201,
-        body: { title, overview, location, start_time, end_time, online_quota, offline_quota },
+        body,
       });
       validateEventPage({ data: [data], total_count: 1, total_pages: 1, page: 1, page_size: 1 }, 1, 1);
       if (!Number.isSafeInteger(data.id) || data.id < 1 || data.public_id.length !== 21

@@ -1,6 +1,8 @@
 import { ApiError, createApi } from './api.mjs';
 import { createSession, browserSessionStorage } from './session.mjs';
 import { mountAccount } from './ui.mjs';
+import { eventRoute, validPublicId } from './event-navigation.mjs';
+import { safeImagePath, createEventImage } from './image-path.mjs';
 
 const invalid = message => { throw new ApiError('validation', message); };
 
@@ -25,9 +27,114 @@ export function eventPayload(values) {
     if (!/^\d+$/.test(String(value)) || !Number.isSafeInteger(Number(value)) || Number(value) > 2147483647) invalid('Quotas must be whole numbers between 0 and 2147483647.');
     return Number(value);
   }
-  return { title, overview: String(values.overview ?? '').trim() || null, location,
+  const payload = { title, overview: String(values.overview ?? '').trim() || null, location,
     start_time: start.toISOString(), end_time: end.toISOString(),
     online_quota: quota(values.online_quota), offline_quota: quota(values.offline_quota) };
+  if (Object.hasOwn(values, 'image_path')) {
+    if (values.image_path === null || values.image_path === '') payload.image_path = null;
+    else {
+      const image = safeImagePath(values.image_path);
+      if (!image || image.length > 512) invalid('Use the URL returned by a supported image upload.');
+      payload.image_path = image;
+    }
+  }
+  return payload;
+}
+
+const IMAGE_EXTENSIONS = { 'image/png': ['png'], 'image/jpeg': ['jpg', 'jpeg'], 'image/webp': ['webp'], 'image/gif': ['gif'] };
+export const MAX_EVENT_IMAGE_BYTES = 900 * 1024;
+export function validateEventImageFile(file) {
+  const extension = typeof file?.name === 'string' ? file.name.split('.').at(-1).toLowerCase() : '';
+  if (!IMAGE_EXTENSIONS[file?.type]?.includes(extension)) invalid('Choose a PNG, JPEG, WebP or GIF image.');
+  if (!Number.isSafeInteger(file.size) || file.size <= 0 || file.size > MAX_EVENT_IMAGE_BYTES) invalid('Choose an image no larger than 900 KiB.');
+  return file;
+}
+
+/** Upload and Create are distinct writes. A retained server URL is never re-uploaded. */
+export function createEventImageController({ session, onChange = () => {} }) {
+  let state = { status: 'idle', message: '', url: null };
+  let owner = null;
+  let epoch;
+  const currentIdentity = () => session.user?.role === 'organizer' && session.user.id === owner && session.revision === epoch;
+  const emit = next => { state = next; onChange(state); };
+  return {
+    get state() {
+      if (owner && state.status === 'success' && !currentIdentity()) {
+        state = { status: 'uncertain', message: 'The account changed. Check the upload before trying again.', url: null };
+      }
+      return state;
+    },
+    clearSelection() {
+      if (['submitting', 'success', 'uncertain'].includes(state.status)) return false;
+      owner = null;
+      emit({ status: 'idle', message: '', url: null });
+      return true;
+    },
+    async upload(file) {
+      if (['submitting', 'success', 'uncertain'].includes(state.status)) return;
+      try {
+        if (session.user?.role !== 'organizer') throw new ApiError('forbidden', 'Organizer account required.', 403);
+        validateEventImageFile(file);
+      } catch (error) { emit({ status: 'error', message: error.message, url: null }); return; }
+      owner = session.user.id; epoch = session.revision;
+      emit({ status: 'submitting', message: 'Uploading image…', url: null });
+      try {
+        const uploaded = await session.uploadEventImage(file);
+        if (!currentIdentity()) throw new ApiError('uncertain', 'Account changed during upload.');
+        const url = safeImagePath(uploaded?.url);
+        if (!url || url.length > 512) throw new ApiError('contract', 'The upload URL could not be verified.');
+        emit({ status: 'success', message: 'Image uploaded. Its URL will be used when you save the event.', url });
+      } catch (error) {
+        const uncertain = !currentIdentity() || !['unauthorized', 'forbidden', 'verification', 'validation', 'rate_limit'].includes(error.kind);
+        emit({ status: uncertain ? 'uncertain' : 'error', url: null,
+          message: uncertain ? 'The upload result is unknown. Do not upload again until the result has been checked.' : error.message });
+      }
+    },
+  };
+}
+
+/** Optional media controls share the existing form; no blob, base64 or file-path URL is saved. */
+export function mountEventImageControls({ session, onChange = () => {} }) {
+  const input = document.querySelector('#event-image-file');
+  const button = document.querySelector('#upload-event-image');
+  const clear = document.querySelector('#clear-event-image');
+  const progress = document.querySelector('#upload-progress');
+  const preview = document.querySelector('#upload-preview');
+  const urlLabel = document.querySelector('#uploaded-image-url');
+  const controller = createEventImageController({ session, onChange: () => { render(); onChange(); } });
+  function render() {
+    if (!input || !button) return;
+    const state = controller.state;
+    const allowed = session.user?.role === 'organizer';
+    const locked = ['submitting', 'success', 'uncertain'].includes(state.status);
+    input.disabled = !allowed || locked;
+    button.disabled = !allowed || locked || !input.files?.[0];
+    if (clear) clear.disabled = !allowed || locked || !input.files?.[0];
+    if (progress) {
+      progress.textContent = state.message;
+      progress.hidden = !state.message;
+      progress.className = ['error', 'uncertain'].includes(state.status) ? 'notice notice-error' : 'notice';
+    }
+    if (urlLabel) { urlLabel.textContent = allowed && state.status === 'success' ? state.url : ''; urlLabel.hidden = !urlLabel.textContent; }
+    if (preview) {
+      preview.replaceChildren();
+      const image = allowed && state.status === 'success' ? createEventImage(state.url) : null;
+      if (image) preview.append(image);
+      preview.hidden = !image;
+    }
+  }
+  input?.addEventListener('change', () => { render(); onChange(); });
+  button?.addEventListener('click', () => { if (!button.disabled) controller.upload(input.files?.[0]); });
+  clear?.addEventListener('click', () => {
+    if (clear.disabled) return;
+    input.value = '';
+    if (controller.clearSelection()) { render(); onChange(); }
+  });
+  return {
+    controller, render,
+    get blocked() { const state = controller.state; return ['submitting', 'uncertain'].includes(state.status) || Boolean(input?.files?.[0] && state.status !== 'success'); },
+    get url() { return controller.state.status === 'success' ? controller.state.url : null; },
+  };
 }
 
 export function createEventController({ session, onChange = () => {} }) {
@@ -68,13 +175,18 @@ export function mountCreateEvent() {
   const result = document.querySelector('#create-result');
   const prompt = document.querySelector('#login-prompt');
   const organizerPrompt = document.querySelector('#organizer-prompt');
+  const media = mountEventImageControls({ session, onChange: () => render() });
   const controller = createEventController({ session, onChange: () => { account.render(); render(); } });
   const account = mountAccount(session, { onChange: render });
   function render() {
     const state = controller.state;
     const organizer = session.user?.role === 'organizer';
     const success = state.status === 'success' && organizer;
-    fields.disabled = !organizer || ['submitting', 'success', 'uncertain'].includes(state.status);
+    fields.disabled = !organizer || ['submitting', 'success', 'uncertain'].includes(state.status)
+      || ['submitting', 'uncertain'].includes(media.controller.state.status);
+    media.render();
+    const submit = document.querySelector('#create-submit');
+    if (submit) submit.disabled = fields.disabled || media.blocked;
     form.hidden = success;
     prompt.hidden = Boolean(session.user);
     organizerPrompt.hidden = !session.user || organizer;
@@ -86,13 +198,21 @@ export function mountCreateEvent() {
     if (success) {
       document.querySelector('#created-title').textContent = state.event.title;
       document.querySelector('#created-id').textContent = state.event.public_id;
+      const view = document.querySelector('#created-view');
+      const edit = document.querySelector('#created-edit');
+      if (validPublicId(state.event.public_id)) {
+        if (view) view.href = eventRoute(state.event.public_id);
+        if (edit) edit.href = `./edit-event.html?event=${encodeURIComponent(state.event.public_id)}`;
+      }
     }
   }
   document.querySelector('#create-timezone').textContent = `Dates and times use your browser timezone: ${Intl.DateTimeFormat().resolvedOptions().timeZone}.`;
   form.addEventListener('submit', event => {
     event.preventDefault();
-    if (session.user?.role !== 'organizer' || fields.disabled || !form.reportValidity()) return;
-    controller.submit(Object.fromEntries(new FormData(form)));
+    if (session.user?.role !== 'organizer' || fields.disabled || media.blocked || !form.reportValidity()) return;
+    const values = Object.fromEntries(new FormData(form));
+    if (media.url) values.image_path = media.url;
+    controller.submit(values);
   });
   account.check();
 }

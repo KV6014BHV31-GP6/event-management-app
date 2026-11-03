@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer">
+  <title>Registration review | ROSE</title><link rel="stylesheet" href="./styles.css"><script type="module" src="./registrations-page.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="masthead shell">
+    <a class="brand" href="./index.html" aria-label="ROSE community events"><span class="brand-mark" aria-hidden="true">R</span><span><strong>ROSE</strong><small>Community event access</small></span></a>
+    <nav class="header-nav" aria-label="Main navigation"><a class="nav-link" href="./index.html">Events</a><div id="account" class="account"></div></nav>
+  </header>
+  <main id="main" class="shell registration-main" data-registration-page="organizer" tabindex="-1">
+    <div id="auth-notice" class="notice" role="status" hidden></div>
+    <section class="application-heading" aria-labelledby="registrations-heading">
+      <p class="eyebrow">ORGANIZER</p><h1 id="registrations-heading">Registration review</h1>
+      <p class="muted">Review submitted applications. Approval and waiting decisions come from the server.</p>
+      <p id="registrations-access" class="notice">Please <a href="./login.html">log in</a> with your organizer account, then return to Registration review.</p>
+    </section>
+    <form id="registrations-filter-form" method="dialog" class="application-actions" hidden>
+      <label class="page-size-label" for="registrations-filter">Status
+        <select id="registrations-filter" name="status"><option value="">All statuses</option><option value="pending">Pending</option><option value="approved">Approved</option><option value="waiting">Waiting</option><option value="rejected">Rejected</option><option value="cancelled">Cancelled</option></select>
+      </label>
+      <button id="registrations-refresh" class="button button-quiet" type="submit">Refresh registrations</button>
+    </form>
+    <p id="registrations-message" class="notice" role="status" aria-live="polite" hidden></p>
+    <p id="registrations-action-message" class="notice" role="status" aria-live="polite" hidden></p>
+    <section id="registrations-list" class="event-grid application-receipt" aria-label="Registrations for review" aria-busy="false"></section>
+    <section id="registration-detail" class="login-card application-receipt" aria-label="Registration details" hidden></section>
+    <p class="application-footnote muted">Refresh after an action to see current server records. An event reference is not an event link. This page does not calculate remaining places.</p>
+    <a class="back-link" href="./index.html">Browse events</a>
+    <noscript><p class="notice">Enable JavaScript to retrieve registrations.</p></noscript>
+  </main>
+  <footer class="footer shell"><span class="footer-brand">ROSE · Community event access</span><span>Small moments. Stronger communities.</span></footer>
+</body>
+</html>
