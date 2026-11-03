@@ -230,3 +230,5 @@ Leader's stable referral, or an owner's explicit `?leader_id=<assigned-ULID>` se
 it never mints a new code during a read. Promotion pause does not close registrations.
 Assisted corrections preserve original entry/source attribution, return pending
 review and release a place/live offer atomically, but refuse arrived bookings.
+
+Fresh enabled Organizers may read only assignable namespace Leaders through `GET /api/v2/operations/accounts?scope=assignable_leaders`. Unscoped account administration remains restricted to seeded Demo admins; unknown scopes fail422. This directory grants no account-management permission.

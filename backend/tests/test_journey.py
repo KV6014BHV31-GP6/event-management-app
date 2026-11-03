@@ -239,3 +239,16 @@ async def test_assisted_arrival_guard_and_revoked_legacy_access(client,db_sessio
     revoked=await client.post(P+'/events/'+public+'/leaders/'+a['leader'].id,headers=auth(a['org']),json=envelope({'active':False},assignment['resource_version']));assert revoked.status_code==200
     assert (await client.get('/api/v1/me/registrations',headers=auth(a['leader']))).status_code==403
     assert (await client.post('/api/v1/me/registrations/'+reg+'/cancel',headers=auth(a['leader']))).status_code==403
+
+async def test_nonadmin_assignable_leaders_scope(client,db_session,managed):
+    public,a=managed
+    await put(db_session,'account:'+a['leader'].id,'account',{'enabled':True});await db_session.commit()
+    assert (await client.get(P+'/accounts',headers=auth(a['other']))).status_code==403
+    scoped=await client.get(P+'/accounts?scope=assignable_leaders',headers=auth(a['other']));assert scoped.status_code==200
+    assert scoped.json()['accounts']==[{'id':a['leader'].id,'username':a['leader'].username,'role':'leader','enabled':True,'version':1}]
+    assert (await client.get(P+'/accounts?scope=unknown',headers=auth(a['other']))).status_code==422
+    assert (await client.get(P+'/accounts?scope=assignable_leaders',headers=auth(a['a']))).status_code==403
+    await put(db_session,'account:'+a['leader'].id,'account',{'enabled':False});await db_session.commit()
+    assert (await client.get(P+'/accounts?scope=assignable_leaders',headers=auth(a['other']))).json()['accounts']==[]
+    await put(db_session,'account:'+a['other'].id,'account',{'enabled':False});await db_session.commit()
+    assert (await client.get(P+'/accounts?scope=assignable_leaders',headers=auth(a['other']))).status_code==403

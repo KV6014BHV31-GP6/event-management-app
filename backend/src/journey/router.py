@@ -173,10 +173,16 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
     try:
         profile();parts=path.strip('/').split('/');head=parts[0];identifier=parts[1] if len(parts)>1 else None;suffix='/'.join(parts[2:])
         if head=='accounts':
-            await owner_profile(db,user);rows=(await db.scalars(select(UserModel).where(UserModel.username.startswith(os.environ['NU_DEMO_NAMESPACE'])))).all();result=[]
+            scope=request.query_params.get('scope')
+            if scope is None:await owner_profile(db,user)
+            elif scope=='assignable_leaders':
+                actor=await fresh(db,user.id if user else None)
+                if actor.role.value!='organizer':fail('FORBIDDEN',403)
+            else:fail('INVALID_INPUT',422)
+            rows=(await db.scalars(select(UserModel).where(UserModel.username.startswith(os.environ['NU_DEMO_NAMESPACE'])))).all();result=[]
             for actor in rows:
                 access=await state(db,'account:'+actor.id)
-                if access:result.append({'id':actor.id,'username':actor.username,'role':actor.role.value,'enabled':access.data['enabled'],'version':access.version})
+                if access and (scope is None or actor.role.value=='leader' and access.data['enabled']):result.append({'id':actor.id,'username':actor.username,'role':actor.role.value,'enabled':access.data['enabled'],'version':access.version})
             return {'accounts':result,'as_of_utc':iso()}
         if head=='referrals':
             ref=await state(db,'referral:'+str(identifier));assignment=await state(db,ref.data['assignment']) if ref else None
