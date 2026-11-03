@@ -1,6 +1,8 @@
 """Versioned synthetic operations; one transaction includes domain, outbox and receipt."""
 import hashlib
 import hmac
+import base64
+import re
 import json
 import os
 import secrets
@@ -55,6 +57,13 @@ class Policy(BaseModel):
 def digest(value):return hashlib.sha256(json.dumps(value,sort_keys=True,separators=(',',':'),ensure_ascii=False,allow_nan=False).encode()).hexdigest()
 def profile():
     if os.getenv('NU_DEMO_PROFILE')!='synthetic' or not os.getenv('NU_DEMO_NAMESPACE'):fail('DEMO_PROFILE_REQUIRED',403)
+def application_actor(request):
+    key=request.headers.get('X-Application-Key','')
+    if not re.fullmatch(r'[A-Za-z0-9_-]{43}',key):fail('FORBIDDEN',403)
+    raw=base64.urlsafe_b64decode(key+'=')
+    if len(raw)!=32 or base64.urlsafe_b64encode(raw).decode().rstrip('=')!=key:fail('FORBIDDEN',403)
+    return 'application-key:'+hashlib.sha256(key.encode()).hexdigest()
+
 def owners():return set(filter(None,os.getenv('NU_DEMO_OWNER_IDS','').split(',')))
 async def owner_profile(db,user):
     profile();actor=await fresh(db,user.id if user else None)
@@ -185,9 +194,9 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
                 if row.actor.startswith('grant:'):
                     resource=row.receipt['effects'].get('registration_id',row.receipt['resource_id']);reg=await db.get(RegistrationModel,resource)
                     if not reg or await guest(db,request,reg)!=row.actor:fail('FORBIDDEN',403)
-                elif row.actor.startswith('guest-create:'):
-                    reg=await db.get(RegistrationModel,row.receipt['effects'].get('registration_id'))
-                    await reg_access(db,event,reg,user,request)
+                elif row.actor.startswith('application-key:'):
+                    if not secrets.compare_digest(application_actor(request),row.actor):fail('FORBIDDEN',403)
+                elif row.actor.startswith('guest-create:'):fail('FORBIDDEN',403)
                 else:
                     await fresh(db,user.id if user else None)
                     if row.actor!=user.id:fail('FORBIDDEN',403)
@@ -200,7 +209,9 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
             reg=await db.get(RegistrationModel,identifier)
             if not reg:fail('NOT_FOUND',404)
             event=await event_get(db,(await db.get(EventModel,reg.event_id)).public_id)
-            await reg_access(db,event,reg,user,request);return await registration_view(db,event,reg,user)
+            await reg_access(db,event,reg,user,request)
+            reg=await db.scalar(select(RegistrationModel).where(RegistrationModel.id==reg.id).with_for_update().execution_options(populate_existing=True))
+            return await registration_view(db,event,reg,user)
         if head=='outbox':
             public=request.query_params.get('event_public_id');event=await event_get(db,public) if public else None
             if not event:fail('INVALID_INPUT',422)
@@ -218,15 +229,20 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
         if head!='events':fail('NOT_FOUND',404)
         event=await event_get(db,identifier);await authorize_staff(db,event,user.id if user else None);work=await workflow(db,event)
         if not suffix:
-            db.info['journey_private_read']=True
-            payload=await EventService(db).get_event_by_public_id(identifier)
+            payload=await EventService(db).get_event_by_public_id(identifier,include_drafts=True)
             return {'contract_version':VERSION,'event':jsonable_encoder(payload),'workflow':{'version':work.version,**{k:work.data.get(k) for k in ('state','timezone','registration_opens_at','registration_closes_at','change_notice')}},'policy':{**work.data['policy'],'owner':'proposal','synthetic_only':True},'as_of_utc':iso()}
         if suffix=='leaders':
             rows=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='leader'))).all()
             return {'leaders':[{**r.data,'version':r.version} for r in rows if user.id==event.organizer_id or r.data['leader_id']==user.id],'as_of_utc':iso()}
         if suffix=='promotion':
+            public_url='?view=event&event='+identifier
+            selected=user.id if user.role.value=='leader' else request.query_params.get('leader_id')
+            if selected:
+                assignment=await state(db,'leader:'+identifier+':'+selected)
+                if not assignment or not assignment.data['active']:fail('FORBIDDEN',403)
+                public_url=assignment.data['public_url']
             row=await state(db,'promotion:'+identifier);data=row.data if row else {'state':'draft','text':'','approved_text':None,'approved_at':None,'paused':False}
-            return {**data,'version':row.version if row else 0,'provider':'DEMO_TEMPLATE','public_url':'?view=event&event='+identifier,'flyer_data':{'title':event.title,'overview':event.overview,'location':event.location,'start_time':iso(dt(event.start_time)),'end_time':iso(dt(event.end_time)),'timezone':work.data['timezone'],'image_files':await assets.images(db,event.id),'public_url':'?view=event&event='+identifier,'text':data.get('approved_text')}}
+            return {**data,'version':row.version if row else 0,'provider':'DEMO_TEMPLATE','public_url':public_url,'flyer_data':{'title':event.title,'overview':event.overview,'location':event.location,'start_time':iso(dt(event.start_time)),'end_time':iso(dt(event.end_time)),'timezone':work.data['timezone'],'image_files':await assets.images(db,event.id),'public_url':public_url,'text':data.get('approved_text')}}
         if suffix=='outreach':
             rows=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outreach'))).all()
             return {'reports':[r.data for r in rows if user.id==event.organizer_id or r.data['leader_id']==user.id],'as_of_utc':iso()}
@@ -313,7 +329,9 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
                 target=UserModel(id=str(ulid.ULID()),username=data['username'],role=UserRoleEnum(data['role']),password_hash=hash_password(data['password']));db.add(target);await db.flush();row=await put(db,'account:'+target.id,'account',{'enabled':True})
             return await receipt(db,env,actor_id,path,'account_access' if identifier else 'account_create',target.id,row,{'account_id':target.id,'role':target.role.value,'enabled':row.data['enabled']})
         if head=='events' and identifier is None:
-            actor=await owner_profile(db,user);old,_=await operation_old(db,env,actor.id,path)
+            actor=await fresh(db,user.id if user else None)
+            if actor.role.value!='organizer':fail('FORBIDDEN',403)
+            old,_=await operation_old(db,env,actor.id,path)
             if old:return old
             event_in=EventCreate.model_validate(data['event']);policy=Policy.model_validate(data['policy']);ZoneInfo(data['timezone'])
             if policy.allocation_mode!='separate_pools_offer' or policy.walkin_pool!='offline' or event_in.online_quota+event_in.offline_quota<=0:fail('INVALID_INPUT',422)
@@ -345,7 +363,7 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
             if user:
                 await fresh(db,user.id)
                 if user.role.value in {'organizer','leader'}:await authorize_staff(db,event,user.id)
-            actor_id=user.id if user else 'guest-create:'+env.operation_id
+            actor_id=user.id if user else application_actor(request)
         elif head=='registrations':
             if suffix=='review':await authorize_staff(db,event,user.id if user else None,True);actor_id=user.id
             else:
@@ -392,6 +410,7 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
                     if decision=='reject':reg.status=Status.rejected
                     else:await alloc.message(db,event,reg,'correction','correction:'+reg.id+':'+str(m.version),'Please review the requested synthetic correction.')
             elif suffix=='correction':
+                if await state(db,'arrival:'+reg.id):fail('INVALID_TRANSITION')
                 # Staff operator is never participant identity ownership.
                 await reg_access(db,event,reg,user,request,True)
                 if reg.status not in {Status.pending,Status.approved,Status.waiting}:fail('INVALID_TRANSITION')
@@ -475,7 +494,8 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
             for r in await alloc.registrations(db,event):
                 if alloc.pool(r)=='offline' and r.created_by_user_id==leader_id and (r.status==Status.approved or any(o.data['registration_id']==r.id and o.data['state']=='offered' and dt(o.data['expires_at'])>now() for o in await alloc.offers(db,event))):occupied+=1
             assignments=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='leader'))).all()
-            if reserved<occupied or sum(a.data['reserved_quota'] for a in assignments if a.key!=key and a.data['active'])+(reserved if active else 0)>event.offline_quota:fail('CAPACITY_UNAVAILABLE')
+            occupied_reserved=min(occupied,assignment.data['reserved_quota']) if assignment else 0
+            if reserved<occupied_reserved or sum(a.data['reserved_quota'] for a in assignments if a.key!=key and a.data['active'])+(reserved if active else 0)>event.offline_quota:fail('CAPACITY_UNAVAILABLE')
             code=assignment.data['referral_code'] if assignment else secrets.token_urlsafe(18)
             row=await put(db,key,'leader',{'leader_id':leader_id,'reserved_quota':reserved,'active':active,'referral_code':code,'public_url':'?view=event&event='+identifier+'&ref='+code},event.id)
             if not assignment:await put(db,'referral:'+code,'referral',{'assignment':key},event.id)

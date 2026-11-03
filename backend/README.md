@@ -217,3 +217,16 @@ Native checks require explicit `NU_NATIVE_TEST_DATABASE_URL` ending `_test` and 
 `tests/test_journey_native.py`; they never replace controlled results or browser/UAT
 acceptance. Native closeout derives totals from persisted registrations/attendance.
 SQLite controlled responses honestly identify their source as `sqlite`.
+
+Anonymous managed application writes additionally require `X-Application-Key`: a
+canonical unpadded43-character base64url value from32 random bytes. Create and retain
+it privately before POST alongside the immutable operation. The backend stores only
+its SHA256 actor binding; exact POST replay and creation-receipt GET require the same
+capability. This key only recovers that creation receipt; booking management still
+requires the separate scoped DemoOTP grant. Never put it in URLs, logs or exports.
+Normal authorized Organizers can create their own managed events; only the seeded
+Demo admin allowlist can provision accounts. Promotion GET uses the current assigned
+Leader's stable referral, or an owner's explicit `?leader_id=<assigned-ULID>` selection;
+it never mints a new code during a read. Promotion pause does not close registrations.
+Assisted corrections preserve original entry/source attribution, return pending
+review and release a place/live offer atomically, but refuse arrived bookings.

@@ -24,20 +24,34 @@ async def managed(client,db_session,actors,monkeypatch):
     assert response.status_code==200,response.text
     public=response.json()['resource_id']
     return public,actors
+async def replay_guards(client,url,payload,headers,result):
+    assert (await client.post(url,headers=headers,json=payload)).json()==result.json()
+    changed={**payload,'data':{**payload['data'],'immutable_probe':True}}
+    assert (await client.post(url,headers=headers,json=changed)).status_code==409
+    from src.core.security import create_access_token
+    wrong={'Authorization':'Bearer '+create_access_token({'sub':'test_other'})}
+    assert (await client.post(url,headers=wrong,json=payload)).status_code==403
+
 async def version(client,public,actor):return (await client.get(P+'/events/'+public,headers=auth(actor))).json()['workflow']['version']
 async def mutation(client,public,actor,suffix,data,ver=None):
     if ver is None:ver=await version(client,public,actor)
-    result=await client.post(P+'/events/'+public+'/'+suffix,headers=auth(actor),json=envelope(data,ver))
+    payload=envelope(data,ver);url=P+'/events/'+public+'/'+suffix
+    result=await client.post(url,headers=auth(actor),json=payload)
     assert result.status_code==200,result.text
+    await replay_guards(client,url,payload,auth(actor),result)
     return result.json()
 async def application(client,public,identity,actor=None,source=None):
-    result=await client.post(P+'/events/'+public+'/applications',headers=auth(actor) if actor else {},json=envelope({'application':{**FORM,'national_id':identity},'source':source or {'kind':'direct','referral_code':None}}))
+    url=P+'/events/'+public+'/applications';payload=envelope({'application':{**FORM,'national_id':identity},'source':source or {'kind':'direct','referral_code':None}});headers=auth(actor) if actor else {'X-Application-Key':__import__('secrets').token_urlsafe(32)}
+    result=await client.post(url,headers=headers,json=payload)
     assert result.status_code==200,result.text
+    await replay_guards(client,url,payload,headers,result)
     return result.json()['resource_id']
 async def review(client,reg,actor,decision='approve',reason='Synthetic correction'):
     value=(await client.get(P+'/registrations/'+reg,headers=auth(actor))).json()
-    result=await client.post(P+'/registrations/'+reg+'/review',headers=auth(actor),json=envelope({'decision':decision,'reason':reason},value['version']))
+    url=P+'/registrations/'+reg+'/review';payload=envelope({'decision':decision,'reason':reason},value['version'])
+    result=await client.post(url,headers=auth(actor),json=payload)
     assert result.status_code==200,result.text
+    await replay_guards(client,url,payload,auth(actor),result)
     return result.json()
 async def test_draft_publish_immutable_and_legacy_bypass(client,db_session,managed):
     public,a=managed
@@ -52,6 +66,7 @@ async def test_draft_publish_immutable_and_legacy_bypass(client,db_session,manag
     payload['data']={'modified':True};assert (await client.post(P+'/events/'+public+'/publish',headers=auth(a['org']),json=payload)).status_code==409
     assert (await client.patch('/api/v1/events/'+public,headers=auth(a['org']),json={'status':'completed'})).status_code==409
     assert (await client.get(P+'/receipts/'+first.json()['operation_id'],headers=auth(a['org']))).json()==first.json()
+    public_event=(await client.get('/api/v1/events/'+public)).json();assert public_event['workflow']['state']=='published' and 'policy' not in public_event['workflow']
 async def test_pool_offer_guest_otp_outbox(client,db_session,managed):
     public,a=managed;await mutation(client,public,a['org'],'publish',{})
     one=await application(client,public,'TEST-JOURNEY-A',a['a']);two=await application(client,public,'TEST-JOURNEY-B')
@@ -134,7 +149,7 @@ async def test_window_assignment_revoke_and_legacy_sync(client,db_session,manage
     assert (await client.post('/api/v2/events/'+public+'/offline-batches',headers=auth(a['leader']),json=payload)).status_code==403
     await mutation(client,public,a['org'],'edit',{'registration_closes_at':iso(now()-timedelta(seconds=1))})
     assert (await client.post('/api/v1/events/'+public+'/registrations',json={**FORM,'national_id':'TEST-CLOSED'})).status_code==409
-    assert (await client.post(P+'/events/'+public+'/applications',json=envelope({'application':{**FORM,'national_id':'TEST-CLOSED-NEW'},'source':{'kind':'direct','referral_code':None}}))).status_code==409
+    assert (await client.post(P+'/events/'+public+'/applications',headers={'X-Application-Key':__import__('secrets').token_urlsafe(32)},json=envelope({'application':{**FORM,'national_id':'TEST-CLOSED-NEW'},'source':{'kind':'direct','referral_code':None}}))).status_code==409
 async def test_otp_expiry_rate_shared_phone_and_no_secret_storage(client,db_session,managed):
     public,a=managed;await mutation(client,public,a['org'],'publish',{})
     one=await application(client,public,'TEST-OTP-ONE');two=await application(client,public,'TEST-OTP-TWO')
@@ -157,6 +172,7 @@ async def test_outbox_dedupe_alert_retry_and_postpone_cancel(client,db_session,m
     assert (await client.post(P+'/outbox/'+failed['id']+'/retry',headers=auth(a['org']),json=envelope({},retry.json()['resource_version']))).status_code==409
     await mutation(client,public,a['org'],'postpone',{'start_time':iso(now()+timedelta(hours=1)),'end_time':iso(now()+timedelta(hours=2)),'registration_closes_at':iso(now()+timedelta(minutes=30)),'checkin_opens_at':iso(now()+timedelta(minutes=45)),'checkin_closes_at':iso(now()+timedelta(hours=3)),'notice':'Synthetic postponement'})
     assert (await client.post('/api/v1/events/'+public+'/registrations',json={**FORM,'national_id':'TEST-PAUSE'})).status_code==409
+    assert (await client.get('/api/v1/events/'+public)).json()['workflow']['state']=='postponed'
     await mutation(client,public,a['org'],'resume',{'notice':'Synthetic resume'})
     await mutation(client,public,a['org'],'cancel',{'reason':'Synthetic cancellation'})
     view=(await client.get(P+'/registrations/'+reg,headers=auth(a['a']))).json();assert view['booking_state']=='cancelled'
@@ -187,3 +203,39 @@ async def test_reserved_quota_uses_entry_operator_never_referral(client,db_sessi
     other=await application(client,public,'TEST-RESERVED-REFERRAL',a['org'],{'kind':'leader_referral','referral_code':assignment['effects']['referral_code']})
     await review(client,other,a['org']);view=(await client.get(P+'/registrations/'+other,headers=auth(a['org']))).json();assert view['booking_state']=='waitlisted'
     assert view['attribution']['entry_operator_id']==a['org'].id and view['attribution']['attributed_leader_id']==a['leader'].id
+
+async def test_creation_capability_receipt_and_new_organizer_event(client,db_session,managed):
+    public,a=managed;await mutation(client,public,a['org'],'publish',{})
+    import secrets
+    key=secrets.token_urlsafe(32);headers={'X-Application-Key':key};payload=envelope({'application':{**FORM,'national_id':'TEST-CAPABILITY'},'source':{'kind':'direct','referral_code':None}})
+    assert (await client.post(P+'/events/'+public+'/applications',json=payload)).status_code==403
+    response=await client.post(P+'/events/'+public+'/applications',json=payload,headers=headers);assert response.status_code==200
+    receipt_url=P+'/receipts/'+payload['operation_id'];assert (await client.get(receipt_url)).status_code==403
+    assert (await client.get(receipt_url,headers={'X-Application-Key':secrets.token_urlsafe(32)})).status_code==403
+    assert (await client.get(receipt_url,headers=headers)).json()==response.json()
+    assert (await client.post(P+'/events/'+public+'/applications',json=payload,headers=headers)).json()==response.json()
+    from src.journey.models import JourneyOperation
+    row=await db_session.get(JourneyOperation,payload['operation_id']);assert key not in row.actor and key not in str(row.receipt) and row.actor.startswith('application-key:')
+    # Seed-admin provisioning does not make the new organizer an admin, but normal event ownership is allowed.
+    created=await client.post(P+'/accounts',headers=auth(a['org']),json=envelope({'username':'test_new_org','password':'synthetic-password','role':'organizer','synthetic':True}));assert created.status_code==200
+    from src.users.models import UserModel
+    new_org=await db_session.get(UserModel,created.json()['effects']['account_id'])
+    new_org_id=new_org.id;new_org_headers=auth(new_org)
+    assert (await client.get(P+'/accounts',headers=new_org_headers)).status_code==403
+    image=AssetModel(id='01ARZ3NDEKTSV4RRFFQ69G5FAW',owner_id=new_org_id,purpose='event_image',name='Synthetic.png',mime_type='image/png',size=8,storage_key='synthetic-new.png');db_session.add(image);await db_session.commit()
+    event={'title':'New organizer Demo','overview':'Synthetic','location':'Demo','start_time':iso(now()),'end_time':iso(now()+timedelta(hours=2)),'online_quota':1,'offline_quota':0,'image_file_ids':[image.id]}
+    work=(await client.get(P+'/events/'+public,headers=auth(a['org']))).json()
+    result=await client.post(P+'/events',headers=new_org_headers,json=envelope({'event':event,'timezone':'Asia/Hong_Kong','registration_opens_at':iso(now()-timedelta(hours=1)),'registration_closes_at':iso(now()+timedelta(hours=1)),'policy':{k:v for k,v in work['policy'].items() if k not in {'owner','synthetic_only'}}}));assert result.status_code==200,result.text
+async def test_assisted_arrival_guard_and_revoked_legacy_access(client,db_session,managed):
+    public,a=managed;await mutation(client,public,a['org'],'publish',{})
+    assignment=await mutation(client,public,a['org'],'leaders',{'leader_id':a['leader'].id,'reserved_quota':0,'active':True})
+    reg=await application(client,public,'TEST-ARRIVAL-GUARD',a['leader']);await review(client,reg,a['org'])
+    data={'device_id':'demo','attendance_operation_id':str(uuid4()),'registration_id':reg};await mutation(client,public,a['leader'],'attendance/intents',data);await mutation(client,public,a['leader'],'attendance',data)
+    view=(await client.get(P+'/registrations/'+reg,headers=auth(a['org']))).json()
+    assert (await client.post(P+'/registrations/'+reg+'/correction',headers=auth(a['org']),json=envelope({'phone':'SYNTH','note':'Cannot release arrived booking'},view['version']))).status_code==409
+    promotion=await client.post(P+'/events/'+public+'/promotion',headers=auth(a['leader']),json=envelope({'text':'Referral promotion'},0));assert promotion.status_code==200
+    promo=(await client.get(P+'/events/'+public+'/promotion',headers=auth(a['leader']))).json();assert 'ref='+assignment['effects']['referral_code'] in promo['public_url'] and promo['flyer_data']['public_url']==promo['public_url']
+    assert (await client.get('/api/v1/me/registrations',headers=auth(a['leader']))).status_code==200
+    revoked=await client.post(P+'/events/'+public+'/leaders/'+a['leader'].id,headers=auth(a['org']),json=envelope({'active':False},assignment['resource_version']));assert revoked.status_code==200
+    assert (await client.get('/api/v1/me/registrations',headers=auth(a['leader']))).status_code==403
+    assert (await client.post('/api/v1/me/registrations/'+reg+'/cancel',headers=auth(a['leader']))).status_code==403

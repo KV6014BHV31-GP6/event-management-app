@@ -86,7 +86,7 @@ class EventService:
         result['image_files']=await assets.images(self.db,db_event.id)
         return result
 
-    async def get_event_by_public_id(self, public_id: str) -> dict | None:
+    async def get_event_by_public_id(self, public_id: str, include_drafts: bool = False) -> dict | None:
         """
         Fetches event profiles combined with aggregated registration summaries in one execution.
         """
@@ -105,9 +105,10 @@ class EventService:
         event, online_app, offline_app, waiting = row
         from src.journey.policy import workflow
         work=await workflow(self.db,event)
-        if work and work.data["state"]=="draft" and not self.db.info.get("journey_private_read"):return None
+        if work and work.data["state"]=="draft" and not include_drafts:return None
         result=self._format_event_quota_dict(event, online_app, offline_app, waiting)
         result['image_files']=await assets.images(self.db,event.id)
+        result['workflow']={k:work.data.get(k) for k in ('state','timezone','registration_opens_at','registration_closes_at','change_notice')} if work else None
         return result
 
     async def update_event(self, public_id: str, event_update: EventUpdate) -> dict | None:
@@ -202,7 +203,11 @@ class EventService:
             self._format_event_quota_dict(event, online, offline, waiting)
             for event, online, offline, waiting in rows
         ]
-        for event in formatted_events:event['image_files']=await assets.images(self.db,event['id'])
+        from src.journey.policy import state
+        for event in formatted_events:
+            event['image_files']=await assets.images(self.db,event['id'])
+            work=await state(self.db,'event:'+event['public_id'])
+            event['workflow']={k:work.data.get(k) for k in ('state','timezone','registration_opens_at','registration_closes_at','change_notice')} if work else None
 
         total_pages = (total_count + page_size -
                        1) // page_size if total_count > 0 else 0

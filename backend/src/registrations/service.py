@@ -167,7 +167,14 @@ class RegistrationService:
         query = query.order_by(RegistrationModel.created_at.desc())
 
         result = await db.execute(query)
-        return list(result.scalars().all())
+        rows=list(result.scalars().all())
+        await journey.fresh(db,user_id)
+        for registration in rows:
+            event=await db.get(EventModel,registration.event_id)
+            if await journey.workflow(db,event):
+                person=await db.get(ParticipantModel,registration.participant_id)
+                if person.user_id!=user_id:await journey.authorize_staff(db,event,user_id)
+        return rows
 
     @staticmethod
     @rollback_write
@@ -197,7 +204,10 @@ class RegistrationService:
             )
 
         if await journey.workflow(db,event):
-            await journey.fresh(db,user_id)
+            actor=await journey.fresh(db,user_id)
+            if not organizer_owner:
+                person=await db.get(ParticipantModel,registration.participant_id)
+                if person.user_id!=user_id:journey.fail('FORBIDDEN',403)
             await allocator.cancel(db,event,registration,user_id)
             await journey.bump(db,event)
             await db.commit(); await db.refresh(registration)

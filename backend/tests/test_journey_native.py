@@ -129,3 +129,46 @@ async def test_native_stale_offline_actor_assignment_after_wait(journey_native):
         assignment=await state(blocker,'leader:'+event.public_id+':'+a[0].id);assignment.data={**assignment.data,'active':False};assignment.version+=1;await blocker.commit()
         result=await pending;assert result['error']==403,result
     async with sessions() as db:assert not await state(db,'attendance:'+attendance)
+
+async def test_native_migration_explicit_ack_and_idempotent(journey_native):
+    sessions,a,event,regs=journey_native
+    from scripts import migrate_demo_journey as migration
+    from sqlalchemy import text
+    async with sessions() as db:
+        actual=await db.scalar(text('SELECT current_database()'));before=await db.scalar(select(func.count()).select_from(RegistrationModel))
+    with pytest.raises(ValueError,match='acknowledgement mismatch'):await migration.migrate('wrong_database_ack')
+    assert (await migration.migrate(actual))['status']=='PASS'
+    assert (await migration.migrate(actual))['status']=='PASS'
+    async with sessions() as db:
+        assert await db.scalar(select(func.count()).select_from(RegistrationModel))==before
+        assert await db.scalar(text('SELECT count(*) FROM journey_schema_migrations WHERE migration_id=:id'),{'id':migration.MIGRATION_ID})==1
+
+async def test_native_operation_fault_rolls_back_domain_outbox_receipt(journey_native,monkeypatch):
+    sessions,a,event,regs=journey_native;operation=str(uuid4());body=json.dumps(envelope({'decision':'approve','reason':''},1,operation)).encode()
+    async def receive():return {'type':'http.request','body':body,'more_body':False}
+    request=Request({'type':'http','method':'POST','path':'/api/v2/operations/registrations/'+regs[0].id+'/review','headers':[]},receive)
+    async with sessions() as db:
+        async def fault():raise RuntimeError('controlled precommit fault')
+        monkeypatch.setattr(db,'commit',fault)
+        with pytest.raises(RuntimeError,match='controlled precommit'):await mutate('registrations/'+regs[0].id+'/review',request,db,a[2])
+    async with sessions() as db:
+        assert (await db.get(RegistrationModel,regs[0].id)).status==Status.pending
+        assert await db.get(JourneyOperation,operation) is None
+        assert await db.scalar(select(func.count()).select_from(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outbox'))==0
+    applied=await invoke(sessions,'registrations/'+regs[0].id+'/review',a[2],{'decision':'approve','reason':''},1,operation);assert 'error' not in applied
+async def test_native_offline_offer_hold_blocks_walkin_last_place(journey_native):
+    sessions,a,event,regs=journey_native
+    from src.registrations.models import RegistrationChannelEnum as Channel
+    from src.participants.models import ParticipantModel
+    async with sessions() as db:
+        participant_actor=UserModel(id=str(__import__('ulid').ULID()),username='p'+str(uuid4())[:15],role=UserRoleEnum.user,password_hash='unusable-test');db.add(participant_actor);await db.flush()
+        for r in regs[:2]:
+            row=await db.get(RegistrationModel,r.id);row.channel=Channel.offline
+        person=await db.get(ParticipantModel,regs[1].participant_id);person.user_id=participant_actor.id;await db.commit()
+    for reg in regs[:2]:assert 'error' not in await invoke(sessions,'registrations/'+reg.id+'/review',a[2],{'decision':'approve','reason':''},1)
+    assert 'error' not in await invoke(sessions,'registrations/'+regs[0].id+'/cancel',a[2],{'reason':'Native release'},await current(sessions,event,'registration:'+regs[0].id))
+    async with sessions() as db:offer=next(o for o in (await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='offer'))).all() if o.data['state']=='offered')
+    result=await asyncio.gather(invoke(sessions,'offers/'+offer.data['id']+'/accept',participant_actor,{},offer.version),invoke(sessions,'events/'+event.public_id+'/walkins',a[2],{'application':form('HELD-WALK-'+event.public_id),'eligibility_confirmed':True,'eligibility_note':'Synthetic'},await current(sessions,event)))
+    assert 'error' not in result[0] and result[1]['error']==409,result
+    async with sessions() as db:
+        rows=(await db.scalars(select(RegistrationModel).where(RegistrationModel.event_id==event.id,RegistrationModel.status==Status.approved))).all();assert len(rows)==1 and rows[0].id==regs[1].id
