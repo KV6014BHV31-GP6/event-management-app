@@ -1,6 +1,6 @@
 import React from 'react';
-import { beforeEach, expect, it, vi } from 'vitest';
-import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
+import { afterEach, beforeEach, expect, it, vi } from 'vitest';
+import { configure, getConfig, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { AssistedRecovery, ProfileEditor, RecoveryWorkspace } from './AccountWorkspace.jsx';
 import { ACCOUNT_VERSION, RECOVERY_MARKER_KEY, recoveryCode } from './account-api.js';
 import { resources, changeLanguage } from './i18n/index.js';
@@ -24,14 +24,26 @@ const profile = (id = ACTOR, version = 0, displayName = 'Synthetic profile', lan
   profile: { display_name: displayName, preferred_language: language, version, updated_at: version ? NOW : null }, as_of_utc: NOW,
 });
 const receipt = (body, effects) => ({ contract_version: ACCOUNT_VERSION, operation_id: body.operation_id,
-  kind: 'account_test', resource_id: ACTOR, resource_version: 1, recorded_at: NOW, outcome: 'applied', effects });
+  kind: effects.profile_version ? 'account_profile_update' : effects.challenge_id ? 'account_recovery_issue' : 'account_password_reset',
+  resource_id: effects.account_id || effects.challenge_id || CHALLENGE, resource_version: effects.profile_version || 1, recorded_at: NOW, outcome: 'applied', effects });
 const resetEffects = { credentials_changed: true, reauthentication_required: true };
 const issueEffects = { challenge_id: CHALLENGE, expires_at: NOW, provider: 'DEMO_PROVIDER', delivery_state: 'demo_recorded', external_delivery: false, identity_verified: false };
 const change = (label, value) => fireEvent.change(screen.getByLabelText(label), { target: { value } });
 const fillReset = (code, password) => {
   change('Recovery code', code); change('New password', password); change('Confirm new password', password);
 };
-beforeEach(() => { localStorage.clear(); sessionStorage.clear(); });
+const originalElementError = getConfig().getElementError;
+beforeEach(() => {
+  configure({ getElementError: message => new Error(message) });
+  localStorage.clear(); sessionStorage.clear();
+  const held = new Set();
+  Object.defineProperty(navigator, 'locks', { configurable: true, value: { request: async (name, options, callback) => {
+    if (held.has(name)) return callback(null);
+    held.add(name);
+    try { return await callback({ name, mode: 'exclusive' }); } finally { held.delete(name); }
+  } } });
+});
+afterEach(() => configure({ getElementError: originalElementError }));
 
 it('saves both own profile fields with version0, reads current data and applies the saved language', async () => {
   let reads = 0, submitted;
@@ -298,4 +310,108 @@ it('never writes recovery capability or password to any browser storage, URL or 
   expect(writes).toHaveLength(1);
   expect(idb).not.toHaveBeenCalled();
   expect(push).not.toHaveBeenCalled(); expect(replace).not.toHaveBeenCalled();
+});
+it('recovers a precommit404 profile across remount with the exact original request instead of current form values', async () => {
+  let posts = 0, originalWire, applied = false;
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (path, options) => {
+    if (path.includes('/receipts/')) return denied('NOT_FOUND', 404);
+    if (options.method === 'GET') return reply(profile(ACTOR, applied ? 1 : 0, applied ? 'Synthetic intended profile' : 'Current profile'));
+    if (++posts === 1) { originalWire = options.body; throw new TypeError(); }
+    expect(options.body === originalWire).toBe(true); applied = true;
+    return reply(receipt(JSON.parse(options.body), { account_id: ACTOR, profile_version: 1 }));
+  });
+  const props = { runtime: runtimeFor(), auth: authFor() };
+  const view = render(<ProfileEditor {...props} />);
+  await screen.findByDisplayValue('Current profile'); change('Display name', 'Synthetic intended profile');
+  fireEvent.submit(screen.getByRole('form', { name: 'Personal profile' }));
+  await screen.findByRole('heading', { name: 'Original profile request' });
+  view.unmount(); render(<ProfileEditor {...props} />);
+  await screen.findByRole('heading', { name: 'Original profile request' });
+  expect(screen.getByRole('button', { name: 'Retry original profile save' }).disabled).toBe(true);
+  change('Display name', 'Changed current form');
+  fireEvent.click(screen.getByRole('button', { name: 'Check profile save result' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Retry original profile save' }).disabled).toBe(false));
+  expect(posts).toBe(1);
+  fireEvent.click(screen.getByRole('button', { name: 'Retry original profile save' }));
+  await screen.findByText('Your profile was saved. Current information has been read from the server.');
+  expect(posts).toBe(2);
+  expect(fetch.mock.calls.filter(([path]) => path.includes('/receipts/'))).toHaveLength(2);
+});
+it('retries the durable original issuance target after remount even when the current dropdown changes', async () => {
+  let posts = 0, originalWire;
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async (path, options) => {
+    if (path.endsWith('/accounts')) return reply({ accounts: [
+      { id: OTHER, username: 'Original synthetic Participant', role: 'user', enabled: true, version: 1 },
+      { id: ACTOR, username: 'Other current selection', role: 'user', enabled: true, version: 1 },
+    ], as_of_utc: NOW });
+    if (options.method === 'GET') return denied('NOT_FOUND', 404);
+    if (++posts === 1) { originalWire = options.body; throw new TypeError(); }
+    expect(options.body === originalWire).toBe(true);
+    return reply(receipt(JSON.parse(options.body), issueEffects));
+  });
+  const props = { runtime: runtimeFor(ACTOR, 'organizer'), auth: authFor(ACTOR, 'organizer') };
+  const view = render(<AssistedRecovery {...props} />);
+  fireEvent.click(screen.getByRole('button', { name: 'Load recovery accounts' }));
+  await screen.findByRole('option', { name: 'Original synthetic Participant' }); change('Participant account', OTHER);
+  fireEvent.submit(screen.getByRole('form', { name: 'Participant recovery assistance' }));
+  await screen.findByRole('heading', { name: 'Original assistance request' });
+  view.unmount(); render(<AssistedRecovery {...props} />);
+  await screen.findByRole('heading', { name: 'Original assistance request' });
+  fireEvent.click(screen.getByRole('button', { name: 'Load recovery accounts' }));
+  await screen.findByRole('option', { name: 'Other current selection' });
+  change('Participant account', ACTOR);
+  fireEvent.click(screen.getByRole('button', { name: 'Check assistance request' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Retry original assistance request' }).disabled).toBe(false));
+  fireEvent.click(screen.getByRole('button', { name: 'Retry original assistance request' }));
+  await waitFor(() => expect(screen.getByRole('button', { name: 'Reveal synthetic recovery code' }).disabled).toBe(false));
+  expect(posts).toBe(2);
+  expect(document.querySelector('.account-delivery').textContent.includes('Original synthetic Participant')).toBe(true);
+  expect(document.querySelector('.account-delivery').textContent.includes('Other current selection')).toBe(false);
+});
+it('legacy issuance reconciliation never infers its unknown target from the current dropdown', async () => {
+  const operationId = crypto.randomUUID();
+  localStorage.setItem(`rose.demo.account-issue.v1.${ACTOR}`, JSON.stringify({ challenge_id: null, operation_id: operationId, endpoint: '/account-recovery/challenges', unknown: true }));
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async path => path.endsWith('/accounts')
+    ? reply({ accounts: [{ id: OTHER, username: 'Current unrelated Participant', role: 'user', enabled: true, version: 1 }], as_of_utc: NOW })
+    : reply(receipt({ operation_id: operationId }, issueEffects)));
+  render(<AssistedRecovery runtime={runtimeFor(ACTOR, 'organizer')} auth={authFor(ACTOR, 'organizer')} />);
+  fireEvent.click(screen.getByRole('button', { name: 'Load recovery accounts' }));
+  await screen.findByRole('option', { name: 'Current unrelated Participant' }); change('Participant account', OTHER);
+  fireEvent.click(screen.getByRole('button', { name: 'Check assistance request' }));
+  await screen.findByRole('button', { name: 'Reveal synthetic recovery code' });
+  expect(screen.getByRole('button', { name: 'Reveal synthetic recovery code' }).disabled).toBe(true);
+  expect(document.querySelector('.account-delivery').textContent.includes('Unknown original Participant')).toBe(true);
+  expect(fetch.mock.calls.some(([, options]) => options.method === 'POST')).toBe(false);
+});
+it('legacy profile404 keeps its reference and explains that the original cannot be retried', async () => {
+  const marker = JSON.stringify({ challenge_id: null, operation_id: crypto.randomUUID(), endpoint: '/me/profile', unknown: true });
+  localStorage.setItem(`rose.demo.account-profile.v1.${ACTOR}`, marker);
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async path => path.includes('/receipts/') ? denied('NOT_FOUND', 404) : reply(profile()));
+  render(<ProfileEditor runtime={runtimeFor()} auth={authFor()} />);
+  await screen.findByDisplayValue('Synthetic profile');
+  fireEvent.click(screen.getByRole('button', { name: 'Check profile save result' }));
+  await waitFor(() => expect(document.body.textContent.includes('The original request data is unavailable.')).toBe(true));
+  expect(Boolean(screen.queryByRole('button', { name: 'Retry original profile save' }))).toBe(false);
+  expect(localStorage.getItem(`rose.demo.account-profile.v1.${ACTOR}`) === marker).toBe(true);
+});
+it('wrong-family reset receipt never presents confirmed success or removes its reference', async () => {
+  vi.spyOn(globalThis, 'fetch').mockImplementation(async (path, options) => reply({
+    ...receipt(JSON.parse(options.body), resetEffects), kind: 'account_recovery_issue',
+  }));
+  render(<RecoveryWorkspace runtime={runtimeFor()} auth={anonymous} navigate={vi.fn()} />);
+  const code = recoveryCode(CHALLENGE, capability());
+  fillReset(code, chosenPassword()); fireEvent.submit(screen.getByRole('form', { name: 'Recover account access' }));
+  await screen.findByLabelText('Original new password');
+  expect(Boolean(screen.queryByRole('button', { name: 'Log in with your new password' }))).toBe(false);
+  expect(screen.getByLabelText('Recovery code').value === code).toBe(true);
+  expect(Boolean(localStorage.getItem(RECOVERY_MARKER_KEY))).toBe(true);
+});
+it('unsupported origin coordination shows an explicit account-write refusal without a POST', async () => {
+  Object.defineProperty(navigator, 'locks', { configurable: true, value: undefined });
+  const fetch = vi.spyOn(globalThis, 'fetch').mockResolvedValue(reply(profile()));
+  render(<ProfileEditor runtime={runtimeFor()} auth={authFor()} />);
+  await screen.findByDisplayValue('Synthetic profile');
+  fireEvent.submit(screen.getByRole('form', { name: 'Personal profile' }));
+  await waitFor(() => expect(document.body.textContent.includes('This browser cannot safely coordinate this account request.')).toBe(true));
+  expect(fetch.mock.calls.some(([, options]) => options.method === 'POST')).toBe(false);
 });

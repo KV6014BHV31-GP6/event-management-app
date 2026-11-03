@@ -3,6 +3,7 @@ import { demoTransport } from './demo-transport.js';
 export const ACCOUNT_VERSION = 'rose.demo-journey.v1';
 export const ACCOUNT_PREFIX = '/api/v2/operations';
 export const RECOVERY_MARKER_KEY = 'rose.demo.account-recovery.v1';
+const PROTECTED_RECORD_VERSION = 'rose.account-protected-request.v1';
 const uuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/;
 const languages = new Set(['en', 'ms']);
 const roles = new Set(['user', 'leader', 'organizer']);
@@ -23,6 +24,8 @@ export const ACCOUNT_MESSAGES = {
   CODE: 'Enter the complete recovery code supplied by the Demo administrator.',
   PASSWORD: 'Use a new password of 12–72 UTF-8 bytes and enter the same password twice.',
   RETRY: 'Check the original request first, then deliberately retry with the original values.',
+  COORDINATION: 'This browser cannot safely coordinate this account request. Keep its reference and use a supported browser.',
+  LEGACY: 'The original request data is unavailable. Keep this unresolved reference for manual receipt reconciliation. Do not create a replacement request.',
 };
 const messages = ACCOUNT_MESSAGES;
 export class AccountError extends Error {
@@ -37,7 +40,9 @@ const fail = () => { throw new AccountError('UNKNOWN'); };
 const object = value => value !== null && typeof value === 'object' && !Array.isArray(value);
 const integer = value => Number.isSafeInteger(value) && value >= 0;
 const text = value => typeof value === 'string' && value.length > 0;
-const timestamp = value => text(value) && Number.isFinite(Date.parse(value));
+const timestamp = value => text(value) && /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(?:\.\d{1,6})?Z$/.test(value) &&
+  Number.isFinite(Date.parse(value)) && new Date(value).toISOString().slice(0, 19) === value.slice(0, 19);
+const accountReference = value => text(value) && value.length <= 64 && value.trim() === value && !/\p{Cc}/u.test(value);
 const profileKey = actor => `rose.demo.account-profile.v1.${actor}`;
 const issueKey = actor => `rose.demo.account-issue.v1.${actor}`;
 
@@ -76,10 +81,100 @@ export function createAccountClient({
   storage = globalThis.localStorage,
   authorize,
   actorId,
+  lockManager = globalThis.navigator?.locks,
 } = {}) {
   const requests = new Set();
   const locks = new Set();
   let retryChecked = null;
+  let lifecycle = 0;
+  const protectedChecks = new Map();
+  const resolvedProtected = new Map();
+  const endpointFor = kind => kind === 'profile' ? '/me/profile' : '/account-recovery/challenges';
+  const keyFor = kind => kind === 'profile' ? profileKey(actorId) : issueKey(actorId);
+  const sameKeys = (value, keys) => object(value) && Object.keys(value).sort().join(',') === keys;
+  const protectedMarker = record => ({ challenge_id: null, operation_id: record.operation_id, endpoint: record.endpoint, unknown: true });
+  function readProtected(kind) {
+    const key = keyFor(kind), endpoint = endpointFor(kind);
+    let raw, value;
+    try { raw = storage?.getItem(key); if (raw == null) return null; value = JSON.parse(raw); }
+    catch { throw new AccountError('STORAGE'); }
+    const markerKeys = 'challenge_id,endpoint,operation_id,unknown';
+    if (!object(value) || !uuid.test(value.operation_id) || value.challenge_id !== null || value.endpoint !== endpoint || value.unknown !== true)
+      throw new AccountError('STORAGE');
+    if (sameKeys(value, markerKeys)) return { key, raw, value, marker: value, legacy: true, request: null };
+    if (!sameKeys(value, 'actor_id,challenge_id,endpoint,fingerprint,operation_id,record_version,request,unknown') ||
+      value.record_version !== PROTECTED_RECORD_VERSION || value.actor_id !== actorId || !/^[0-9a-f]{64}$/.test(value.fingerprint))
+      throw new AccountError('STORAGE');
+    const request = value.request;
+    if (!sameKeys(request, kind === 'profile' ? 'contract_version,data,expected_version,operation_id' : 'contract_version,data,operation_id') ||
+      request.contract_version !== ACCOUNT_VERSION || request.operation_id !== value.operation_id) throw new AccountError('STORAGE');
+    let data;
+    if (kind === 'profile') {
+      if (!integer(request.expected_version) || !sameKeys(request.data, 'display_name,preferred_language')) throw new AccountError('STORAGE');
+      try { data = validateProfileInput(request.data); } catch { throw new AccountError('STORAGE'); }
+      if (data.display_name !== request.data.display_name) throw new AccountError('STORAGE');
+    } else {
+      if (!sameKeys(request.data, 'account_id,synthetic') || !accountReference(request.data.account_id) || request.data.synthetic !== true)
+        throw new AccountError('STORAGE');
+      data = { account_id: request.data.account_id, synthetic: true };
+    }
+    const canonical = { contract_version: ACCOUNT_VERSION, operation_id: value.operation_id,
+      ...(kind === 'profile' ? { expected_version: request.expected_version } : {}), data };
+    if (JSON.stringify(canonical) !== JSON.stringify(request)) throw new AccountError('STORAGE');
+    Object.freeze(request.data); Object.freeze(request);
+    return { key, raw, value, marker: protectedMarker(value), legacy: false, request };
+  }
+  async function fingerprintProtected(endpoint, request) {
+    try {
+      // This digest admits only validated nonsecret profile/issuance envelopes.
+      const input = JSON.stringify([PROTECTED_RECORD_VERSION, actorId, endpoint, request]);
+      const bytes = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(input));
+      return Array.from(new Uint8Array(bytes), byte => byte.toString(16).padStart(2, '0')).join('');
+    } catch { throw new AccountError('STORAGE'); }
+  }
+  async function checkedProtected(kind) {
+    const record = readProtected(kind);
+    if (record && !record.legacy && await fingerprintProtected(record.value.endpoint, record.request) !== record.value.fingerprint)
+      throw new AccountError('STORAGE');
+    return record;
+  }
+  function unchangedProtected(record, epoch) {
+    try {
+      if (epoch !== lifecycle || storage.getItem(record.key) !== record.raw) throw new Error();
+    } catch { throw new AccountError('UNKNOWN'); }
+  }
+  function finishProtected(record, epoch) {
+    unchangedProtected(record, epoch);
+    try {
+      storage.removeItem(record.key);
+      if (storage.getItem(record.key) != null) throw new Error();
+    } catch { throw new AccountError('UNKNOWN'); }
+  }
+  function resolveProtected(kind, record, epoch, result) {
+    finishProtected(record, epoch);
+    resolvedProtected.set(kind, { operation_id: result.operation_id, request: record.request });
+    return result;
+  }
+  async function protectedExclusive(kind, operation) {
+    const epoch = lifecycle;
+    return exclusive(kind, async () => {
+      if (typeof lockManager?.request !== 'function') throw new AccountError('COORDINATION');
+      let entered = false;
+      try {
+        return await lockManager.request(`rose.account-protected.${actorId}.${kind}`, { mode: 'exclusive', ifAvailable: true }, async lock => {
+          if (!lock) throw new AccountError('PENDING');
+          entered = true;
+          return protectedAction(token => {
+            if (epoch !== lifecycle) throw new AccountError('UNKNOWN');
+            return operation(token, epoch);
+          });
+        });
+      } catch (error) {
+        if (error instanceof AccountError) throw error;
+        throw new AccountError(entered ? 'UNKNOWN' : 'COORDINATION');
+      }
+    });
+  }
   function readMarker(key, endpoint) {
     let marker;
     try {
@@ -135,7 +230,8 @@ export function createAccountClient({
       try { value = await response.json(); } catch { fail(); }
       if (!response.ok) {
         const status = response.status;
-        const code = status >= 500 ? 'UNKNOWN' : object(value?.detail) && Object.hasOwn(messages, value.detail.code)
+        const validNotFound = sameKeys(value, 'detail') && sameKeys(value.detail, 'code,message') && value.detail.code === 'NOT_FOUND' && typeof value.detail.message === 'string';
+        const code = status >= 500 || (status === 404 && !validNotFound) ? 'UNKNOWN' : object(value?.detail) && Object.hasOwn(messages, value.detail.code)
           ? value.detail.code : status === 401 ? 'AUTH_REQUIRED' : status === 403 ? 'FORBIDDEN'
             : status === 404 ? 'NOT_FOUND' : status === 422 ? 'INVALID_INPUT' : 'UNKNOWN';
         throw new AccountError(code, status);
@@ -158,11 +254,16 @@ export function createAccountClient({
       throw new AccountError(error.status === 401 ? 'AUTH_REQUIRED' : error.status === 403 ? 'FORBIDDEN' : 'UNKNOWN', error.status || 0);
     }
   }
-  function receipt(value, marker, validateEffects) {
+  function receipt(value, marker, family, request = null) {
+    const validateEffects = family === 'profile' ? profileEffects : family === 'issue' ? issueEffects : resetEffects;
     if (!object(value) || value.contract_version !== ACCOUNT_VERSION || value.operation_id !== marker.operation_id ||
       Object.keys(value).sort().join(',') !== 'contract_version,effects,kind,operation_id,outcome,recorded_at,resource_id,resource_version' ||
       value.outcome !== 'applied' || !text(value.kind) || !text(value.resource_id) ||
       !integer(value.resource_version) || !timestamp(value.recorded_at) || !object(value.effects) || !validateEffects(value.effects)) fail();
+    if (family === 'profile' && (value.kind !== 'account_profile_update' || value.resource_id !== actorId ||
+      value.resource_version !== value.effects.profile_version || (request && value.resource_version !== request.expected_version + 1))) fail();
+    if (family === 'issue' && (value.kind !== 'account_recovery_issue' || value.resource_id !== value.effects.challenge_id || value.resource_version !== 1)) fail();
+    if (family === 'reset' && (value.kind !== 'account_password_reset' || value.resource_id !== marker.challenge_id || value.resource_version < 1)) fail();
     return value;
   }
   const profileEffects = effects => effects.account_id === actorId && integer(effects.profile_version) && effects.profile_version > 0 &&
@@ -173,14 +274,14 @@ export function createAccountClient({
     Object.keys(effects).sort().join(',') === 'challenge_id,delivery_state,expires_at,external_delivery,identity_verified,provider';
   const resetEffects = effects => effects.credentials_changed === true && effects.reauthentication_required === true &&
     Object.keys(effects).sort().join(',') === 'credentials_changed,reauthentication_required';
-  async function original(key, endpoint, data, validateEffects, { token, expectedVersion, challengeId = null, capability } = {}) {
+  async function original(key, endpoint, data, family, { token, expectedVersion, challengeId = null, capability } = {}) {
     if (readMarker(key, challengeId ? undefined : endpoint)) throw new AccountError('PENDING');
     const marker = { challenge_id: challengeId, operation_id: crypto.randomUUID(), endpoint, unknown: true };
     const body = { contract_version: ACCOUNT_VERSION, operation_id: marker.operation_id,
       ...(expectedVersion !== undefined ? { expected_version: expectedVersion } : {}), data };
     saveMarker(key, marker);
     try {
-      const value = receipt(await request(endpoint, { token, capability, method: 'POST', body }), marker, validateEffects);
+      const value = receipt(await request(endpoint, { token, capability, method: 'POST', body }), marker, family);
       finish(key, marker);
       return value;
     } catch (error) {
@@ -191,15 +292,78 @@ export function createAccountClient({
       throw error;
     } finally { if (Object.hasOwn(data, 'new_password')) data.new_password = ''; }
   }
-  async function reconcileProtected(key, endpoint, receiptPath, validateEffects) {
-    return protectedAction(async token => {
-      const marker = readMarker(key, endpoint);
-      if (!marker) throw new AccountError('RETRY', 422);
-      const value = receipt(await request(receiptPath(marker), { token }), marker, validateEffects);
-      finish(key, marker);
-      return value;
+  const protectedReceiptPath = (kind, marker) => kind === 'profile' ? `/me/profile/receipts/${marker.operation_id}` : `/receipts/${marker.operation_id}`;
+  async function originalProtected(kind, data, expectedVersion) {
+    return protectedExclusive(kind, async (token, epoch) => {
+      protectedChecks.delete(kind);
+      if (readProtected(kind)) throw new AccountError('PENDING');
+      const operationId = crypto.randomUUID(), endpoint = endpointFor(kind);
+      const body = { contract_version: ACCOUNT_VERSION, operation_id: operationId,
+        ...(kind === 'profile' ? { expected_version: expectedVersion } : {}), data };
+      const value = { record_version: PROTECTED_RECORD_VERSION, actor_id: actorId, challenge_id: null,
+        operation_id: operationId, endpoint, unknown: true, request: body,
+        fingerprint: await fingerprintProtected(endpoint, body) };
+      const raw = JSON.stringify(value), key = keyFor(kind);
+      if (readProtected(kind)) throw new AccountError('PENDING');
+      try { storage.setItem(key, raw); if (storage.getItem(key) !== raw) throw new Error(); }
+      catch { throw new AccountError('STORAGE'); }
+      const record = await checkedProtected(kind);
+      if (!record || record.raw !== raw) throw new AccountError('STORAGE');
+      unchangedProtected(record, epoch);
+      try {
+        const result = receipt(await request(endpoint, { token, method: 'POST', body: record.request }), record.marker, kind, record.request);
+        return resolveProtected(kind, record, epoch, result);
+      } catch (error) {
+        // Only an explicit refusal of this first, previously unsent request may resolve it.
+        // Reconciliation and replay below never discard an original on a refusal.
+        if (error instanceof AccountError && error.status >= 400 && error.status < 500 && error.status !== 404 && error.code !== 'UNKNOWN')
+          finishProtected(record, epoch);
+        throw error;
+      }
     });
   }
+  async function reconcileProtected(kind) {
+    protectedChecks.delete(kind);
+    return protectedExclusive(kind, async (token, epoch) => {
+      const record = await checkedProtected(kind);
+      if (!record) throw new AccountError('RETRY', 422);
+      try {
+        const result = receipt(await request(protectedReceiptPath(kind, record.marker), { token }), record.marker, kind, record.request);
+        return resolveProtected(kind, record, epoch, result);
+      } catch (error) {
+        unchangedProtected(record, epoch);
+        if (error.status === 404 && error.code === 'NOT_FOUND' && !record.legacy) protectedChecks.set(kind, { raw: record.raw, epoch });
+        throw error;
+      }
+    });
+  }
+  async function retryProtected(kind) {
+    const proof = protectedChecks.get(kind);
+    protectedChecks.delete(kind);
+    return protectedExclusive(kind, async (token, epoch) => {
+      const record = await checkedProtected(kind);
+      if (record?.legacy) throw new AccountError('LEGACY', 422);
+      if (!record || !proof || proof.raw !== record.raw || proof.epoch !== epoch) throw new AccountError('RETRY', 422);
+      try {
+        const result = receipt(await request(protectedReceiptPath(kind, record.marker), { token }), record.marker, kind, record.request);
+        return resolveProtected(kind, record, epoch, result);
+      } catch (error) { if (error.status !== 404 || error.code !== 'NOT_FOUND') throw error; }
+      unchangedProtected(record, epoch);
+      const result = receipt(await request(record.value.endpoint, { token, method: 'POST', body: record.request }), record.marker, kind, record.request);
+      return resolveProtected(kind, record, epoch, result);
+    });
+  }
+  const protectedPending = kind => {
+    // Read-only UI discovery is never permission to write or clear a record.
+    const record = readProtected(kind);
+    return record ? { ...record.marker, legacy: record.legacy } : null;
+  };
+  const protectedOriginal = kind => protectedExclusive(kind, async (token, epoch) => {
+    const record = await checkedProtected(kind);
+    if (!record || record.legacy) return null;
+    unchangedProtected(record, epoch);
+    return JSON.parse(JSON.stringify(record.request));
+  });
   function recoveryBinding(code) {
     const parsed = parseRecoveryCode(code);
     const marker = readMarker(RECOVERY_MARKER_KEY);
@@ -208,13 +372,21 @@ export function createAccountClient({
   }
   const resetReceiptPath = marker => `/account-recovery/challenges/${marker.challenge_id}/receipts/${marker.operation_id}`;
   async function readReset(marker, secret) {
-    return receipt(await request(resetReceiptPath(marker), { capability: secret }), marker, resetEffects);
+    return receipt(await request(resetReceiptPath(marker), { capability: secret }), marker, 'reset');
   }
   return {
-    cancelRequests() { for (const controller of requests) controller.abort(); requests.clear(); retryChecked = null; },
+    cancelRequests() { lifecycle++; for (const controller of requests) controller.abort(); requests.clear(); retryChecked = null; protectedChecks.clear(); resolvedProtected.clear(); },
     pendingRecovery: () => readMarker(RECOVERY_MARKER_KEY),
-    pendingProfile: () => readMarker(profileKey(actorId), '/me/profile'),
-    pendingIssue: () => readMarker(issueKey(actorId), '/account-recovery/challenges'),
+    pendingProfile: () => protectedPending('profile'),
+    pendingIssue: () => protectedPending('issue'),
+    profileOriginal: () => protectedOriginal('profile'),
+    issueOriginal: () => protectedOriginal('issue'),
+    canRetryProfile: () => protectedChecks.has('profile'),
+    canRetryIssue: () => protectedChecks.has('issue'),
+    resolvedIssueOriginal: operationId => {
+      const value = resolvedProtected.get('issue');
+      return value?.operation_id === operationId && value.request ? JSON.parse(JSON.stringify(value.request)) : null;
+    },
     getProfile: () => protectedAction(async token => {
       const value = await request('/me/profile', { token });
       if (!object(value) || value.contract_version !== ACCOUNT_VERSION || !object(value.account) ||
@@ -225,13 +397,13 @@ export function createAccountClient({
         (value.profile.version === 0 ? value.profile.updated_at !== null : !timestamp(value.profile.updated_at))) fail();
       return value;
     }),
-    saveProfile: (values, expectedVersion) => exclusive('profile', () => protectedAction(token => {
+    saveProfile: (values, expectedVersion) => {
       const data = validateProfileInput(values);
       if (!integer(expectedVersion)) throw new AccountError('INVALID_INPUT', 422);
-      return original(profileKey(actorId), '/me/profile', data, profileEffects, { token, expectedVersion });
-    })),
-    reconcileProfile: () => exclusive('profile', () => reconcileProtected(profileKey(actorId), '/me/profile',
-      marker => `/me/profile/receipts/${marker.operation_id}`, profileEffects)),
+      return originalProtected('profile', data, expectedVersion);
+    },
+    reconcileProfile: () => reconcileProtected('profile'),
+    retryProfile: () => retryProtected('profile'),
     getDirectory: () => protectedAction(async token => {
       const value = await request('/accounts', { token });
       if (!object(value) || !Array.isArray(value.accounts) || !timestamp(value.as_of_utc) ||
@@ -239,12 +411,12 @@ export function createAccountClient({
           !roles.has(account.role) || typeof account.enabled !== 'boolean' || !integer(account.version))) fail();
       return value;
     }),
-    issueChallenge: accountId => exclusive('issue', () => protectedAction(token => {
-      if (!text(accountId)) throw new AccountError('INVALID_INPUT', 422);
-      return original(issueKey(actorId), '/account-recovery/challenges', { account_id: accountId, synthetic: true }, issueEffects, { token });
-    })),
-    reconcileIssue: () => exclusive('issue', () => reconcileProtected(issueKey(actorId), '/account-recovery/challenges',
-      marker => `/receipts/${marker.operation_id}`, issueEffects)),
+    issueChallenge: accountId => {
+      if (!accountReference(accountId)) throw new AccountError('INVALID_INPUT', 422);
+      return originalProtected('issue', { account_id: accountId, synthetic: true });
+    },
+    reconcileIssue: () => reconcileProtected('issue'),
+    retryIssue: () => retryProtected('issue'),
     revealChallenge: challengeId => protectedAction(async token => {
       if (!uuid.test(challengeId)) throw new AccountError('INVALID_INPUT', 422);
       const value = await request(`/account-recovery/challenges/${challengeId}/demo-message`, { token });
@@ -257,7 +429,7 @@ export function createAccountClient({
       const parsed = parseRecoveryCode(code);
       validateNewPassword(password);
       return original(RECOVERY_MARKER_KEY, `/account-recovery/challenges/${parsed.challenge_id}/reset`,
-        { new_password: password }, resetEffects, { challengeId: parsed.challenge_id, capability: parsed.secret });
+        { new_password: password }, 'reset', { challengeId: parsed.challenge_id, capability: parsed.secret });
     }),
     reconcileReset: code => exclusive('reset', async () => {
       retryChecked = null;
@@ -284,7 +456,7 @@ export function createAccountClient({
       } catch (error) { if (error.status !== 404 || error.code !== 'NOT_FOUND') throw error; }
       const body = { contract_version: ACCOUNT_VERSION, operation_id: marker.operation_id, data: { new_password: password } };
       try {
-        const value = receipt(await request(marker.endpoint, { capability: secret, method: 'POST', body }), marker, resetEffects);
+        const value = receipt(await request(marker.endpoint, { capability: secret, method: 'POST', body }), marker, 'reset');
         finish(RECOVERY_MARKER_KEY, marker);
         return value;
       } finally { body.data.new_password = ''; }

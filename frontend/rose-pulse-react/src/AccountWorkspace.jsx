@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { changeLanguage, tr } from './i18n/index.js';
-import { createAccountClient, recoveryCode, validateNewPassword } from './account-api.js';
+import { ACCOUNT_MESSAGES, createAccountClient, recoveryCode, validateNewPassword } from './account-api.js';
 
 const identityKey = auth => `${auth.user?.id || 'anonymous'}:${auth.revision}`;
 function Notice({ children, error = false }) {
@@ -22,7 +22,7 @@ function useAccount(runtime, auth) {
     lock.current = true;
     setBusy(true);
     try { await operation(); }
-    catch (error) { if (active.current) refused(error); }
+    catch (error) { if (active.current) await refused(error); }
     finally { lock.current = false; if (active.current) setBusy(false); }
   };
   return { client, active, busy, run };
@@ -46,28 +46,37 @@ function ProfileSession({ runtime, auth }) {
   const [status, setStatus] = useState('loading'), [message, setMessage] = useState('Reading your current profile…');
   const initial = useMemo(() => initialMarker(client.pendingProfile), [client]);
   const [pending, setPending] = useState(initial.value);
+  const [original, setOriginal] = useState(null), [canRetry, setCanRetry] = useState(false);
   const load = async (saved = false) => {
     const result = await client.getProfile();
+    const unresolved = client.pendingProfile();
+    const savedOriginal = unresolved && !unresolved.legacy ? await client.profileOriginal() : null;
     if (!active.current) return;
     setProfile(result.profile);
     setValues({ display_name: result.profile.display_name, preferred_language: result.profile.preferred_language });
-    const unresolved = client.pendingProfile();
     setPending(unresolved);
+    setOriginal(savedOriginal); setCanRetry(false);
     setStatus(unresolved ? 'unknown' : saved ? 'saved' : 'ready');
     setMessage(unresolved ? 'A profile save is unresolved. Check its original receipt before saving again.' : saved
       ? 'Your profile was saved. Current information has been read from the server.' : 'Your current profile has been read from the server.');
     if (saved) await changeLanguage(result.profile.preferred_language);
   };
-  const failed = error => {
-    if ([401, 403].includes(error.status)) {
-      setProfile(null); setValues({ display_name: '', preferred_language: 'en' });
-      setStatus('blocked'); setMessage(error.message); return;
-    }
+  const failed = async error => {
     let marker;
     try { marker = client.pendingProfile(); } catch { marker = { unknown: true }; }
-    setPending(marker);
+    setPending(marker); setCanRetry(client.canRetryProfile());
+    if ([401, 403].includes(error.status)) {
+      setProfile(null); setValues({ display_name: '', preferred_language: 'en' });
+      setOriginal(null); setCanRetry(false);
+      setStatus('blocked'); setMessage(error.message); return;
+    }
+    let savedOriginal = null;
+    if (marker && !marker.legacy) { try { savedOriginal = await client.profileOriginal(); } catch {} }
+    if (!active.current) return;
+    setOriginal(savedOriginal);
     setStatus(marker ? 'unknown' : error.code === 'STALE_VERSION' ? 'stale' : 'error');
-    setMessage(error.message);
+    setMessage(marker?.legacy ? ACCOUNT_MESSAGES.LEGACY : error.status === 404 && error.code === 'NOT_FOUND'
+      ? 'No receipt was returned. This does not confirm rollback. You may deliberately retry only the saved original request.' : error.message);
   };
   useEffect(() => {
     if (initial.error) { setStatus('error'); setMessage(initial.error); return; }
@@ -90,15 +99,37 @@ function ProfileSession({ runtime, auth }) {
       }
     }, failed);
   };
+  const refreshConfirmed = async () => {
+    try { await load(true); }
+    catch (error) {
+      if (!active.current) return;
+      if ([401, 403].includes(error.status)) { await failed(error); return; }
+      setPending(null); setOriginal(null); setCanRetry(false); setStatus('read_error');
+      setMessage('The save receipt is confirmed, but the current profile could not be read. Read it again before editing.');
+    }
+  };
   const reconcile = () => run(async () => {
+    setCanRetry(false);
     await client.reconcileProfile();
-    if (active.current) await load(true);
+    if (active.current) await refreshConfirmed();
+  }, failed);
+  const retry = () => run(async () => {
+    if (!canRetry || !original) return;
+    setCanRetry(false);
+    await client.retryProfile();
+    if (active.current) await refreshConfirmed();
   }, failed);
   return <section className="account-section" aria-labelledby="account-profile-title">
     <h2 id="account-profile-title">{tr('Personal profile')}</h2>
     <p>{tr('Display name and language belong to your account. Your username, role and existing registrations stay separate.')}</p>
     <Notice error={['error', 'stale', 'unknown', 'read_error', 'blocked'].includes(status)}>{message}</Notice>
     {pending && <button className="button button-quiet" disabled={busy} onClick={reconcile}>{tr('Check profile save result')}</button>}
+    {pending?.legacy && <Notice error>{ACCOUNT_MESSAGES.LEGACY}</Notice>}
+    {pending && original && <div className="notice"><h3>{tr('Original profile request')}</h3>
+      <p>{tr('Display name')}: {original.data.display_name}</p><p>{tr('Preferred language')}: {tr(original.data.preferred_language === 'ms' ? 'Bahasa Melayu' : 'English')}</p>
+      <p>{tr('This saved request is separate from the current profile below. Its values cannot be changed during recovery.')}</p>
+    </div>}
+    {pending && !pending.legacy && <button className="button button-quiet" disabled={busy || !canRetry || !original} onClick={retry}>{tr('Retry original profile save')}</button>}
     <form method="dialog" aria-label={tr('Personal profile')} onSubmit={save}>
       <fieldset disabled={busy || !profile || pending || !['ready', 'saved', 'error'].includes(status)}>
         <legend className="sr-only">{tr('Personal profile')}</legend>
@@ -127,20 +158,41 @@ function AssistedSession({ runtime, auth }) {
   const [challenge, setChallenge] = useState(null), [code, setCode] = useState('');
   const initial = useMemo(() => initialMarker(client.pendingIssue), [client]);
   const [pending, setPending] = useState(initial.value), [message, setMessage] = useState(initial.error);
+  const [original, setOriginal] = useState(null), [canRetry, setCanRetry] = useState(false), [deliveryTarget, setDeliveryTarget] = useState(null);
   const [error, setError] = useState(!!initial.error);
   const selectionEpoch = useRef(0);
-  const clearDelivery = () => { selectionEpoch.current++; setChallenge(null); setCode(''); };
-  const failed = failure => {
+  const clearDelivery = () => { selectionEpoch.current++; setChallenge(null); setCode(''); setDeliveryTarget(null); };
+  const failed = async failure => {
     setCode(''); setMessage(failure.message); setError(true);
-    try { setPending(client.pendingIssue()); } catch { setPending({ unknown: true }); }
-    if ([401, 403].includes(failure.status)) { clearDelivery(); setAccounts(null); setSelected(''); }
+    let marker;
+    try { marker = client.pendingIssue(); } catch { marker = { unknown: true }; }
+    setPending(marker); setCanRetry(client.canRetryIssue());
+    if ([401, 403].includes(failure.status)) { clearDelivery(); setAccounts(null); setSelected(''); setOriginal(null); setCanRetry(false); return; }
+    let savedOriginal = null;
+    if (marker && !marker.legacy) { try { savedOriginal = await client.issueOriginal(); } catch {} }
+    if (!active.current) return;
+    setOriginal(savedOriginal);
+    if (marker?.legacy) setMessage(ACCOUNT_MESSAGES.LEGACY);
+    else if (failure.status === 404 && failure.code === 'NOT_FOUND') setMessage('No receipt was returned. This does not confirm rollback. You may deliberately retry only the saved original request.');
   };
+  useEffect(() => {
+    if (!initial.value || initial.value.legacy || initial.error) return;
+    run(async () => { const savedOriginal = await client.issueOriginal(); if (active.current) setOriginal(savedOriginal); }, failed);
+  }, [client]);
   const eligible = accounts?.filter(account => account.enabled && account.role === 'user') || [];
   const load = () => run(async () => {
-    clearDelivery(); setError(false); setSelected(''); setAccounts(null);
+    selectionEpoch.current++; setCode(''); setError(false); setSelected(''); setAccounts(null);
+    const epoch = selectionEpoch.current;
     const result = await client.getDirectory();
-    if (active.current) { setAccounts(result.accounts); setMessage('Select the Participant account that needs assisted recovery.'); }
+    if (active.current && epoch === selectionEpoch.current) { setAccounts(result.accounts); setMessage('Select the Participant account that needs assisted recovery.'); }
   }, failed);
+  const acceptIssue = result => {
+    const boundOriginal = client.resolvedIssueOriginal(result.operation_id);
+    setDeliveryTarget(boundOriginal ? boundOriginal.data.account_id : null);
+    setChallenge(result.effects); setPending(null); setOriginal(null); setCanRetry(false); setError(false);
+    setMessage(boundOriginal ? 'The synthetic recovery code is ready. Reveal it only when assisting the intended Participant.'
+      : 'The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.');
+  };
   const issue = event => {
     event.preventDefault();
     if (pending || !eligible.some(account => account.id === selected)) return;
@@ -149,19 +201,26 @@ function AssistedSession({ runtime, auth }) {
       const epoch = selectionEpoch.current;
       const result = await client.issueChallenge(selected);
       if (active.current && epoch === selectionEpoch.current) {
-        setChallenge(result.effects); setPending(null); setMessage('The synthetic recovery code is ready. Reveal it only when assisting the intended Participant.');
+        acceptIssue(result);
       }
     }, failed);
   };
   const reconcile = () => run(async () => {
+    setCanRetry(false);
     clearDelivery(); const epoch = selectionEpoch.current;
     const result = await client.reconcileIssue();
     if (active.current && epoch === selectionEpoch.current) {
-      setChallenge(result.effects); setPending(null); setError(false);
-      setMessage('The original recovery request was recorded. Check the intended Participant before revealing its code.');
+      acceptIssue(result);
     }
   }, failed);
+  const retry = () => run(async () => {
+    if (!canRetry || !original || !eligible.some(account => account.id === original.data.account_id)) return;
+    clearDelivery(); setCanRetry(false); const epoch = selectionEpoch.current;
+    const result = await client.retryIssue();
+    if (active.current && epoch === selectionEpoch.current) acceptIssue(result);
+  }, failed);
   const reveal = () => run(async () => {
+    if (!deliveryTarget || !eligible.some(account => account.id === deliveryTarget)) return;
     setCode(''); const epoch = selectionEpoch.current;
     const result = await client.revealChallenge(challenge.challenge_id);
     if (active.current && epoch === selectionEpoch.current) {
@@ -175,6 +234,12 @@ function AssistedSession({ runtime, auth }) {
     <Notice error={error}>{message}</Notice>
     {pending && <><Notice error>{'An assistance request is unresolved. Check its original result before creating another code.'}</Notice>
       <button className="button button-quiet" disabled={busy} onClick={reconcile}>{tr('Check assistance request')}</button></>}
+    {pending?.legacy && <Notice error>{'The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.'}</Notice>}
+    {pending && original && <div className="notice"><h3>{tr('Original assistance request')}</h3>
+      <p>{tr('Original Participant account')}: {eligible.find(account => account.id === original.data.account_id)?.username || tr('Load recovery accounts to identify the original Participant.')}</p>
+      <p>{tr('Retry keeps the original Participant, even if the current selection changes.')}</p>
+    </div>}
+    {pending && !pending.legacy && <button className="button button-quiet" disabled={busy || !canRetry || !original || !eligible.some(account => account.id === original.data.account_id)} onClick={retry}>{tr('Retry original assistance request')}</button>}
     <button className="button button-quiet" disabled={busy} onClick={load}>{tr('Load recovery accounts')}</button>
     {accounts && <form method="dialog" aria-label={tr('Participant recovery assistance')} onSubmit={issue}>
       <div className="field"><label htmlFor="recovery-participant">{tr('Participant account')}</label>
@@ -189,12 +254,13 @@ function AssistedSession({ runtime, auth }) {
       <button className="button" disabled={busy || !selected || !!pending}>{tr('Create recovery code')}</button>
     </form>}
     {challenge && <div className="account-delivery">
+      <p>{tr('Original Participant account')}: {deliveryTarget ? eligible.find(account => account.id === deliveryTarget)?.username || tr('Load recovery accounts to identify the original Participant.') : tr('Unknown original Participant. Delivery remains hidden.')}</p>
       <p>{tr('Synthetic Demo delivery only. Share it only with the intended Participant in this local demonstration.')}</p>
       <p>{tr('Code expires at')}: <time dateTime={challenge.expires_at}>{challenge.expires_at}</time></p>
       {code ? <><div className="field"><label htmlFor="synthetic-recovery-code">{tr('Synthetic recovery code')}</label>
         <textarea id="synthetic-recovery-code" value={code} readOnly autoComplete="off" spellCheck={false} />
       </div><button className="text-button" onClick={() => { setCode(''); setMessage('The synthetic code is hidden.'); }}>{tr('Hide recovery code')}</button></>
-        : <button className="button button-quiet" disabled={busy} onClick={reveal}>{tr('Reveal synthetic recovery code')}</button>}
+        : <button className="button button-quiet" disabled={busy || !deliveryTarget || !eligible.some(account => account.id === deliveryTarget)} onClick={reveal}>{tr('Reveal synthetic recovery code')}</button>}
     </div>}
   </section>;
 }

@@ -891,5 +891,19 @@
   "An original request is unresolved. Check its result before starting another.": "An original request is unresolved. Check its result before starting another.",
   "Enter the complete recovery code supplied by the Demo administrator.": "Enter the complete recovery code supplied by the Demo administrator.",
   "Use a new password of 12–72 UTF-8 bytes and enter the same password twice.": "Use a new password of 12–72 UTF-8 bytes and enter the same password twice.",
-  "Check the original request first, then deliberately retry with the original values.": "Check the original request first, then deliberately retry with the original values."
+  "Check the original request first, then deliberately retry with the original values.": "Check the original request first, then deliberately retry with the original values.",
+  "This browser cannot safely coordinate this account request. Keep its reference and use a supported browser.": "This browser cannot safely coordinate this account request. Keep its reference and use a supported browser.",
+  "The original request data is unavailable. Keep this unresolved reference for manual receipt reconciliation. Do not create a replacement request.": "The original request data is unavailable. Keep this unresolved reference for manual receipt reconciliation. Do not create a replacement request.",
+  "No receipt was returned. This does not confirm rollback. You may deliberately retry only the saved original request.": "No receipt was returned. This does not confirm rollback. You may deliberately retry only the saved original request.",
+  "Original profile request": "Original profile request",
+  "This saved request is separate from the current profile below. Its values cannot be changed during recovery.": "This saved request is separate from the current profile below. Its values cannot be changed during recovery.",
+  "Retry original profile save": "Retry original profile save",
+  "Original assistance request": "Original assistance request",
+  "Original Participant account": "Original Participant account",
+  "Load recovery accounts to identify the original Participant.": "Load recovery accounts to identify the original Participant.",
+  "Retry keeps the original Participant, even if the current selection changes.": "Retry keeps the original Participant, even if the current selection changes.",
+  "Retry original assistance request": "Retry original assistance request",
+  "The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.": "The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.",
+  "The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.": "The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.",
+  "Unknown original Participant. Delivery remains hidden.": "Unknown original Participant. Delivery remains hidden."
 }

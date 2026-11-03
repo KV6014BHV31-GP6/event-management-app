@@ -1,4 +1,5 @@
 import { beforeEach, expect, it, vi } from 'vitest';
+import { waitFor } from '@testing-library/react';
 import {
   ACCOUNT_PREFIX, ACCOUNT_VERSION, RECOVERY_MARKER_KEY, createAccountClient,
   parseRecoveryCode, recoveryCode, validateNewPassword, validateProfileInput,
@@ -12,16 +13,56 @@ const secret = () => btoa(String.fromCharCode(...crypto.getRandomValues(new Uint
 const password = () => crypto.randomUUID();
 const reply = (value, status = 200) => ({ ok: status >= 200 && status < 300, status, json: async () => value });
 const errorReply = (code, status) => reply({ detail: { code, message: 'Untrusted server text must never be shown.' } }, status);
-const receipt = (body, effects, kind = 'account_test') => ({
+const receipt = (body, effects, kind = effects.profile_version ? 'account_profile_update' : effects.challenge_id ? 'account_recovery_issue' : 'account_password_reset') => ({
   contract_version: ACCOUNT_VERSION, operation_id: body.operation_id, kind,
-  resource_id: ACTOR, resource_version: 1, recorded_at: NOW, outcome: 'applied', effects,
+  resource_id: effects.account_id || effects.challenge_id || CHALLENGE, resource_version: effects.profile_version || 1, recorded_at: NOW, outcome: 'applied', effects,
 });
 const resetEffects = { credentials_changed: true, reauthentication_required: true };
 const profile = (version = 0) => ({ contract_version: ACCOUNT_VERSION,
   account: { id: ACTOR, username: 'synthetic-account', role: 'user' },
   profile: { display_name: 'Synthetic account', preferred_language: 'en', version, updated_at: version ? NOW : null }, as_of_utc: NOW });
 const authorize = fn => fn('synthetic-bearer', { id: ACTOR, role: 'user' });
-beforeEach(() => localStorage.clear());
+const originLocks = () => {
+  const held = new Set();
+  return { request: vi.fn(async (name, options, callback) => {
+    if (held.has(name)) return callback(null);
+    held.add(name);
+    try { return await callback({ name, mode: 'exclusive' }); } finally { held.delete(name); }
+  }) };
+};
+beforeEach(() => {
+  localStorage.clear();
+  Object.defineProperty(navigator, 'locks', { configurable: true, value: originLocks() });
+});
+
+it.each(['profile', 'issuance'])('follow-up RED: retains a durable original and offers deliberate retry after precommit404 for%s', async family => {
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') throw new TypeError();
+    return errorReply('NOT_FOUND', 404);
+  });
+  const first = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  if (family === 'profile') await expect(first.saveProfile({ display_name: 'Synthetic original', preferred_language: 'en' }, 0)).rejects.toThrow();
+  else await expect(first.issueChallenge(ACTOR)).rejects.toThrow();
+  const next = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(family === 'profile' ? next.reconcileProfile() : next.reconcileIssue()).rejects.toMatchObject({ status: 404 });
+  const raw = localStorage.getItem(`rose.demo.account-${family === 'profile' ? 'profile' : 'issue'}.v1.${ACTOR}`);
+  expect(Boolean(JSON.parse(raw)?.request)).toBe(true);
+  expect(typeof (family === 'profile' ? next.retryProfile : next.retryIssue)).toBe('function');
+});
+it.each(['kind', 'resource', 'version'])('follow-up RED: refuses a matching-ID reset receipt with wrong%s', async defect => {
+  const fetchImpl = async (path, options) => {
+    const value = { ...receipt(JSON.parse(options.body), resetEffects, 'account_password_reset'), resource_id: CHALLENGE };
+    if (defect === 'kind') value.kind = 'account_recovery_issue';
+    if (defect === 'resource') value.resource_id = '20000000-0000-4000-8000-000000000002';
+    if (defect === 'version') value.resource_version = 0;
+    return reply(value);
+  };
+  const client = createAccountClient({ fetchImpl });
+  let refused = false;
+  try { await client.resetPassword(recoveryCode(CHALLENGE, secret()), password()); } catch { refused = true; }
+  expect(refused).toBe(true);
+  expect(Boolean(client.pendingRecovery())).toBe(true);
+});
 
 it('accepts only canonical combined capability codes and validates UTF-8 password bytes', () => {
   const code = recoveryCode(CHALLENGE, secret());
@@ -230,4 +271,297 @@ it('also requires original-ID receipt reconciliation after a reset transaction r
   expect(marker).not.toBeNull();
   await expect(client.retryReset(combined, password())).rejects.toMatchObject({ code: 'RETRY' });
   expect(client.pendingRecovery().operation_id).toBe(marker.operation_id);
+});
+
+const protectedKey = family => `rose.demo.account-${family === 'profile' ? 'profile' : 'issue'}.v1.${ACTOR}`;
+const submitProtected = (client, family) => family === 'profile'
+  ? client.saveProfile({ display_name: 'Synthetic original', preferred_language: 'en' }, 0) : client.issueChallenge(ACTOR);
+const reconcile = (client, family) => family === 'profile' ? client.reconcileProfile() : client.reconcileIssue();
+const retry = (client, family) => family === 'profile' ? client.retryProfile() : client.retryIssue();
+const effectsFor = family => family === 'profile' ? { account_id: ACTOR, profile_version: 1 }
+  : { challenge_id: CHALLENGE, expires_at: NOW, provider: 'DEMO_PROVIDER', delivery_state: 'demo_recorded', external_delivery: false, identity_verified: false };
+it.each(['profile', 'issue'])('reloads the immutable%s original and sends identical bytes only after two explicit receipt observations', async family => {
+  let original, wire, posts = 0;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'GET') return errorReply('NOT_FOUND', 404);
+    const body = JSON.parse(options.body);
+    if (++posts === 1) { original = body; wire = options.body; throw new TypeError(); }
+    expect(options.body === wire).toBe(true);
+    return reply(receipt(body, effectsFor(family)));
+  });
+  await expect(submitProtected(createAccountClient({ actorId: ACTOR, authorize, fetchImpl }), family)).rejects.toThrow();
+  const saved = localStorage.getItem(protectedKey(family));
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(retry(client, family)).rejects.toMatchObject({ code: 'RETRY' });
+  await expect(reconcile(client, family)).rejects.toMatchObject({ status: 404 });
+  expect(localStorage.getItem(protectedKey(family)) === saved).toBe(true);
+  await retry(client, family);
+  expect(fetchImpl.mock.calls.map(([, options]) => options.method)).toEqual(['POST', 'GET', 'GET', 'POST']);
+  expect(localStorage.getItem(protectedKey(family))).toBeNull();
+  if (family === 'issue') expect(client.resolvedIssueOriginal(original.operation_id).data.account_id === ACTOR).toBe(true);
+});
+it.each(['profile', 'issue'])('resolves%s from the fresh retry receipt without another POST', async family => {
+  let original, reads = 0;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') { original = JSON.parse(options.body); throw new TypeError(); }
+    return ++reads === 1 ? errorReply('NOT_FOUND', 404) : reply(receipt(original, effectsFor(family)));
+  });
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, family)).rejects.toThrow();
+  await expect(reconcile(client, family)).rejects.toMatchObject({ status: 404 });
+  await retry(client, family);
+  expect(fetchImpl.mock.calls.map(([, options]) => options.method)).toEqual(['POST', 'GET', 'GET']);
+});
+it.each(['401', '403', '409', '500', 'malformed404', 'wrong kind', 'transport'])('a fresh protected retry GET%s preserves the original and sends no POST', async failure => {
+  let original, reads = 0;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') { original = JSON.parse(options.body); throw new TypeError(); }
+    if (++reads === 1) return errorReply('NOT_FOUND', 404);
+    if (failure === 'transport') throw new TypeError();
+    if (failure === 'malformed404') return reply({}, 404);
+    if (failure === 'wrong kind') return reply({ ...receipt(original, effectsFor('profile')), kind: 'account_recovery_issue' });
+    const status = Number(failure);
+    return errorReply(status === 401 ? 'AUTH_REQUIRED' : status === 403 ? 'FORBIDDEN' : status === 409 ? 'IMMUTABLE_CONFLICT' : 'OPERATION_OUTCOME_UNKNOWN', status);
+  });
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, 'profile')).rejects.toThrow();
+  const raw = localStorage.getItem(protectedKey('profile'));
+  await expect(client.reconcileProfile()).rejects.toMatchObject({ status: 404 });
+  await expect(client.retryProfile()).rejects.toThrow();
+  expect(localStorage.getItem(protectedKey('profile')) === raw).toBe(true);
+  expect(fetchImpl.mock.calls.filter(([, options]) => options.method === 'POST')).toHaveLength(1);
+  expect(client.canRetryProfile()).toBe(false);
+});
+it.each([401, 403, 409, 500])('a protected replay refusal%s never retires the unknown original', async status => {
+  let posts = 0;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'GET') return errorReply('NOT_FOUND', 404);
+    if (++posts === 1) throw new TypeError();
+    return errorReply(status === 401 ? 'AUTH_REQUIRED' : status === 403 ? 'FORBIDDEN' : status === 409 ? 'TRANSACTION_CONFLICT' : 'OPERATION_OUTCOME_UNKNOWN', status);
+  });
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, 'issue')).rejects.toThrow();
+  const raw = localStorage.getItem(protectedKey('issue'));
+  await expect(client.reconcileIssue()).rejects.toMatchObject({ status: 404 });
+  await expect(client.retryIssue()).rejects.toMatchObject({ status });
+  expect(localStorage.getItem(protectedKey('issue')) === raw).toBe(true);
+  await expect(client.retryIssue()).rejects.toMatchObject({ code: 'RETRY' });
+  expect(posts).toBe(2);
+});
+it.each(['profile', 'issue'])('legacy%s markers reconcile but cannot reconstruct or retry their missing original', async family => {
+  const marker = { challenge_id: null, operation_id: crypto.randomUUID(), endpoint: family === 'profile' ? '/me/profile' : '/account-recovery/challenges', unknown: true };
+  localStorage.setItem(protectedKey(family), JSON.stringify(marker));
+  let committed = false;
+  const fetchImpl = vi.fn(async () => committed ? reply(receipt({ operation_id: marker.operation_id }, effectsFor(family))) : errorReply('NOT_FOUND', 404));
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  expect(await (family === 'profile' ? client.profileOriginal() : client.issueOriginal())).toBeNull();
+  await expect(reconcile(client, family)).rejects.toMatchObject({ status: 404 });
+  await expect(retry(client, family)).rejects.toMatchObject({ code: 'LEGACY' });
+  expect(fetchImpl.mock.calls.every(([, options]) => options.method === 'GET')).toBe(true);
+  committed = true;
+  const resolved = await reconcile(client, family);
+  expect(localStorage.getItem(protectedKey(family))).toBeNull();
+  if (family === 'issue') expect(client.resolvedIssueOriginal(resolved.operation_id)).toBeNull();
+});
+it.each(['profile kind', 'profile actor', 'profile version', 'profile expected', 'issue kind', 'issue challenge', 'issue version'])('strictly rejects%s receipt binding', async defect => {
+  const family = defect.startsWith('profile') ? 'profile' : 'issue';
+  const fetchImpl = async (path, options) => {
+    const value = receipt(JSON.parse(options.body), effectsFor(family));
+    if (defect.endsWith('kind')) value.kind = 'account_password_reset';
+    if (defect.endsWith('actor') || defect.endsWith('challenge')) value.resource_id = '20000000-0000-4000-8000-000000000002';
+    if (defect === 'profile version') value.resource_version = 0;
+    if (defect === 'profile expected') { value.resource_version = 2; value.effects.profile_version = 2; }
+    if (defect === 'issue version') value.resource_version = 2;
+    return reply(value);
+  };
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, family)).rejects.toMatchObject({ code: 'UNKNOWN' });
+  expect(Boolean(localStorage.getItem(protectedKey(family)))).toBe(true);
+});
+it('accepts a bound reset receipt at credential generation3', async () => {
+  const client = createAccountClient({ fetchImpl: async (path, options) => reply({ ...receipt(JSON.parse(options.body), resetEffects), resource_version: 3 }) });
+  await client.resetPassword(recoveryCode(CHALLENGE, secret()), password());
+  expect(client.pendingRecovery()).toBeNull();
+});
+it.each(['missing', 'rejected', 'busy'])('fails closed when required origin coordination is%s', async mode => {
+  const fetchImpl = vi.fn();
+  const lockManager = mode === 'missing' ? null : { request: mode === 'rejected' ? async () => { throw new Error(); } : async (name, options, callback) => callback(null) };
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  await expect(submitProtected(client, 'profile')).rejects.toMatchObject({ code: mode === 'busy' ? 'PENDING' : 'COORDINATION' });
+  expect(fetchImpl).not.toHaveBeenCalled(); expect(localStorage.length).toBe(0);
+});
+it('two client instances cannot queue a second initial POST or overwrite the first original', async () => {
+  const lockManager = originLocks(); let rejectFirst;
+  const fetchImpl = vi.fn(() => new Promise((resolve, reject) => { rejectFirst = reject; }));
+  const first = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  const second = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  const initial = first.issueChallenge(ACTOR).catch(error => error);
+  await waitFor(() => expect(fetchImpl).toHaveBeenCalledTimes(1));
+  const raw = localStorage.getItem(protectedKey('issue'));
+  await expect(second.issueChallenge('different-target')).rejects.toMatchObject({ code: 'PENDING' });
+  expect(localStorage.getItem(protectedKey('issue')) === raw).toBe(true);
+  expect(lockManager.request.mock.calls.every(([, options]) => options.mode === 'exclusive' && options.ifAvailable === true)).toBe(true);
+  rejectFirst(new TypeError()); await initial;
+  await expect(second.issueChallenge('different-target')).rejects.toMatchObject({ code: 'PENDING' });
+  expect(fetchImpl).toHaveBeenCalledTimes(1);
+});
+it('holds the origin lock through reconciliation and cannot clear a newer stored operation', async () => {
+  let original, release;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') { original = JSON.parse(options.body); throw new TypeError(); }
+    return new Promise(resolve => { release = () => resolve(reply(receipt(original, effectsFor('profile')))); });
+  });
+  const lockManager = originLocks(), first = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  await expect(submitProtected(first, 'profile')).rejects.toThrow();
+  const second = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  const checking = first.reconcileProfile().catch(error => error);
+  await waitFor(() => expect(release).toBeTypeOf('function'));
+  await expect(second.reconcileProfile()).rejects.toMatchObject({ code: 'PENDING' });
+  const newer = JSON.stringify({ challenge_id: null, operation_id: crypto.randomUUID(), endpoint: '/me/profile', unknown: true });
+  localStorage.setItem(protectedKey('profile'), newer);
+  release(); expect((await checking).code).toBe('UNKNOWN');
+  expect(localStorage.getItem(protectedKey('profile')) === newer).toBe(true);
+});
+it('cancellation during fresh authorization prevents a stale initial POST', async () => {
+  let release;
+  const fetchImpl = vi.fn();
+  const client = createAccountClient({ actorId: ACTOR, fetchImpl, authorize: fn => new Promise((resolve, reject) => {
+    release = () => Promise.resolve().then(() => fn('token', { id: ACTOR })).then(resolve, reject);
+  }) });
+  const submitting = submitProtected(client, 'profile').catch(error => error);
+  await waitFor(() => expect(release).toBeTypeOf('function'));
+  client.cancelRequests(); release();
+  expect((await submitting).code).toBe('UNKNOWN');
+  expect(fetchImpl).not.toHaveBeenCalled(); expect(localStorage.length).toBe(0);
+});
+it.each(['denied', 'readback mismatch'])('fails before initial protected POST on storage%s', async mode => {
+  let raw = null;
+  const fetchImpl = vi.fn(), storage = { getItem: () => raw, setItem: (key, value) => {
+    if (mode === 'denied') throw new Error(); raw = value + ' ';
+  } };
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, storage });
+  await expect(submitProtected(client, 'profile')).rejects.toMatchObject({ code: 'STORAGE' });
+  expect(fetchImpl).not.toHaveBeenCalled();
+});
+it('refuses a corrupted nonsecret original digest without a receipt GET or POST', async () => {
+  const fetchImpl = vi.fn(async () => { throw new TypeError(); });
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, 'profile')).rejects.toThrow();
+  const key = protectedKey('profile'), value = JSON.parse(localStorage.getItem(key));
+  value.request.data.display_name = 'Changed local original';
+  localStorage.setItem(key, JSON.stringify(value));
+  fetchImpl.mockClear();
+  await expect(client.reconcileProfile()).rejects.toMatchObject({ code: 'STORAGE' });
+  await expect(client.profileOriginal()).rejects.toMatchObject({ code: 'STORAGE' });
+  expect(fetchImpl).not.toHaveBeenCalled();
+});
+it('a reference changed during the fresh retry GET is never overwritten or sent', async () => {
+  let reads = 0;
+  const newer = JSON.stringify({ challenge_id: null, operation_id: crypto.randomUUID(), endpoint: '/me/profile', unknown: true });
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') throw new TypeError();
+    if (++reads === 2) localStorage.setItem(protectedKey('profile'), newer);
+    return errorReply('NOT_FOUND', 404);
+  });
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, 'profile')).rejects.toThrow();
+  await expect(client.reconcileProfile()).rejects.toMatchObject({ status: 404 });
+  await expect(client.retryProfile()).rejects.toMatchObject({ code: 'UNKNOWN' });
+  expect(localStorage.getItem(protectedKey('profile')) === newer).toBe(true);
+  expect(fetchImpl.mock.calls.filter(([, options]) => options.method === 'POST')).toHaveLength(1);
+});
+it('holds the origin lock through the fresh retry GET, original POST and matching cleanup', async () => {
+  let original, reads = 0, posts = 0, releaseRead, releasePost;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') {
+      if (++posts === 1) { original = JSON.parse(options.body); throw new TypeError(); }
+      return new Promise(resolve => { releasePost = () => resolve(reply(receipt(JSON.parse(options.body), effectsFor('issue')))); });
+    }
+    if (++reads === 1) return errorReply('NOT_FOUND', 404);
+    return new Promise(resolve => { releaseRead = () => resolve(errorReply('NOT_FOUND', 404)); });
+  });
+  const lockManager = originLocks();
+  const first = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  const second = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, lockManager });
+  await expect(submitProtected(first, 'issue')).rejects.toThrow();
+  await expect(first.reconcileIssue()).rejects.toMatchObject({ status: 404 });
+  const raw = localStorage.getItem(protectedKey('issue'));
+  const retrying = first.retryIssue();
+  await waitFor(() => expect(releaseRead).toBeTypeOf('function'));
+  await expect(second.reconcileIssue()).rejects.toMatchObject({ code: 'PENDING' });
+  expect(localStorage.getItem(protectedKey('issue')) === raw).toBe(true);
+  releaseRead(); await waitFor(() => expect(releasePost).toBeTypeOf('function'));
+  await expect(second.issueChallenge('other')).rejects.toMatchObject({ code: 'PENDING' });
+  releasePost(); const result = await retrying;
+  expect(result.operation_id === original.operation_id).toBe(true);
+  expect(localStorage.getItem(protectedKey('issue'))).toBeNull();
+  expect(posts).toBe(2); expect(reads).toBe(2);
+});
+it('does not overwrite a reference that appears during initial fingerprint preparation', async () => {
+  const digest = crypto.subtle.digest.bind(crypto.subtle); let release;
+  vi.spyOn(crypto.subtle, 'digest').mockImplementationOnce((...args) => new Promise(resolve => { release = () => digest(...args).then(resolve); }));
+  const fetchImpl = vi.fn(), client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  const saving = submitProtected(client, 'profile').catch(error => error);
+  await waitFor(() => expect(release).toBeTypeOf('function'));
+  const other = JSON.stringify({ challenge_id: null, operation_id: crypto.randomUUID(), endpoint: '/me/profile', unknown: true });
+  localStorage.setItem(protectedKey('profile'), other); release();
+  expect((await saving).code).toBe('PENDING');
+  expect(localStorage.getItem(protectedKey('profile')) === other).toBe(true);
+  expect(fetchImpl).not.toHaveBeenCalled();
+});
+it.each(['actor', 'endpoint', 'operation', 'unknown request field', 'unknown record field'])('rejects a typed original with invalid%s before hashing or network use', async defect => {
+  const fetchImpl = vi.fn(async () => { throw new TypeError(); });
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl });
+  await expect(submitProtected(client, 'profile')).rejects.toThrow();
+  const key = protectedKey('profile'), record = JSON.parse(localStorage.getItem(key));
+  if (defect === 'actor') record.actor_id = 'another';
+  if (defect === 'endpoint') record.endpoint = '/account-recovery/challenges';
+  if (defect === 'operation') record.request.operation_id = crypto.randomUUID();
+  if (defect === 'unknown request field') record.request.data.unapproved = 'blocked';
+  if (defect === 'unknown record field') record.unapproved = 'blocked';
+  const raw = JSON.stringify(record); localStorage.setItem(key, raw);
+  fetchImpl.mockClear(); const digest = vi.spyOn(crypto.subtle, 'digest');
+  await expect(client.reconcileProfile()).rejects.toMatchObject({ code: 'STORAGE' });
+  expect(digest).not.toHaveBeenCalled(); expect(fetchImpl).not.toHaveBeenCalled();
+  expect(localStorage.getItem(key) === raw).toBe(true);
+});
+it('an actorA late receipt after cancellation cannot clear actorB original or its own unresolved reference', async () => {
+  const OTHER_ACTOR = '01K00000000000000000000002'; let originalA, release;
+  const fetchImpl = vi.fn(async (path, options) => {
+    if (options.method === 'POST') {
+      if (options.headers.Authorization === 'Bearer tokenA') originalA = JSON.parse(options.body);
+      throw new TypeError();
+    }
+    return new Promise(resolve => { release = () => resolve(reply(receipt(originalA, effectsFor('profile')))); });
+  });
+  const actorA = createAccountClient({ actorId: ACTOR, authorize: fn => fn('tokenA', { id: ACTOR }), fetchImpl });
+  const actorB = createAccountClient({ actorId: OTHER_ACTOR, authorize: fn => fn('tokenB', { id: OTHER_ACTOR }), fetchImpl });
+  await expect(submitProtected(actorA, 'profile')).rejects.toThrow();
+  const checking = actorA.reconcileProfile().catch(error => error);
+  await waitFor(() => expect(release).toBeTypeOf('function'));
+  await expect(actorB.saveProfile({ display_name: 'Synthetic actorB', preferred_language: 'ms' }, 0)).rejects.toThrow();
+  const keyB = `rose.demo.account-profile.v1.${OTHER_ACTOR}`, rawB = localStorage.getItem(keyB), rawA = localStorage.getItem(protectedKey('profile'));
+  actorA.cancelRequests(); release(); expect((await checking).code).toBe('UNKNOWN');
+  expect(localStorage.getItem(keyB) === rawB).toBe(true);
+  expect(localStorage.getItem(protectedKey('profile')) === rawA).toBe(true);
+});
+it('failed storage cleanup after a valid receipt preserves the original instead of inventing another operation', async () => {
+  const map = new Map();
+  const storage = { getItem: key => map.get(key) ?? null, setItem: (key, value) => map.set(key, value), removeItem: () => { throw new Error(); } };
+  const fetchImpl = vi.fn(async (path, options) => reply(receipt(JSON.parse(options.body), effectsFor('profile'))));
+  const client = createAccountClient({ actorId: ACTOR, authorize, fetchImpl, storage });
+  await expect(submitProtected(client, 'profile')).rejects.toMatchObject({ code: 'UNKNOWN' });
+  const raw = storage.getItem(protectedKey('profile'));
+  await expect(submitProtected(client, 'profile')).rejects.toMatchObject({ code: 'PENDING' });
+  expect(storage.getItem(protectedKey('profile')) === raw).toBe(true); expect(fetchImpl).toHaveBeenCalledTimes(1);
+});
+it.each(['0', '2026-02-30T08:00:00Z', '2026-11-03T24:00:00Z'])('rejects a noncanonical receipt UTC timestamp', async invalid => {
+  const client = createAccountClient({ fetchImpl: async (path, options) => reply({ ...receipt(JSON.parse(options.body), resetEffects), recorded_at: invalid }) });
+  await expect(client.resetPassword(recoveryCode(CHALLENGE, secret()), password())).rejects.toMatchObject({ code: 'UNKNOWN' });
+  expect(Boolean(client.pendingRecovery())).toBe(true);
+});
+it('accepts actual Backend UTC microseconds and a later credential generation', async () => {
+  const client = createAccountClient({ fetchImpl: async (path, options) => reply({ ...receipt(JSON.parse(options.body), resetEffects), recorded_at: '2026-11-03T08:00:00.123456Z', resource_version: 4 }) });
+  await client.resetPassword(recoveryCode(CHALLENGE, secret()), password());
+  expect(client.pendingRecovery()).toBeNull();
 });

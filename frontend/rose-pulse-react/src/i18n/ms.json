@@ -891,5 +891,19 @@
   "An original request is unresolved. Check its result before starting another.": "Hasil permintaan asal belum dipastikan. Semak hasilnya sebelum memulakan permintaan lain.",
   "Enter the complete recovery code supplied by the Demo administrator.": "Masukkan kod pemulihan penuh yang diberikan oleh pentadbir Demo.",
   "Use a new password of 12–72 UTF-8 bytes and enter the same password twice.": "Gunakan kata laluan baharu sepanjang 12–72 bait UTF-8 dan masukkan kata laluan yang sama dua kali.",
-  "Check the original request first, then deliberately retry with the original values.": "Semak permintaan asal dahulu, kemudian cuba semula dengan sengaja menggunakan nilai asal."
+  "Check the original request first, then deliberately retry with the original values.": "Semak permintaan asal dahulu, kemudian cuba semula dengan sengaja menggunakan nilai asal.",
+  "This browser cannot safely coordinate this account request. Keep its reference and use a supported browser.": "Pelayar ini tidak dapat menyelaraskan permintaan akaun ini dengan selamat. Simpan rujukannya dan gunakan pelayar yang disokong.",
+  "The original request data is unavailable. Keep this unresolved reference for manual receipt reconciliation. Do not create a replacement request.": "Data permintaan asal tidak tersedia. Simpan rujukan yang belum dipastikan ini untuk semakan resit secara manual. Jangan cipta permintaan pengganti.",
+  "No receipt was returned. This does not confirm rollback. You may deliberately retry only the saved original request.": "Tiada resit dikembalikan. Ini tidak mengesahkan bahawa perubahan telah dibatalkan. Anda hanya boleh mencuba semula permintaan asal yang disimpan dengan sengaja.",
+  "Original profile request": "Permintaan profil asal",
+  "This saved request is separate from the current profile below. Its values cannot be changed during recovery.": "Permintaan tersimpan ini berasingan daripada profil semasa di bawah. Nilainya tidak boleh diubah semasa pemulihan.",
+  "Retry original profile save": "Cuba semula simpanan profil asal",
+  "Original assistance request": "Permintaan bantuan asal",
+  "Original Participant account": "Akaun Peserta asal",
+  "Load recovery accounts to identify the original Participant.": "Muatkan akaun pemulihan untuk mengenal pasti Peserta asal.",
+  "Retry keeps the original Participant, even if the current selection changes.": "Cubaan semula mengekalkan Peserta asal walaupun pilihan semasa berubah.",
+  "Retry original assistance request": "Cuba semula permintaan bantuan asal",
+  "The original request data and Participant target are unavailable. Keep this reference for manual receipt reconciliation. Do not use the current selection as its target.": "Data permintaan asal dan Peserta sasaran tidak tersedia. Simpan rujukan ini untuk semakan resit secara manual. Jangan gunakan pilihan semasa sebagai sasarannya.",
+  "The original receipt is confirmed, but its Participant target is unknown. Keep delivery hidden and reconcile the original source manually.": "Resit asal telah disahkan, tetapi Peserta sasarannya tidak diketahui. Kekalkan penghantaran tersembunyi dan semak sumber asal secara manual.",
+  "Unknown original Participant. Delivery remains hidden.": "Peserta asal tidak diketahui. Penghantaran kekal tersembunyi."
 }
