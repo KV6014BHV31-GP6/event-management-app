@@ -274,53 +274,71 @@ def wait_http(url: str, processes: list) -> None:
     raise RuntimeError("Owned service readiness timed out")
 
 
-BROWSER_SMOKE = r'''
-const fs = require('node:fs');
-const path = require('node:path');
-const assert = require('node:assert/strict');
-const {chromium} = require(path.join(process.env.NU_BROWSER_TOOLS, 'node_modules/playwright'));
-(async () => {
-  const browser = await chromium.launch({headless:true});
-  const context = await browser.newContext({viewport:{width:1440,height:1000},locale:'en-GB'});
-  const page = await context.newPage();
-  const observed = []; const errors = [];
-  page.on('pageerror', () => errors.push('pageerror'));
-  page.on('response', response => {
-    const url = new URL(response.url());
-    if (url.pathname.startsWith('/api/')) observed.push({path:url.pathname,method:response.request().method(),status:response.status()});
-  });
-  try {
-    await page.goto(process.env.NU_BROWSER_URL + '?view=events&keyword=Synthetic%20community%20event', {waitUntil:'networkidle'});
-    await page.getByText('Synthetic community event 1', {exact:true}).first().waitFor();
-    await page.screenshot({path:path.join(process.env.NU_CI_OUTPUT,'public-browse.png')});
-    await page.goto(process.env.NU_BROWSER_URL + '?view=signup');
-    await page.getByLabel('Username',{exact:true}).fill(process.env.NU_SMOKE_USERNAME);
-    await page.getByLabel('Password',{exact:true}).fill(process.env.NU_SMOKE_PASSWORD);
-    await page.getByRole('button',{name:'Create account',exact:true}).click();
-    await page.getByText(/Account .* was created\. Log in to continue\./).waitFor();
-    await page.goto(process.env.NU_BROWSER_URL + '?view=login');
-    await page.getByLabel('Username',{exact:true}).fill(process.env.NU_SMOKE_USERNAME);
-    await page.getByLabel('Password',{exact:true}).fill(process.env.NU_SMOKE_PASSWORD);
-    await page.getByRole('button',{name:'Log in',exact:true}).click();
-    await page.getByRole('button',{name:'Log out',exact:true}).waitFor();
-    await page.reload({waitUntil:'networkidle'});
-    await page.getByRole('button',{name:'Log out',exact:true}).waitFor();
-    assert(observed.some(r=>r.path==='/api/v1/users' && r.method==='POST' && r.status===201));
-    assert(observed.some(r=>r.path==='/api/v1/auth/login' && r.status===200));
-    assert(observed.some(r=>r.path==='/api/v1/users/me' && r.status===200));
-    assert(observed.some(r=>r.path==='/api/v1/events' && r.status===200));
-    assert.equal(errors.length,0);
-    fs.writeFileSync(path.join(process.env.NU_CI_OUTPUT,'browser-smoke.json'),JSON.stringify({
-      status:'PASS',source_sha:process.env.GITHUB_SHA,browser:browser.version(),
-      browser_source:'pinned Playwright bundled Chromium; not local Chrome equivalence',
-      viewport:{width:1440,height:1000},api:observed,page_errors:errors.length,
-      checks:['production React browse','UI signup persisted','real login','authenticated reload'],
-      document_viewer:'NOT_RUN_BY_THIS_BOUNDED_SMOKE',offline:'NOT_RUN_BY_THIS_BOUNDED_SMOKE',
-      full_40ac:'REQUIRES_SEPARATE_FIXED_SHA_ACCEPTANCE'
-    },null,2));
-  } finally { await context.close(); await browser.close(); }
-})().catch(() => { console.error('Browser smoke failed; no raw page/form/token dump retained'); process.exitCode=1; });
-'''
+def validate_browser_evidence(browser: dict, sha: str, native: dict, *, expected_mode: str = "GITHUB_HOSTED") -> None:
+    """Required measured E2E units; old smoke/NOT_RUN receipts fail closed."""
+    def require(condition, message):
+        if not condition:
+            raise RuntimeError("Required browser E2E evidence failed: " + message)
+    require(browser.get("schema") == "nu.demo-browser-e2e/1" and browser.get("status") == "PASS", "schema/status")
+    require(browser.get("source_sha") == sha and browser.get("execution_mode") == expected_mode, "source/mode binding")
+    require(browser.get("page_errors") == 0, "page errors")
+    viewer, offline = browser.get("document_viewer"), browser.get("offline")
+    require(isinstance(viewer, dict) and viewer.get("status") == "PASS", "document viewer missing/NOT_RUN")
+    require(all(viewer.get(key) is True for key in ["authenticated_get", "preview_decoded", "download_hash_match", "private_no_store"]), "private preview/download")
+    require(isinstance(offline, dict) and offline.get("status") == "PASS", "offline missing/NOT_RUN")
+    require(all(offline.get(key) is True for key in ["ids_preserved", "payloads_preserved", "unknown_visible", "recovered_same_batch"]), "offline reload/recovery")
+    require(all(offline.get(key) == value for key, value in {"draft_count": 3, "offline_api_requests": 0,
+        "restore_auto_posts": 0, "batch_post_count": 1, "batch_post_status": 200, "receipt_get_status": 200}.items()), "offline HTTP counts/status")
+    require(isinstance(offline.get("receipt_get_count"), int) and offline["receipt_get_count"] >= 1, "original receipt GET")
+    require(all(native.get(key) is True for key in ["native", "non_superuser", "private_file_linkage", "immutable_batch_match"]), "native identity/linkage/fingerprints")
+    require(all(native.get(key) == value for key, value in {"server_version_num": 170011, "ui_user_count": 1,
+        "browser_batch_count": 1, "browser_submission_count": 3, "pending_offline_registrations": 3,
+        "duplicate_effect_count": 0}.items()), "native exact-once effects")
+
+
+async def browser_readback(database_url: str, database: str, role: str, private_dir: Path) -> dict:
+    """Read-only native reconciliation of the helper's exact new fixture and IDs."""
+    import asyncpg
+    fixture = json.loads((private_dir / "fixture.json").read_text(encoding="utf8"))
+    envelope = json.loads((private_dir / "sent-envelope.json").read_text(encoding="utf8"))
+    local = json.loads((private_dir / "reconciled.json").read_text(encoding="utf8"))
+    def fingerprint(value):
+        canonical = json.dumps(value, sort_keys=True, separators=(',', ':'), ensure_ascii=False, allow_nan=False)
+        return digest(('raw-json-sortkeys-v1\n' + canonical).encode('utf8'))
+    connection = await asyncpg.connect(database_url.replace("postgresql+asyncpg://", "postgresql://", 1))
+    try:
+        async with connection.transaction(readonly=True):
+            identity = await connection.fetchrow("SELECT current_database() AS name, current_user AS role, current_setting('server_version_num')::int AS version, (SELECT rolsuper FROM pg_roles WHERE rolname=current_user) AS superuser")
+            if identity['name'] != database or identity['role'] != role or identity['version'] != 170011 or identity['superuser']:
+                raise RuntimeError("Browser native database identity mismatch")
+            event = await connection.fetchrow("SELECT id,organizer_id FROM events WHERE public_id=$1", fixture['event_public_id'])
+            if not event:
+                raise RuntimeError("Browser fixture event missing")
+            batches = await connection.fetch("SELECT * FROM phase2_sync_batches WHERE event_id=$1", event['id'])
+            submissions = await connection.fetch("SELECT * FROM phase2_sync_submissions WHERE event_id=$1", event['id'])
+            immutable = len(batches) == 1 and batches[0]['batch_id'] == envelope['batch_id'] and batches[0]['actor_id'] == event['organizer_id'] and batches[0]['fingerprint'] == fingerprint(envelope)
+            receipts = json.loads(batches[0]['receipt']) if len(batches) == 1 else {}
+            expected_ids = {item['client_submission_id'] for item in envelope['items']}
+            immutable = immutable and expected_ids == {row['client_submission_id'] for row in submissions} and len(expected_ids) == 3
+            for row in submissions:
+                item = next(item for item in envelope['items'] if item['client_submission_id'] == row['client_submission_id'])
+                immutable = immutable and row['actor_id'] == event['organizer_id'] and row['fingerprint'] == fingerprint(item['application'])
+            accepted = receipts.get('items', [])
+            immutable = immutable and len(accepted) == 3 and all(item['outcome'] == 'accepted' and item['code'] == 'RECORDED' and item['registration_status_at_recording'] == 'pending' for item in accepted)
+            local_ids = {row['client_submission_id'] for row in local['drafts'] if row['state'] == 'synced' and row['batch_id'] == envelope['batch_id']}
+            immutable = immutable and local_ids == expected_ids and len(local['batches']) == 1 and local['batches'][0]['request'] == envelope
+            rows = await connection.fetch("SELECT r.id,r.status,r.channel,r.created_by_user_id,p.user_id FROM registrations r JOIN participants p ON p.id=r.participant_id WHERE r.event_id=$1", event['id'])
+            receipt_registration_ids = {item['registration_id'] for item in accepted}
+            pending = [row for row in rows if row['channel'] == 'offline' and row['status'] == 'pending' and row['created_by_user_id'] == event['organizer_id'] and row['user_id'] is None and row['id'] in receipt_registration_ids]
+            linkage = await connection.fetchval("SELECT count(*) FROM phase2_registration_documents d JOIN phase2_files f ON f.id=d.file_id JOIN registrations r ON r.id=d.registration_id JOIN participants p ON p.id=r.participant_id WHERE d.registration_id=$1 AND f.id=$2 AND f.purpose='supporting_document' AND f.owner_id=p.user_id AND r.channel='online' AND r.status='pending' AND r.event_id=$3", fixture['registration_id'], fixture['document_id'], event['id'])
+            return {'native': True, 'server_version_num': identity['version'], 'database_suffix': '_browser_be_test',
+                'non_superuser': True, 'ui_user_count': await connection.fetchval("SELECT count(*) FROM users WHERE username=$1 AND role='user'", fixture['username']),
+                'private_file_linkage': linkage == 1, 'browser_batch_count': len(batches), 'browser_submission_count': len(submissions),
+                'pending_offline_registrations': len(pending), 'duplicate_effect_count': abs(len(rows)-4),
+                'immutable_batch_match': bool(immutable), 'batch_id': envelope['batch_id'],
+                'migrations': [row['migration_id'] for table in ['phase2_schema_migrations', 'journey_schema_migrations', 'accounts_schema_migrations'] for row in await connection.fetch('SELECT migration_id FROM '+table)]}
+    finally:
+        await connection.close()
 
 
 def backend_test_paths() -> list[Path]:
@@ -346,7 +364,8 @@ def native_browser(build_input: Path) -> None:
         raise RuntimeError("Unsafe native test database name")
     migration_database = database.removesuffix("_be_test") + "_migration_be_test"
     shape_database = database.removesuffix("_be_test") + "_shape_be_test"
-    if any(len(name) > 63 for name in [database, migration_database, shape_database]):
+    browser_database = database.removesuffix("_be_test") + "_browser_be_test"
+    if any(len(name) > 63 for name in [database, migration_database, shape_database, browser_database]):
         raise RuntimeError("Native test database name exceeds PostgreSQL limit")
     env = os.environ.copy() | {"PYTHONIOENCODING": "utf-8", "PYTHONDONTWRITEBYTECODE": "1",
         "DATABASE_URL": f"postgresql://nu_ci_app:{password}@127.0.0.1:{pgport}/{database}",
@@ -397,7 +416,7 @@ def native_browser(build_input: Path) -> None:
         psql = [pg / "psql.exe", "-X", "-h", "127.0.0.1", "-p", pgport, "-U", "nu_ci_admin", "-d", "postgres", "-v", "ON_ERROR_STOP=1"]
         sql = work / "create.sql"
         sql.write_text(f"CREATE ROLE nu_ci_app LOGIN PASSWORD '{password}' NOSUPERUSER NOCREATEDB NOCREATEROLE;\n" +
-                       "".join(f"CREATE DATABASE {name} OWNER nu_ci_app;\n" for name in [database, migration_database, shape_database]), encoding="utf-8")
+                       "".join(f"CREATE DATABASE {name} OWNER nu_ci_app;\n" for name in [database, migration_database, shape_database, browser_database]), encoding="utf-8")
         run([*psql, "-f", sql], "isolated-database-create", env=env)
         sql.unlink()
         # Require password authentication after bootstrap; never alter an installed service.
@@ -415,6 +434,12 @@ def native_browser(build_input: Path) -> None:
         run([sys.executable, "-B", "-m", "pytest", "-q", *native, f"--junitxml={native_report}"], "backend-native", cwd=ROOT / "backend", env=env, timeout=900)
         REPORT["native"] = junit_counts(native_report)
         env.pop("NU_NATIVE_TEST_DATABASE_URL")
+        # Browser fixtures never inherit native-suite leftovers, roles or mutations.
+        env['DATABASE_URL'] = env['DATABASE_URL'].rsplit('/', 1)[0] + '/' + browser_database
+        run([sys.executable, '-B', '-m', 'scripts.dev_bootstrap', '--acknowledge-development'], 'browser-bootstrap', cwd=ROOT / 'backend', env=env)
+        for module in ['migrate_phase2', 'migrate_demo_journey', 'migrate_accounts']:
+            for attempt in ['first', 'repeat']:
+                run([sys.executable, '-B', '-m', 'scripts.' + module, '--acknowledge-development', '--database', browser_database], 'browser-' + module + '-' + attempt, cwd=ROOT / 'backend', env=env)
         dist = build_input.resolve()
         if not (dist / "index.html").is_file() or not (dist / "sw.js").is_file():
             raise RuntimeError("Actual production build input missing")
@@ -437,32 +462,16 @@ def native_browser(build_input: Path) -> None:
             raise RuntimeError("Playwright package pin mismatch")
         env["PLAYWRIGHT_BROWSERS_PATH"] = str(work / "browsers")
         run(["node", tools / "node_modules/playwright/cli.js", "install", "chromium"], "browser-binary-install", cwd=tools, env=env)
-        smoke = work / "smoke.cjs"
-        smoke.write_text(BROWSER_SMOKE, encoding="utf-8")
         username = "ci_" + secrets.token_hex(6)
         env.update(NU_BROWSER_TOOLS=str(tools), NU_BROWSER_URL=f"http://127.0.0.1:{webport}/",
-                   NU_SMOKE_USERNAME=username, NU_SMOKE_PASSWORD=smoke_password, NU_CI_OUTPUT=str(OUT))
-        run(["node", smoke], "browser-smoke", env=env, timeout=180)
-
-        async def readback():
-            import asyncpg
-            connection = await asyncpg.connect(env["DATABASE_URL"])
-            try:
-                identity = await connection.fetchrow("SELECT current_database() AS name, current_user AS role, current_setting('server_version_num')::int AS version, (SELECT rolsuper FROM pg_roles WHERE rolname=current_user) AS superuser")
-                if identity["name"] != database or identity["role"] != "nu_ci_app" or identity["version"] != 170011 or identity["superuser"]:
-                    raise RuntimeError("Connected native database identity mismatch")
-                count = await connection.fetchval("SELECT count(*) FROM users WHERE username=$1 AND role='user'", username)
-                if count != 1:
-                    raise RuntimeError("UI signup not persisted exactly once")
-                return {"native": True, "server_version_num": identity["version"], "database_suffix": "_be_test", "non_superuser": True,
-                        "synthetic_ui_user_count": count, "event_count": await connection.fetchval("SELECT count(*) FROM events"),
-                        "registration_count": await connection.fetchval("SELECT count(*) FROM registrations"),
-                        "migrations": [row["migration_id"] for table in ["phase2_schema_migrations", "journey_schema_migrations", "accounts_schema_migrations"]
-                                       for row in await connection.fetch("SELECT migration_id FROM " + table)]}
-            finally:
-                await connection.close()
-        REPORT["database"] = asyncio.run(readback())
-        REPORT["browser"] = json.loads((OUT / "browser-smoke.json").read_text())
+                   NU_SMOKE_USERNAME=username, NU_SMOKE_PASSWORD=smoke_password, NU_CI_OUTPUT=str(OUT),
+                   NU_BROWSER_PRIVATE=str(work / 'browser-private'), NU_BROWSER_SOURCE_SHA=REPORT['source_sha'],
+                   NU_BROWSER_EXECUTION_MODE='GITHUB_HOSTED')
+        run(["node", ROOT / 'scripts/demo_browser_e2e.cjs'], "browser-e2e", env=env, timeout=300)
+        REPORT["database"] = asyncio.run(browser_readback(env['DATABASE_URL'], browser_database, 'nu_ci_app', work / 'browser-private'))
+        write_json(OUT / 'browser-native-readback.json', REPORT['database'])
+        REPORT["browser"] = json.loads((OUT / "browser-e2e.json").read_text(encoding='utf8'))
+        validate_browser_evidence(REPORT['browser'], REPORT['source_sha'], REPORT['database'])
         REPORT["browser_lock_sha256"] = file_digest(tools / "package-lock.json")
         REPORT["runtime"].update(postgresql="17.11", playwright=RUNTIME["playwright"], browser=REPORT["browser"]["browser"])
     finally:
@@ -515,6 +524,7 @@ def package(inputs: Path, destination: Path) -> None:
         if report["status"] != "PASS" or report["source_sha"] != sha or report.get("local_only"):
             raise RuntimeError("Required immutable CI evidence missing or not PASS: " + stage)
         evidence[stage] = report
+    validate_browser_evidence(evidence['native-browser'].get('browser', {}), sha, evidence['native-browser'].get('database', {}))
     build = inputs / "build"
     expected = evidence["frontend"]["build_files"]
     actual = {p.relative_to(build).as_posix(): file_digest(p) for p in sorted(build.rglob("*")) if p.is_file()}
@@ -523,7 +533,7 @@ def package(inputs: Path, destination: Path) -> None:
     destination.mkdir(parents=True, exist_ok=True)
     payload = {}
     for name in git("ls-files", "-z").split("\0"):
-        if name.startswith(("backend/", "frontend/", "docs/dev/demo-journey/", "docs/dev/phase2/API_CONTRACT")) or name in {"README.md", "AGENTS.md", "scripts/demo_ci.py"}:
+        if name.startswith(("backend/", "frontend/", "docs/dev/demo-journey/", "docs/dev/phase2/API_CONTRACT")) or name in {"README.md", "AGENTS.md", "scripts/demo_ci.py", "scripts/demo_browser_e2e.cjs"}:
             public_path(name)
             payload["source/" + name] = (ROOT / name).read_bytes()
     for name in actual:
