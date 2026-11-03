@@ -224,6 +224,11 @@ def frontend(local: bool) -> None:
     report_path = OUT / "react-junit.xml"
     run([npm, "test", "--", "--reporter=default", "--reporter=junit", f"--outputFile.junit={report_path}"], "react-tests", cwd=folder)
     REPORT["react"] = junit_counts(report_path)
+    env = os.environ.copy() | {"VITE_DEMO_PROFILE": "synthetic", "VITE_DEMO_BUILD_SHA": sha}
+    synthetic_report = OUT / "react-synthetic-account-junit.xml"
+    run([npm, "test", "--", "src/AccountWorkspace.test.jsx", "--reporter=default", "--reporter=junit",
+         f"--outputFile.junit={synthetic_report}"], "react-synthetic-account-tests", cwd=folder, env=env)
+    REPORT["react_synthetic_accounts"] = junit_counts(synthetic_report)
     legacy = [ROOT / "frontend/dev-server.test.mjs", *sorted((ROOT / "frontend/live/tests").glob("*.test.mjs")),
               *sorted((ROOT / "frontend/mock/v1.2.0/tests").glob("*.test.mjs"))]
     output = run(["node", "--test", "--test-reporter=tap", *legacy], "legacy-tests")
@@ -231,7 +236,6 @@ def frontend(local: bool) -> None:
     if not counts.get("tests") or counts.get("pass") != counts["tests"] or any(counts.get(k, 0) for k in ["fail", "cancelled", "skipped", "todo"]):
         raise RuntimeError("Legacy suite incomplete or failed")
     REPORT["legacy"] = counts
-    env = os.environ.copy() | {"VITE_DEMO_PROFILE": "synthetic", "VITE_DEMO_BUILD_SHA": sha}
     run([npm, "run", "build"], "production-build", cwd=folder, env=env)
     dist = folder / "dist"
     if not (dist / "index.html").is_file() or not (dist / "sw.js").is_file():
