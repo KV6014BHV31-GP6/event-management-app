@@ -189,6 +189,9 @@ class RegistrationService:
         based on waitlisted_at order if applicable.
         """
         event, registration = await lock_registration(db, registration_id)
+        # Preserve event -> actor ordering and recheck the presented credential after waiting.
+        await journey.fresh(db, user_id)
+
 
         if organizer_owner:
             actor=await db.scalar(select(UserModel).where(UserModel.id==user_id)

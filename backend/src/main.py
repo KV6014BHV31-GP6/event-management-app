@@ -12,6 +12,7 @@ from src.registrations.router import router as registration_router
 from src.offline_sync.router import router as offline_sync_router
 from src.phase2.router import router as phase2_router
 from src.journey.router import router as journey_router
+from src.accounts.router import router as accounts_router
 
 
 app = FastAPI(
@@ -28,6 +29,7 @@ app.include_router(files_router, prefix=settings.API_V1_STR)
 app.include_router(registration_router, prefix=settings.API_V1_STR)
 app.include_router(offline_sync_router, prefix=settings.API_V1_STR)
 app.include_router(phase2_router)
+app.include_router(accounts_router)
 app.include_router(journey_router)
 
 @app.exception_handler(RequestValidationError)

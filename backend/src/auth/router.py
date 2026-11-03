@@ -11,11 +11,12 @@ from src.core.security import verify_password, create_access_token
 from src.users.models import UserModel
 from src.auth.schemas import Token, UserLoginRequest
 from src.auth.deps import verify_refresh_token
+from src.accounts.security import generation
 
 router = APIRouter(prefix="/auth", tags=["Authentication"])
 
 
-def create_refresh_token(username: str) -> str:
+def create_refresh_token(username: str, token_version: int = 0) -> str:
     """
     Generates a secure, long-lived refresh token string distinct from short access tokens.
     """
@@ -23,6 +24,7 @@ def create_refresh_token(username: str) -> str:
     payload = {
         "sub": username,
         "type": "refresh",
+        "token_version": token_version,
         "exp": expire
     }
     return jwt.encode(payload, settings.JWT_SECRET_KEY, algorithm="HS256")
@@ -54,7 +56,7 @@ async def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(),
     db: AsyncSession = Depends(get_async_db)
 ):
-    query = select(UserModel).where(UserModel.username == form_data.username)
+    query = select(UserModel).where(UserModel.username == form_data.username).with_for_update().execution_options(populate_existing=True)
     result = await db.execute(query)
     user = result.scalar_one_or_none()
 
@@ -69,10 +71,11 @@ async def login_for_access_token(
     await enabled(db,user.id)
     token_payload = {
         "sub": user.username,
-        "role": user.role.value
+        "role": user.role.value,
+        "token_version": await generation(db, user.id)
     }
     access_token = create_access_token(data=token_payload)
-    refresh_token = create_refresh_token(username=user.username)
+    refresh_token = create_refresh_token(username=user.username, token_version=token_payload["token_version"])
 
     # Attach the secure refresh cookie container
     set_refresh_cookie(response=response, refresh_token=refresh_token)
@@ -91,7 +94,7 @@ async def login_via_json(
     login_in: UserLoginRequest,
     db: AsyncSession = Depends(get_async_db)
 ):
-    query = select(UserModel).where(UserModel.username == login_in.username)
+    query = select(UserModel).where(UserModel.username == login_in.username).with_for_update().execution_options(populate_existing=True)
     result = await db.execute(query)
     user = result.scalar_one_or_none()
 
@@ -106,10 +109,11 @@ async def login_via_json(
     await enabled(db,user.id)
     token_payload = {
         "sub": user.username,
-        "role": user.role.value
+        "role": user.role.value,
+        "token_version": await generation(db, user.id)
     }
     access_token = create_access_token(data=token_payload)
-    refresh_token = create_refresh_token(username=user.username)
+    refresh_token = create_refresh_token(username=user.username, token_version=token_payload["token_version"])
 
     # Attach the secure refresh cookie container
     set_refresh_cookie(response=response, refresh_token=refresh_token)
@@ -125,7 +129,8 @@ async def login_via_json(
 )
 async def refresh_access_token_endpoint(
     response: Response,
-    current_user: UserModel = Depends(verify_refresh_token)
+    current_user: UserModel = Depends(verify_refresh_token),
+    db: AsyncSession = Depends(get_async_db)
 ):
     """
     Exchanges a valid long-lived Refresh Token cookie for a fresh short-lived Access Token.
@@ -133,10 +138,11 @@ async def refresh_access_token_endpoint(
     """
     token_payload = {
         "sub": current_user.username,
-        "role": current_user.role.value
+        "role": current_user.role.value,
+        "token_version": await generation(db, current_user.id)
     }
     new_access_token = create_access_token(data=token_payload)
-    new_refresh_token = create_refresh_token(username=current_user.username)
+    new_refresh_token = create_refresh_token(username=current_user.username, token_version=token_payload["token_version"])
 
     # Overwrite cookie context with updated token rotation signature strings
     set_refresh_cookie(response=response, refresh_token=new_refresh_token)

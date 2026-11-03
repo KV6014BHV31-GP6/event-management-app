@@ -21,6 +21,8 @@ async def put(db,key,kind,data,event_id=None,version=1):
     else:row=JourneyState(key=key,kind=kind,event_id=event_id,version=version,data=dict(data));db.add(row)
     await db.flush();return row
 async def enabled(db,actor_id):
+    from src.accounts.security import recheck_generation
+    await recheck_generation(db,actor_id)
     access=await state(db,'account:'+actor_id)
     if access and not access.data.get('enabled',True):fail('FORBIDDEN',403)
 async def fresh(db,actor_id):

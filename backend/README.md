@@ -238,3 +238,94 @@ Before a waitlist offer, the allocator rechecks enabled accounts for both the en
 operator and linked participant, plus current Leader assignment. Disabled candidates
 receive neither a capacity hold nor an offer outbox record; FIFO continues to the next
 eligible candidate without changing original operator or referral attribution.
+
+## Own profile and synthetic assisted account recovery (R3, 2026-11-03)
+
+Existing v1 routes and user response fields remain. Explicit account routes under
+`/api/v2/operations` are registered before the journey catch-all. Every enabled
+authenticated role can `GET /me/profile` and `POST /me/profile`, editing only
+`display_name` (trimmed, 1–80 Unicode characters, no control characters) and
+`preferred_language` (`en|ms`). Use the existing `rose.demo-journey.v1` operation
+envelope and the current `expected_version`, including 0 for an absent profile.
+GET is a projection and creates no row. Stale saves return 409. Exact replay and
+`GET /me/profile/receipts/{operation_id}` return the original own receipt; follow
+with current GET. Username, role, Participant identity, booking contact and historical
+registration snapshots are not profile fields.
+
+Before using this source against the intended dedicated development database,
+snapshot it and explicitly apply the additive migration:
+
+```powershell
+python scripts/migrate_accounts.py --acknowledge-development --database <exact-dedicated-database-name>
+```
+
+Identity `rose_account_recovery_20261103_v1` creates typed `account_security`,
+`account_profiles`, `account_recovery_challenges` and `accounts_schema_migrations`.
+It requires base/journey prerequisites, exact connected DB acknowledgement and a
+non-superuser development connection, takes its own advisory lock, and validates
+column types/nullability, keys, foreign keys, checks and indexes on first/repeat
+runs. There is no backfill or startup migration. Missing security state means
+generation 0; legacy JWTs without a generation work only at generation 0. Fresh test
+bootstrap importing all model metadata is separate from migration evidence.
+
+Recovery issuance is admin-assisted and synthetic only: a current enabled Organizer
+in server `NU_DEMO_OWNER_IDS`, with `NU_DEMO_PROFILE=synthetic` and a configured
+namespace, selects an enabled namespace-managed account from `GET /accounts` and
+POSTs `/account-recovery/challenges` with data `{account_id,synthetic:true}`.
+Public signup still permits only role `user`; only server synthetic mode plus a
+matching namespace prefix creates the existing managed-account sidecar in the same
+signup transaction, making a newly signed-up Demo participant recoverable. Other
+accounts are not backfilled or silently admitted.
+
+The current original issuer alone reads
+`GET /account-recovery/challenges/{id}/demo-message`. It returns a clearly labelled
+`DEMO_PROVIDER` secret and explicitly reports no external delivery or identity
+verification. It is not an email/SMS ownership check. No anonymous username-only
+issuance or real-provider fallback exists. Secrets are derived with domain-separated
+HMAC; the database retains only hash, nonce and bindings.
+
+The recipient POSTs `/account-recovery/challenges/{id}/reset` with capability header
+`X-Account-Recovery` and envelope data `{new_password}` (12–72 UTF-8 bytes).
+Password hashing, token-generation increment, consumed challenge, invalidation of
+other challenges and sanitized immutable receipt commit once. Access and actual
+refresh tokens from the prior generation fail; both JSON/form login and refresh
+serialize with reset on the user row. Existing event-first paths recheck the
+request-bound generation after their locks, including legacy cancellation/approval
+and Phase2 synchronization. Only the authenticated principal's presented generation
+is bound; unrelated candidates and internal calls do not inherit it.
+
+Synthetic engineering policy is five minutes/five wrong attempts, at most three new
+issuances per target and thirty per issuer per ten minutes. A new issuance replaces
+older unused secrets; exact issuance replay consumes no additional quota. Current
+issuer/target revocation blocks reset and readback. The refresh cookie is cleared
+after reset; explicit login is required. This server revocation is distinct from
+the existing local Logout UI and does not erase remote browser caches.
+
+Recovery secret/new password must stay only in current component memory, never
+localStorage, IndexedDB, persistent payloads, URLs, logs, exports or screenshots.
+After a lost response, GET
+`/account-recovery/challenges/{id}/receipts/{operation_id}` with the same capability
+before any retry. A valid unused challenge with no receipt returns 404; a used
+challenge bound to another operation returns generic 403. A committed exact reset
+can only return its historical receipt, never repeat the password change. Receipt
+GET and exact POST replay share a 24-hour read-only deadline after success; this is
+a synthetic policy proposal, not approved production retention. Same ID with a
+changed password conflicts using a keyed fingerprint, not a cheap unsalted password
+verifier. Revoked issuer/target or elapsed deadline refuses readback. Persist only
+nonsecret IDs/unknown markers; re-enter the original secret after reload and the
+same password only for a deliberate exact retry when no receipt exists.
+
+Sensitive responses/errors are `no-store`. A known serialization/deadlock abort
+returns controlled 409 after rollback. Unexpected connection/commit failure returns
+bounded `OPERATION_OUTCOME_UNKNOWN` (500), requiring original-receipt reconciliation;
+there is no automatic business retry or claim that an indeterminate commit rolled
+back. No raw request, password or secret is placed in ordinary errors/receipts.
+
+Controlled checks: `python -B -m pytest tests/test_accounts.py -q`. Native account
+checks: `python -B -m pytest tests/test_accounts_native.py -q`, only with explicitly
+assigned `NU_NATIVE_TEST_DATABASE_URL` on port 5441 and exact R3 `_test` names declared
+in that test. Native tests retain synthetic fixtures and use isolated upload paths.
+They cover concurrency, precommit rollback, injected lost acknowledgement, actual
+refresh cookies, lock-wait revocation, signup directory and migration guards.
+ASGI/native evidence is separate from a real TCP/browser journey, independent
+acceptance, CI, UAT, merge and production delivery.
