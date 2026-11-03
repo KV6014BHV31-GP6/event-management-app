@@ -29,9 +29,9 @@ async def seed_event(db, monkeypatch):
     """Explicit synthetic starting state; no event-create endpoint acceptance claim."""
     stamp = str(ulid.ULID())
     users = {}
-    for name, role in [('owner', 'organizer'), ('foreign', 'organizer'), ('user', 'user'),
-                       ('one', 'leader'), ('two', 'leader'), ('zero', 'leader'), ('unassigned', 'leader')]:
-        user = UserModel(id=str(ulid.ULID()), username='attr_' + stamp + '_' + name,
+    for index, (name, role) in enumerate([('owner', 'organizer'), ('foreign', 'organizer'), ('user', 'user'),
+                                        ('one', 'leader'), ('two', 'leader'), ('zero', 'leader'), ('unassigned', 'leader')]):
+        user = UserModel(id=str(ulid.ULID()), username='attr_' + stamp[-13:] + str(index),
                          role=UserRoleEnum(role), password_hash='unusable-synthetic-fixture')
         db.add(user)
         users[name] = user
@@ -299,7 +299,7 @@ async def test_new_finalized_snapshot_immutable(client, db_session, attributed):
     saved = await state(db_session, 'closeout:' + attributed['event'].public_id)
     original = copy.deepcopy(saved.data)
     leader = await db_session.get(UserModel, attributed['users']['one'].id)
-    leader.username += '_changed'
+    leader.username = leader.username[:12] + '_changed'
     await db_session.commit()
     current = await read_view(client, attributed)
     assert next(row for row in current['leader_breakdown']['leaders']
