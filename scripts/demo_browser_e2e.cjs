@@ -82,6 +82,8 @@ async function main() {
     return response.json();
   }
   const button=name=>page.getByRole('button',{name,exact:true});
+  // Wrapping select labels contain their option text in this existing markup.
+  const select=label=>page.locator('label').filter({hasText:new RegExp('^'+label)}).locator('select');
   async function login(username,password) {
     await page.goto(new URL('?view=login',base).href,{waitUntil:'networkidle'});
     await page.getByLabel('Username',{exact:true}).fill(username);
@@ -131,8 +133,7 @@ async function main() {
     await page.getByRole('heading',{name:'CI browser '+process.env.NU_SMOKE_USERNAME,exact:true}).waitFor();
     await page.getByText('Registration review and booking',{exact:true}).click();
     await button('Choose a registration').click();
-    // This legacy wrapping label includes option text in its computed label.
-    await page.locator('label').filter({hasText:/^Participant/}).locator('select').selectOption(fixture.registration_id);await button('Read registration').click();
+    await select('Participant').selectOption(fixture.registration_id);await button('Read registration').click();
     const thumbnail=page.getByRole('img',{name:'Document thumbnail: ci-private-synthetic.png',exact:true});
     await thumbnail.waitFor();await page.waitForFunction(()=>{const img=document.querySelector('.document-card img');return img?.complete&&img.naturalWidth===16&&img.naturalHeight===16;});
     await button('Preview ci-private-synthetic.png').click();
@@ -157,14 +158,14 @@ async function main() {
     phase='offline-save-reload';
     await page.goto(new URL(`?view=offline&event=${fixture.event_public_id}`,base).href,{waitUntil:'networkidle'});
     await button('Load available events').click();
-    await page.getByLabel('Online event',{exact:true}).selectOption(fixture.event_public_id);
+    await select('Online event').selectOption(fixture.event_public_id);
     await button('Download selected event').click();
-    await page.getByLabel('Downloaded event',{exact:true}).selectOption(fixture.event_public_id);
+    await select('Downloaded event').selectOption(fixture.event_public_id);
     const initial=await stored(page);assert.equal(initial.drafts.length,0,'Fresh profile must have no old drafts');
     await button('Simulated Offline').click();const offlineStart=requests.length;
     for(let i=1;i<=3;i++){
       for(const [label,value]of Object.entries({'First name':'CIOffline'+i,'Last name':'Synthetic','Phone':'000000000'+i,'National ID':process.env.NU_SMOKE_USERNAME+'-offline-'+i,'Date of birth':'1990-01-01'}))await page.getByLabel(label,{exact:true}).fill(value);
-      await page.getByLabel('Gender',{exact:true}).selectOption('female');
+      await select('Gender').selectOption('female');
       await page.getByLabel('I confirm every value is synthetic test data.',{exact:true}).check();
       json(`local-save-intent-${i}.json`,{ordinal:i,event_public_id:fixture.event_public_id},privateDir);
       await button('Save draft on this device').click();
@@ -196,7 +197,7 @@ async function main() {
     if(await button('Log out').count())await button('Log out').click();
     await login('demo_organizer',process.env.SEED_PASSWORD);
     await page.goto(new URL(`?view=offline&event=${fixture.event_public_id}`,base).href,{waitUntil:'networkidle'});
-    await page.getByLabel('Downloaded event',{exact:true}).selectOption(fixture.event_public_id);
+    await select('Downloaded event').selectOption(fixture.event_public_id);
     await page.getByRole('heading',{name:'Local synthetic draft 3',exact:true}).waitFor();
     let sentEnvelope;
     // Read the outgoing request and durably preserve its IDs before continuing it unchanged.
