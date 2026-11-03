@@ -33,7 +33,9 @@ function png() {
 async function stored(page) {
   // Read-only inspection. Product UI alone creates/queues/reconciles every row.
   return page.evaluate(async () => {
-    const db=await new Promise((resolve,reject)=>{const r=indexedDB.open('rose-pulse-offline-v1');r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(new Error('IndexedDB read failed'));});
+    const name='rose-demo-synthetic-offline-v1';
+    if(!(await indexedDB.databases()).some(db=>db.name===name))throw new Error('Product synthetic IndexedDB does not exist');
+    const db=await new Promise((resolve,reject)=>{const r=indexedDB.open(name);r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(new Error('IndexedDB read failed'));});
     try { const result={};for(const name of ['events','drafts','batches'])result[name]=await new Promise((resolve,reject)=>{const r=db.transaction(name,'readonly').objectStore(name).getAll();r.onsuccess=()=>resolve(r.result);r.onerror=()=>reject(new Error('IndexedDB read failed'));});return result; }
     finally { db.close(); }
   });
