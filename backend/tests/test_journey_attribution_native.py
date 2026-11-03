@@ -36,7 +36,7 @@ async def attribution_native_sessions():
         async with engine.begin() as connection:
             row = (await connection.execute(text(
                 "SELECT current_database(), current_setting('server_version_num')::int, "
-                "inet_server_addr()::text, (SELECT rolsuper FROM pg_roles WHERE rolname=current_user)"))).one()
+                "host(inet_server_addr()), (SELECT rolsuper FROM pg_roles WHERE rolname=current_user)"))).one()
             assert row[0] == target.database and row[1] // 10000 == 17
             assert row[2] in {'127.0.0.1', '::1'} and row[3] is False
             await connection.run_sync(Base.metadata.create_all)
