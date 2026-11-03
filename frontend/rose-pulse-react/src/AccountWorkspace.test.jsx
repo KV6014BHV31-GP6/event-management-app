@@ -4,6 +4,7 @@ import { configure, getConfig, fireEvent, render, screen, waitFor, within } from
 import { AssistedRecovery, ProfileEditor, RecoveryWorkspace } from './AccountWorkspace.jsx';
 import { ACCOUNT_VERSION, RECOVERY_MARKER_KEY, recoveryCode } from './account-api.js';
 import { resources, changeLanguage } from './i18n/index.js';
+import { DEMO_PROFILE } from './demo-transport.js';
 
 const ACTOR = '01K00000000000000000000001';
 const OTHER = '01K00000000000000000000002';
@@ -296,20 +297,36 @@ it('never writes recovery capability or password to any browser storage, URL or 
   const writes = [];
   const write = Storage.prototype.setItem;
   vi.spyOn(Storage.prototype, 'setItem').mockImplementation(function (key, value) {
-    writes.push([String(key), String(value)]); return write.call(this, key, value);
+    writes.push({key:String(key),value:String(value),area:this===localStorage?'localStorage':this===sessionStorage?'sessionStorage':'other'});
+    return write.call(this, key, value);
   });
   const idb = vi.spyOn(indexedDB, 'open');
   const push = vi.spyOn(window.history, 'pushState'), replace = vi.spyOn(window.history, 'replaceState');
-  const consoleCalls = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error')];
-  vi.spyOn(globalThis, 'fetch').mockResolvedValue(denied('OPERATION_OUTCOME_UNKNOWN', 500));
+  const consoleCalls = [vi.spyOn(console, 'log'), vi.spyOn(console, 'warn'), vi.spyOn(console, 'error')].map(spy=>spy.mockImplementation(()=>{}));
+  let originalOperation;
+  const fetch=vi.spyOn(globalThis, 'fetch').mockImplementation(async(_path,options)=>{
+    originalOperation=JSON.parse(options.body).operation_id;
+    return denied('OPERATION_OUTCOME_UNKNOWN', 500);
+  });
   render(<RecoveryWorkspace runtime={runtimeFor()} auth={anonymous} navigate={vi.fn()} />);
   fillReset(code, password); fireEvent.submit(screen.getByRole('form', { name: 'Recover account access' }));
   await screen.findByLabelText('Original new password');
   const diagnostics = JSON.stringify(writes) + JSON.stringify(push.mock.calls) + JSON.stringify(replace.mock.calls) + JSON.stringify(consoleCalls.flatMap(spy => spy.mock.calls));
   expect(diagnostics.includes(privateCapability) || diagnostics.includes(password)).toBe(false);
-  expect(writes).toHaveLength(1);
-  expect(idb).not.toHaveBeenCalled();
-  expect(push).not.toHaveBeenCalled(); expect(replace).not.toHaveBeenCalled();
+  const markers=writes.filter(row=>row.area==='localStorage'&&row.key===RECOVERY_MARKER_KEY);
+  const modes=writes.filter(row=>row.area==='sessionStorage'&&row.key==='rose.demo.synthetic.network'&&row.value==='connected');
+  expect(markers.length===1&&modes.length===(DEMO_PROFILE?1:0)&&writes.length===1+(DEMO_PROFILE?1:0)).toBe(true);
+  // Every observed write must be one of these exact public/reference records; never hide arbitrary writes.
+  expect(writes.every(row=>markers.includes(row)||modes.includes(row))).toBe(true);
+  let marker;try{marker=JSON.parse(markers[0]?.value);}catch{}
+  expect(Boolean(marker)&&Object.keys(marker).sort().join(',')==='challenge_id,endpoint,operation_id,unknown'&&
+    marker.challenge_id===CHALLENGE&&marker.operation_id===originalOperation&&
+    typeof originalOperation==='string'&&/^[0-9a-f-]{36}$/.test(originalOperation)&&
+    marker.endpoint===`/account-recovery/challenges/${CHALLENGE}/reset`&&marker.unknown===true&&
+    markers[0].value===localStorage.getItem(RECOVERY_MARKER_KEY)).toBe(true);
+  expect(fetch.mock.calls.length).toBe(1);
+  expect(idb.mock.calls.length).toBe(0);
+  expect(push.mock.calls.length).toBe(0); expect(replace.mock.calls.length).toBe(0);
 });
 it('recovers a precommit404 profile across remount with the exact original request instead of current form values', async () => {
   let posts = 0, originalWire, applied = false;

@@ -212,12 +212,13 @@ it('LF04 an older transport failure cannot replace the refusal from a newer expl
 });
 
 it.each(['logout', 'another actor'])('LF04 late failure cannot repaint after%s changes the session revision', async transition => {
-  let posts = 0, releaseOld;
+  let posts = 0, releaseOld, currentToken;
   const other = { id: '01K00000000000000000000002', username: 'synthetic-other', role: 'user' };
   const fetchImpl = vi.fn(async path => {
     if (path === '/api/v1/auth/login') {
       if (++posts === 1) return new Promise(resolve => { releaseOld = () => resolve({ ok: false, status: 401, json: vi.fn() }); });
-      return httpReply({ access_token: crypto.randomUUID(), token_type: 'bearer' });
+      currentToken = crypto.randomUUID();
+      return httpReply({ access_token: currentToken, token_type: 'bearer' });
     }
     return publicLoginRead(path, other);
   });
@@ -231,6 +232,12 @@ it.each(['logout', 'another actor'])('LF04 late failure cannot repaint after%s c
   await act(async () => releaseOld());
   expect(runtime.getSnapshot().revision).toBe(currentRevision);
   expect(runtime.getSnapshot().user?.id === other.id).toBe(transition === 'another actor');
+  expect(runtime.getSnapshot().identityBlocked).toBe(false);
+  if (transition === 'another actor') {
+    let calls = 0, correct = false;
+    await runtime.withVerifiedAccount(async (token, profile) => { calls++; correct = token === currentToken && profile.id === other.id; });
+    expect(calls).toBe(1); expect(correct).toBe(true);
+  }
   expect(Boolean(screen.queryByRole('alert')?.textContent.includes(loginRefusal))).toBe(false);
   expect(window.location.search).toBe('?view=login');
 });
