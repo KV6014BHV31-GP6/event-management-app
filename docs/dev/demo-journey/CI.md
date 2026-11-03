@@ -56,3 +56,9 @@ python -B scripts/demo_ci.py verify --zip C:\approved-artifacts\nu-demo-FULL_SHA
 ```
 
 The verifier does not extract or run the payload. A mismatched digest, unexpected file, path traversal, private file, case-colliding member, symlink or source/runtime mismatch fails closed. A successful CI artifact still requires Astra's fixed-SHA independent review, complete local browser/DB acceptance, unchanged target check and authorized merge. After merge, use the actual merge-SHA run/artifact for separate local CD and video gates. Migration snapshot/rollback, launcher identity and retained offline queue compatibility are local delivery obligations; this CI performs no deployment or data reset.
+
+## R3 account migration and native isolation
+
+CI creates three fresh per-run databases on its own loopback cluster: main native, account migration and malformed-shape counterexample. All use the existing non-superuser application role. The account fixture accepts explicit `NU_ACCOUNTS_NATIVE_DATABASE`, `NU_ACCOUNTS_MIGRATION_DATABASE`, `NU_ACCOUNTS_SHAPE_DATABASE`, and `NU_ACCOUNTS_NATIVE_PORT`; names must be distinct, at most63 characters, start with nu_demo_ or nu_ci_, and end in _be_test. It verifies the exact URL, loopback host, PostgreSQL17.11, port, current database and non-superuser role. Local defaults preserve the original assigned R3 test databases. No test creates, drops or resets another database. CI overrides both native connection identities and all account/Phase2 evidence directories and labels, preventing inherited shared evidence paths.
+
+The explicit additive account migration `rose_account_recovery_20261103_v1` runs first/repeat after Phase2 and journey. CI requires the account native suite with zero skips, checks all three migration ledgers, and hashes the account contract/migration into the release artifact. These process/test harness changes do not replace final fixed-SHA product acceptance.

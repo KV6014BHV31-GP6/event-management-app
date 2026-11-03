@@ -64,6 +64,12 @@ class EventService:
         """
         Creates an event record and seeds an initialized, empty quota metrics footprint.
         """
+        from src.journey import policy
+        # A credential reset/deactivation may complete while this request waits.
+        # Recheck the presented generation under the creator lock before any write.
+        actor = await policy.fresh(self.db, organizer_id)
+        if actor.role.value != 'organizer':
+            raise HTTPException(status_code=403, detail='Organizer access required.')
         generated_public_id = generate(size=21)
         event_data = event_in.model_dump()
         image_ids=event_data.pop('image_file_ids',[])

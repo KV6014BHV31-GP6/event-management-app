@@ -12,11 +12,18 @@ TABLES = (AccountSecurity.__table__, AccountProfile.__table__, RecoveryChallenge
 
 
 def expression(value):
+    # SQL keywords/formatting are insensitive; quoted values are not. Keep all
+    # literal bytes outside syntax normalization, including case and whitespace.
+    literals = []
+    def preserve(match):
+        literals.append(match.group(0))
+        return '__literal_' + str(len(literals) - 1) + '__'
+    value = re.sub(r"'(?:[^']|'')*'", preserve, value)
     value = value.lower()
     value = re.sub(r'::(?:character varying|text)(?:\[\])?', '', value)
     value = re.sub(r'(\w+(?:\([^)]*\))?)\s+between\s+(\d+)\s+and\s+(\d+)', r'\1 >= \2 and \1 <= \3', value)
-    value = value.replace("in ('en', 'ms')", "= any (array['en', 'ms'])")
-    return re.sub(r'[\s()"]', '', value)
+    value = re.sub(r'\bin\s*\(([^()]*)\)', r'= any (array[\1])', value)
+    return re.sub(r'[\s()"]', '', value), tuple(literals)
 
 
 def validate(conn, table):

@@ -1,5 +1,11 @@
 # Frontend workspace
 
+## R3 account transport integration
+
+The loopback proxy admits the exact profile and assisted-recovery routes in [the account contract](../docs/dev/demo-journey/ACCOUNT_CONTRACT_R3.md). Canonical UUID receipt paths are checked; account query parameters are rejected. `X-Account-Recovery` is forwarded only for the exact reset and recovery-receipt routes, never stored in a URL. Existing bearer and no-store behavior is retained. Request cookies remain excluded. Only a successful reset may propagate an empty, `Max-Age=0`, same-host `refresh_token` deletion; unrelated cookies and new cookie values are discarded. Generic login/refresh cookie integration is unchanged.
+
+Run `node --test frontend/dev-server.test.mjs` from the repository root for the exact-route/header/cookie-deletion and existing proxy regressions. These transport tests do not replace actual browser/API/native database acceptance.
+
 ## Full journey candidate — 2026-11-03
 
 This candidate uses the [journey contract](../docs/dev/demo-journey/API_CONTRACT.md). The loopback proxy allows only the reviewed operations GET/POST paths and forwards scoped Guest challenge, booking grant and anonymous application recovery headers. It retains no-store responses, bounded bodies, same-origin checks and unknown-write handling. It does not retry writes. Run `node --test frontend/dev-server.test.mjs` from the repository root after proxy changes.

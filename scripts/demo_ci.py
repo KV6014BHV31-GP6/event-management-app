@@ -31,9 +31,11 @@ RUNTIME = {"python": "3.14.8", "node": "24.14.0", "postgresql": "17.11",
            "playwright": "1.65.0-alpha-2026-10-30"}
 PG_URL = "https://get.enterprisedb.com/postgresql/postgresql-17.11-5-windows-x64-binaries.zip"
 PG_SHA = "80379b2c04d51c30225532e0ae04509899141e9957ed096fe749d7fd9df8f82f"
-CONTRACTS = ["docs/dev/phase2/API_CONTRACT.json", "docs/dev/demo-journey/API_CONTRACT.md"]
+CONTRACTS = ["docs/dev/phase2/API_CONTRACT.json", "docs/dev/demo-journey/API_CONTRACT.md",
+             "docs/dev/demo-journey/ACCOUNT_CONTRACT_R3.md"]
 MIGRATIONS = {"backend/scripts/migrate_phase2.py": "rose_phase2_20261102_v1",
-              "backend/scripts/migrate_demo_journey.py": "rose_demo_journey_20261103_v1"}
+              "backend/scripts/migrate_demo_journey.py": "rose_demo_journey_20261103_v1",
+              "backend/scripts/migrate_accounts.py": "rose_account_recovery_20261103_v1"}
 SECRETS: list[str] = []
 OUT: Path
 REPORT: dict
@@ -338,6 +340,10 @@ def native_browser(build_input: Path) -> None:
     database = "nu_ci_" + re.sub(r"[^a-z0-9_]", "_", os.environ["GITHUB_RUN_ID"] + "_" + os.environ["GITHUB_RUN_ATTEMPT"]) + "_be_test"
     if not re.fullmatch(r"nu_ci_[a-z0-9_]+_be_test", database):
         raise RuntimeError("Unsafe native test database name")
+    migration_database = database.removesuffix("_be_test") + "_migration_be_test"
+    shape_database = database.removesuffix("_be_test") + "_shape_be_test"
+    if any(len(name) > 63 for name in [database, migration_database, shape_database]):
+        raise RuntimeError("Native test database name exceeds PostgreSQL limit")
     env = os.environ.copy() | {"PYTHONIOENCODING": "utf-8", "PYTHONDONTWRITEBYTECODE": "1",
         "DATABASE_URL": f"postgresql://nu_ci_app:{password}@127.0.0.1:{pgport}/{database}",
         "JWT_SECRET_KEY": jwt, "ENVIRONMENT": "development", "SEED_PASSWORD": seed,
@@ -346,6 +352,11 @@ def native_browser(build_input: Path) -> None:
         "NU_DEMO_OWNER_IDS": "01J00000000000000000000001", "PGCONNECT_TIMEOUT": "5"}
     env.pop("NU_NATIVE_TEST_DATABASE_URL", None)
     env["NU_PHASE2_NATIVE_EVIDENCE_DIR"] = str(OUT / "native")
+    env.update(NU_PHASE2_EVIDENCE_LABEL="ci-" + os.environ["GITHUB_RUN_ID"],
+               NU_ACCOUNTS_EVIDENCE_DIR=str(OUT / "native-accounts"),
+               NU_ACCOUNTS_NATIVE_DATABASE=database, NU_ACCOUNTS_NATIVE_PORT=str(pgport),
+               NU_ACCOUNTS_MIGRATION_DATABASE=migration_database,
+               NU_ACCOUNTS_SHAPE_DATABASE=shape_database)
     tests = sorted((ROOT / "backend/tests").glob("test_*.py"))
     controlled = [p.relative_to(ROOT / "backend") for p in tests if "native" not in p.stem]
     controlled_report = OUT / "controlled-junit.xml"
@@ -380,19 +391,20 @@ def native_browser(build_input: Path) -> None:
         started = True
         psql = [pg / "psql.exe", "-X", "-h", "127.0.0.1", "-p", pgport, "-U", "nu_ci_admin", "-d", "postgres", "-v", "ON_ERROR_STOP=1"]
         sql = work / "create.sql"
-        sql.write_text(f"CREATE ROLE nu_ci_app LOGIN PASSWORD '{password}' NOSUPERUSER NOCREATEDB NOCREATEROLE;\nCREATE DATABASE {database} OWNER nu_ci_app;\n", encoding="utf-8")
+        sql.write_text(f"CREATE ROLE nu_ci_app LOGIN PASSWORD '{password}' NOSUPERUSER NOCREATEDB NOCREATEROLE;\n" +
+                       "".join(f"CREATE DATABASE {name} OWNER nu_ci_app;\n" for name in [database, migration_database, shape_database]), encoding="utf-8")
         run([*psql, "-f", sql], "isolated-database-create", env=env)
         sql.unlink()
         # Require password authentication after bootstrap; never alter an installed service.
         (data / "pg_hba.conf").write_text("host all all 127.0.0.1/32 scram-sha-256\n", encoding="utf-8")
         run([pg / "pg_ctl.exe", "-D", data, "reload"], "postgres-auth-reload")
         run([sys.executable, "-B", "-m", "scripts.dev_bootstrap", "--acknowledge-development"], "synthetic-bootstrap", cwd=ROOT / "backend", env=env)
-        for module in ["migrate_phase2", "migrate_demo_journey"]:
+        for module in ["migrate_phase2", "migrate_demo_journey", "migrate_accounts"]:
             for attempt in ["first", "repeat"]:
                 run([sys.executable, "-B", "-m", "scripts." + module, "--acknowledge-development", "--database", database], module + "-" + attempt, cwd=ROOT / "backend", env=env)
         env["NU_NATIVE_TEST_DATABASE_URL"] = env["DATABASE_URL"].replace("postgresql://", "postgresql+asyncpg://", 1)
         native = [p.relative_to(ROOT / "backend") for p in tests if "native" in p.stem]
-        if not {"test_phase2_native.py", "test_journey_native.py"}.issubset({p.name for p in native}):
+        if not {"test_phase2_native.py", "test_journey_native.py", "test_accounts_native.py"}.issubset({p.name for p in native}):
             raise RuntimeError("Required native regression suites missing")
         native_report = OUT / "native-junit.xml"
         run([sys.executable, "-B", "-m", "pytest", "-q", *native, f"--junitxml={native_report}"], "backend-native", cwd=ROOT / "backend", env=env, timeout=900)
@@ -440,7 +452,7 @@ def native_browser(build_input: Path) -> None:
                 return {"native": True, "server_version_num": identity["version"], "database_suffix": "_be_test", "non_superuser": True,
                         "synthetic_ui_user_count": count, "event_count": await connection.fetchval("SELECT count(*) FROM events"),
                         "registration_count": await connection.fetchval("SELECT count(*) FROM registrations"),
-                        "migrations": [row["migration_id"] for table in ["phase2_schema_migrations", "journey_schema_migrations"]
+                        "migrations": [row["migration_id"] for table in ["phase2_schema_migrations", "journey_schema_migrations", "accounts_schema_migrations"]
                                        for row in await connection.fetch("SELECT migration_id FROM " + table)]}
             finally:
                 await connection.close()

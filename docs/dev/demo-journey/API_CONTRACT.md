@@ -128,3 +128,7 @@ Authoritative rolled-back business refusals may be recorded as terminal refusals
 ## Coordinated clarification 5 — assignable leader directory
 
 `GET /accounts?scope=assignable_leaders` permits any fresh enabled Organizer to read only enabled namespace leaders using the existing `{accounts,as_of_utc}` shape and `id,username,role,enabled,version` fields. It grants no account administration. Unscoped account reads, creation and access changes retain designated Demo-admin restrictions. Unknown scope is422; disabled caller is403. FE uses this bounded directory when assigning a leader to its own event; normal Organizers can create/manage their own managed events without becoming Demo admins.
+
+## R3 account profile and recovery
+
+The admitted [account contract](ACCOUNT_CONTRACT_R3.md) adds own profile persistence and synthetic assisted recovery, explicit account migration, token generation revocation and immutable receipt reconciliation. Existing journey and Offline contract identities remain unchanged.

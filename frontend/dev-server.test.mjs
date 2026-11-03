@@ -11,6 +11,37 @@ const close = server => new Promise(resolve => { server.close(resolve); server.c
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aO7sAAAAASUVORK5CYII=', 'base64');
 const EVENT_ID = 'A'.repeat(20) + '-';
 
+test('account proxy preserves exact recovery boundary, no-store and only reset cookie deletion', async () => {
+  const id='32d09655-a694-411a-8530-7330927ebc80', op='9de5cc2a-ea0a-11ef-9cd2-0242ac120002';
+  const prefix='/api/v2/operations', observed=[];
+  const upstream=http.createServer(async(req,res)=>{
+    const chunks=[];for await(const chunk of req)chunks.push(chunk);
+    observed.push({path:req.url,method:req.method,capability:req.headers['x-account-recovery'],cookie:req.headers.cookie,body:Buffer.concat(chunks).toString()});
+    res.writeHead(200,{'Content-Type':'application/json','Set-Cookie':[
+      'refresh_token=""; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=strict',
+      'unrelated=must-not-forward; Path=/', 'refresh_token=must-not-forward; Path=/'
+    ]});res.end('{}');
+  });
+  const server=createDevServer({upstream:await listen(upstream)}),base=await listen(server);
+  const paths=[['GET','/me/profile'],['POST','/me/profile'],['GET',`/me/profile/receipts/${op}`],
+    ['POST','/account-recovery/challenges'],['GET',`/account-recovery/challenges/${id}/demo-message`],
+    ['POST',`/account-recovery/challenges/${id}/reset`],['GET',`/account-recovery/challenges/${id}/receipts/${op}`]];
+  try {
+    for(const [method,path]of paths){
+      const response=await fetch(base+prefix+path,{method,headers:{'Content-Type':'application/json','X-Account-Recovery':'synthetic-recovery-capability',Cookie:'refresh_token=must-not-forward'},body:method==='POST'?'{}':undefined});
+      assert.equal(response.status,200,path);assert.equal(response.headers.get('cache-control'),'no-store');
+      const cookies=response.headers.getSetCookie();
+      assert.deepEqual(cookies,path.endsWith('/reset')?['refresh_token=""; Max-Age=0; Path=/; HttpOnly; Secure; SameSite=strict']:[]);
+    }
+    assert.equal(observed.length,paths.length);assert(observed.every(row=>row.cookie===undefined));
+    for(const row of observed)assert.equal(row.capability,/\/account-recovery\/challenges\/[^/]+\/(reset|receipts\/)/.test(row.path)?'synthetic-recovery-capability':undefined);
+    for(const [method,path]of [['DELETE','/me/profile'],['POST',`/account-recovery/challenges/${id}/demo-message`],['GET',`/account-recovery/challenges/${id}/reset`],['GET',`/me/profile/receipts/not-a-uuid`],['GET',`/account-recovery/challenges/${id}/receipts/${op}?secret=must-not-forward`]]){
+      const response=await fetch(base+prefix+path,{method});assert([400,405].includes(response.status),path);
+    }
+    assert.equal(observed.length,paths.length);
+  }finally{await close(server);await close(upstream);}
+});
+
 test('journey proxy admits explicit operations and preserves scoped guest headers without broadening methods', async () => {
   const observed = [];
   const upstream = http.createServer(async (req, res) => {

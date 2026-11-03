@@ -323,9 +323,20 @@ back. No raw request, password or secret is placed in ordinary errors/receipts.
 
 Controlled checks: `python -B -m pytest tests/test_accounts.py -q`. Native account
 checks: `python -B -m pytest tests/test_accounts_native.py -q`, only with explicitly
-assigned `NU_NATIVE_TEST_DATABASE_URL` on port 5441 and exact R3 `_test` names declared
-in that test. Native tests retain synthetic fixtures and use isolated upload paths.
+assigned `NU_NATIVE_TEST_DATABASE_URL` and exact isolated `_be_test` names. Local
+defaults use the original R3 databases on port5441; CI explicitly supplies
+`NU_ACCOUNTS_NATIVE_DATABASE`, `NU_ACCOUNTS_MIGRATION_DATABASE`,
+`NU_ACCOUNTS_SHAPE_DATABASE` and `NU_ACCOUNTS_NATIVE_PORT`. Loopback, distinct bounded
+test names, PostgreSQL17.11 and non-superuser identity checks remain mandatory.
+Override account and Phase2 evidence directories/labels and upload paths per run.
 They cover concurrency, precommit rollback, injected lost acknowledgement, actual
 refresh cookies, lock-wait revocation, signup directory and migration guards.
 ASGI/native evidence is separate from a real TCP/browser journey, independent
 acceptance, CI, UAT, merge and production delivery.
+
+Legacy event creation now takes the Organizer row lock and rechecks current
+role, enabled state and presented token generation before inserting any event.
+This closes a request that authenticated before a credential reset but resumed
+after it. The account migration compares quoted SQL values exactly while
+normalizing PostgreSQL expression formatting; uppercase language literals cannot
+silently satisfy the required lowercase `en`/`ms` constraint.

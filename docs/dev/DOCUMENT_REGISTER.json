@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T06:57:18.799558+00:00",
-  "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過",
-  "document_count": 345,
+  "reviewed_at": "2026-11-03T08:30:08.732383+00:00",
+  "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻",
+  "document_count": 361,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,7 +107,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 6,
+      "revision": 7,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
       "revision_history": [
@@ -145,13 +145,20 @@
           "size_bytes": 23323,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 6,
+          "sha256": "62e649a1e146ea3b13de43ea9cc68ddfa1f3438bb4c5bfd3e42b69476f053c01",
+          "size_bytes": 23746,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "62e649a1e146ea3b13de43ea9cc68ddfa1f3438bb4c5bfd3e42b69476f053c01",
-      "size_bytes": 23746
+      "sha256": "aa1afc97724ff1629ab301ec18e46dc1b26ab46c7df5b0897fba239e41c0da7f",
+      "size_bytes": 30549
     },
     {
       "document_id": "DOC-06",
@@ -1515,7 +1522,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 20,
+      "revision": 21,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1651,13 +1658,20 @@
           "size_bytes": 22157,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 20,
+          "sha256": "ea27ae32a6325e895a4eb0fdfb18bcab44552f5d9f9afc37cf999734ed00d1ad",
+          "size_bytes": 23089,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ea27ae32a6325e895a4eb0fdfb18bcab44552f5d9f9afc37cf999734ed00d1ad",
-      "size_bytes": 23089,
+      "sha256": "d012c47ea26fca467a31af100091e75f62aa701b672f8f9a428cca9d33583336",
+      "size_bytes": 23991,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -2299,7 +2313,7 @@
     {
       "document_id": "FE-LIVE-20261014-007",
       "path": "backend/src/auth/deps.py",
-      "revision": 4,
+      "revision": 5,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2323,19 +2337,26 @@
           "size_bytes": 4063,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 4,
+          "sha256": "926fdf8cea401fba7459017fd61fd7b06fd613b37fb5a46cdcb407b6325e3d9a",
+          "size_bytes": 4217,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "926fdf8cea401fba7459017fd61fd7b06fd613b37fb5a46cdcb407b6325e3d9a",
-      "size_bytes": 4217
+      "sha256": "52f8cbba9a4179d89272bf469aac38468145ea6f6af3cadd3c500bff32be4751",
+      "size_bytes": 5498
     },
     {
       "document_id": "FE-LIVE-20261014-008",
       "path": "backend/src/auth/router.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2352,14 +2373,21 @@
           "size_bytes": 5796,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 3,
+          "sha256": "3aa3b5eeab1e2de0fa663314df79810ce3ea9117a39907134b4e576154c8bf95",
+          "size_bytes": 5942,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "3aa3b5eeab1e2de0fa663314df79810ce3ea9117a39907134b4e576154c8bf95",
-      "size_bytes": 5942
+      "sha256": "ac1c38d597e4474c33eb12e66c231e4df6eada9f8e9bad9b74598869e9f13bc9",
+      "size_bytes": 6521
     },
     {
       "document_id": "FE-LIVE-20261014-009",
@@ -2580,7 +2608,7 @@
     {
       "document_id": "FE-LIVE-20261014-018",
       "path": "backend/src/events/service.py",
-      "revision": 6,
+      "revision": 7,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2618,19 +2646,26 @@
           "size_bytes": 8687,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 6,
+          "sha256": "9102f1f80cb6d08c908c8c051472e550bf9a1939b50d4e7d663d02112caba67a",
+          "size_bytes": 9621,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "9102f1f80cb6d08c908c8c051472e550bf9a1939b50d4e7d663d02112caba67a",
-      "size_bytes": 9621
+      "sha256": "b27add1d82b2047a2efed7e92c300e8b79aeec007a022b43fdb932fbaea1eecd",
+      "size_bytes": 10013
     },
     {
       "document_id": "FE-LIVE-20261014-019",
       "path": "backend/src/main.py",
-      "revision": 4,
+      "revision": 5,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2654,14 +2689,21 @@
           "size_bytes": 1894,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 4,
+          "sha256": "88e11fec1de24a8cf6b99b18bef42ba22eb038b5d9b0e3c76697f6821a641c89",
+          "size_bytes": 2169,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "88e11fec1de24a8cf6b99b18bef42ba22eb038b5d9b0e3c76697f6821a641c89",
-      "size_bytes": 2169
+      "sha256": "b625c8333ebe08ab8457dbd7c5dbb2d24ed9df030d7fc30300fc2cc20fe3d3d9",
+      "size_bytes": 2263
     },
     {
       "document_id": "FE-LIVE-20261014-020",
@@ -2839,7 +2881,7 @@
     {
       "document_id": "FE-LIVE-20261014-029",
       "path": "backend/src/users/service.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2849,14 +2891,21 @@
           "size_bytes": 1241,
           "superseded_at": "2026-10-27T06:50:48.566718+00:00",
           "reason": "Record bounded PR38 repair and normalize touched Python CRLF so strict git diff checks pass"
+        },
+        {
+          "revision": 2,
+          "sha256": "2a6fd78b733ab7008e229dbddd98f2ad55086a3ea8c8300eb0b0cf6cc1d6fb2d",
+          "size_bytes": 1695,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "2a6fd78b733ab7008e229dbddd98f2ad55086a3ea8c8300eb0b0cf6cc1d6fb2d",
-      "size_bytes": 1695
+      "sha256": "0fcaf13e1b1ee6ecd5b7228fcac0af46de63df6a79c2a66ab9f7c7e36eeefc4c",
+      "size_bytes": 2044
     },
     {
       "document_id": "FE-LIVE-20261014-030",
@@ -3081,7 +3130,7 @@
     {
       "document_id": "FE-LIVE-20261014-043",
       "path": "frontend/dev-server.mjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -3105,19 +3154,26 @@
           "size_bytes": 9621,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 4,
+          "sha256": "914496b8b039bb3723b9ddd4ccd0fc69dc167ef75203780d153ab3d3d7560278",
+          "size_bytes": 11048,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "914496b8b039bb3723b9ddd4ccd0fc69dc167ef75203780d153ab3d3d7560278",
-      "size_bytes": 11048
+      "sha256": "5962ee8bb27744efc25bb4340f8a474fdd06f88929aa8a7030abe1d32b53df1a",
+      "size_bytes": 12717
     },
     {
       "document_id": "FE-LIVE-20261014-044",
       "path": "frontend/dev-server.test.mjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -3141,14 +3197,21 @@
           "size_bytes": 15473,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 4,
+          "sha256": "c30c67336266baaec7b0fe969dbfd29c47b5530dcdad37d351e13904dc92ee06",
+          "size_bytes": 17352,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "c30c67336266baaec7b0fe969dbfd29c47b5530dcdad37d351e13904dc92ee06",
-      "size_bytes": 17352
+      "sha256": "e1eb7857c7b39b14d8f77f4fbd72d483ba0fa0137c48855b7f8e473b263fa964",
+      "size_bytes": 19948
     },
     {
       "document_id": "FE-LIVE-20261014-045",
@@ -4421,7 +4484,7 @@
     {
       "document_id": "AUSTIN27-011",
       "path": "backend/src/registrations/service.py",
-      "revision": 5,
+      "revision": 6,
       "owner": "Austin Backend",
       "status": "working-baseline",
       "revision_history": [
@@ -4452,13 +4515,20 @@
           "size_bytes": 22101,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 5,
+          "sha256": "ed44645b673ccf5185e1a5b46e1f851b7011f43480cda50a8758736dcac2ccfb",
+          "size_bytes": 24666,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
       ],
-      "sha256": "ed44645b673ccf5185e1a5b46e1f851b7011f43480cda50a8758736dcac2ccfb",
-      "size_bytes": 24666
+      "sha256": "1e37c3b1bcca3118246ebcdcdf6df4b85d3146db9181924b647bfc44ab03eed4",
+      "size_bytes": 24803
     },
     {
       "document_id": "AUSTIN27-012",
@@ -4695,7 +4765,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4719,13 +4789,20 @@
           "size_bytes": 17481,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 4,
+          "sha256": "d8caf70ead110c944b94b853e6f546a9c708b583327ce6c73725705ce17957db",
+          "size_bytes": 18198,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "d8caf70ead110c944b94b853e6f546a9c708b583327ce6c73725705ce17957db",
-      "size_bytes": 18198
+      "sha256": "7b8e1c57b65dc1cf113aa764878b543b9f6843f38c5e51d5b83466310960fbbf",
+      "size_bytes": 22569
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -4806,7 +4883,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4823,18 +4900,25 @@
           "size_bytes": 84048,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 3,
+          "sha256": "d35ed4d3b4803b3e1e00aa239f095498e19416df718366f84b98127c184d6ebf",
+          "size_bytes": 86682,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "d35ed4d3b4803b3e1e00aa239f095498e19416df718366f84b98127c184d6ebf",
-      "size_bytes": 86682
+      "sha256": "2450cacbba4a7794a2c59f213cc60ede05230e7c088c435d0f55e243018830df",
+      "size_bytes": 87162
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4851,13 +4935,20 @@
           "size_bytes": 18437,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 3,
+          "sha256": "cebe175de6679e1aaaf803ae1ccc82986507ec72c4b17913798d9fff640f4824",
+          "size_bytes": 21468,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "cebe175de6679e1aaaf803ae1ccc82986507ec72c4b17913798d9fff640f4824",
-      "size_bytes": 21468
+      "sha256": "6183a973fd40a4ceea629cf056ba96fced368ae4ac76603e44934e91dcf785d8",
+      "size_bytes": 23103
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -4932,7 +5023,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4949,13 +5040,20 @@
           "size_bytes": 45227,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 3,
+          "sha256": "ac89485e885365b987cb3331c8f746ae7f4c252a1f1222618a3f19297b2c2dfe",
+          "size_bytes": 48377,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "ac89485e885365b987cb3331c8f746ae7f4c252a1f1222618a3f19297b2c2dfe",
-      "size_bytes": 48377
+      "sha256": "cb6753c9e012bf95e526c7c92b8a016794334f131e99d4a3ec50bb5b139fd951",
+      "size_bytes": 49412
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -5946,7 +6044,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5963,18 +6061,25 @@
           "size_bytes": 63659,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 3,
+          "sha256": "1403e7546622d892a326c9f4a454a10024062741218253e9caa832b8fcead861",
+          "size_bytes": 63729,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "1403e7546622d892a326c9f4a454a10024062741218253e9caa832b8fcead861",
-      "size_bytes": 63729
+      "sha256": "fea6a07769ca24a23017c27df192fb4d91d0cdd3677833e26300c722eb3c070d",
+      "size_bytes": 72903
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
       "path": "frontend/rose-pulse-react/src/i18n/i18n.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5984,13 +6089,20 @@
           "size_bytes": 4251,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "c48b47d62eb949a484de81a3bf971312f6771c051e2521f2edd905ff5b14740b",
+          "size_bytes": 4386,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "c48b47d62eb949a484de81a3bf971312f6771c051e2521f2edd905ff5b14740b",
-      "size_bytes": 4386
+      "sha256": "125c7aafcb58319bac763ffc8a7a61e817b78dd4a985f2e96e1a2bc7df40c53b",
+      "size_bytes": 4777
     },
     {
       "document_id": "ROSE-P2-0b9828150d85",
@@ -6008,7 +6120,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6025,13 +6137,20 @@
           "size_bytes": 66008,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 3,
+          "sha256": "c4dcd52f25430f5498a8f4a4affe8de55ffee4406b40f40793de65cfe5af5189",
+          "size_bytes": 66088,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "c4dcd52f25430f5498a8f4a4affe8de55ffee4406b40f40793de65cfe5af5189",
-      "size_bytes": 66088
+      "sha256": "ed29e3f3c969f55b559c867b3c01a027f173dea4e310789124779e2e5bf516e7",
+      "size_bytes": 75547
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -6341,7 +6460,7 @@
     {
       "document_id": "DEMO-JOURNEY-FEATURE-DEMO-MATRIX",
       "path": "docs/dev/demo-journey/FEATURE_DEMO_MATRIX.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6351,13 +6470,20 @@
           "size_bytes": 5598,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "77f2aae93b7927b870914dd2bc3b9b9d8ca8b10fa4df639c4a5ce69455d4727e",
+          "size_bytes": 6070,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "77f2aae93b7927b870914dd2bc3b9b9d8ca8b10fa4df639c4a5ce69455d4727e",
-      "size_bytes": 6070
+      "sha256": "d5057a7a980898493e60afe5120e9c966c4b50e8de454719bca9de8adeaca4e7",
+      "size_bytes": 6922
     },
     {
       "document_id": "DEMO-JOURNEY-GATES",
@@ -6409,7 +6535,7 @@
     {
       "document_id": "DEMO-JOURNEY-SOURCE-COVERAGE",
       "path": "docs/dev/demo-journey/SOURCE_COVERAGE.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6419,18 +6545,25 @@
           "size_bytes": 1779,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "8e4dace7dfbf27cd46e4c176eb2a4062925715770387e462be93fc8b679f4f2e",
+          "size_bytes": 2284,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8e4dace7dfbf27cd46e4c176eb2a4062925715770387e462be93fc8b679f4f2e",
-      "size_bytes": 2284
+      "sha256": "8672f66a67b2d31f63a2a03a589f7abc3f1374196d2d321b00ded350f302ae47",
+      "size_bytes": 2807
     },
     {
       "document_id": "DEMO-JOURNEY-SOURCE-REGISTER",
       "path": "docs/dev/demo-journey/SOURCE_REGISTER.json",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6440,13 +6573,20 @@
           "size_bytes": 2455,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "1e1017f6f26a27323625aadb36b45dff21cc4166d613d4c52350d7b3b162cc41",
+          "size_bytes": 2773,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1e1017f6f26a27323625aadb36b45dff21cc4166d613d4c52350d7b3b162cc41",
-      "size_bytes": 2773
+      "sha256": "88aba8110d23065db42dec982f6df44b9572b3648606e159109e6c36d245e6c4",
+      "size_bytes": 3858
     },
     {
       "document_id": "DEMO-JOURNEY-STATE-MATRIX",
@@ -6565,7 +6705,7 @@
     {
       "document_id": "DEMO-DOC-EFB6BC4928E62A9D",
       "path": "backend/src/journey/policy.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6575,13 +6715,20 @@
           "size_bytes": 2873,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "f0f631133b40e7d2028f3e996bce7a5bc8b8425d6a4e519e9ede11ea71fb8fc5",
+          "size_bytes": 2945,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f0f631133b40e7d2028f3e996bce7a5bc8b8425d6a4e519e9ede11ea71fb8fc5",
-      "size_bytes": 2945
+      "sha256": "44afdc73b2dffa567acebdedd3fb39bf60995a841dd56c914bbfba8d579c1137",
+      "size_bytes": 3044
     },
     {
       "document_id": "DEMO-DOC-6532F7F07E4BB796",
@@ -6646,28 +6793,44 @@
     {
       "document_id": "DEMO-DOC-1613893D489DFFB1",
       "path": "docs/dev/demo-journey/AC_MATRIX.json",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "7bd4079aff1914ed7deb0d5aaa6d00f9030b89a5d735dd1c299dabce852cc33b",
+          "size_bytes": 11473,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "7bd4079aff1914ed7deb0d5aaa6d00f9030b89a5d735dd1c299dabce852cc33b",
-      "size_bytes": 11473
+      "sha256": "eb0ea26526e0d11cf11f8baeb4b8e589bb50e86e2add25df4af41ddd083a4ad7",
+      "size_bytes": 32514
     },
     {
       "document_id": "DEMO-DOC-DEECC58DE1D1D511",
       "path": "docs/dev/demo-journey/API_CONTRACT.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "00f123812e7bb4263a4d7b89445b05487e70e61b845f633e9262ead706b37899",
+          "size_bytes": 21549,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "00f123812e7bb4263a4d7b89445b05487e70e61b845f633e9262ead706b37899",
-      "size_bytes": 21549
+      "sha256": "40ade8b29853b1e092d41dfb3158cf02fbcadcf5ca24b13dfaf9bd81368d7c94",
+      "size_bytes": 21865
     },
     {
       "document_id": "DEMO-DOC-E16B1F8BCCCAA68A",
@@ -6685,7 +6848,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6695,13 +6858,20 @@
           "size_bytes": 8531,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "956c28b608badfda9cf252d3033ab4f0b763389af0a7afe53898bff3bb3ae934",
+          "size_bytes": 8881,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "956c28b608badfda9cf252d3033ab4f0b763389af0a7afe53898bff3bb3ae934",
-      "size_bytes": 8881
+      "sha256": "0fcce5e18f2916ab9537825f3dab33cc59f44a7ae8b77e11b9878f4ee90a34c8",
+      "size_bytes": 10690
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -6753,7 +6923,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6763,26 +6933,41 @@
           "size_bytes": 36886,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "39f4265672d9a2759fea209138f009eba8befed3f67e98c7543db8b02d843687",
+          "size_bytes": 37548,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "39f4265672d9a2759fea209138f009eba8befed3f67e98c7543db8b02d843687",
-      "size_bytes": 37548
+      "sha256": "35f1844b7eb2c34910bc3d228dddaed03e1f9880b6e2c4076b4ccbd7c1c5c84e",
+      "size_bytes": 37631
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "8d2e61d1fd98b16cfa883cf819e6ca81e3319b62a0ed03d41bb84e22b9c16b13",
+          "size_bytes": 7412,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8d2e61d1fd98b16cfa883cf819e6ca81e3319b62a0ed03d41bb84e22b9c16b13",
-      "size_bytes": 7412
+      "sha256": "5e5385310dfb47c4d7c49e8d40a01bbc90323afa8437d7a36b08f93b94223bd1",
+      "size_bytes": 8383
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -6954,7 +7139,7 @@
     {
       "document_id": "DEMO-DOC-D79E0FEF840573FD",
       "path": "scripts/demo_ci.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6964,13 +7149,20 @@
           "size_bytes": 37287,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "f81273e24061e267cca80c4fd2146b1a871d84bec20c53535f5b616e9f8b3175",
+          "size_bytes": 37307,
+          "superseded_at": "2026-11-03T08:30:08.732383+00:00",
+          "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f81273e24061e267cca80c4fd2146b1a871d84bec20c53535f5b616e9f8b3175",
-      "size_bytes": 37307
+      "sha256": "e3956933e01da83579f51bade6cff7c5feb16f38711a91b31a2c9de7231327ed",
+      "size_bytes": 38960
     },
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
@@ -6984,6 +7176,214 @@
       ],
       "sha256": "3d7f2cea682273d72a00574fa9bbf31740efa835d7edeeece7e2266b7435ced5",
       "size_bytes": 9008
+    },
+    {
+      "document_id": "DEMO-DOC-8CD5CC5E5514D94C",
+      "path": "backend/scripts/migrate_accounts.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5a7f557832cda93d18469bfc8675bfa8267c189c0e5061c5bdb20f8f4a63409e",
+      "size_bytes": 6517
+    },
+    {
+      "document_id": "DEMO-DOC-883587BBDEDD5A68",
+      "path": "backend/src/accounts/__init__.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "1e80a62e2b80892d6155768d51bed3289f9d12ef1f4ce2af1e0c7e92cceeb7ac",
+      "size_bytes": 73
+    },
+    {
+      "document_id": "DEMO-DOC-88B738EBE1A92EF6",
+      "path": "backend/src/accounts/models.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "cb04b53804a4f65864542ba3232a33f5ddef4880f8b0f31d069806dc5b0c56e7",
+      "size_bytes": 3268
+    },
+    {
+      "document_id": "DEMO-DOC-42ECEA44F2F13DDB",
+      "path": "backend/src/accounts/router.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2aebbaa0845548c36bcf7c0693b5f4ed31fd1e1cb56f5ddbf012de3d8fdde021",
+      "size_bytes": 4226
+    },
+    {
+      "document_id": "DEMO-DOC-47028ABBE9050E77",
+      "path": "backend/src/accounts/schemas.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "23f26f105f4d35e93ab8d92c08d5b4c0b61f7b7a9073a1363e2b282fb7ba0577",
+      "size_bytes": 1846
+    },
+    {
+      "document_id": "DEMO-DOC-356D5E7E65B357CF",
+      "path": "backend/src/accounts/security.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "b21f62da9b08b022158c3215bfa3cd6f087026cba6962c4f3046860f48b5601a",
+      "size_bytes": 958
+    },
+    {
+      "document_id": "DEMO-DOC-284FD85C3D230F90",
+      "path": "backend/src/accounts/service.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "868a039c80d7c262299e02635f317e556b54c23e0575f78026e2d09ecd405d1a",
+      "size_bytes": 12351
+    },
+    {
+      "document_id": "DEMO-DOC-39D939ABB7E4A25D",
+      "path": "backend/tests/test_account_migration_expression.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "60f106d63bce6778cde01f2bb208eb6e25023a2afb9928d41cdf88bda018355a",
+      "size_bytes": 904
+    },
+    {
+      "document_id": "DEMO-DOC-023F15AB6ABD7CF6",
+      "path": "backend/tests/test_accounts.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "99c8dba4d389af1cc012257447385db941ae97809073a186d143dd7c684add02",
+      "size_bytes": 16066
+    },
+    {
+      "document_id": "DEMO-DOC-B7C627704688A7CA",
+      "path": "backend/tests/test_accounts_native.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "7791574e99db8b2f39771a8b9e538e433f6e4dd09d18a97f179dcacd99125cc5",
+      "size_bytes": 20201
+    },
+    {
+      "document_id": "DEMO-DOC-D63EF9396F976165",
+      "path": "docs/dev/demo-journey/ACCOUNT_CONTRACT_R3.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "84d0f1f9364b4493bebde42952979f38a53cacc451cbd4850a09a2db6e0cf098",
+      "size_bytes": 13946
+    },
+    {
+      "document_id": "DEMO-DOC-F7809B7EA426E0A6",
+      "path": "frontend/rose-pulse-react/src/AccountWorkspace.jsx",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "6445ac47631d066a70ce27ac5dfa11e6c98dbac0a04dfeee031a6122005eb731",
+      "size_bytes": 18179
+    },
+    {
+      "document_id": "DEMO-DOC-A52F37B73B48C016",
+      "path": "frontend/rose-pulse-react/src/AccountWorkspace.test.jsx",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0e39a14a0684fb5e9abf85e2eb764ce0076a0819503c322bfa3a60d43c0b8b6e",
+      "size_bytes": 22082
+    },
+    {
+      "document_id": "DEMO-DOC-082FDD7FFB632761",
+      "path": "frontend/rose-pulse-react/src/account-api.js",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0cc929bea65b9601c8edb869725ba2e5d11ab3e953b1c3c9e3d760226af545dd",
+      "size_bytes": 16559
+    },
+    {
+      "document_id": "DEMO-DOC-7FCF7B536245916C",
+      "path": "frontend/rose-pulse-react/src/account-api.test.js",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "f648483408f59b6c640fa50d79b2f8dd1cf73e98572150a6303558b918fb5bc9",
+      "size_bytes": 16371
+    },
+    {
+      "document_id": "DEMO-DOC-A246709597685A64",
+      "path": "tests/test_demo_ci.py",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ffc75d1c9f2fa89e110601287c43fdb813a4501a99b337b655fca3b75a7b8db5",
+      "size_bytes": 2985
     }
   ]
 }

@@ -1,7 +1,8 @@
-"""Opt-in account transactions on the three exact R3 task-owned native databases."""
+"""Opt-in account transactions on three explicitly named isolated native test DBs."""
 import asyncio
 import json
 import os
+import re
 from datetime import datetime, timezone, timedelta
 from pathlib import Path
 from uuid import uuid4
@@ -10,6 +11,7 @@ import pytest
 import ulid
 from sqlalchemy import select, text, func
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+from sqlalchemy.engine import make_url
 from src.main import app
 from src.core.database import Base, get_async_db
 from src.core.security import hash_password
@@ -19,9 +21,14 @@ from src.journey.models import JourneyState, JourneyOperation
 from src.accounts.models import AccountSecurity, AccountProfile, RecoveryChallenge
 from tests.test_accounts import P, PASSWORD, envelope
 
-DATABASE='nu_demo_20261103_132629_r3_accounts_be_test'
-MIGRATION_DATABASE='nu_demo_20261103_132629_r3_accounts_migration_be_test'
-SHAPE_DATABASE='nu_demo_20261103_132629_r3_accounts_shape_be_test'
+DATABASE=os.getenv('NU_ACCOUNTS_NATIVE_DATABASE','nu_demo_20261103_132629_r3_accounts_be_test')
+MIGRATION_DATABASE=os.getenv('NU_ACCOUNTS_MIGRATION_DATABASE','nu_demo_20261103_132629_r3_accounts_migration_be_test')
+SHAPE_DATABASE=os.getenv('NU_ACCOUNTS_SHAPE_DATABASE','nu_demo_20261103_132629_r3_accounts_shape_be_test')
+PORT=int(os.getenv('NU_ACCOUNTS_NATIVE_PORT','5441'))
+assert 1024 <= PORT <= 65535
+assert len({DATABASE,MIGRATION_DATABASE,SHAPE_DATABASE})==3
+assert all(len(name)<=63 and re.fullmatch(r'(?:nu_demo_|nu_ci_)[a-z0-9_]+_be_test',name)
+           for name in (DATABASE,MIGRATION_DATABASE,SHAPE_DATABASE))
 
 
 def evidence(name, value):
@@ -35,11 +42,13 @@ def evidence(name, value):
 async def native_accounts(monkeypatch):
     url=os.getenv('NU_NATIVE_TEST_DATABASE_URL')
     if not url:pytest.skip('Exact assigned native database opt-in required.')
-    assert url.rsplit('/',1)[-1]==DATABASE and ':5441/' in url
+    parsed=make_url(url)
+    assert parsed.database==DATABASE and parsed.port==PORT and parsed.host=='127.0.0.1'
+    assert parsed.drivername=='postgresql+asyncpg'
     engine=create_async_engine(url,echo=False,hide_parameters=True)
     async with engine.begin() as conn:
         identity=(await conn.execute(text("SELECT current_database(),current_setting('server_version_num'),inet_server_port(),rolsuper FROM pg_roles WHERE rolname=current_user"))).one()
-        assert identity[0]==DATABASE and identity[1]=='170011' and identity[2]==5441 and not identity[3]
+        assert identity[0]==DATABASE and identity[1]=='170011' and identity[2]==PORT and not identity[3]
         await conn.run_sync(Base.metadata.create_all)
     sessions=async_sessionmaker(engine,expire_on_commit=False,autoflush=False)
     stamp=str(ulid.ULID())[-10:].lower();prefix='ar'+stamp

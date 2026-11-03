@@ -4,7 +4,7 @@ Status: provisional Owner-admitted scope, no results claimed. Namespace OWNER-DE
 
 | ID | Required sub-features | Program locations (planned where absent) | Mode | Positive / negative / edge test | Video chapter | Result / gap |
 |---|---|---|---|---|---|---|
-| US01 | Login/logout; Participant private data; Organizer/Leader authorization; Demo account provisioning/deactivation; recovery | auth/users; operations accounts | REAL_LOCAL + DEMO_PROVIDER recovery | valid role; foreign record; revoked role/stale token | 01 | NOT_RUN; fixed-SHA evidence required |
+| US01 | Login/logout; Participant private data; Organizer/Leader authorization; Demo account provisioning/deactivation; recovery; own profile display name/language persistence | auth/users; operations accounts | REAL_LOCAL + DEMO_PROVIDER recovery | valid role; foreign record; revoked role/stale token | 01 | NOT_RUN; fixed-SHA evidence required |
 | US02 | Create/Edit/Publish; max3 images; online/offline quota; window/state; cancel/postpone; last-place/waiting | events/gallery; operations policy | REAL_LOCAL | valid lifecycle; fourth image; concurrent last place/pending not occupied | 02 | NOT_RUN; fixed-SHA evidence required |
 | US03 | Event leader assignment; event referral; operator separate from attributed leader; Direct/Unknown | operations assignments/attribution | REAL_LOCAL | valid referral; forged token; revoked assignment/unknown source | 03 | NOT_RUN; fixed-SHA evidence required |
 | US04 | Editable promotion draft; human approval; printable flyer; public WhatsApp share; explicit template provider | EventShare; operations promotion | REAL_LOCAL + DEMO_PROVIDER template | approve/print/share; unapproved draft; long EN/MS content | 04 | NOT_RUN; fixed-SHA evidence required |
@@ -29,10 +29,14 @@ Source audit read current GitHub issue bodies in this run. Audit labels below ar
 | #16/#34/#48 US06 | OTP wrong/expired/used/rate-limit; accountless own-result retrieval; correction instruction/audit/recheck; minimum data policy; confirmation only after approval and capacity | NOT_RUN |
 | #43/#47 US07 | Accountless assisted capture; local access/cleanup; persistence and rejection/auth-expiry recovery; no OCR | NOT_RUN |
 | #35/#36/#37/#46 US08 | Release original pool once; pending cancellation releases none; waiting/offered/confirmed distinct; explicit pool/order/offer acceptance; concurrent accept; own-offer ACL; reminders exclude cancelled and use correct time/recipient; failed/manual-retry outbox | NOT_RUN |
-| Owner US03/09/10 | Explicit current master requirements admitted; original-team AC unavailable | original source coverage BLOCKED; Owner requirement execution NOT_RUN |
+| Owner US03/09/10 | Explicit current master requirements admitted; original-team AC unavailable | original40AC source now admitted; final fixed-SHA acceptance pending |
 
 Inherited automatic waiting→approved promotion alone cannot satisfy #37. Missing originals do not turn the parent story into PASS. G3 requires an evidence row for every atomic criterion above and in the master table.
 
 ## Superseding original-source readback
 
-All40 original amended AC are now indexed in AC_MATRIX.json. Earlier unavailable-original statements above are preserved intake history, superseded for story/AC text only. Raw hash and story-map graphic remain unverified. G3 must attach a real evidence receipt to each row; this source update itself changes no test result. AC09 offline attendance, AC01 Organizer provisioning, AC07 assisted correction and AC05 promotion pause are required coordinated additions.
+All40 original amended AC are now indexed in AC_MATRIX.json. Earlier unavailable-original statements above are preserved intake history, superseded for story/AC text only. R3 subsequently verified original bytes/hashes, full text and the actual story-map graphic; full Word page-layout rendering remains NOT_RUN. G3 must attach a real evidence receipt to each row; this source update itself changes no test result. AC09 offline attendance, AC01 Organizer provisioning, AC07 assisted correction and AC05 promotion pause are required coordinated additions.
+
+## R3 evidence reconciliation
+
+At fixed2e95f9882b20b39c3e0ee9f17e043cb6df3efc64 the supplemental real browser journey reports20 observed-positive author rows,19 partial and1 validation RED with later valid-path pass. Root G4 separately records actual IndexedDB/lost-ACK/native readback. These are historical author layers, not a sum yielding final40AC PASS. Account recovery/profile and overlength-phone notice repairs require fresh integrated browser/native/independent acceptance. ACCOUNT_CONTRACT_R3.md retains original task-level recovery/profile scope. Current implementation status and raw receipts stay in the external run checkpoint; no CI/merge/localCD/video/UAT claim is created by this document update.
