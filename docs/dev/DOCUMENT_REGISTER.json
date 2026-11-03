@@ -1,7 +1,7 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T06:23:45.486467+00:00",
+  "reviewed_at": "2026-11-03T06:33:14.160649+00:00",
   "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態",
   "document_count": 344,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
@@ -1914,7 +1914,7 @@
     {
       "document_id": "PUB-DOC-032",
       "path": "tests/test_document_control.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1924,13 +1924,20 @@
           "size_bytes": 4204,
           "superseded_at": "2026-10-13T16:51:30.997857+00:00",
           "reason": "Implement reviewed event-index/Login slice, preserve Austin source, align two stale user tests, and record bounded SQL/browser evidence"
+        },
+        {
+          "revision": 2,
+          "sha256": "1e9e11641f18693a537902753a336b60473ffe8fda4ad8be3e6f8e7c1b3d1488",
+          "size_bytes": 4458,
+          "superseded_at": "2026-11-03T06:33:14.160649+00:00",
+          "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1e9e11641f18693a537902753a336b60473ffe8fda4ad8be3e6f8e7c1b3d1488",
-      "size_bytes": 4458
+      "sha256": "11459c10f7da5ba88ba1468d4a1b4cc27c71de19242210f009f05fc4c3c2adf6",
+      "size_bytes": 4472
     },
     {
       "document_id": "FE-SHELL-004",
