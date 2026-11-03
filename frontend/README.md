@@ -1,5 +1,11 @@
 # Frontend workspace
 
+## ROSE PULSE React V2 — 2026-11-02
+
+The new [React application](rose-pulse-react/README.md) is an isolated Vite workspace at `frontend/rose-pulse-react/`. It imports the reviewed legacy API, Session and write controllers while providing responsive ROSE PULSE components. Legacy `live/` remains available for regression. See the [source/ownership/acceptance task](../docs/dev/tasks/FE-ROSE-PULSE-V2-20261102.md) and CURRENT for the bounded validation status.
+
+Run `npm ci`, `npm test` and `npm run build` from that workspace. `npm run dev` binds127.0.0.1:5201 and forwards `/api/v1` and `/uploads` to the existing safe proxy on5202. Run that proxy with `PORT=5202`, `BACKEND_URL=http://127.0.0.1:8026`, and `UPLOAD_DIR` set to the dedicated backend upload directory. Never substitute a mock server when the real API fails. The local run's Start/Stop/Status/Open scripts preserve persistent settings outside Git.
+
 ## Repaired PR38 successor candidate — 2026-10-27 (current)
 
 The [current repair task](../docs/dev/tasks/BE-FE-DEMO-READINESS-20261027.md) restores the real existing ROSE pages through the repaired inherited Backend. Only API read acceptance of `offline` and safe registration409 rejection mapping changed in Frontend; Session, proxy, routes, forms and styling remain. True UI search/detail/image/Reload/Edit/User+Guest/own read/Approve/Cancel+promotion passed. Refresh events retains keyword; a full page reload resets the search under the existing behavior.
