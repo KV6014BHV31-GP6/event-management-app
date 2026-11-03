@@ -1,5 +1,6 @@
+import { demoTransport, DEMO_PROFILE } from "../demo-transport.js";
 import { tr } from "../i18n/index.js";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { minimumRegistrationPayload } from "../minimum-registration.js";
 const messages = {
   offline_storage_full:
@@ -42,7 +43,9 @@ export default function OfflineWorkspace({
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [online, setOnline] = useState(navigator.onLine);
+  const [physicalOnline, setOnline] = useState(navigator.onLine);
+  const simulation = useSyncExternalStore(demoTransport.subscribe,demoTransport.getSnapshot);
+  const online = physicalOnline && !(DEMO_PROFILE && simulation.mode === "offline");
   const [storage, setStorage] = useState(null);
   const [retentionDays, setRetentionDays] = useState(7);
   const [deleteConfirm, setDeleteConfirm] = useState(false);

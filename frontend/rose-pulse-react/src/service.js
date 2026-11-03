@@ -1,3 +1,4 @@
+import { DEMO_PROFILE } from "./demo-transport.js";
 import { ApiError, createApi } from "../../live/api.mjs";
 import { browserSessionStorage, createSession } from "../../live/session.mjs";
 import { createOfflineStore } from "./offline/queue.js";
@@ -139,7 +140,7 @@ export function createRuntime({
     },
   };
   const session = createSession({ api: sessionApi, storage });
-  const offline = createOfflineStore();
+  const offline = createOfflineStore(DEMO_PROFILE ? {name:"rose-demo-synthetic-offline-v1"} : {});
   const rememberActor = (profile) => {
     offlineActor = syntheticAccess.remember(profile);
   };

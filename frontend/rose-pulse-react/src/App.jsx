@@ -1,3 +1,5 @@
+import JourneyWorkspace from "./JourneyWorkspace.jsx";
+import { DemoImage, DemoControls } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
 import {
   i18n,
@@ -48,6 +50,7 @@ const readLocation = () => {
   return {
     view: params.get("view") || "home",
     event: params.get("event") || "",
+    ref: params.get("ref") || "",
     keyword: params.get("keyword") || "",
     page: Math.max(1, Number(params.get("page")) || 1),
     pageSize: [3, 6, 12, 24].includes(Number(params.get("pageSize")))
@@ -151,10 +154,11 @@ export function Brand({ compact = false }) {
   );
 }
 function Link({ view, params, children, className = "", onClick, ...rest }) {
-  const { navigate } = useApp();
+  const { navigate, route } = useApp();
+  const linkedParams = route.ref && params?.event===route.event ? {...params,ref:route.ref} : params;
   return (
     <a
-      href={hrefFor(view, params)}
+      href={hrefFor(view, linkedParams)}
       className={className}
       onClick={(event) => {
         onClick?.(event);
@@ -167,7 +171,7 @@ function Link({ view, params, children, className = "", onClick, ...rest }) {
           !event.altKey
         ) {
           event.preventDefault();
-          navigate(view, params);
+          navigate(view, linkedParams);
         }
       }}
       {...rest}
@@ -263,6 +267,7 @@ function Shell({ children }) {
     setMenuOpen(false);
   }, [route.view, route.keyword]);
   const nav = [
+    {view:"operations",icon:"users",label:"Event operations"},
     {
       view: "home",
       icon: "home",
@@ -599,7 +604,7 @@ function EventImage({ event, className = "", detail = false, index = 0 }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [source]);
   return source && !failed ? (
-    <img
+    <DemoImage
       className={className}
       src={source}
       alt={event.title}
@@ -724,31 +729,7 @@ function Events({ home = false }) {
     });
   return (
     <div className="browse-page">
-      {home && (
-        <section className="hero" aria-labelledby="hero-title">
-          <img
-            src="/images/community-lake.jpg"
-            alt={tr("Mountain lake surrounded by a green forest")}
-          />
-          <div className="hero-content">
-            <p className="eyebrow">{tr("GOOD THINGS HAPPEN TOGETHER")}</p>
-            <h1 id="hero-title">
-              {tr("Healthy communities.")}
-              <br />
-              {tr("Brighter tomorrows.")}
-            </h1>
-            <p>{tr("Find your next moment of connection.")}</p>
-            <Link view="events" className="button button-gold">
-              {tr("Browse events")}
-              <Icon name="arrow" size={18} />
-            </Link>
-          </div>
-          <span className="hero-caption">
-            <span className="hero-dot" />
-            {tr("A little connection goes a long way")}
-          </span>
-        </section>
-      )}
+      {home && <Heading eyebrow="ROSE · PULSE" title={tr("Community events")}><p>{tr("Find an event, check the date and location, then apply. Places are confirmed by the server.")}</p></Heading>}
       {!home && (
         <Heading
           eyebrow={tr("FIND YOUR COMMUNITY")}
@@ -1074,7 +1055,7 @@ function EventDetail() {
                   aria-pressed={index === imageIndex}
                   onClick={() => setImageIndex(index)}
                 >
-                  <img
+                  <DemoImage
                     src={file.url}
                     alt={tr("Event image {{number}}", {
                       number: index + 1,
@@ -1123,6 +1104,7 @@ function EventDetail() {
             </div>
             <aside className="detail-action">
               <Quota event={event} />
+              <Link view="operations" params={{event:event.public_id}} className="button button-quiet">{tr("Booking and event operations")}</Link>
               {event.status.toLowerCase() === "active" ? (
                 <Link
                   view="apply"
@@ -1222,7 +1204,7 @@ function AuthForm({ signup = false }) {
           {tr("A brighter day.")}
         </h1>
         <p>{tr("Come as you are. Find something that brings you together.")}</p>
-        <img
+        <DemoImage
           src="/images/community-lake.jpg"
           alt={tr("Peaceful lake and forest")}
         />
@@ -1472,7 +1454,7 @@ function ImageUpload({ store, disabled, onUploaded, onSelected }) {
         {state.message}
       </Notice>
       {state.status === "success" && (
-        <img
+        <DemoImage
           className="upload-preview"
           src={state.url}
           alt={tr("Uploaded event preview")}
@@ -2059,6 +2041,7 @@ function Application({ event }) {
             {event.location}
           </p>
           <Quota event={event} />
+              <Link view="operations" params={{event:event.public_id}} className="button button-quiet">{tr("Booking and event operations")}</Link>
         </div>
       </aside>
     </div>
@@ -2303,6 +2286,7 @@ function RegistrationList({ organizer }) {
             {!organizer && (
               <PrivateDocuments
                 runtime={runtime}
+                recordId={record.id}
                 files={record.supporting_documents || []}
               />
             )}
@@ -2346,6 +2330,7 @@ function RegistrationList({ organizer }) {
               </dl>
               <PrivateDocuments
                 runtime={runtime}
+                recordId={state.detail.id}
                 files={state.detail.supporting_documents || []}
               />
             </section>
@@ -2485,6 +2470,7 @@ export default function App({ runtime }) {
   const [route, setRoute] = useState(readLocation);
   const auth = useSyncExternalStore(runtime.subscribe, runtime.getSnapshot);
   const navigate = (view, params = {}) => {
+    if(route.ref&&params.event===route.event&&!params.ref)params={...params,ref:route.ref};
     window.history.pushState({}, "", hrefFor(view, params));
     setRoute(readLocation());
     window.scrollTo?.({
@@ -2529,8 +2515,11 @@ export default function App({ runtime }) {
   }, [route.view, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
+    case "operations":
+      content = <JourneyWorkspace key={`${auth.user?.id}:${auth.revision}:${route.event}`} runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/>;
+      break;
     case "home":
-      content = <Events home />;
+      content = auth.user?.role === "organizer" ? <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate}/> : auth.user?.role === "leader" ? <OfflineWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Events home />;
       break;
     case "events":
       content = <Events />;
@@ -2551,7 +2540,7 @@ export default function App({ runtime }) {
       content = <EventEditor edit />;
       break;
     case "apply":
-      content = <Apply />;
+      content = route.ref ? <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Apply />;
       break;
     case "registrations":
       content = <Registrations />;
@@ -2606,6 +2595,7 @@ export default function App({ runtime }) {
       }}
     >
       <Shell>
+        <DemoControls navigate={navigate}/>
         <div
           className="view-transition"
           key={`${route.view}:${route.event}:${auth.revision}`}

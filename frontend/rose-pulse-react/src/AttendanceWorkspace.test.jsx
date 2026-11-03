@@ -1,0 +1,8 @@
+import React from 'react';
+import 'fake-indexeddb/auto';
+import {it,expect,vi} from 'vitest';
+import {render,screen,waitFor} from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import AttendanceWorkspace from './AttendanceWorkspace.jsx';
+import {createAttendanceStore} from './offline/attendance.js';
+it('queues from a preloaded approved roster without API, then retains pending after component restart',async()=>{const actor={id:'actor-'+crypto.randomUUID(),role:'leader'},eventId='event';const store=createAttendanceStore();await store.saveRoster(actor,eventId,{event:{event:{title:'Synthetic clinic'}},rows:[{registration_id:'reg',first_name:'Siti',last_name:'Demo',status:'approved',arrived:false}]});await store.close();const client={get:vi.fn(),mutate:vi.fn()},runtime={freshOfflineIdentity:vi.fn()};const onQueueState=vi.fn();const props={runtime,client,actor,eventId,onError:vi.fn(),onQueueState};const view=render(<AttendanceWorkspace {...props}/>);await screen.findByText('Siti Demo');expect(onQueueState).toHaveBeenLastCalledWith(false);await userEvent.click(screen.getByRole('button',{name:'Queue check-in locally'}));await screen.findByText('Attendance action saved locally. Arrival is not yet confirmed.');expect(onQueueState).toHaveBeenLastCalledWith(true);expect(client.get).not.toHaveBeenCalled();expect(client.mutate).not.toHaveBeenCalled();expect(runtime.freshOfflineIdentity).not.toHaveBeenCalled();view.unmount();render(<AttendanceWorkspace {...props}/>);await waitFor(()=>expect(screen.getByText(/^pending/)).toBeInTheDocument());expect(screen.getByRole('button',{name:'Queue check-in locally'})).toBeDisabled();});

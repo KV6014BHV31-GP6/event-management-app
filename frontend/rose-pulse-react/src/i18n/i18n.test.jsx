@@ -36,6 +36,10 @@ describe("central English/Malay resources and controls", () => {
       "src/FilePicker.jsx",
       "src/OrganizerWorkspace.jsx",
       "src/EventShare.jsx",
+      "src/PrivateDocuments.jsx",
+      "src/DemoControls.jsx",
+      "src/JourneyWorkspace.jsx",
+      "src/AttendanceWorkspace.jsx",
       "src/offline/OfflineWorkspace.jsx",
     ]) {
       const ast = parse(readFileSync(file, "utf8"), {
