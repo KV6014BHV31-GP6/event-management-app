@@ -151,3 +151,192 @@ New items require active status and available aggregate approved capacity (`appr
 Run `python -B -m pytest -q tests` for ASGI/SQLite contracts. Set private `NU_NATIVE_TEST_DATABASE_URL=postgresql+asyncpg://.../EXACT_DEDICATED_NAME_test` to opt into native tests. Native v2 tests cover same-ID concurrency, global collisions with whole-batch rollback, cross-event National-ID races with persistent partial receipts, pre-commit rollback, raw fingerprint conflict, fresh role changes, NULL storage, exact identity reuse and closed/full/online-claim refusal. Native tests create only synthetic fixtures in the opted-in non-superuser `_test` DB. ASGI tests do not replace native transaction or browser evidence.
 
 Original RED results and harness-only failures are retained externally. Real HTTP/file/DB/restart, local browser, independent acceptance, full Security/UAT and production are separate gates. No provider, SMS, OCR or check-in implementation is introduced.
+
+## Synthetic managed journey (2026-11-03)
+
+`/api/v2/operations` implements `rose.demo-journey.v1` alongside unchanged v1 and
+`rose.offline-sync.v2` enums. New event sidecars explicitly opt into draft/publication,
+registration windows, separate online/offline pools, reserved Leader allocation and
+expiring waitlist offers. Unmanaged events retain aggregate/FIFO behavior. Managed
+legacy application/approval/cancel/sync paths share policy and allocation; legacy
+PATCH cannot bypass managed event transitions. Global Organizer registration reads
+and approval now require ownership of the event. Private supporting-document binary
+ACL is unchanged.
+
+Before starting this source against any database, snapshot the intended dedicated
+synthetic development database and explicitly apply:
+
+```powershell
+$env:PYTHONPATH='.'
+python scripts/migrate_demo_journey.py --acknowledge-development --database <exact-dedicated-database-name>
+```
+
+Migration identity: `rose_demo_journey_20261103_v1`. It checks the connected database
+name and non-superuser role, locks its own migration identity, and creates only the
+additive journey tables and ledger. It never runs at startup, never resets data,
+and refuses missing prerequisites. Fresh databases must explicitly import **all**
+models (`from src.main import app`) before `Base.metadata.create_all`; they also need
+the earlier native base and Phase2 schema/nullability migrations where applicable.
+Do not run this against retained historical Demo databases.
+
+Set `NU_DEMO_PROFILE=synthetic`, a task-owned `NU_DEMO_NAMESPACE`, and the exact seeded
+Organizer ULIDs in `NU_DEMO_OWNER_IDS`. Only those seed-designated admins can provision
+namespace-prefixed user/leader/organizer accounts or change managed account access.
+New Organizers do not become Demo admins. Explicit bootstrap adds `JourneyState`
+rows with key `account:<ULID>`, kind `account`, version1 and data `{enabled: true}`
+for namespace accounts which the account list should manage. Passwords stay outside
+Git. Disabled sidecars reject login, refresh, retained bearer access and fresh
+post-lock operations; existing JWT bytes are not cryptographically revoked.
+
+A real IANA TZif database is required by Python `zoneinfo`. On the approved Windows
+runtime (without bundled tzdata), use the existing PostgreSQL17 distribution:
+`PYTHONTZPATH=E:\NU_Local_Environment_20261014\runtime\PostgreSQL17\pgsql\share\timezone`.
+Other installations may use an existing OS IANA database. Do not silently reinterpret
+invalid timezone names as UTC.
+
+Each immutable operation, business transition and registration-bound Demo outbox
+write commits once. Event → fresh actor → registration/sidecar lock order is shared.
+Mutations require current versions; exact same actor/request replays return the
+historical receipt, modified requests conflict. Readback never repeats business
+writes. Attendance IDs are distinct from registration sync IDs. The frontend may
+queue preloaded roster actions offline; restoring connection must explicitly register
+an intent and apply it against fresh role, booking and time-window checks. Closeout
+blocks unresolved server intentions and requires the presenter's explicit local-queue
+attestation; it cannot know about unseen devices.
+
+`DEMO_TEMPLATE`, `DEMO_OTP` and `DEMO_OUTBOX` are explicit local providers. They never
+send SMS or WhatsApp and never prove phone ownership. OTP codes/access/grants remain
+in memory at the client; the database retains only secret hashes and expiry. The
+short Demo code is derived from the random challenge access secret and server secret,
+then compared using its stored hash. No raw code/token is logged or written to the
+ledger. `NU_DEMO_OUTBOX_FAIL_KINDS=<comma-separated-kinds>` explicitly records deterministic
+Demo failures for retry tests; retry changes only the existing outbox record.
+
+Controlled checks: `python -m pytest tests/test_journey_acl.py tests/test_journey.py`.
+Native checks require explicit `NU_NATIVE_TEST_DATABASE_URL` ending `_test` and run
+`tests/test_journey_native.py`; they never replace controlled results or browser/UAT
+acceptance. Native closeout derives totals from persisted registrations/attendance.
+SQLite controlled responses honestly identify their source as `sqlite`.
+
+Anonymous managed application writes additionally require `X-Application-Key`: a
+canonical unpadded43-character base64url value from32 random bytes. Create and retain
+it privately before POST alongside the immutable operation. The backend stores only
+its SHA256 actor binding; exact POST replay and creation-receipt GET require the same
+capability. This key only recovers that creation receipt; booking management still
+requires the separate scoped DemoOTP grant. Never put it in URLs, logs or exports.
+Normal authorized Organizers can create their own managed events; only the seeded
+Demo admin allowlist can provision accounts. Promotion GET uses the current assigned
+Leader's stable referral, or an owner's explicit `?leader_id=<assigned-ULID>` selection;
+it never mints a new code during a read. Promotion pause does not close registrations.
+Assisted corrections preserve original entry/source attribution, return pending
+review and release a place/live offer atomically, but refuse arrived bookings.
+
+Fresh enabled Organizers may read only assignable namespace Leaders through `GET /api/v2/operations/accounts?scope=assignable_leaders`. Unscoped account administration remains restricted to seeded Demo admins; unknown scopes fail422. This directory grants no account-management permission.
+
+Managed legacy online admission also enforces current staff role and event assignment.
+Before a waitlist offer, the allocator rechecks enabled accounts for both the entry
+operator and linked participant, plus current Leader assignment. Disabled candidates
+receive neither a capacity hold nor an offer outbox record; FIFO continues to the next
+eligible candidate without changing original operator or referral attribution.
+
+## Own profile and synthetic assisted account recovery (R3, 2026-11-03)
+
+Existing v1 routes and user response fields remain. Explicit account routes under
+`/api/v2/operations` are registered before the journey catch-all. Every enabled
+authenticated role can `GET /me/profile` and `POST /me/profile`, editing only
+`display_name` (trimmed, 1–80 Unicode characters, no control characters) and
+`preferred_language` (`en|ms`). Use the existing `rose.demo-journey.v1` operation
+envelope and the current `expected_version`, including 0 for an absent profile.
+GET is a projection and creates no row. Stale saves return 409. Exact replay and
+`GET /me/profile/receipts/{operation_id}` return the original own receipt; follow
+with current GET. Username, role, Participant identity, booking contact and historical
+registration snapshots are not profile fields.
+
+Before using this source against the intended dedicated development database,
+snapshot it and explicitly apply the additive migration:
+
+```powershell
+python scripts/migrate_accounts.py --acknowledge-development --database <exact-dedicated-database-name>
+```
+
+Identity `rose_account_recovery_20261103_v1` creates typed `account_security`,
+`account_profiles`, `account_recovery_challenges` and `accounts_schema_migrations`.
+It requires base/journey prerequisites, exact connected DB acknowledgement and a
+non-superuser development connection, takes its own advisory lock, and validates
+column types/nullability, keys, foreign keys, checks and indexes on first/repeat
+runs. There is no backfill or startup migration. Missing security state means
+generation 0; legacy JWTs without a generation work only at generation 0. Fresh test
+bootstrap importing all model metadata is separate from migration evidence.
+
+Recovery issuance is admin-assisted and synthetic only: a current enabled Organizer
+in server `NU_DEMO_OWNER_IDS`, with `NU_DEMO_PROFILE=synthetic` and a configured
+namespace, selects an enabled namespace-managed account from `GET /accounts` and
+POSTs `/account-recovery/challenges` with data `{account_id,synthetic:true}`.
+Public signup still permits only role `user`; only server synthetic mode plus a
+matching namespace prefix creates the existing managed-account sidecar in the same
+signup transaction, making a newly signed-up Demo participant recoverable. Other
+accounts are not backfilled or silently admitted.
+
+The current original issuer alone reads
+`GET /account-recovery/challenges/{id}/demo-message`. It returns a clearly labelled
+`DEMO_PROVIDER` secret and explicitly reports no external delivery or identity
+verification. It is not an email/SMS ownership check. No anonymous username-only
+issuance or real-provider fallback exists. Secrets are derived with domain-separated
+HMAC; the database retains only hash, nonce and bindings.
+
+The recipient POSTs `/account-recovery/challenges/{id}/reset` with capability header
+`X-Account-Recovery` and envelope data `{new_password}` (12–72 UTF-8 bytes).
+Password hashing, token-generation increment, consumed challenge, invalidation of
+other challenges and sanitized immutable receipt commit once. Access and actual
+refresh tokens from the prior generation fail; both JSON/form login and refresh
+serialize with reset on the user row. Existing event-first paths recheck the
+request-bound generation after their locks, including legacy cancellation/approval
+and Phase2 synchronization. Only the authenticated principal's presented generation
+is bound; unrelated candidates and internal calls do not inherit it.
+
+Synthetic engineering policy is five minutes/five wrong attempts, at most three new
+issuances per target and thirty per issuer per ten minutes. A new issuance replaces
+older unused secrets; exact issuance replay consumes no additional quota. Current
+issuer/target revocation blocks reset and readback. The refresh cookie is cleared
+after reset; explicit login is required. This server revocation is distinct from
+the existing local Logout UI and does not erase remote browser caches.
+
+Recovery secret/new password must stay only in current component memory, never
+localStorage, IndexedDB, persistent payloads, URLs, logs, exports or screenshots.
+After a lost response, GET
+`/account-recovery/challenges/{id}/receipts/{operation_id}` with the same capability
+before any retry. A valid unused challenge with no receipt returns 404; a used
+challenge bound to another operation returns generic 403. A committed exact reset
+can only return its historical receipt, never repeat the password change. Receipt
+GET and exact POST replay share a 24-hour read-only deadline after success; this is
+a synthetic policy proposal, not approved production retention. Same ID with a
+changed password conflicts using a keyed fingerprint, not a cheap unsalted password
+verifier. Revoked issuer/target or elapsed deadline refuses readback. Persist only
+nonsecret IDs/unknown markers; re-enter the original secret after reload and the
+same password only for a deliberate exact retry when no receipt exists.
+
+Sensitive responses/errors are `no-store`. A known serialization/deadlock abort
+returns controlled 409 after rollback. Unexpected connection/commit failure returns
+bounded `OPERATION_OUTCOME_UNKNOWN` (500), requiring original-receipt reconciliation;
+there is no automatic business retry or claim that an indeterminate commit rolled
+back. No raw request, password or secret is placed in ordinary errors/receipts.
+
+Controlled checks: `python -B -m pytest tests/test_accounts.py -q`. Native account
+checks: `python -B -m pytest tests/test_accounts_native.py -q`, only with explicitly
+assigned `NU_NATIVE_TEST_DATABASE_URL` and exact isolated `_be_test` names. Local
+defaults use the original R3 databases on port5441; CI explicitly supplies
+`NU_ACCOUNTS_NATIVE_DATABASE`, `NU_ACCOUNTS_MIGRATION_DATABASE`,
+`NU_ACCOUNTS_SHAPE_DATABASE` and `NU_ACCOUNTS_NATIVE_PORT`. Loopback, distinct bounded
+test names, PostgreSQL17.11 and non-superuser identity checks remain mandatory.
+Override account and Phase2 evidence directories/labels and upload paths per run.
+They cover concurrency, precommit rollback, injected lost acknowledgement, actual
+refresh cookies, lock-wait revocation, signup directory and migration guards.
+ASGI/native evidence is separate from a real TCP/browser journey, independent
+acceptance, CI, UAT, merge and production delivery.
+
+Legacy event creation now takes the Organizer row lock and rechecks current
+role, enabled state and presented token generation before inserting any event.
+This closes a request that authenticated before a credential reset but resumed
+after it. The account migration compares quoted SQL values exactly while
+normalizing PostgreSQL expression formatting; uppercase language literals cannot
+silently satisfy the required lowercase `en`/`ms` constraint.

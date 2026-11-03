@@ -116,6 +116,7 @@ describe("three-file gallery and authenticated supporting documents", () => {
       expect(runtime.api.downloadSupportingDocument).toHaveBeenCalledWith(
         file,
         "synthetic-token",
+        { signal: expect.any(AbortSignal) },
       ),
     );
     expect(click).toHaveBeenCalledTimes(1);

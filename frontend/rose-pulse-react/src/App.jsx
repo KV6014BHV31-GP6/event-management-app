@@ -1,3 +1,6 @@
+import JourneyWorkspace from "./JourneyWorkspace.jsx";
+import { AccountProfile, RecoveryWorkspace } from "./AccountWorkspace.jsx";
+import { DemoImage, DemoControls } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
 import {
   i18n,
@@ -48,6 +51,7 @@ const readLocation = () => {
   return {
     view: params.get("view") || "home",
     event: params.get("event") || "",
+    ref: params.get("ref") || "",
     keyword: params.get("keyword") || "",
     page: Math.max(1, Number(params.get("page")) || 1),
     pageSize: [3, 6, 12, 24].includes(Number(params.get("pageSize")))
@@ -151,10 +155,11 @@ export function Brand({ compact = false }) {
   );
 }
 function Link({ view, params, children, className = "", onClick, ...rest }) {
-  const { navigate } = useApp();
+  const { navigate, route } = useApp();
+  const linkedParams = route.ref && params?.event===route.event ? {...params,ref:route.ref} : params;
   return (
     <a
-      href={hrefFor(view, params)}
+      href={hrefFor(view, linkedParams)}
       className={className}
       onClick={(event) => {
         onClick?.(event);
@@ -167,7 +172,7 @@ function Link({ view, params, children, className = "", onClick, ...rest }) {
           !event.altKey
         ) {
           event.preventDefault();
-          navigate(view, params);
+          navigate(view, linkedParams);
         }
       }}
       {...rest}
@@ -228,6 +233,9 @@ function Status({ value }) {
     "rejected",
     "active",
     "completed",
+    "published",
+    "postponed",
+    "draft",
   ].includes(value?.toLowerCase())
     ? value.toLowerCase()
     : "unknown";
@@ -263,6 +271,7 @@ function Shell({ children }) {
     setMenuOpen(false);
   }, [route.view, route.keyword]);
   const nav = [
+    {view:"operations",icon:"users",label:"Event operations"},
     {
       view: "home",
       icon: "home",
@@ -584,6 +593,19 @@ function Shell({ children }) {
     </div>
   );
 }
+export const eventDisplayState = event => event.workflow?.state || event.status;
+const acceptsApplications = (event, now=Date.now()) => {
+  if(event.status?.toLowerCase()!=="active")return false;
+  if(!event.workflow)return true;
+  if(event.workflow.state!=="published")return false;
+  const opens=Date.parse(event.workflow.registration_opens_at),closes=Date.parse(event.workflow.registration_closes_at);
+  return (!Number.isFinite(opens)||now>=opens)&&(!Number.isFinite(closes)||now<=closes);
+};
+function RegistrationWindow({event}) {
+  const workflow=event.workflow;if(!workflow)return null;
+  const format=value=>{try{return new Intl.DateTimeFormat(locale(),{dateStyle:"medium",timeStyle:"short",...(workflow.timezone?{timeZone:workflow.timezone}:{})}).format(new Date(value));}catch{return tr("Unavailable");}};
+  return <div className="registration-window small muted">{workflow.registration_opens_at&&<p>{tr("Registration opens")}: {format(workflow.registration_opens_at)}</p>}{workflow.registration_closes_at&&<p>{tr("Registration closes")}: {format(workflow.registration_closes_at)}</p>}{workflow.timezone&&<p>{workflow.timezone}</p>}{workflow.change_notice&&<p>{workflow.change_notice}</p>}</div>;
+}
 function EventImage({ event, className = "", detail = false, index = 0 }) {
   let gallery = [];
   try {
@@ -599,7 +621,7 @@ function EventImage({ event, className = "", detail = false, index = 0 }) {
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [source]);
   return source && !failed ? (
-    <img
+    <DemoImage
       className={className}
       src={source}
       alt={event.title}
@@ -630,7 +652,7 @@ export function EventCard({ event }) {
       >
         <EventImage event={event} className="card-image" />
         <span className="image-status">
-          <Status value={event.status} />
+          <Status value={eventDisplayState(event)} />
         </span>
       </Link>
       <div className="card-body">
@@ -657,6 +679,7 @@ export function EventCard({ event }) {
           <Icon name="location" size={15} />
           <span>{event.location}</span>
         </p>
+        <RegistrationWindow event={event}/>
         <Link
           className="button card-button"
           view="event"
@@ -681,7 +704,7 @@ function Events({ home = false }) {
   const [reload, setReload] = useState(0);
   const [jump, setJump] = useState(String(route.page));
   const page = home ? 1 : route.page,
-    pageSize = home ? 3 : route.pageSize,
+    pageSize = home ? 24 : route.pageSize,
     keyword = home ? "" : route.keyword;
   useEffect(() => {
     const request = new AbortController();
@@ -722,33 +745,10 @@ function Events({ home = false }) {
       pageSize,
       keyword,
     });
+  const displayedEvents = home ? (state.data?.data||[]).filter(event => ["active","published"].includes(eventDisplayState(event).toLowerCase()) && Date.parse(event.start_time)>=Date.now()).sort((a,b)=>Date.parse(a.start_time)-Date.parse(b.start_time)).slice(0,3) : (state.data?.data||[]);
   return (
     <div className="browse-page">
-      {home && (
-        <section className="hero" aria-labelledby="hero-title">
-          <img
-            src="/images/community-lake.jpg"
-            alt={tr("Mountain lake surrounded by a green forest")}
-          />
-          <div className="hero-content">
-            <p className="eyebrow">{tr("GOOD THINGS HAPPEN TOGETHER")}</p>
-            <h1 id="hero-title">
-              {tr("Healthy communities.")}
-              <br />
-              {tr("Brighter tomorrows.")}
-            </h1>
-            <p>{tr("Find your next moment of connection.")}</p>
-            <Link view="events" className="button button-gold">
-              {tr("Browse events")}
-              <Icon name="arrow" size={18} />
-            </Link>
-          </div>
-          <span className="hero-caption">
-            <span className="hero-dot" />
-            {tr("A little connection goes a long way")}
-          </span>
-        </section>
-      )}
+      {home && <Heading eyebrow="ROSE · PULSE" title={tr("Community events")}>{tr("Find an event, check the date and location, then apply. Places are confirmed by the server.")}</Heading>}
       {!home && (
         <Heading
           eyebrow={tr("FIND YOUR COMMUNITY")}
@@ -838,9 +838,9 @@ function Events({ home = false }) {
           </Notice>
         )}
         {state.status === "ready" &&
-          (state.data.data.length ? (
+          (displayedEvents.length ? (
             <div className="event-grid">
-              {state.data.data.map((event) => (
+              {displayedEvents.map((event) => (
                 <EventCard event={event} key={event.public_id} />
               ))}
             </div>
@@ -1057,7 +1057,7 @@ function EventDetail() {
         <article className="event-detail">
           <div className="detail-photo">
             <EventImage event={event} detail index={imageIndex} />
-            <Status value={event.status} />
+            <Status value={eventDisplayState(event)} />
           </div>
           {event.image_files?.length > 1 && (
             <div
@@ -1074,7 +1074,7 @@ function EventDetail() {
                   aria-pressed={index === imageIndex}
                   onClick={() => setImageIndex(index)}
                 >
-                  <img
+                  <DemoImage
                     src={file.url}
                     alt={tr("Event image {{number}}", {
                       number: index + 1,
@@ -1119,11 +1119,12 @@ function EventDetail() {
                 {tr("Times use")}
                 {Intl.DateTimeFormat().resolvedOptions().timeZone}.
               </p>
-              <EventShare event={event} />
+              <RegistrationWindow event={event}/><EventShare event={event} />
             </div>
             <aside className="detail-action">
               <Quota event={event} />
-              {event.status.toLowerCase() === "active" ? (
+              <Link view="operations" params={{event:event.public_id}} className="button button-quiet">{tr("Booking and event operations")}</Link>
+              {acceptsApplications(event) ? (
                 <Link
                   view="apply"
                   params={{
@@ -1163,32 +1164,29 @@ function EventDetail() {
   );
 }
 function AuthForm({ signup = false }) {
-  const { runtime, route, navigate, auth } = useApp();
+  const { runtime, route, navigate, auth, loginFeedback, beginLogin, isCurrentLogin, reportLoginFailure } = useApp();
   const [show, setShow] = useState(false);
   const [, setSignupGeneration] = useState(0);
-  const [loginState, setLoginState] = useState({
-    status: "idle",
-    message: "",
-  });
-  const formRef = useRef(null);
   const busyRef = useRef(false);
   const [signupState, signupController] = useController(
     runtime.store("signup"),
   );
-  const state = signup ? signupState : loginState;
+  const state = signup ? signupState : loginFeedback;
   const submit = async (event) => {
     event.preventDefault();
     if (busyRef.current || locked(state)) return;
     const values = Object.fromEntries(new FormData(event.currentTarget));
+    const submittedPassword = event.currentTarget.elements.namedItem("password");
     busyRef.current = true;
+    let attempt;
     try {
       if (signup) await signupController.submit(values);
       else {
-        setLoginState({
-          status: "submitting",
-          message: "Verifying your account…",
-        });
-        await runtime.signIn(values);
+        attempt = beginLogin();
+        const signingIn = runtime.signIn(values);
+        attempt.revision = runtime.session.revision;
+        await signingIn;
+        if (!isCurrentLogin(attempt)) return;
         navigate(
           route.event ? "apply" : "home",
           route.event
@@ -1199,14 +1197,10 @@ function AuthForm({ signup = false }) {
         );
       }
     } catch (error) {
-      setLoginState({
-        status: "error",
-        message: error.message,
-      });
+      if (!signup) reportLoginFailure(attempt, error);
     } finally {
       values.password = "";
-      const password = formRef.current?.elements.namedItem("password");
-      if (password) password.value = "";
+      if (submittedPassword) submittedPassword.value = "";
       setShow(false);
       busyRef.current = false;
     }
@@ -1222,7 +1216,7 @@ function AuthForm({ signup = false }) {
           {tr("A brighter day.")}
         </h1>
         <p>{tr("Come as you are. Find something that brings you together.")}</p>
-        <img
+        <DemoImage
           src="/images/community-lake.jpg"
           alt={tr("Peaceful lake and forest")}
         />
@@ -1282,7 +1276,7 @@ function AuthForm({ signup = false }) {
             </button>
           </div>
         ) : (
-          <form ref={formRef} method="dialog" onSubmit={submit}>
+          <form method="dialog" onSubmit={submit}>
             <fieldset disabled={locked(state)}>
               <legend className="sr-only">
                 {signup ? tr("Create account") : tr("Login")}
@@ -1337,6 +1331,7 @@ function AuthForm({ signup = false }) {
             </fieldset>
           </form>
         )}
+        {!signup && <p className="auth-switch"><Link view="recovery" params={{ event: route.event }}>{tr("Recover account access")}</Link></p>}
         <p className="auth-switch">
           {signup
             ? tr("Already part of the community?")
@@ -1472,7 +1467,7 @@ function ImageUpload({ store, disabled, onUploaded, onSelected }) {
         {state.message}
       </Notice>
       {state.status === "success" && (
-        <img
+        <DemoImage
           className="upload-preview"
           src={state.url}
           alt={tr("Uploaded event preview")}
@@ -1763,8 +1758,9 @@ function EventEditorForm({ edit, onAnother }) {
   );
 }
 function Apply() {
-  const { route } = useApp();
+  const { route,runtime,auth,navigate } = useApp();
   const [state, reload] = useEvent(route.event);
+  if(state.event?.workflow)return <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} initialPublicEvent={state.event} navigate={navigate}/>;
   return (
     <>
       <Back event={route.event} />
@@ -1806,7 +1802,7 @@ function Application({ event }) {
   const anonymous =
     !auth.user && !auth.hasToken && !auth.checking && !auth.identityBlocked;
   const allowed = (guest && anonymous) || auth.user?.role === "user";
-  const active = event.status.toLowerCase() === "active";
+  const active = acceptsApplications(event);
   const submit = (submitEvent) => {
     submitEvent.preventDefault();
     if (!allowed || !active || locked(state) || documentsBlocked) return;
@@ -1922,7 +1918,7 @@ function Application({ event }) {
                     "A place is not confirmed. Keep this reference and contact the organiser if you need help.",
                   )}
                 </p>
-                <EventShare event={event} />
+                <RegistrationWindow event={event}/><EventShare event={event} />
                 <dl className="receipt">
                   <dt>{tr("Event")}</dt>
                   <dd>{event.title}</dd>
@@ -2048,7 +2044,7 @@ function Application({ event }) {
       <aside className="application-context">
         <EventImage event={event} />
         <div>
-          <Status value={event.status} />
+          <Status value={eventDisplayState(event)} />
           <h3>{event.title}</h3>
           <p className="event-meta">
             <Icon name="calendar" size={16} />
@@ -2059,6 +2055,7 @@ function Application({ event }) {
             {event.location}
           </p>
           <Quota event={event} />
+              <Link view="operations" params={{event:event.public_id}} className="button button-quiet">{tr("Booking and event operations")}</Link>
         </div>
       </aside>
     </div>
@@ -2303,6 +2300,7 @@ function RegistrationList({ organizer }) {
             {!organizer && (
               <PrivateDocuments
                 runtime={runtime}
+                recordId={record.id}
                 files={record.supporting_documents || []}
               />
             )}
@@ -2346,6 +2344,7 @@ function RegistrationList({ organizer }) {
               </dl>
               <PrivateDocuments
                 runtime={runtime}
+                recordId={state.detail.id}
                 files={state.detail.supporting_documents || []}
               />
             </section>
@@ -2418,6 +2417,7 @@ function Profile() {
           </div>
         </div>
       )}
+      <AccountProfile runtime={runtime} auth={auth} />
     </>
   );
 }
@@ -2484,7 +2484,35 @@ export default function App({ runtime }) {
   });
   const [route, setRoute] = useState(readLocation);
   const auth = useSyncExternalStore(runtime.subscribe, runtime.getSnapshot);
+  // Feedback survives the security-keyed form remount; credentials remain in the form.
+  const [loginFeedback, setLoginFeedback] = useState({ status: "idle", message: "" });
+  const loginAttempt = useRef(null);
+  const currentRuntime = useRef(runtime);
+  currentRuntime.current = runtime;
+  const loginScope = () => {
+    const location = readLocation();
+    return JSON.stringify([location.view, location.event, location.ref]);
+  };
+  const clearLoginFeedback = () => {
+    loginAttempt.current = null;
+    setLoginFeedback({ status: "idle", message: "" });
+  };
+  const beginLogin = () => {
+    const attempt = { runtime, scope: loginScope(), revision: null };
+    loginAttempt.current = attempt;
+    setLoginFeedback({ status: "submitting", message: "Verifying your account…" });
+    return attempt;
+  };
+  const isCurrentLogin = attempt => Boolean(attempt && loginAttempt.current === attempt &&
+    attempt.runtime === currentRuntime.current && attempt.scope === loginScope() && attempt.revision === runtime.session.revision);
+  const reportLoginFailure = (attempt, error) => {
+    if (isCurrentLogin(attempt) && !runtime.getSnapshot().user)
+      setLoginFeedback({ status: "error", message: error.message });
+  };
+  const visibleLoginFeedback = isCurrentLogin(loginAttempt.current) ? loginFeedback : { status: "idle", message: "" };
   const navigate = (view, params = {}) => {
+    clearLoginFeedback();
+    if(route.ref&&params.event===route.event&&!params.ref)params={...params,ref:route.ref};
     window.history.pushState({}, "", hrefFor(view, params));
     setRoute(readLocation());
     window.scrollTo?.({
@@ -2493,7 +2521,7 @@ export default function App({ runtime }) {
     });
   };
   useEffect(() => {
-    const changed = () => setRoute(readLocation());
+    const changed = () => { clearLoginFeedback(); setRoute(readLocation()); };
     const restored = (event) => {
       if (event.persisted) window.location.reload();
     };
@@ -2514,6 +2542,7 @@ export default function App({ runtime }) {
         apply: "Join an event",
         login: "Log in",
         signup: "Create account",
+        recovery: "Recover account access",
         create: "Create event",
         edit: "Edit event",
         registrations: "My registrations",
@@ -2529,8 +2558,11 @@ export default function App({ runtime }) {
   }, [route.view, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
+    case "operations":
+      content = <JourneyWorkspace key={`${auth.user?.id}:${auth.revision}:${route.event}`} runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/>;
+      break;
     case "home":
-      content = <Events home />;
+      content = auth.user?.role === "organizer" ? <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate}/> : auth.user?.role === "leader" ? <OfflineWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Events home />;
       break;
     case "events":
       content = <Events />;
@@ -2544,6 +2576,9 @@ export default function App({ runtime }) {
     case "signup":
       content = <AuthForm signup />;
       break;
+    case "recovery":
+      content = <RecoveryWorkspace runtime={runtime} auth={auth} navigate={view => navigate(view, { event: route.event })} />;
+      break;
     case "create":
       content = <EventEditor />;
       break;
@@ -2551,7 +2586,7 @@ export default function App({ runtime }) {
       content = <EventEditor edit />;
       break;
     case "apply":
-      content = <Apply />;
+      content = route.ref ? <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Apply />;
       break;
     case "registrations":
       content = <Registrations />;
@@ -2603,9 +2638,14 @@ export default function App({ runtime }) {
         auth,
         route,
         navigate,
+        loginFeedback: visibleLoginFeedback,
+        beginLogin,
+        isCurrentLogin,
+        reportLoginFailure,
       }}
     >
       <Shell>
+        <DemoControls navigate={navigate}/>
         <div
           className="view-transition"
           key={`${route.view}:${route.event}:${auth.revision}`}

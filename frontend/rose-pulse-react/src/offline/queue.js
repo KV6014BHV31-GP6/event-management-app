@@ -1,3 +1,4 @@
+export async function payloadFingerprint(request) { const bytes = new TextEncoder().encode(JSON.stringify(request)); return [...new Uint8Array(await crypto.subtle.digest("SHA-256",bytes))].map(b=>b.toString(16).padStart(2,"0")).join(""); }
 import { openDB } from "idb";
 
 export const OFFLINE_DB_VERSION = 1;
@@ -190,6 +191,7 @@ export function createOfflineStore({
           key: keyFor(actorId, id),
           actor_id: actorId,
           actor_role: actor.role,
+          schema_version: "rose.offline-draft.v1",
           event_public_id,
           client_submission_id: id,
           application: applicationCopy(application),
@@ -225,31 +227,36 @@ export function createOfflineStore({
       try {
         const actorId = requireActor(actor);
         const database = await db();
-        const transaction = database.transaction(
-          ["drafts", "batches"],
-          "readwrite",
-        );
-        const entries = (
-          await transaction
-            .objectStore("drafts")
-            .index("actor_id")
-            .getAll(actorId)
-        )
+        const candidates = (await database.getAllFromIndex("drafts", "actor_id", actorId))
           .filter(
             (row) =>
               row.event_public_id === eventId &&
               row.state === "pending_sync" &&
               !row.batch_id,
           )
-          .slice(0, 25);
-        if (!entries.length) {
-          await transaction.done;
+          .sort((a,b)=>a.client_submission_id.localeCompare(b.client_submission_id));
+        if (!candidates.length) {
           throw new LocalStoreError("offline_no_pending");
         }
         const batchId = uuid();
         requireUUID(batchId);
+        const entries = [];
+        const requestFor = rows => ({contract_version:"rose.offline-sync.v2",batch_id:batchId,items:rows.map(row=>({client_submission_id:row.client_submission_id,application:structuredClone(row.application)}))});
+        for (const row of candidates) {
+          if (entries.length >= 25 || new TextEncoder().encode(JSON.stringify(requestFor([...entries,row]))).length > 128*1024) break;
+          entries.push(row);
+        }
+        if (!entries.length) throw new LocalStoreError("offline_envelope_too_large");
+        const fingerprint = await payloadFingerprint(requestFor(entries));
+        const transaction = database.transaction(["drafts","batches"],"readwrite");
+        for (const row of entries) {
+          const fresh = await transaction.objectStore("drafts").get(row.key);
+          if (!fresh || fresh.state !== "pending_sync" || fresh.batch_id || JSON.stringify(fresh.application)!==JSON.stringify(row.application)) { transaction.abort(); throw new LocalStoreError("offline_record_locked"); }
+        }
         const timestamp = now();
         const batch = {
+          payload_fingerprint: fingerprint,
+          schema_version: "rose.offline-batch.v1",
           key: keyFor(actorId, batchId),
           actor_id: actorId,
           event_public_id: eventId,
@@ -285,7 +292,13 @@ export function createOfflineStore({
     async batch(actor, id) {
       try {
         requireUUID(id);
-        const batch = await getOwned("batches", actor, id);
+        let batch = await getOwned("batches", actor, id);
+        const fingerprint = await payloadFingerprint(batch.request);
+        if (!batch.payload_fingerprint) {
+          // Add local integrity metadata to retained v1 batches without changing wire IDs/payload.
+          batch = await saveReadback("batches", {...batch,payload_fingerprint:fingerprint,schema_version:"rose.offline-batch.v1",updated_at:now()});
+        }
+        if (batch.payload_fingerprint !== fingerprint) throw new LocalStoreError("offline_payload_conflict");
         const items = await Promise.all(
           batch.client_submission_ids.map((submission) =>
             getOwned("drafts", actor, submission),

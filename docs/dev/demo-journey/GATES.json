@@ -1,0 +1,72 @@
+{
+  "task_id": "DEMO-FULL-JOURNEY-20261103",
+  "run_id": "20261103-132629",
+  "source_sha": "8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5",
+  "gates": {
+    "G0": "PASS_SOURCE_TEXT_TABLE_IMAGES_LOCK; WORD_PAGE_LAYOUT_NOT_RUN",
+    "G1": "PASS_DESIGN_LOCK; FINAL_RENDERED_QA_PENDING_IN_G5",
+    "G2": "PARTIAL_439_INDEPENDENT_10ACL_AND_BROWSER_VIEWER; FINAL_CANDIDATE_PENDING",
+    "G3": "PARTIAL_ORIGINAL40AC_AND_RELEASED_FOLLOWUPS; FINAL_CANDIDATE_PENDING",
+    "G4": "PARTIAL_439_REAL_IDB_RESTART_LOSTACK_GET_NATIVE; NEW_RUNTIME_GUARDS_PENDING_INTEGRATED_BROWSER",
+    "G5": "BLOCKED_NEW_INDEPENDENT_NATIVE_GREEN; OTHER_FINAL_CHECKS_PENDING",
+    "G6": "BLOCKED_PREMERGE_GATES; NOT_MERGED_NOT_LOCAL_RELEASED",
+    "G7": "NOT_RUN_FORMAL; ENGLISH_FEMALE_PREPRODUCTION_ONLY"
+  },
+  "blockers": [
+    "New independent native GREEN for the repaired event-generation and migration-literal findings remains blocked by prior automatic runtime safety rejection",
+    "Fixed4637 original default synthetic full294PASS12FAIL retained; separate maxWorkers2 full306PASS and hosted default306PASS plus synthetic-account25PASS are distinct resource/profile evidence, not sole-cause proof",
+    "Final integrated fixed-SHA Browser/40AC/visual and affected acceptance pending",
+    "4637 required hosted native-browser failed at52new username fixtures;35prior native passed. Hosted Browser/package/verify-download NOT_RUN; corrected fixed-candidate CI required",
+    "Merge-SHA CI/artifact/localCD and formal same-artifact full video not run"
+  ],
+  "continuation_authority": "Owner master: stop only affected gate; continue independent work",
+  "source_limits": [
+    "Full Word page-layout rendering NOT_RUN; original text/tables/embedded images and source hashes admitted",
+    "Owner/W8 relay is not NGO policy approval or human UAT"
+  ],
+  "observed_at": "2026-11-03T13:54:37.465896+00:00",
+  "candidate_identity": "The commit containing this register; execution receipts must independently bind its exact full SHA",
+  "narration": {
+    "owner_override": "English natural female",
+    "subtitles": [
+      "Traditional Chinese",
+      "English SRT"
+    ],
+    "sample_provider": "REAL_LOCAL existing Microsoft Zira Desktop en-US Female",
+    "sample_status": "OWNER_ACCEPTED_FOR_SPEED_AND_NATURALNESS; PREPRODUCTION",
+    "naturalness": "SAMPLE_OWNER_ACCEPTED; FULL_TRACK_NOT_MEASURED"
+  },
+  "historical_candidate": {
+    "sha": "439838ced94373f36874c37d78180c6e9ea978c4",
+    "push_ci_run": 41616347634,
+    "pr_ci_run": 41616359144,
+    "ci": "ALL5JOBS_SUCCESS",
+    "counts": {
+      "React": 221,
+      "legacy": 284,
+      "controlled": 78,
+      "native": 35
+    },
+    "artifact_sha256": "02afae160bbbfc9d1e66e313cd0d82d98c27691abd1d7123667ab16b53aa0fd2",
+    "boundary": "only439 tested source; not subsequent candidate or merge-SHA/CD"
+  },
+  "new_candidate": "Fixture/source correction is a successor to immutable4637. Receipts must bind final exactSHA; source equivalence alone is not new native/Browser/CI acceptance.",
+  "candidate4637": {
+    "sha": "4637ffcc747ac02dc8ed9bfce5f91b637f1b943b",
+    "push_ci_run": 41644379134,
+    "pr_ci_run": 41644390029,
+    "source_frontend": "PASS",
+    "controlled": {
+      "passed": 152,
+      "failed": 0
+    },
+    "native": {
+      "passed": 35,
+      "failed": 52,
+      "cause": "username fixture exceeds existing varchar20 before business assertions"
+    },
+    "browser_package_verify": "NOT_RUN_AFTER_NATIVE_FAILURE",
+    "independent_original_eight": "8PASS0fail/error/skip;6REDnowGREEN2controls; controlled memory transport/fake-IDB only",
+    "boundary": "Not whole40AC/G5 or successor acceptance; all original failures preserved"
+  }
+}

@@ -53,7 +53,7 @@ class DocumentControlTests(unittest.TestCase):
         self.assertIn('private_env_file:',self.errors())
     def test_utf16_requirements_remain_scanned(self):
         path = self.root/'synthetic-requirements.txt'
-        path.write_text('fastapi==0.142.4\n', encoding='utf-16')
+        path.write_text('fastapi==0.142.4\n', encoding='utf-16', newline='\n')
         self.assertEqual(text_chunks(path), ['fastapi==0.142.4\n'])
     def test_refresh_preserves_id_owner_status(self):
         r=self.register();before=next(x for x in r['documents'] if x['path']=='README.md')

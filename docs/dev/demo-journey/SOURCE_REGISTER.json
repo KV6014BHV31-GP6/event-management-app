@@ -1,0 +1,103 @@
+{
+  "schema": "nu.demo-source-register/1",
+  "task_id": "DEMO-FULL-JOURNEY-20261103",
+  "sources": [
+    {
+      "source_id": "CHALLENGE5",
+      "sha256": "e6c34a58f8c2bc84bf4441dd2af74da834c87a117911036cafb57aa303f78700",
+      "coverage": "Full one-page text and actual rendered page observed",
+      "reviewer": "source_audit text; Astra R3 actual page",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LOGTASK1",
+      "sha256": "e2da66c0e6a62644ed2feaff7c9942373cfa649cabe197420106826e2d4cb963",
+      "coverage": "Full main OOXML paragraphs/tables; all embedded images, footnotes/endnotes/footer inspected",
+      "reviewer": "source_audit main body; Astra R3 supplemental layers",
+      "raw_original_public": false,
+      "full_word_layout": "NOT_RUN"
+    },
+    {
+      "source_id": "LOGTASK2",
+      "sha256": "ca1435051dec8b1cd2c0841cb04cad6e850c0947aa717b12662389ec350c0217",
+      "coverage": "Full main OOXML paragraphs/tables; all embedded images, footnotes/endnotes/footer inspected",
+      "reviewer": "source_audit main body; Astra R3 supplemental layers",
+      "raw_original_public": false,
+      "full_word_layout": "NOT_RUN"
+    },
+    {
+      "source_id": "LOGTASK3",
+      "sha256": "857dda3f5fdde11b9456c2a49c036713cbf882d8932515381cb7c0372ca8f472",
+      "coverage": "Full main OOXML paragraphs/tables; all embedded images, footnotes/endnotes/footer inspected",
+      "reviewer": "source_audit main body; Astra R3 supplemental layers",
+      "raw_original_public": false,
+      "full_word_layout": "NOT_RUN"
+    },
+    {
+      "source_id": "LOGTASK4",
+      "sha256": "8372fdaccdb229011892281b8dc4db2eda405b09ac4bb93363cae2d01f2a5c58",
+      "coverage": "Full main OOXML paragraphs/tables; all embedded images, footnotes/endnotes/footer inspected",
+      "reviewer": "source_audit main body; Astra R3 supplemental layers",
+      "raw_original_public": false,
+      "full_word_layout": "NOT_RUN"
+    },
+    {
+      "source_id": "AUSTIN-OFFLINE-UPDATED",
+      "sha256": "025dad6ec2c8511721bcf9efd05d3ef8a4d142a640910c5fc00b3f1d017296c2",
+      "coverage": "full727 lines, design proposal",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "W8-OWNER-RELAY",
+      "sha256": "0d86b1ec4f5b4895adf0f65e5cb0277e313e5ceef590cb21f8c6aede21986979",
+      "coverage": "full relay, no NGO signoff",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LIB-AMENDED-20261103",
+      "coverage": "Original bytes verified; full amended stories/tasks/40AC and embedded mapping image read",
+      "raw_hash": "1db8980ad415a89bf741ba1c4a717232577d09f9f17137cf8d7d7b6f373710c3",
+      "story_mapping_graphic": "READ_AND_HASH_VERIFIED",
+      "reviewer": "Astra controller and distinct Astra/max source reviewer",
+      "raw_original_public": false,
+      "full_word_layout": "NOT_RUN"
+    },
+    {
+      "source_id": "LIB-FEATURES-20261103",
+      "coverage": "Original bytes verified; full18-feature5module text and annotations read",
+      "raw_hash": "1f4c3132eab3aff91b621a46f1011c4002ba0b597fae446cb00560395a21dba0",
+      "reviewer": "Astra controller; prior viewer text source_audit",
+      "raw_original_public": false,
+      "full_word_layout": "NOT_RUN"
+    }
+  ],
+  "current_github_issue_reads": [
+    6,
+    11,
+    16,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "missing_originals": [],
+  "original_team_ac_unavailable": [],
+  "fallback_requirement_source": "OWNER-DEMO-20261103 explicit authorization, not substituted original read",
+  "r3_admission_evidence": "External R3/source-originals/SOURCE_ADMISSION_R3.json and SUPPLEMENTAL_LAYERS_READ.json",
+  "unadopted_feature_proposals": "Not added to current scope"
+}

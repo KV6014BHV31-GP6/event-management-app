@@ -1,3 +1,17 @@
+# Current successor — full journey Demo, 2026-11-03
+
+Task DEMO-FULL-JOURNEY-20261103 / run20261103-132629. Owner authorizes new feature/integration branches and conditional dev_demo_ben merge after actual required CI/native/browser/independent gates. No product acceptance or merge has occurred. Latest target fetched/read back8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5. Old services and28 worktrees were inventoried and preserved.
+
+G0 is SOURCE_LOCKED_WITH_DECLARED_LIMITS: the original Amended40AC, FeaturesReview18, Challenge/LogTask and Austin documents have been hash-verified and their full text/tables/embedded graphics read. Full Word page-layout rendering remains NOT_RUN; W8 is Owner relay, not human UAT. G1 local design is locked for the explicit Owner scope. See [run entry](demo-journey/README.md), [original AC matrix](demo-journey/AC_MATRIX.json), [source boundaries](demo-journey/SOURCE_COVERAGE.md), and [gate status](demo-journey/GATES.json). All40AC remain mandatory. Historical author tests and bounded439 browser/native receipts do not establish complete current-candidate acceptance.
+
+R3 frozen4637ffcc747ac02dc8ed9bfce5f91b637f1b943b includes login feedback, actor/revision/token guards, manual-sync isolation and individual Leader attribution. Its push CI41644379134 and PR CI41644390029 passed source/frontend but failed native_browser: controlled152 passed; native35 passed and52 failed while creating over-length synthetic usernames. Browser/package/verify-download did not run. The original failed receipts are retained; fixture correction and a new fixed candidate run are required. Independent original5 runtime plus3 manual-sync cases passed on4637 without changing assertions, timings or original RED evidence. This bounded verdict does not clear G5.
+
+Two supplemental native GREEN checks remain blocked by an earlier automatic tool review rejection. No retry/substitute is authorized by this status document. PR58 remains Draft, not merged or local-released; G6 and formal G7 remain unfulfilled. Owner accepted the existing English female sample (Microsoft Zira Desktop, en-US, Rate0/Volume90); Traditional Chinese subtitles plus a separate English SRT remain required. PREPRODUCTION media and sample approval do not establish complete-video playback/listening/synchronization acceptance.
+
+Run-owned candidate5211 → proxy5212 → API8031 → native PostgreSQL17.11 port5441. Explicit pre-migration snapshot/additive migration and six private synthetic accounts are recorded externally. Eight curated synthetic events were created through real API with immutable receipts and image readback; fixture setup is not browser acceptance. Original services remain separate. CI ownership is delegated for only the new workflow/helper/CI document; Astra retains integration control and document registration.
+
+Historical status below belongs to its named source/runtime and is not this run's test result.
+
 # NU Developer 當前狀態
 
 ## ROSE PULSE Phase2 — 2026-11-02

@@ -64,6 +64,12 @@ class EventService:
         """
         Creates an event record and seeds an initialized, empty quota metrics footprint.
         """
+        from src.journey import policy
+        # A credential reset/deactivation may complete while this request waits.
+        # Recheck the presented generation under the creator lock before any write.
+        actor = await policy.fresh(self.db, organizer_id)
+        if actor.role.value != 'organizer':
+            raise HTTPException(status_code=403, detail='Organizer access required.')
         generated_public_id = generate(size=21)
         event_data = event_in.model_dump()
         image_ids=event_data.pop('image_file_ids',[])
@@ -86,7 +92,7 @@ class EventService:
         result['image_files']=await assets.images(self.db,db_event.id)
         return result
 
-    async def get_event_by_public_id(self, public_id: str) -> dict | None:
+    async def get_event_by_public_id(self, public_id: str, include_drafts: bool = False) -> dict | None:
         """
         Fetches event profiles combined with aggregated registration summaries in one execution.
         """
@@ -103,8 +109,12 @@ class EventService:
             return None
 
         event, online_app, offline_app, waiting = row
+        from src.journey.policy import workflow
+        work=await workflow(self.db,event)
+        if work and work.data["state"]=="draft" and not include_drafts:return None
         result=self._format_event_quota_dict(event, online_app, offline_app, waiting)
         result['image_files']=await assets.images(self.db,event.id)
+        result['workflow']={k:work.data.get(k) for k in ('state','timezone','registration_opens_at','registration_closes_at','change_notice')} if work else None
         return result
 
     async def update_event(self, public_id: str, event_update: EventUpdate) -> dict | None:
@@ -152,7 +162,9 @@ class EventService:
         all structural quota indicators within a single database flight block.
         """
         # Build core filtering parameters
-        where_conds = []
+        from src.journey.models import JourneyState
+        # Draft sidecars are excluded from public and legacy list routes.
+        where_conds = [] if organizer_id else [~EventModel.id.in_(select(JourneyState.event_id).where(JourneyState.kind=="event",JourneyState.data["state"].as_string()=="draft"))]
         if organizer_id:where_conds.append(EventModel.organizer_id==organizer_id)
         if status_filter:
             if status_filter.lower() not in EventStatusEnum.__members__:
@@ -197,7 +209,11 @@ class EventService:
             self._format_event_quota_dict(event, online, offline, waiting)
             for event, online, offline, waiting in rows
         ]
-        for event in formatted_events:event['image_files']=await assets.images(self.db,event['id'])
+        from src.journey.policy import state
+        for event in formatted_events:
+            event['image_files']=await assets.images(self.db,event['id'])
+            work=await state(self.db,'event:'+event['public_id'])
+            event['workflow']={k:work.data.get(k) for k in ('state','timezone','registration_opens_at','registration_closes_at','change_notice')} if work else None
 
         total_pages = (total_count + page_size -
                        1) // page_size if total_count > 0 else 0

@@ -1,5 +1,17 @@
 # Frontend workspace
 
+## R3 account transport integration
+
+The loopback proxy admits the exact profile and assisted-recovery routes in [the account contract](../docs/dev/demo-journey/ACCOUNT_CONTRACT_R3.md). Canonical UUID receipt paths are checked; account query parameters are rejected. `X-Account-Recovery` is forwarded only for the exact reset and recovery-receipt routes, never stored in a URL. Existing bearer and no-store behavior is retained. Request cookies remain excluded. Only a successful reset may propagate an empty, `Max-Age=0`, same-host `refresh_token` deletion; unrelated cookies and new cookie values are discarded. Generic login/refresh cookie integration is unchanged.
+
+Run `node --test frontend/dev-server.test.mjs` from the repository root for the exact-route/header/cookie-deletion and existing proxy regressions. These transport tests do not replace actual browser/API/native database acceptance.
+
+## Full journey candidate — 2026-11-03
+
+This candidate uses the [journey contract](../docs/dev/demo-journey/API_CONTRACT.md). The loopback proxy allows only the reviewed operations GET/POST paths and forwards scoped Guest challenge, booking grant and anonymous application recovery headers. It retains no-store responses, bounded bodies, same-origin checks and unknown-write handling. It does not retry writes. Run `node --test frontend/dev-server.test.mjs` from the repository root after proxy changes.
+
+Use the run-owned frontend5211 → proxy5212 → backend8031 → native PostgreSQL5441 configuration from the external task handoff. Existing5205/5206/8028 services are historical and remain separate. Credentials, recovery capabilities and private documents must never enter build artifacts or logs. Author checks and native/browser acceptance are separate gates; consult the current task before claiming release readiness.
+
 ## Phase 2 isolated candidate — 2026-11-02
 
 The current branch extends the existing [React application](rose-pulse-react/README.md); it does not replace `live/`. Follow the [Phase 2 task](../docs/dev/tasks/FE-BE-ROSE-PHASE2-20261102.md), [additive API contract](../docs/dev/phase2/API_CONTRACT.md) and [W8 admission decisions](../docs/dev/phase2/W8-ADMISSION.md). PR56 is stacked on PR55 and depends on the separate Backend PR57. Prior acceptance below remains bound to its historical commits.

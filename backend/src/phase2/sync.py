@@ -18,6 +18,8 @@ async def fresh_actor(db,actor_id):
     actor=await db.scalar(select(UserModel).where(UserModel.id==actor_id).with_for_update().execution_options(populate_existing=True))
     if actor is None:raise HTTPException(401,'Account is no longer available.')
     if actor.role.value not in {'leader','organizer'}:raise HTTPException(403,'Current leader or organizer role required.')
+    from src.journey.policy import enabled
+    await enabled(db,actor_id)
     return actor
 def authorize(record,actor_id,event_id,fingerprint=None):
     if record.actor_id!=actor_id:raise HTTPException(403,'Receipt is unavailable to this actor.')
@@ -33,6 +35,8 @@ async def get_receipt(db,public,identifier,actor_id,submission=False):
     try:
         await fresh_actor(db,actor_id)
         event=await event_lookup(db,public)
+        from src.journey.policy import workflow, authorize_staff
+        if await workflow(db,event):await authorize_staff(db,event,actor_id)
         model=SyncSubmissionModel if submission else SyncBatchModel
         record=await db.get(model,identifier)
         if record is None:raise HTTPException(404,'No committed receipt for this identifier.')
@@ -46,6 +50,9 @@ async def submit(db,public,payload,actor_id):
         # Match the legacy event->user lock order, avoiding a new cycle with online registration.
         event=await event_lookup(db,public,True)
         await fresh_actor(db,actor_id)
+        from src.journey.policy import workflow, authorize_staff
+        managed=await workflow(db,event)
+        if managed:await authorize_staff(db,event,actor_id)
         old=await db.get(SyncBatchModel,payload.batch_id)
         if old:
             authorize(old,actor_id,event.id,fingerprint)
@@ -68,7 +75,7 @@ async def submit(db,public,payload,actor_id):
                 if event.status!=EventStatusEnum.active:outcome['code']='EVENT_CLOSED'
                 else:
                     approved=await db.scalar(select(func.count()).select_from(RegistrationModel).where(RegistrationModel.event_id==event.id,RegistrationModel.status==RegistrationStatusEnum.approved))
-                    if approved>=event.online_quota+event.offline_quota:outcome['code']='EVENT_FULL'
+                    if not managed and approved>=event.online_quota+event.offline_quota:outcome['code']='EVENT_FULL'
                     else:
                         try:
                             async with db.begin_nested():
@@ -77,7 +84,8 @@ async def submit(db,public,payload,actor_id):
                             if duplicate:outcome.update(duplicate)
                             else:outcome.update(outcome='accepted',code='RECORDED',registration_id=registration.id,registration_status_at_recording='pending')
                         except HTTPException as exc:
-                            outcome['code']='FILE_NOT_OWNED' if exc.status_code in {403,422} else 'IDENTITY_CONFLICT'
+                            detail=exc.detail if isinstance(exc.detail,dict) else {}
+                            outcome['code']='EVENT_CLOSED' if detail.get('code') in {'WINDOW_CLOSED','EVENT_CLOSED'} else 'FILE_NOT_OWNED' if exc.status_code in {403,422} else 'IDENTITY_CONFLICT'
                         except IntegrityError:
                             # The savepoint is rolled back. Inspect the winner from a new READ COMMITTED statement;
                             # never retry the domain insert after an ambiguous uniqueness race.

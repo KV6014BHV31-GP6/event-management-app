@@ -1,0 +1,55 @@
+import React from 'react';
+import {it,expect,vi} from 'vitest';
+import {render,screen,within,waitFor,fireEvent} from '@testing-library/react';
+import {createAttendanceStore,syncAttendance,reconcileAttendanceAction} from './offline/attendance.js';
+import {createJourneyClient} from './journey-api.js';
+import JourneyWorkspace from './JourneyWorkspace.jsx';
+it('retains a bound terminal no-intent refusal so a stale cancelled booking can be resolved safely',async()=>{
+ const actor={id:'review-'+crypto.randomUUID(),role:'organizer'},eventId='event';const store=createAttendanceStore({name:'review-'+crypto.randomUUID()});await store.saveRoster(actor,eventId,{rows:[{registration_id:'reg',status:'approved',arrived:false}]});const action=await store.capture(actor,eventId,'reg');
+ const client=createJourneyClient({authorize:fn=>fn('synthetic',actor),fetchImpl:async(path,options)=>options.method==='POST'?{ok:false,status:409,json:async()=>({detail:{code:'INVALID_TRANSITION',message:'Booking is cancelled'}})}:path.includes('/attendance/')?{ok:false,status:404,json:async()=>({detail:{code:'NOT_FOUND'}})}:{ok:true,status:200,json:async()=>({workflow:{version:1}})}});
+ await syncAttendance({store,actor,eventId,client,verify:async()=>actor});const saved=(await store.pending(actor,eventId))[0];expect(saved.state).toBe('conflict');expect(saved.no_intent_proof).toMatchObject({classification:'intent_refused_before_creation',code:'INVALID_TRANSITION',attendance_operation_id:action.attendance_operation_id});expect(saved.no_intent_proof.operation_id).toMatch(/^[0-9a-f-]{36}$/);await reconcileAttendanceAction({store,actor,eventId,action:saved,client});expect((await store.pending(actor,eventId))[0].state).toBe('conflict');await reconcileAttendanceAction({store,actor,eventId,action:saved,client,discard:true});expect((await store.pending(actor,eventId))[0].state).toBe('discarded');expect(await store.unresolved(actor,eventId)).toBe(false);await store.close();
+});
+it('ignores a late review A receipt after a programmatic switch to B and then uses B version',async()=>{
+ let release;const gate=new Promise(r=>release=r);const rows=[{id:'reg-A',first_name:'Alpha',last_name:'Synthetic',status:'pending',supporting_documents:[]},{id:'reg-B',first_name:'Beta',last_name:'Synthetic',status:'pending',supporting_documents:[]}];const view=r=>({registration:r,version:r.id==='reg-A'?3:7,review:{state:'awaiting_review',reason:''},booking_state:'pending',offer:null,allowed_actions:['reject','request_correction','cancel']});const response=data=>({ok:true,status:200,json:async()=>data});const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async(path,options={})=>{if(options.method==='POST'){const body=JSON.parse(options.body);await gate;return response({contract_version:body.contract_version,operation_id:body.operation_id,outcome:'applied',effects:{registration_id:path.includes('reg-A')?'reg-A':'reg-B'}});}return response(view(rows.find(r=>path.endsWith(r.id))));});const runtime={withVerifiedAccount:fn=>fn('token',{id:'owner'}),api:{getOrganizerRegistrations:async()=>rows}};
+ render(<JourneyWorkspace runtime={runtime} auth={{user:{id:'owner',role:'organizer'},revision:1}} navigate={()=>{}}/>);
+ const details=screen.getByText('Registration review and booking',{selector:'summary'}).closest('details');
+ expect(details).not.toBeNull();
+ const review=within(details);
+ fireEvent.click(review.getByRole('button',{name:'Choose a registration'}));
+ const participant=review.getByLabelText('Participant');
+ await within(participant).findByRole('option',{name:'Alpha Synthetic · pending'});
+ fireEvent.change(participant,{target:{value:'reg-A'}});
+ fireEvent.click(review.getByRole('button',{name:'Read registration'}));
+ let form=await review.findByRole('form',{name:'Review application'});
+ fireEvent.change(within(form).getByLabelText('Review reason'),{target:{value:'Synthetic reason'}});
+ fireEvent.submit(form);
+ await waitFor(()=>expect(fetch.mock.calls.some(([,o])=>o?.method==='POST')).toBe(true));
+ // This programmatic record change intentionally occurs while the UI is busy.
+ fireEvent.change(participant,{target:{value:'reg-B'}});
+ release();
+ await waitFor(()=>expect(review.getByRole('button',{name:'Read registration'})).toBeEnabled());
+ // Keep the negative assertion global: a stale A heading must appear nowhere.
+ expect(screen.queryByRole('heading',{name:'Alpha Synthetic'})).not.toBeInTheDocument();
+ expect(review.getByLabelText('Participant')).toHaveValue('reg-B');
+ fireEvent.click(review.getByRole('button',{name:'Read registration'}));
+ await review.findByRole('heading',{name:'Beta Synthetic'});
+ form=review.getByRole('form',{name:'Review application'});
+ fireEvent.change(within(form).getByLabelText('Review reason'),{target:{value:'Synthetic B reason'}});
+ fireEvent.submit(form);
+ await waitFor(()=>expect(fetch.mock.calls.filter(([,o])=>o?.method==='POST')).toHaveLength(2));
+ const [path,options]=fetch.mock.calls.filter(([,o])=>o?.method==='POST').at(-1);
+ expect(path).toContain('/reg-B/review');
+ expect(JSON.parse(options.body).expected_version).toBe(7);
+});
+
+it('unknown intent404 cannot be discarded, while an existing arrival wins over local refusal proof',async()=>{
+ const actor={id:'review-'+crypto.randomUUID(),role:'leader'},eventId='event';const store=createAttendanceStore({name:'review-'+crypto.randomUUID()});await store.saveRoster(actor,eventId,{rows:[{registration_id:'reg',status:'approved',arrived:false}]});const action=await store.capture(actor,eventId,'reg');await store.update(actor,eventId,action.attendance_operation_id,{state:'needs_review',phase:'intent_submitting'});const missing={get:vi.fn(async()=>{const e=new Error('missing');e.status=404;throw e;})};await reconcileAttendanceAction({store,actor,eventId,action,client:missing,discard:true});expect((await store.pending(actor,eventId))[0].state).toBe('needs_review');expect(await store.unresolved(actor,eventId)).toBe(true);await store.update(actor,eventId,action.attendance_operation_id,{no_intent_proof:{classification:'intent_refused_before_creation',path:'/events/event/attendance/intents',attendance_operation_id:action.attendance_operation_id,code:'INVALID_TRANSITION',operation_id:crypto.randomUUID(),fingerprint:'a'.repeat(64)}});await reconcileAttendanceAction({store,actor,eventId,action,client:{get:async()=>({state:'arrived'})},discard:true});expect((await store.pending(actor,eventId))[0].state).toBe('accepted');expect((await store.pending(actor,eventId))[0].no_intent_proof).toBeNull();await store.close();
+});
+import AttendanceWorkspace from './AttendanceWorkspace.jsx';
+import userEvent from '@testing-library/user-event';
+it('actual attendance UI explicitly discards a proved rejected intent and releases the local closeout guard',async()=>{
+ const actor={id:'ui-review-'+crypto.randomUUID(),role:'organizer'},eventId='event';const store=createAttendanceStore();await store.saveRoster(actor,eventId,{event:{event:{title:'Synthetic review event'}},rows:[{registration_id:'reg',status:'approved',arrived:false,first_name:'Synthetic'}]});await store.capture(actor,eventId,'reg');let sends=0;const client=createJourneyClient({authorize:fn=>fn('synthetic',actor),fetchImpl:async(path,options)=>{if(options.method==='POST'){sends++;return {ok:false,status:409,json:async()=>({detail:{code:'INVALID_TRANSITION',message:'Booking cancelled'}})};}return path.includes('/attendance/')?{ok:false,status:404,json:async()=>({detail:{code:'NOT_FOUND'}})}:{ok:true,status:200,json:async()=>({workflow:{version:1}})};}});await syncAttendance({store,actor,eventId,client,verify:async()=>actor});await store.close();const onQueueState=vi.fn();render(<AttendanceWorkspace runtime={{}} client={client} actor={actor} eventId={eventId} onError={vi.fn()} onQueueState={onQueueState}/>);const user=userEvent.setup();await screen.findByRole('button',{name:'Discard refused local check-in'});expect(onQueueState).toHaveBeenLastCalledWith(true);await user.click(screen.getByRole('button',{name:'Reconcile attendance'}));await waitFor(()=>expect(screen.getByRole('button',{name:'Discard refused local check-in'})).toBeEnabled());await user.click(screen.getByRole('button',{name:'Discard refused local check-in'}));await waitFor(()=>expect(onQueueState).toHaveBeenLastCalledWith(false));expect(screen.queryByRole('button',{name:'Discard refused local check-in'})).not.toBeInTheDocument();expect(sends).toBe(1);
+});
+it('concurrent synchronizers use one action and never apply the same local queue entry twice',async()=>{
+ const actor={id:'race-'+crypto.randomUUID(),role:'leader'},eventId='event';const store=createAttendanceStore({name:'race-'+crypto.randomUUID()});await store.saveRoster(actor,eventId,{rows:[{registration_id:'reg',status:'approved',arrived:false}]});const action=await store.capture(actor,eventId,'reg');const client={pending:()=>[],get:async path=>path.includes('/attendance/')?{state:'arrived'}:{workflow:{version:1}},mutate:vi.fn(async()=>({}))};await Promise.all([syncAttendance({store,actor,eventId,client,verify:async()=>actor}),syncAttendance({store,actor,eventId,client,verify:async()=>actor})]);expect(client.mutate).toHaveBeenCalledTimes(2);expect(client.mutate.mock.calls.every(([,data])=>data.attendance_operation_id===action.attendance_operation_id)).toBe(true);expect((await store.pending(actor,eventId))[0].state).toBe('accepted');await store.close();
+});

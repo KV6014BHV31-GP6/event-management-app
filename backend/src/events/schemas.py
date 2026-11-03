@@ -114,6 +114,7 @@ class EventResponse(BaseModel):
     image_path: Optional[str] = None
     quota: EventQuotaAggregate  # Real-time computed quota summary block
     image_files: list[FileReference] = Field(default_factory=list)
+    workflow: dict | None = None
 
     class Config:
         from_attributes = True

@@ -1,0 +1,234 @@
+name: Demo journey pinned Windows acceptance
+
+on:
+  pull_request:
+    branches: [dev_demo_ben]
+  push:
+    branches: [dev_demo_ben, 'integration/ben-demo-release-*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: demo-journey-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+defaults:
+  run:
+    shell: pwsh
+
+env:
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  CI: 'true'
+
+jobs:
+  source:
+    if: github.repository == 'KV6014BHV31-GP6/event-management-app'
+    runs-on: windows-2025
+    timeout-minutes: 15
+    steps:
+      - name: Initialize sanitized evidence location
+        run: '"NU_CI_OUTPUT=$env:RUNNER_TEMP/nu-demo-evidence/source" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 1
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.14.8'
+          check-latest: false
+      - name: Source, contract, privacy and registered documents before dependencies
+        run: python -B scripts/demo_ci.py source
+      - name: Artifact verifier negative controls
+        env:
+          NU_CI_OUTPUT: ${{ runner.temp }}/nu-demo-evidence/verifier-controls
+        run: python -B scripts/demo_ci.py self-test
+      - name: Record bootstrap failure without secrets
+        if: always()
+        run: |
+          New-Item -ItemType Directory -Force $env:NU_CI_OUTPUT | Out-Null
+          if (!(Test-Path -LiteralPath "$env:NU_CI_OUTPUT/source.json")) {
+            @{status='CI_BLOCKED';stage='source';source_sha=$env:GITHUB_SHA;reason='Pinned runtime or checkout unavailable; inspect Actions step conclusion'} | ConvertTo-Json | Set-Content -Encoding utf8 "$env:NU_CI_OUTPUT/source.json"
+          }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: demo-source-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-evidence/source
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
+        if: always()
+        with:
+          name: demo-verifier-controls-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-evidence/verifier-controls
+          if-no-files-found: warn
+          retention-days: 14
+
+  frontend:
+    needs: source
+    runs-on: windows-2025
+    timeout-minutes: 25
+    steps:
+      - name: Initialize sanitized evidence location
+        run: '"NU_CI_OUTPUT=$env:RUNNER_TEMP/nu-demo-evidence/frontend" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+          check-latest: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24.14.0'
+          check-latest: false
+      - name: Locked React tests, legacy regressions and production build
+        run: python -B scripts/demo_ci.py frontend
+      - name: Record missing test receipt
+        if: always()
+        run: |
+          New-Item -ItemType Directory -Force $env:NU_CI_OUTPUT | Out-Null
+          if (!(Test-Path -LiteralPath "$env:NU_CI_OUTPUT/frontend.json")) {
+            @{status='CI_BLOCKED';stage='frontend';source_sha=$env:GITHUB_SHA;reason='Pinned runtime or checkout unavailable'} | ConvertTo-Json | Set-Content -Encoding utf8 "$env:NU_CI_OUTPUT/frontend.json"
+          }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: demo-frontend-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-evidence/frontend
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: demo-build-${{ github.sha }}
+          path: frontend/rose-pulse-react/dist
+          if-no-files-found: error
+          retention-days: 14
+
+  native_browser:
+    needs: [source, frontend]
+    runs-on: windows-2025
+    timeout-minutes: 45
+    steps:
+      - name: Initialize sanitized evidence location
+        run: '"NU_CI_OUTPUT=$env:RUNNER_TEMP/nu-demo-evidence/native-browser" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+          check-latest: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24.14.0'
+          check-latest: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
+        with:
+          name: demo-build-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-build
+      - name: Controlled ASGI, PostgreSQL 17.11 races and real React browser smoke
+        run: python -B scripts/demo_ci.py native-browser --input "$env:RUNNER_TEMP/nu-demo-build"
+      - name: Record missing native receipt
+        if: always()
+        run: |
+          New-Item -ItemType Directory -Force $env:NU_CI_OUTPUT | Out-Null
+          if (!(Test-Path -LiteralPath "$env:NU_CI_OUTPUT/native-browser.json")) {
+            @{status='CI_BLOCKED';stage='native-browser';source_sha=$env:GITHUB_SHA;reason='Pinned runtime/build unavailable; no native acceptance'} | ConvertTo-Json | Set-Content -Encoding utf8 "$env:NU_CI_OUTPUT/native-browser.json"
+          }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: demo-native-browser-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-evidence/native-browser
+          if-no-files-found: error
+          retention-days: 14
+
+  package:
+    needs: [source, frontend, native_browser]
+    runs-on: windows-2025
+    timeout-minutes: 15
+    outputs:
+      zip_sha256: ${{ steps.package.outputs.zip_sha256 }}
+      filename: ${{ steps.package.outputs.filename }}
+    steps:
+      - name: Initialize sanitized evidence location
+        run: '"NU_CI_OUTPUT=$env:RUNNER_TEMP/nu-demo-evidence/package" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+          check-latest: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: demo-build-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-input/build
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: demo-source-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-input/evidence/source
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: demo-frontend-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-input/evidence/frontend
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: demo-native-browser-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-input/evidence/native-browser
+      - id: package
+        name: Bind tested source, build, runtime, migrations and assets
+        run: python -B scripts/demo_ci.py package --input "$env:RUNNER_TEMP/nu-demo-input" --release-dir "$env:RUNNER_TEMP/nu-demo-release"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: demo-release-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-release
+          if-no-files-found: error
+          retention-days: 14
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: demo-package-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-evidence/package
+          if-no-files-found: warn
+          retention-days: 14
+
+  verify_download:
+    needs: package
+    runs-on: windows-2025
+    timeout-minutes: 15
+    env:
+      EXPECTED_RELEASE_DIGEST: ${{ needs.package.outputs.zip_sha256 }}
+      EXPECTED_RELEASE_FILENAME: ${{ needs.package.outputs.filename }}
+    steps:
+      - name: Initialize sanitized evidence location
+        run: '"NU_CI_OUTPUT=$env:RUNNER_TEMP/nu-demo-evidence/verify" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8'
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+          check-latest: false
+      - uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0
+        with:
+          name: demo-release-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-downloaded
+      - name: Hard-fail on downloaded ZIP or manifest digest mismatch
+        run: python -B scripts/demo_ci.py verify --zip "$env:RUNNER_TEMP/nu-demo-downloaded/$env:EXPECTED_RELEASE_FILENAME" --expected-digest "$env:EXPECTED_RELEASE_DIGEST" --expected-sha "$env:GITHUB_SHA"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: demo-download-verification-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-demo-evidence/verify
+          if-no-files-found: error
+          retention-days: 14
