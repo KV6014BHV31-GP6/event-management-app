@@ -25,10 +25,11 @@ async def get_current_user(
 
     try:
         payload = jwt.decode(
-            token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
+            token, settings.JWT_SECRET_KEY, algorithms=["HS256"],
+            options={"require": ["sub", "exp"]})
         username: str | None = payload.get("sub")
 
-        if username is None:
+        if not isinstance(username, str) or not username or payload.get("type") not in (None, "access"):
             raise credentials_exception
 
         token_data = TokenData(username=username)
@@ -50,59 +51,15 @@ async def get_optional_current_user(
     request: Request,
     db: AsyncSession = Depends(get_async_db)
 ) -> UserModel | None:
-    """
-    Resolves user context if an Authorization header is provided.
-    - If NO header is passed, returns None (allows anonymous guests).
-    - If a token is passed but is expired/corrupted, raises a 401 exception 
-      to prompt the frontend interceptor to refresh the token and retry.
-    """
-    authorization: str | None = request.headers.get("Authorization")
-    if not authorization or not authorization.startswith("Bearer "):
+    """Only an absent header is Guest; invalid credentials never become anonymous."""
+    authorization = request.headers.get("Authorization")
+    if authorization is None:
         return None
-
-    try:
-        parts = authorization.split(" ")
-        if len(parts) != 2:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Malformed authorization header structure."
-            )
-
-        token = parts[1]
-
-        payload = jwt.decode(
-            token, settings.JWT_SECRET_KEY, algorithms=["HS256"])
-        username: str | None = payload.get("sub")
-        if username is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid token payload parameters."
-            )
-
-        query = select(UserModel).where(UserModel.username == username)
-        result = await db.execute(query)
-        user = result.scalar_one_or_none()
-
-        if user is None:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="User bound to this token does not exist."
-            )
-
-        return user
-
-    except jwt.ExpiredSignatureError:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Token expired",
-            headers={"WWW-Authenticate": "Bearer"}
-        )
-    except (jwt.PyJWTError, ValueError, IndexError):
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"}
-        )
+    parts = authorization.split()
+    if len(parts) != 2 or parts[0].lower() != "bearer":
+        raise HTTPException(status_code=401, detail="Malformed authorization header structure.",
+                            headers={"WWW-Authenticate": "Bearer"})
+    return await get_current_user(token=parts[1], db=db)
 
 
 def get_refresh_token_from_cookie(request: Request) -> str:

@@ -1,4 +1,5 @@
 import pytest
+import re
 from httpx import AsyncClient
 from fastapi import status
 
@@ -10,7 +11,7 @@ from fastapi import status
 
 @pytest.mark.asyncio
 async def test_create_user_success(client: AsyncClient):
-    """Verifies that a valid payload registers an integer-ID user without an email field."""
+    """Verifies the actual canonical ULID contract without exposing credentials."""
     payload = {
         "username": "alice_test",
         "password": "SecurePassword123!",
@@ -31,8 +32,9 @@ async def test_create_user_success(client: AsyncClient):
 
     data = response.json()
     assert "id" in data
-    # Ensures the system maps auto-incrementing integer serials
-    assert isinstance(data["id"], int)
+    assert isinstance(data["id"], str)
+    assert re.fullmatch(r"[0-7][0-9A-HJKMNP-TV-Z]{25}", data["id"])
+    assert data["role"] == "user"
     assert data["username"] == payload["username"]
 
     # Confirm email doesn't exist anywhere in payload response schemas
@@ -66,4 +68,4 @@ async def test_create_user_duplicate_username(client: AsyncClient):
     res2 = await client.post("/api/v1/users", json=payload)
 
     assert res2.status_code == status.HTTP_400_BAD_REQUEST
-    assert res2.json()["detail"] == "Username already registered"
+    assert res2.json()["detail"] == "Username is already registered."

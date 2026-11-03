@@ -1,6 +1,6 @@
 # Backend development setup
 
-This folder contains Austin's imported FastAPI backend at source baseline `79804aa`, plus additive development setup. Python 3.14 and PostgreSQL 17 are **REPORTED** as Austin's environment. The imported `src/` and dependency pins remain unchanged; two stale user-test assertions were aligned with the existing ULID/error contract; setup instructions are not product, security or UAT acceptance. See [current status](../docs/dev/CURRENT.md) for the latest verification evidence.
+This branch repairs the Austin Backend inherited from PR38 at `ff6e5d4fcdfb2f71103eac6769b376eca64bf843` (Austin dev `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`). See the [current task](../docs/dev/tasks/BE-FE-DEMO-READINESS-20261027.md) for the exact scope and native evidence. Python3.14/PostgreSQL17 and the existing pins are retained. Public Signup, token/participant ownership, row-lock transactions and schema consistency are repaired for the bounded Demo; this is author validation, not full Security/UAT or approved mixed-pool policy.
 
 Run the commands below from `backend/`. Use a dedicated local database and synthetic data only.
 
@@ -45,9 +45,9 @@ Verify `DATABASE_URL` points to your dedicated development database, then explic
 python -m scripts.dev_bootstrap --acknowledge-development
 ```
 
-This command refuses staging/production and requires the acknowledgement before database access. It imports all three model modules and calls `Base.metadata.create_all` to create missing tables; it never drops or resets tables and is not a schema migration tool. It does not run automatically when the server starts.
+This command refuses staging/production and requires the acknowledgement before database access. It imports the User, Event, Participant and Registration model modules and calls `Base.metadata.create_all` to create missing tables; it never drops or resets tables and is not a schema migration tool. It does not run automatically when the server starts.
 
-The seed adds the synthetic `demo_organizer` account and three `ACTIVE` events, with UTC dates one, two and three weeks after the first run. It creates no participant, phone, identity or medical records. Stable seed identifiers make repeat runs idempotent: existing records, passwords and event dates are preserved; conflicting account/event identifiers stop the command. Run one bootstrap process at a time.
+The seed adds the synthetic `demo_organizer` account and three lowercase `active` events, with UTC dates one, two and three weeks after the first run. It creates no participant, phone, identity or medical records. Stable seed identifiers make repeat runs idempotent: existing records, passwords and event dates are preserved; conflicting account/event identifiers stop the command. Run one bootstrap process at a time.
 
 Choose either credential path before the first run:
 
@@ -76,4 +76,22 @@ The live frontend uses a same-origin development proxy; follow [frontend setup](
 
 The imported user tests can be invoked with `python -m pytest` from `backend/` after configuration and dependencies are available. They use an isolated SQLite test engine and do not prove PostgreSQL behavior or real browser integration. The new bootstrap is PostgreSQL-only; document evidence from the actual runtime/database separately.
 
-In the imported source, event creation requires a logged-in user but does not check for the organizer role. Public user creation also accepts the supplied role. Production authorization policy and role escalation controls remain **UNVERIFIED**; the synthetic organizer account does not establish that those controls exist. This setup leaves the imported policy unchanged. Event creation/publication relates to `SP-FEATURES-20261012:A-01`; event index/login integration alone does not complete that feature, guest registration, quotas, cancellation, SMS or the full 18-feature scope.
+Create and Event PATCH require organizer; PATCH additionally verifies event ownership. Public Signup rejects organizer/leader, blank username and passwords over72 UTF-8 bytes. Absent Authorization allows first-time Guest; invalid credentials cannot fall back to Guest. A participant is matched to their authenticated account before reuse; National ID alone cannot claim another record. Signup errors remain controlled and do not expose secrets.
+
+## Explicit existing-development-schema migration
+
+Stop writers and back up the dedicated development database first. From backend, with its private DATABASE_URL and ENVIRONMENT=development:
+
+```bash
+python -m scripts.migrate_demo_readiness --acknowledge-development --database EXACT_DEDICATED_DATABASE_NAME
+```
+
+This standalone command verifies the exact connected database, locks registrations with a5-second lock timeout, refuses existing duplicate event/participant pairs, checks/adds `uq_registration_event_participant`, and adds actual `offline` to PostgreSQL `registration_channel`. It commits before the new enum label is used. It does not delete duplicates, change old rows or run on server startup. Verified first/repeat on a new original-shape synthetic DB and refusal on a separate duplicate fixture; original Demo and production database migration remain NOT_RUN. `create_all` is only fresh schema setup.
+
+## Targeted checks and behavioral limits
+
+Run `python -B -m pytest -q tests` from backend with the existing dependencies.26 ASGI/SQLite checks and3 opt-in native checks are separate layers. Set `NU_NATIVE_TEST_DATABASE_URL` privately to a dedicated PostgreSQL database ending `_test` to run the latter; they assert non-superuser identity and create isolated synthetic fixtures. Without opt-in,3 SKIP is expected. Native checks cover last-slot/repeated-cancel races, pair uniqueness and test-only pre-commit fault rollback. No production runtime monkeypatch is installed.
+
+One registration per event/participant is enforced across all statuses; re-enrolment after cancellation is not implemented. The existing duplicate400 message remains for frontend compatibility; identity/uniqueness race conflicts return409. Cancel and promotion commit together under an event row lock; pending cancellation releases no approved place, and inactive events do not receive new promotions. Waiting FIFO ties are deterministic. Existing total online+offline capacity behavior is retained but only online1/offline0 is accepted for the core Demo. No new pool lending/eligibility/deadline/offer policy is implied.
+
+The retained Offline service accepts new unclaimed identities with actual channel=offline; it rejects existing identity claims and duplicate batch entries atomically. No Offline UI/OCR workflow is added. Refresh/logout/files routes remain; frontend still uses existing Bearer/local Logout, without Cookie transport integration or a token-revocation claim. Full native E2E, Security/UAT, notifications, GCS, deployment, Guest read/claim/cancel and complete Issue acceptance are outside this repair.

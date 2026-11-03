@@ -37,7 +37,7 @@ export function validateRegistrationRead(value) {
   if (!value || !ulid(value.id) || !ulid(value.participant_id)
     || !Number.isSafeInteger(value.event_id) || value.event_id < 1
     || !(value.created_by_user_id === null || ulid(value.created_by_user_id))
-    || !['online', 'walkin', 'ocr'].includes(value.channel) || !registrationStates.has(value.status)
+    || !['online', 'offline', 'walkin', 'ocr'].includes(value.channel) || !registrationStates.has(value.status)
     || !validDate(value.created_at) || !validDate(value.updated_at)) throw contractError();
   // New read views need identifiers/status and names, not stored medical/identity profiles.
   return Object.fromEntries(['id', 'event_id', 'participant_id', 'created_by_user_id', 'channel', 'status',
@@ -108,6 +108,9 @@ export function createApi({ fetchImpl = globalThis.fetch, timeoutMs = 15000 } = 
         }
         if (response.status === 401) throw new ApiError('unauthorized', 'Your login has expired. Please log in again.', 401);
         if (response.status === 403) throw new ApiError('forbidden', 'Your account cannot access this request.', 403);
+        if (operation === 'registration' && response.status === 409) {
+          throw new ApiError('validation', 'These participant details conflict with an existing record. Check your details or contact the organiser.', 409);
+        }
         if (response.status === 422) throw new ApiError('validation', 'Please check your details and try again.', 422);
         if (response.status === 429) throw new ApiError('rate_limit', 'Too many requests. Please wait a moment and try again.', 429);
         if (operation === 'lifecycle' && [400, 404, 409].includes(response.status)) {

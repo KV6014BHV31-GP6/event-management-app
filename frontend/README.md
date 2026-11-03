@@ -1,5 +1,13 @@
 # Frontend workspace
 
+## Repaired PR38 successor candidate — 2026-10-27 (current)
+
+The [current repair task](../docs/dev/tasks/BE-FE-DEMO-READINESS-20261027.md) restores the real existing ROSE pages through the repaired inherited Backend. Only API read acceptance of `offline` and safe registration409 rejection mapping changed in Frontend; Session, proxy, routes, forms and styling remain. True UI search/detail/image/Reload/Edit/User+Guest/own read/Approve/Cancel+promotion passed. Refresh events retains keyword; a full page reload resets the search under the existing behavior.
+
+Use this branch's separate candidate with PORT=5197, BACKEND_URL=http://127.0.0.1:8024 and UPLOAD_DIR set to its dedicated runtime/uploads. Backend local storage uses relative uploads from its separate runtime cwd. Candidate launchers are in `E:\NU_Local_Environment_20261014\demo-readiness\20261027-141421`. They never pull, seed or migrate. The prior5196 candidate is unchanged. Frontend239 checks are unit/controller/DOM/proxy evidence, separate from real Chrome/PostgreSQL. Cookie refresh/server logout transport remains unintegrated; existing local Logout is retained.
+
+All older candidate and security claims below are historical and version-qualified; consult CURRENT for this new branch's bounded status.
+
 ## Austin dev candidate integration — 2026-10-27 (current)
 
 **Partial live integration, with Backend blockers.** See the [current task](../docs/dev/tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md). This supersedes the earlier detached UI_ONLY restriction for this increment. Austin Backend is `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`; do not substitute PR #39. Existing Signup/Login/Guest/navigation remain, with new [My registrations](live/my-registrations.html), [Registration review](live/organizer-registrations.html), [Edit](live/edit-event.html) and optional Create image upload.

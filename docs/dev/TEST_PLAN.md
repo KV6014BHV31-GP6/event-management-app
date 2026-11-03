@@ -1,5 +1,20 @@
 # 真實 API+DB 最小驗收計畫
 
+## PR38 repair author matrix — 2026-10-27 (current)
+
+See [the bounded repair task](tasks/BE-FE-DEMO-READINESS-20261027.md) for source, failures, contracts and reproduction. New isolated successor branch; no PR38/PR39 mutation.
+
+| Layer | Actual bounded result |
+| --- | --- |
+| Frontend unit/controller/proxy |239 PASS; parent checks retained, offline read and409 rejection covered. |
+| Backend ASGI/SQLite |26 PASS; strict corrected ULID/error assertions and new identity/auth/state/PATCH regressions. |
+| Native PostgreSQL |3 opt-in tests PASS: last-slot/repeated-cancel races, rollback fault, unique constraint. |
+| Real UI |D1–D7 passed across preserved attempts; Signup/Login/localLogout, image/Create/search/detail/Edit, User/Guest/ownGET/Reload, organizer Approve, A Cancel200 and B promotion with quota1/0. |
+| Separate native HTTP |56 requests/59 assertions including negative no-write fingerprints, pending cancel, Offline201 and two-request races. |
+| Schema/setup |Explicit old-shape migration twice with rows preserved; duplicate refusal unchanged; fresh standard bootstrap twice preserved all rows. |
+
+Retain initial7 native500, bootstrap failure,2 original stale test failures and subsequent timezone regression failure; Browser capture/fixture failures are individually recorded externally. Do not convert them into clean first-run PASS. Full E2E/Security/UAT/mixed-pool/old Demo migration/video/team review remain NOT_RUN or pending. The matrices below describe older versions.
+
 ## Current Austin integration matrix — 2026-10-27
 
 Source and authorization: [current task](tasks/FE-AUSTIN-DEV-INTEGRATION-20261027.md). Fixed Backend `480460b4a2b0902bb8256be02bc7c8d8f13ac6ee`; updated Frontend is the PR #38 increment. Earlier tables below are historical UI_ONLY results, not the current integration status.
