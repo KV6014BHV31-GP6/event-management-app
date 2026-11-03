@@ -1,0 +1,87 @@
+{
+  "schema": "nu.demo-source-register/1",
+  "task_id": "DEMO-FULL-JOURNEY-20261103",
+  "sources": [
+    {
+      "source_id": "CHALLENGE5",
+      "sha256": "e6c34a58f8c2bc84bf4441dd2af74da834c87a117911036cafb57aa303f78700",
+      "coverage": "full one-page extracted text; no render",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LOGTASK1",
+      "sha256": "e2da66c0e6a62644ed2feaff7c9942373cfa649cabe197420106826e2d4cb963",
+      "coverage": "full main OOXML paragraphs/tables",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LOGTASK2",
+      "sha256": "ca1435051dec8b1cd2c0841cb04cad6e850c0947aa717b12662389ec350c0217",
+      "coverage": "full main OOXML paragraphs/tables",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LOGTASK3",
+      "sha256": "857dda3f5fdde11b9456c2a49c036713cbf882d8932515381cb7c0372ca8f472",
+      "coverage": "full main OOXML paragraphs/tables",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LOGTASK4",
+      "sha256": "8372fdaccdb229011892281b8dc4db2eda405b09ac4bb93363cae2d01f2a5c58",
+      "coverage": "full main OOXML paragraphs/tables",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "AUSTIN-OFFLINE-UPDATED",
+      "sha256": "025dad6ec2c8511721bcf9efd05d3ef8a4d142a640910c5fc00b3f1d017296c2",
+      "coverage": "full727 lines, design proposal",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "W8-OWNER-RELAY",
+      "sha256": "0d86b1ec4f5b4895adf0f65e5cb0277e313e5ceef590cb21f8c6aede21986979",
+      "coverage": "full relay, no NGO signoff",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    }
+  ],
+  "current_github_issue_reads": [
+    6,
+    11,
+    16,
+    31,
+    32,
+    33,
+    34,
+    35,
+    36,
+    37,
+    41,
+    42,
+    43,
+    44,
+    45,
+    46,
+    47,
+    48,
+    49,
+    50
+  ],
+  "missing_originals": [
+    "User Stories & Mapping (Amended)",
+    "Features Review.docx"
+  ],
+  "original_team_ac_unavailable": [
+    "US03",
+    "US09",
+    "US10"
+  ],
+  "fallback_requirement_source": "OWNER-DEMO-20261103 explicit authorization, not substituted original read"
+}

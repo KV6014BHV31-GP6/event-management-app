@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T01:53:56.772851+00:00",
-  "reason": "Verified docs identity after isolated PR38+40+55+57+56 merges",
-  "document_count": 301,
+  "reviewed_at": "2026-11-03T05:33:21.770989+00:00",
+  "reason": "建立本輪 Demo 來源、設計與驗收關口，保留缺失原件界線",
+  "document_count": 313,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -274,7 +274,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 34,
+      "revision": 35,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -478,6 +478,13 @@
           "size_bytes": 21830,
           "superseded_at": "2026-11-03T01:53:56.772851+00:00",
           "reason": "Verified docs identity after isolated PR38+40+55+57+56 merges"
+        },
+        {
+          "revision": 34,
+          "sha256": "8f98ecb6235b3ceb6ae51b41e5429e27e391836b755672e8862d88862224adf9",
+          "size_bytes": 23245,
+          "superseded_at": "2026-11-03T05:33:21.770989+00:00",
+          "reason": "建立本輪 Demo 來源、設計與驗收關口，保留缺失原件界線"
         }
       ],
       "import_lineage": {
@@ -490,8 +497,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "8f98ecb6235b3ceb6ae51b41e5429e27e391836b755672e8862d88862224adf9",
-      "size_bytes": 23245,
+      "sha256": "6060b07954a511ac3162c5e6a04c6c2f64c8f9e8762de24b18762db9ee2fea23",
+      "size_bytes": 24424,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -6022,6 +6029,162 @@
       ],
       "sha256": "dd2a00b06cb10a2ded6e5218a18f5570af4db265a822904c32dea91765e9b21b",
       "size_bytes": 4312
+    },
+    {
+      "document_id": "DEMO-JOURNEY-DECISIONS",
+      "path": "docs/dev/demo-journey/DECISIONS.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9f93dcef60aaa39187f9d1a795b2c212c424ec2f73fb18d7a5cb5f366a5b36a8",
+      "size_bytes": 1779
+    },
+    {
+      "document_id": "DEMO-JOURNEY-DEMO-POLICY",
+      "path": "docs/dev/demo-journey/DEMO_POLICY.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "56bdf62b460d419b589227f9cb8789f3b43f27d4a92223f34956289c168276ed",
+      "size_bytes": 1989
+    },
+    {
+      "document_id": "DEMO-JOURNEY-DESIGN-REDLINES",
+      "path": "docs/dev/demo-journey/DESIGN_REDLINES.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ab37af757f0e053d7f4ccd69e3dfa4fe3ba7f6f9c8925657a27feb5ebeb16c1c",
+      "size_bytes": 2515
+    },
+    {
+      "document_id": "DEMO-JOURNEY-DESIGN-TOKENS",
+      "path": "docs/dev/demo-journey/DESIGN_TOKENS.json",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "3da9ce062b09d4e32e843ffcdecc7f3361c36fc2caa39f49d53a97d96b03d1ee",
+      "size_bytes": 783
+    },
+    {
+      "document_id": "DEMO-JOURNEY-FEATURE-DEMO-MATRIX",
+      "path": "docs/dev/demo-journey/FEATURE_DEMO_MATRIX.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "983188e0c6d1ed0a2978c90b41cea55e0a11acb7b0e91c3d458216aae0d85690",
+      "size_bytes": 5598
+    },
+    {
+      "document_id": "DEMO-JOURNEY-GATES",
+      "path": "docs/dev/demo-journey/GATES.json",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a01d0ccb9447e35515cd407a46cd201f9eef65f165aaa89e7531bf7ea117e295",
+      "size_bytes": 634
+    },
+    {
+      "document_id": "DEMO-JOURNEY-README",
+      "path": "docs/dev/demo-journey/README.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a5064222d6ffd31d338083adf4a864a13b2622ff369958d9181ced2c3de82e74",
+      "size_bytes": 893
+    },
+    {
+      "document_id": "DEMO-JOURNEY-ROLE-CONCEPTS",
+      "path": "docs/dev/demo-journey/ROLE_CONCEPTS.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2fb9c7095c23e2cde85262fed083fd612b5e7b222bcf223d24c0d177ad373d49",
+      "size_bytes": 1954
+    },
+    {
+      "document_id": "DEMO-JOURNEY-SOURCE-COVERAGE",
+      "path": "docs/dev/demo-journey/SOURCE_COVERAGE.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d4c782170483447effbadf8de7215db3b4c1f15831c3031918b543d33b8ec978",
+      "size_bytes": 1779
+    },
+    {
+      "document_id": "DEMO-JOURNEY-SOURCE-REGISTER",
+      "path": "docs/dev/demo-journey/SOURCE_REGISTER.json",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "6831330de2d449a688fd8e454cca562e6efb998a06b6dcd6d3ae1c93b7f328c6",
+      "size_bytes": 2455
+    },
+    {
+      "document_id": "DEMO-JOURNEY-STATE-MATRIX",
+      "path": "docs/dev/demo-journey/STATE_MATRIX.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "dfbbaa76a756a7ee360393354f87860aac377582ee870dc2b0640c484d7098f6",
+      "size_bytes": 1422
+    },
+    {
+      "document_id": "DEMO-JOURNEY-DEMO-FULL-JOURNEY-20261103",
+      "path": "docs/dev/tasks/DEMO-FULL-JOURNEY-20261103.md",
+      "revision": 1,
+      "owner": "Astra Demo integration",
+      "status": "draft",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8d96dcd88cf92fed64f0bab43479b5a2869735026951a3dffdcfb74772efeb62",
+      "size_bytes": 1261
     }
   ]
 }

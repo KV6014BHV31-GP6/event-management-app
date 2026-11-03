@@ -1,0 +1,19 @@
+{
+  "task_id": "DEMO-FULL-JOURNEY-20261103",
+  "run_id": "20261103-132629",
+  "source_sha": "8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5",
+  "gates": {
+    "G0": "PARTIAL_LOCKED_ENV_SOURCE_GAPS",
+    "G1": "DESIGN_LOCKED_FOR_EXPLICIT_OWNER_SCOPE",
+    "G2": "NOT_RUN",
+    "G3": "NOT_RUN_ORIGINAL_TEAM_AC_GAP",
+    "G4": "NOT_RUN",
+    "G5": "NOT_RUN",
+    "G6": "NOT_RUN",
+    "G7": "NOT_RUN"
+  },
+  "blockers": [
+    "Original amended User Stories and Features Review not located; no full-original coverage claim"
+  ],
+  "continuation_authority": "Owner master: stop only affected gate; continue independent work"
+}

@@ -1,3 +1,11 @@
+# Current successor — full journey Demo, 2026-11-03
+
+Task DEMO-FULL-JOURNEY-20261103 / run20261103-132629. Owner authorizes new feature/integration branches and conditional dev_demo_ben merge after actual required CI/native/browser/independent gates. No product acceptance or merge has occurred. Latest target fetched/read back8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5. Old services and28 worktrees were inventoried and preserved.
+
+Source reconciliation is PARTIAL: current original Challenge/LogTask/Austin/W8/current GitHub scope read; amended DOCX/Features Review unavailable. Local design is locked for explicit Owner scope only. See [run entry](demo-journey/README.md), [feature matrix](demo-journey/FEATURE_DEMO_MATRIX.md), [source boundaries](demo-journey/SOURCE_COVERAGE.md), and [gate status](demo-journey/GATES.json). Independently authorized document preview/offline work proceeds; unverified originals remain open and G2-G7 NOT_RUN.
+
+Historical status below belongs to its named source/runtime and is not this run's test result.
+
 # NU Developer 當前狀態
 
 ## ROSE PULSE Phase2 — 2026-11-02
