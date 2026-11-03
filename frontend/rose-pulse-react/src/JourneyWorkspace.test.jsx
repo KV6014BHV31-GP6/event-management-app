@@ -9,6 +9,18 @@ const response = data => ({
   json: async () => data
 });
 beforeEach(() => localStorage.clear());
+it('catches invalid application phone validation in the workspace without sending a POST', async () => {
+  const fetch = vi.spyOn(globalThis, 'fetch');
+  render(<JourneyWorkspace runtime={{}} auth={{ user: null, revision: 1 }} initialEvent="123456789012345678901" navigate={() => {}} />);
+  const form = screen.getByRole('form', { name: 'Submit application' });
+  for (const [label, value] of [['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '0'.repeat(21)], ['National ID', 'SIM-INVALID-PHONE']])
+    fireEvent.change(within(form).getByLabelText(label), { target: { value } });
+  fireEvent.change(within(form).getByLabelText('Date of birth'), { target: { value: '1990-01-01' } });
+  fireEvent.submit(form);
+  expect(await screen.findByRole('alert')).toHaveTextContent('Check the participant fields and their maximum lengths.');
+  expect(fetch.mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
+  expect(localStorage.length).toBe(0);
+});
 it('submits all six admitted fields and explicit Direct source through the real application form', async () => {
   const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (path, options) => {
     const body = JSON.parse(options.body);

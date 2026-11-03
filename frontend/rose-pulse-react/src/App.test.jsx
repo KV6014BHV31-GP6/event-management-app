@@ -76,6 +76,29 @@ beforeEach(() => {
   window.history.replaceState({}, "", "/");
 });
 
+it('discovers assisted account recovery from Login and keeps its code out of the route', async () => {
+  const { user } = await setup({ view: 'login' });
+  await user.click(screen.getByRole('link', { name: 'Recover account access' }));
+  expect(await screen.findByRole('heading', { name: 'Recover account access' })).toBeInTheDocument();
+  expect(screen.getByLabelText('Recovery code')).toHaveAttribute('type', 'password');
+  expect(window.location.search).toBe('?view=recovery');
+  expect(screen.getByText(/No real message or identity verification is provided/)).toBeInTheDocument();
+});
+it('keeps verified Profile identity and local Logout alongside the real own-profile form', async () => {
+  vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: true, status: 200, json: async () => ({
+    contract_version: 'rose.demo-journey.v1', account: { id: ID, username: 'synthetic-user', role: 'user' },
+    profile: { display_name: 'Editable synthetic display', preferred_language: 'en', version: 0, updated_at: null },
+    as_of_utc: '2026-11-03T08:00:00Z',
+  }) });
+  const { user, storage } = await setup({ view: 'profile', role: 'user' });
+  expect(screen.getByRole('heading', { name: 'synthetic-user' })).toBeInTheDocument();
+  await screen.findByDisplayValue('Editable synthetic display');
+  await user.click(screen.getByRole('button', { name: 'Log out locally' }));
+  expect(screen.queryByRole('form', { name: 'Personal profile' })).not.toBeInTheDocument();
+  expect(screen.queryByDisplayValue('Editable synthetic display')).not.toBeInTheDocument();
+  expect(storage.removeItem).toHaveBeenCalledWith('rose.live.access-token');
+});
+
 describe("React application workflows (controlled API fixtures)", () => {
   it.each([
     [undefined, "en"],

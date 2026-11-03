@@ -112,7 +112,8 @@ function JourneySession({
   const mutate = (path, data, version) => run(async () => {
     const mutationEpoch=recordEpoch.current;
     const targetRegistration=registrationId;
-    const receipt = await client.mutate(path, data, version);
+    const payload = typeof data === 'function' ? data() : data;
+    const receipt = await client.mutate(path, payload, version);
     if (!active.current || mutationEpoch!==recordEpoch.current) return;
     if(path.endsWith('/applications')){setRegistrationId(receipt.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:receipt.effects}));}
     setMessage(tr('Saved by server. Current information has been read again.'));
@@ -258,7 +259,7 @@ function JourneySession({
  {staff && eventId && <details className="journey-section"><summary>{tr('Demand, quota and instructions')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('stats', root + '/stats'))}>{tr('Read current statistics')}</button>{loaded.stats && <Statistics data={loaded.stats} />} {owner && current && <><ActionForm title="Save leader instruction" busy={busy} fields={[field('text', 'Instruction', 'textarea', {
           value: loaded.stats?.instruction?.text
         })]} submit={v => mutate(root + '/instruction', v, eventVersion)} /><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/alerts', {}, eventVersion)}>{tr('Process demand alerts')}</button></>}</details>}
- <details className="journey-section" open={!staff}><summary>{tr('Application and source')}</summary>{guestAllowed&&<p className="notice">{tr('Guest application — no account will be created.')} <button className="text-button" onClick={()=>navigate('login',{event:eventId})}>{tr('Log in')}</button></p>}<p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p><ActionForm title="Submit application" busy={busy || !eventId || attachmentBlocked || (!!initialRef&&!loaded.referral) || (!auth.user&&!auth.offlineActor&&!guestAllowed) || (!staff&&!!runtime.api?.getEvent&&!loaded.publicEvent)} fields={[...applicationFields, field('source_kind', 'Source', 'text', {options:initialRef?['leader_referral']:['direct','unknown']})]} submit={v => mutate(root + '/applications', {
+ <details className="journey-section" open={!staff}><summary>{tr('Application and source')}</summary>{guestAllowed&&<p className="notice">{tr('Guest application — no account will be created.')} <button className="text-button" onClick={()=>navigate('login',{event:eventId})}>{tr('Log in')}</button></p>}<p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p><ActionForm title="Submit application" busy={busy || !eventId || attachmentBlocked || (!!initialRef&&!loaded.referral) || (!auth.user&&!auth.offlineActor&&!guestAllowed) || (!staff&&!!runtime.api?.getEvent&&!loaded.publicEvent)} fields={[...applicationFields, field('source_kind', 'Source', 'text', {options:initialRef?['leader_referral']:['direct','unknown']})]} submit={v => mutate(root + '/applications', () => ({
         application: {
           ...appCopy(v),
           ...(applicationFiles.length ? {
@@ -266,7 +267,7 @@ function JourneySession({
           } : {})
         },
         source: {kind:initialRef?'leader_referral':v.source_kind,referral_code:initialRef||null}
-      })}>{loaded.referral&&<p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>}{auth.user && <FilePicker runtime={runtime} key={eventId+":"+registrationId} purpose="supporting_document" onChange={applicationChanged} onBlocked={attachmentChanged} />}</ActionForm></details>
+      }))}>{loaded.referral&&<p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>}{auth.user && <FilePicker runtime={runtime} key={eventId+":"+registrationId} purpose="supporting_document" onChange={applicationChanged} onBlocked={attachmentChanged} />}</ActionForm></details>
  <details className="journey-section"><summary>{tr('Registration review and booking')}</summary>{auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
           const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
           if (active.current) setLoaded(old => ({
@@ -325,11 +326,11 @@ function JourneySession({
         })} /></>}</details>}
  {owner && current && <details className="journey-section"><summary>{tr('Offers, reminders and Demo outbox')}</summary><div className="form-actions">{[['offers/reconcile', 'Reconcile offers'], ['reminders', 'Process due reminders']].map(([path, label]) => <button key={path} className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/' + path, {}, eventVersion)}>{tr(label)}</button>)}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outbox', '/outbox?event_public_id=' + encodeURIComponent(eventId)))}>{tr('Read Demo outbox')}</button></div><p>{tr('DEMO_OUTBOX — no external delivery.')}</p>{loaded.outbox?.messages.map(m => <article className="journey-message" key={m.id}><h3>{tr(m.kind)} · {tr(m.state)}</h3><p>{m.recipient_hint} · {m.message}</p><small>{m.scheduled_at || m.created_at}</small>{m.state === 'failed' && <button className="button button-small" disabled={busy} onClick={() => mutate('/outbox/' + m.id + '/retry', {}, m.version)}>{tr('Retry failed Demo message')}</button>}</article>)}</details>}
  {staff&&eventId&&<AttendanceWorkspace key={staffActor.id+eventId} runtime={runtime} client={client} actor={staffActor} eventId={eventId} onError={setError} onQueueState={setAttendanceBlocked}/>}
- {staff && current && <details className="journey-section"><summary>{tr('Attendance and closeout')}</summary>{owner && <><ActionForm title="Register eligible walk-in" busy={busy} fields={[...applicationFields, field('eligibility_note', 'Synthetic eligibility review note', 'textarea')]} submit={v => mutate(root + '/walkins', {
+ {staff && current && <details className="journey-section"><summary>{tr('Attendance and closeout')}</summary>{owner && <><ActionForm title="Register eligible walk-in" busy={busy} fields={[...applicationFields, field('eligibility_note', 'Synthetic eligibility review note', 'textarea')]} submit={v => mutate(root + '/walkins', () => ({
           application: appCopy(v),
           eligibility_confirmed: true,
           eligibility_note: v.eligibility_note
-        }, eventVersion)}><p>{tr('Submitting explicitly confirms synthetic eligibility review. A cancelled booking is not reused.')}</p></ActionForm><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('closeout', root + '/closeout'))}>{tr('Read closeout preview')}</button>{loaded.closeout && <Closeout data={loaded.closeout} />} <ActionForm title="Finalize completed event" busy={busy || !loaded.closeout || attendanceBlocked || pending.some(row=>row.path.startsWith(root+"/attendance"))} fields={[field('attestation', 'Local attendance reconciliation', 'text', {
+        }), eventVersion)}><p>{tr('Submitting explicitly confirms synthetic eligibility review. A cancelled booking is not reused.')}</p></ActionForm><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('closeout', root + '/closeout'))}>{tr('Read closeout preview')}</button>{loaded.closeout && <Closeout data={loaded.closeout} />} <ActionForm title="Finalize completed event" busy={busy || !loaded.closeout || attendanceBlocked || pending.some(row=>row.path.startsWith(root+"/attendance"))} fields={[field('attestation', 'Local attendance reconciliation', 'text', {
           options: ['not confirmed', 'all local actions reconciled']
         })]} submit={v => run(async()=>{
           const attendanceStore=createAttendanceStore();

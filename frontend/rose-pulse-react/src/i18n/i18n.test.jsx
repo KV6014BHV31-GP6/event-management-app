@@ -8,6 +8,7 @@ import { parse } from "@babel/parser";
 import traverseModule from "@babel/traverse";
 import App from "../App.jsx";
 import { createRuntime } from "../service.js";
+import { ACCOUNT_MESSAGES } from "../account-api.js";
 import {
   resources,
   savedLanguage,
@@ -40,6 +41,7 @@ describe("central English/Malay resources and controls", () => {
       "src/DemoControls.jsx",
       "src/JourneyWorkspace.jsx",
       "src/AttendanceWorkspace.jsx",
+      "src/AccountWorkspace.jsx",
       "src/offline/OfflineWorkspace.jsx",
     ]) {
       const ast = parse(readFileSync(file, "utf8"), {
@@ -59,6 +61,12 @@ describe("central English/Malay resources and controls", () => {
     expect(
       keys.filter((key) => !Object.hasOwn(resources.en.translation, key)),
     ).toEqual([]);
+  });
+  it('registers every bounded account client message in both catalogs', () => {
+    for (const message of Object.values(ACCOUNT_MESSAGES)) {
+      expect(Object.hasOwn(resources.en.translation, message)).toBe(true);
+      expect(Object.hasOwn(resources.ms.translation, message)).toBe(true);
+    }
   });
   it("persists only the language preference, falls back to English, and works when storage is denied", async () => {
     const storage = { getItem: vi.fn(() => "ms"), setItem: vi.fn() };

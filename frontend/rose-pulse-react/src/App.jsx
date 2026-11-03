@@ -1,4 +1,5 @@
 import JourneyWorkspace from "./JourneyWorkspace.jsx";
+import { AccountProfile, RecoveryWorkspace } from "./AccountWorkspace.jsx";
 import { DemoImage, DemoControls } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
 import {
@@ -1337,6 +1338,7 @@ function AuthForm({ signup = false }) {
             </fieldset>
           </form>
         )}
+        {!signup && <p className="auth-switch"><Link view="recovery" params={{ event: route.event }}>{tr("Recover account access")}</Link></p>}
         <p className="auth-switch">
           {signup
             ? tr("Already part of the community?")
@@ -2422,6 +2424,7 @@ function Profile() {
           </div>
         </div>
       )}
+      <AccountProfile runtime={runtime} auth={auth} />
     </>
   );
 }
@@ -2519,6 +2522,7 @@ export default function App({ runtime }) {
         apply: "Join an event",
         login: "Log in",
         signup: "Create account",
+        recovery: "Recover account access",
         create: "Create event",
         edit: "Edit event",
         registrations: "My registrations",
@@ -2551,6 +2555,9 @@ export default function App({ runtime }) {
       break;
     case "signup":
       content = <AuthForm signup />;
+      break;
+    case "recovery":
+      content = <RecoveryWorkspace runtime={runtime} auth={auth} navigate={view => navigate(view, { event: route.event })} />;
       break;
     case "create":
       content = <EventEditor />;
