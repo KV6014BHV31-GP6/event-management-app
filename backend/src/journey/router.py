@@ -32,6 +32,7 @@ from src.phase2.models import RegistrationDocumentModel
 from src.journey.models import JourneyState, JourneyOperation
 from src.journey.policy import *
 from src.journey import allocation as alloc
+from src.journey import attribution as attribution_summary
 
 VERSION='rose.demo-journey.v1'
 router=APIRouter(prefix='/api/v2/operations',tags=['Demo journey'])
@@ -151,22 +152,22 @@ async def registration_view(db,event,reg,actor):
 async def statistics(db,event):
     rows=await alloc.registrations(db,event);quota=await alloc.counts(db,event)
     for q in quota.values():q['available']=max(0,q['capacity']-q['approved']-q['offer_holds'])
-    counts={s.value:sum(r.status==s for r in rows) for s in Status};counts['applications']=len(rows);counts['correction_requested']=0;counts['offer_holds']=sum(q['offer_holds'] for q in quota.values());attribution={'direct':0,'leader_referral':0,'unknown':0}
+    counts={s.value:sum(r.status==s for r in rows) for s in Status};counts['applications']=len(rows);counts['correction_requested']=0;counts['offer_holds']=sum(q['offer_holds'] for q in quota.values())
     for r in rows:
-        m=await alloc.meta(db,r,False);attribution[m.data['source_kind']]+=1;counts['correction_requested']+=r.status==Status.pending and m.data['review']=='correction_requested'
+        m=await alloc.meta(db,r,False);counts['correction_requested']+=r.status==Status.pending and m.data.get('review')=='correction_requested'
+    attribution,leader_breakdown=await attribution_summary.aggregate(db,event,rows)
     work=await workflow(db,event);threshold=work.data['policy']['low_demand_ratio'];ratio=counts['approved']/(event.online_quota+event.offline_quota)
     instruction=await state(db,'instruction:'+event.public_id)
-    return {'event_public_id':event.public_id,'as_of_utc':iso(),'source':'native_postgresql' if db.bind.dialect.name=='postgresql' else db.bind.dialect.name,'counts':counts,'quota':quota,'attribution':attribution,'alert':{'policy_id':'demo-low-demand-v1','state':'below_threshold' if ratio<threshold else 'normal','threshold':threshold,'observed_ratio':ratio,'definition':'approved / total capacity'},'instruction':{**instruction.data,'version':instruction.version} if instruction else {'text':'','version':0,'updated_at':None}}
+    return {'event_public_id':event.public_id,'as_of_utc':iso(),'source':'native_postgresql' if db.bind.dialect.name=='postgresql' else db.bind.dialect.name,'counts':counts,'quota':quota,'attribution':attribution,'leader_breakdown':leader_breakdown,'alert':{'policy_id':'demo-low-demand-v1','state':'below_threshold' if ratio<threshold else 'normal','threshold':threshold,'observed_ratio':ratio,'definition':'approved / total capacity'},'instruction':{**instruction.data,'version':instruction.version} if instruction else {'text':'','version':0,'updated_at':None}}
 async def closeout(db,event):
     work=await workflow(db,event);saved=await state(db,'closeout:'+event.public_id)
     if saved:return saved.data
     rows=await alloc.registrations(db,event);attendance=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='attendance'))).all()
     arrivals={r.data['registration_id'] for r in attendance if r.data['state']=='arrived'};pending=sum(r.data['state']=='pending' for r in attendance);active=sum(o.data['state']=='offered' and dt(o.data['expires_at'])>now() for o in await alloc.offers(db,event));booked=[r for r in rows if r.status==Status.approved and r.channel!=Channel.walkin];walkins=[r for r in rows if r.status==Status.approved and r.channel==Channel.walkin]
     totals={'capacity':event.online_quota+event.offline_quota,'applications':len(rows),'bookings':len(booked)+len(walkins),'cancelled':sum(r.status==Status.cancelled for r in rows),'rejected':sum(r.status==Status.rejected for r in rows),'pending':sum(r.status==Status.pending for r in rows),'waiting':sum(r.status==Status.waiting for r in rows),'arrivals':len(arrivals),'booked_arrivals':sum(r.id in arrivals for r in booked),'walkin_arrivals':sum(r.id in arrivals for r in walkins),'no_show':sum(r.id not in arrivals for r in booked)}
-    attribution={'direct':0,'leader_referral':0,'unknown':0}
-    for r in rows:attribution[(await alloc.meta(db,r,False)).data['source_kind']]+=1
+    attribution,leader_breakdown=await attribution_summary.aggregate(db,event,rows)
     blockers=(['PENDING_ATTENDANCE'] if pending else [])+(['ACTIVE_OFFERS'] if active else [])+(['EVENT_NOT_ENDED'] if now()<dt(event.end_time) else [])
-    return {'version':work.version,'state':'preview','as_of_utc':iso(),'pending_attendance_count':pending,'active_offer_count':active,'totals':totals,'attribution':attribution,'definitions':{'bookings':'all approved including walk-ins','arrivals':'unique arrived registrations','no_show':'approved non-walkin minus booked arrivals','source':'native_postgresql' if db.bind.dialect.name=='postgresql' else db.bind.dialect.name},'blockers':blockers}
+    return {'version':work.version,'state':'preview','as_of_utc':iso(),'pending_attendance_count':pending,'active_offer_count':active,'totals':totals,'attribution':attribution,'leader_breakdown':leader_breakdown,'definitions':{'bookings':'all approved including walk-ins','arrivals':'unique arrived registrations','no_show':'approved non-walkin minus booked arrivals','source':'native_postgresql' if db.bind.dialect.name=='postgresql' else db.bind.dialect.name},'blockers':blockers}
 
 @router.get('/{path:path}')
 async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(get_optional_current_user)):
@@ -233,7 +234,7 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
             if not user and not request.headers.get('X-Guest-Grant'):fail('AUTH_REQUIRED',401)
             return {'messages':result,'as_of_utc':iso()}
         if head!='events':fail('NOT_FOUND',404)
-        event=await event_get(db,identifier);await authorize_staff(db,event,user.id if user else None);work=await workflow(db,event)
+        event=await event_get(db,identifier);actor=await authorize_staff(db,event,user.id if user else None);work=await workflow(db,event)
         if not suffix:
             payload=await EventService(db).get_event_by_public_id(identifier,include_drafts=True)
             return {'contract_version':VERSION,'event':jsonable_encoder(payload),'workflow':{'version':work.version,**{k:work.data.get(k) for k in ('state','timezone','registration_opens_at','registration_closes_at','change_notice')}},'policy':{**work.data['policy'],'owner':'proposal','synthetic_only':True},'as_of_utc':iso()}
@@ -252,8 +253,8 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
         if suffix=='outreach':
             rows=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outreach'))).all()
             return {'reports':[r.data for r in rows if user.id==event.organizer_id or r.data['leader_id']==user.id],'as_of_utc':iso()}
-        if suffix=='stats':return await statistics(db,event)
-        if suffix=='closeout':return await closeout(db,event)
+        if suffix=='stats':return attribution_summary.for_viewer(await statistics(db,event),actor)
+        if suffix=='closeout':return attribution_summary.for_viewer(await closeout(db,event),actor)
         if suffix=='roster':
             query=request.query_params.get('query','').strip().lower()
             if len(query)>100:fail('INVALID_INPUT',422)
