@@ -1,0 +1,120 @@
+{
+  "time": "2026-11-01T21:54:36.461022+00:00",
+  "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "state": "AUTHOR_LOCAL_VERIFIED_PENDING_INDEPENDENT",
+  "rows": [
+    {
+      "id": "O01",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-native-summary.json",
+        "phase2-http-validation.json",
+        "phase2-fixed-native-http.json"
+      ],
+      "scope": "same-ID8-way exactly one effect; committed response body discarded, reconcile and immutable replay, durable after owned restart",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "O02",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-unit-summary.json",
+        "phase2-review-fixed-checks-summary.json",
+        "native-review/phase2-review-fixed-checks-BE-R1.json",
+        "phase2-fixed-native-http.json"
+      ],
+      "scope": "fresh actor/role/ownership checks; role demotion while organizer Cancel waits for event lock refuses403 without mutation",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "O03",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-native-summary.json",
+        "phase2-review-fixed-checks-summary.json",
+        "native-review/phase2-review-fixed-checks-BE-R2-submission.json",
+        "native-review/phase2-review-fixed-checks-BE-R2-identity.json",
+        "phase2-review-native-effect-readback.json"
+      ],
+      "scope": "global UUID and cross-event identity races; real40P01 opposite-order cases controlled409/whole rollback, no losing prefix effects or automatic business retry",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "O04",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-main-migration.json",
+        "phase2-legacy-migration-proof.json",
+        "phase2-migration-fault-rollback.json",
+        "phase2-native-summary.json"
+      ],
+      "scope": "exact DB first/repeat/refusal, legacy values unchanged, injected DDL rollback, precommit domain/receipt rollback",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "W01",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-http-validation.json",
+        "phase2-http-db-readback.json"
+      ],
+      "scope": "three actual event-image associations/reload; purpose/MIME/size/name checks; private before association",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "W02",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-http-validation.json",
+        "phase2-http-db-readback.json"
+      ],
+      "scope": "three supporting-document associations/reload; private owner/event-owner ACL; foreign organizer denied content and metadata",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "W03",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-http-db-readback.json",
+        "phase2-address-preservation-red-summary.json",
+        "phase2-address-preservation-green-summary.json",
+        "phase2-legacy-migration-proof.json"
+      ],
+      "scope": "9→6 visible inputs33.3% approved engineering scope; actualNULL both tables; omitted address does not erase legacy participant; provided old values retained",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "W04",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-http-validation.json",
+        "phase2-owner-index-red-summary.json",
+        "phase2-owner-index-green-summary.json",
+        "phase2-fixed-native-http.json",
+        "native-review/phase2-review-fixed-checks-BE-R1.json"
+      ],
+      "scope": "server-owned event/registration indexes, own-event DB aggregate definition/as-of/source/actor; organizer-owner Cancel/promotion with postlock role check",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    },
+    {
+      "id": "R01",
+      "result": "LOCAL_VERIFIED",
+      "evidence": [
+        "phase2-unit-summary.json",
+        "phase2-review-R1-R2-green-summary.json"
+      ],
+      "scope": "retained29 regression cases passed inside36-case run; affected native Cancel race, owner Cancel/promotion and same-ID checks passed separately",
+      "product_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+      "layer": "author verification; independent verdict separate"
+    }
+  ],
+  "test_count_note": "Separate unique groups36+8+1+1+3=49 cases. No single49-case command was run. Initial postcommit4, review affected6 and final postcommit3 are repeated subsets, not additional unique cases."
+}

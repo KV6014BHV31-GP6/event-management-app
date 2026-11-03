@@ -1,0 +1,19 @@
+# ADR-001 — bounded synthetic offline capture in the existing React web app
+
+Status: Owner-authorized engineering decision; NGO/teacher final platform approval is not inferred. Source namespace USER-ROSE-PHASE2-20261102, USER-W8-MEETING-20261102, SP-US-20261012:US09, SP-FEATURES-20261012:F-01. GitHub Issues43/47 describe SQLite as a developer proposal subject to runtime compatibility; #48 leaves upload versus on-site original document review unresolved. The retained source crosswalk calls PWA not-yet-discussed. LogTask3 requires a test plan/complete feature example, not a mandated frontend platform. The Owner now explicitly authorizes a React PWA increment.
+
+| Option | Compatibility and operational trade-off | Decision |
+|---|---|---|
+| React Native + SQLite | Requires a separately packaged app, native permissions/build/distribution and an independent device/key-management acceptance. SQLite storage does not itself prove encryption, safe sync or device recovery. Existing React web components are not a native app. | Preserve as a possible later platform; no rewrite or unsupported equivalence claim. |
+| Existing React + Service Worker + IndexedDB | Reuses verified browser UI and API. Production AppShell can start without network; versioned local queue can retain stable IDs. Browser-specific storage quotas/eviction and private mode remain limitations. | Implement and test only synthetic data, manual sync, current server authorization and durable receipts. |
+| Server-only batch POST | Existing backend transfers records but lacks stable client IDs and durable per-item reconciliation. | Preserve legacy route; add versioned durable v2 contract. It is not offline capture on its own. |
+
+PWA covers desktop Chrome and browser viewport tests; physical iOS/Android are separate acceptance. Service Workers require a secure context: HTTPS or the localhost exception. A phone accessing http://LAN-IP cannot inherit localhost's exception. See [MDN Service Workers](https://developer.mozilla.org/en-US/docs/Web/API/Service_Worker_API/Using_Service_Workers).
+
+CacheStorage may contain only minimal public AppShell assets. No authorization token, private API response, participant identity or medical payload is cached there. IndexedDB queue is actor-partitioned, locked on logout/account change and synced only after fresh same-actor role validation. It is **not encrypted** and is limited to synthetic capture. Storage persist requests/estimates are advisory, not a permanent-storage guarantee; eviction/private mode/quota errors need explicit UI handling. See [MDN storage lifecycle](https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria).
+
+Privacy gate remains closed for real participant data until field policy, local encryption/key lifecycle, shared-device/logout/expiry, retention/deletion, device loss, operational controls and qualified security review are complete. No hardcoded key or hash substitutes for encryption. Explicit deletion may lose unsynced synthetic records; uncertain server writes require reconciliation first.
+
+Synchronization state (draft/pending_sync/syncing/synced/failed/needs_review) is independent of registration status. Synced is not approved or a reserved place. Stable immutable IDs and fresh receipt GET precede retry; server constraints/transactions determine business effects. Exactly-once business effect may only be claimed for tested bounded cases, not arbitrary distributed failures.
+
+Testing layers remain distinct: Chrome offline emulation; actual owned-service process isolation with HTTP reachability proof; persistent browser process restart; physical iPhone hotspot; physical iPhone PWA. The last two remain PHYSICAL_IPHONE_NOT_RUN without an operator/device. Background Sync is not required or relied upon.

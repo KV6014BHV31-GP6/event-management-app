@@ -1,0 +1,293 @@
+{
+  "identity": {
+    "database_matches": true,
+    "role_matches": true,
+    "readonly": "on",
+    "superuser": false,
+    "port": 5439
+  },
+  "tables": {
+    "users": {
+      "count": 7,
+      "fingerprint": "b0008a02a596f3eb44b666d960d25174"
+    },
+    "events": {
+      "count": 7,
+      "fingerprint": "12252565a812da0de27330074e765c22"
+    },
+    "participants": {
+      "count": 11,
+      "fingerprint": "5197ba7f975b29e77f887932788619fa"
+    },
+    "registrations": {
+      "count": 12,
+      "fingerprint": "e6be47fb660276d907b131b18a8254c6"
+    },
+    "phase2_files": {
+      "count": 14,
+      "fingerprint": "870854256e9c2d4d12ee98a5d702b321"
+    },
+    "phase2_event_images": {
+      "count": 6,
+      "fingerprint": "7ddff7aeb3951547f647a2416db76375"
+    },
+    "phase2_registration_documents": {
+      "count": 6,
+      "fingerprint": "c7ab335adc07915b49cf044eced6dc04"
+    },
+    "phase2_sync_batches": {
+      "count": 3,
+      "fingerprint": "c7147d0c4835f57e497d9a64a69acf6a"
+    },
+    "phase2_sync_submissions": {
+      "count": 6,
+      "fingerprint": "10d352d085a2e5bbe132db49d3a5e7d3"
+    }
+  },
+  "registrations": [
+    {
+      "id": "01M6CHR3N7VZA7341QJR5WV5TM",
+      "event_id": 6,
+      "participant_id": "01M6CHR3MY4TTCPWJA95B56G56",
+      "created_by_user_id": "01M6CHQZMB5RXZ2HR663PYK8A0",
+      "status": "cancelled",
+      "channel": "online",
+      "participant_user_id": "01M6CHQZMB5RXZ2HR663PYK8A0",
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": "01M6CHQZMB5RXZ2HR663PYK8A0",
+      "synthetic_identity_sha256": "cad7ea7c5fe443b9673d48984b4dfd319182345230a74da0af5485a5e51109a7"
+    },
+    {
+      "id": "01M6CHR4M1YHZQZN0NHFQQG329",
+      "event_id": 7,
+      "participant_id": "01M6CHR3MY4TTCPWJA95B56G56",
+      "created_by_user_id": "01M6CHQZMB5RXZ2HR663PYK8A0",
+      "status": "pending",
+      "channel": "online",
+      "participant_user_id": "01M6CHQZMB5RXZ2HR663PYK8A0",
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "cad7ea7c5fe443b9673d48984b4dfd319182345230a74da0af5485a5e51109a7"
+    },
+    {
+      "id": "01M6CHR8MJNZ5AMPPFEM4VM432",
+      "event_id": 6,
+      "participant_id": "01M6CHR8MFXK5RN657YFKMV774",
+      "created_by_user_id": "01M6CHR5PQNEPEEGAH1P09S8H9",
+      "status": "approved",
+      "channel": "online",
+      "participant_user_id": "01M6CHR5PQNEPEEGAH1P09S8H9",
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "05d6ab2e3e799c0ff53a90c8f3956842746245117a365ad961aa6eddec6e5f1f"
+    },
+    {
+      "id": "01M6CHR9T4WTGG3BW9ZKTYMZ7R",
+      "event_id": 6,
+      "participant_id": "01M6CHR9SZF4CYTY7KJZV43R91",
+      "created_by_user_id": null,
+      "status": "cancelled",
+      "channel": "online",
+      "participant_user_id": null,
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": "01J00000000000000000000001",
+      "synthetic_identity_sha256": "867ee471c168781c83f2700cb983426422c84027bc446397b42f475f71b5193f"
+    },
+    {
+      "id": "01M6CJ6F4FGM4729N8YME9QGCV",
+      "event_id": 7,
+      "participant_id": "01M6CJ6F4BD0HG55P998KBWMVW",
+      "created_by_user_id": null,
+      "status": "pending",
+      "channel": "online",
+      "participant_user_id": null,
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "890296c2fa673049937cda05d533e22988edd3474b5ff59622c393ee4542eff7"
+    },
+    {
+      "id": "01M6CJP090VKA5RY399GX23QMZ",
+      "event_id": 7,
+      "participant_id": "01M6CJP08TWGBKG1H6E3WVJVSN",
+      "created_by_user_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "status": "pending",
+      "channel": "offline",
+      "participant_user_id": null,
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "86c3290f997b7eba040cc4b3ec8a57a32d820513edbbbe3ec33f9a774c9a0d67"
+    },
+    {
+      "id": "01M6CJP0AAM5YCKWZ2C175WCBQ",
+      "event_id": 7,
+      "participant_id": "01M6CJP0A749Q6DC9R94SBCEBJ",
+      "created_by_user_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "status": "pending",
+      "channel": "offline",
+      "participant_user_id": null,
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "208cedfa131ad223d08227895d4cb3a74bfc7620c4c20d67fd18f8b99ada2392"
+    },
+    {
+      "id": "01M6CJP0ASXG2BDMGKVXNPAP9B",
+      "event_id": 7,
+      "participant_id": "01M6CJP0AQDE3PRVXDT2QPX8S5",
+      "created_by_user_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "status": "pending",
+      "channel": "offline",
+      "participant_user_id": null,
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "f36e4548b28677cc97f0ef3cdb37af95408a629b211fea30246da0b0af2f8f22"
+    },
+    {
+      "id": "01M6CK9VSXRHCQHNMXD4QYH4JX",
+      "event_id": 7,
+      "participant_id": "01M6CK9VSSJCB7CXWM36YYETRC",
+      "created_by_user_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "status": "pending",
+      "channel": "offline",
+      "participant_user_id": null,
+      "address_null": true,
+      "income_null": true,
+      "marriage_null": true,
+      "medical_null": true,
+      "participant_address_null": true,
+      "cancelled_by_user_id": null,
+      "synthetic_identity_sha256": "47d8e2e23d765f7c20100e46bef2461c3d8ddec1e4135c5a178546a31e5b62e3"
+    }
+  ],
+  "events": [
+    {
+      "id": 6,
+      "public_id": "4_pI7-FIph05pcqISqEL8",
+      "title": "Independent Phase2 Gallery mvydby2c Updated",
+      "organizer_id": "01J00000000000000000000001",
+      "online_quota": 1,
+      "offline_quota": 0,
+      "status": "active"
+    },
+    {
+      "id": 7,
+      "public_id": "QtgOsOdTXS0deIe3pvbQL",
+      "title": "Independent Phase2 Offline mvydbz15",
+      "organizer_id": "01J00000000000000000000001",
+      "online_quota": 8,
+      "offline_quota": 0,
+      "status": "active"
+    }
+  ],
+  "images": [
+    {
+      "event_id": 6,
+      "file_id": "01M6CHQT9YHGC5K97GJFGVRQ6N",
+      "position": 0
+    },
+    {
+      "event_id": 6,
+      "file_id": "01M6CHQTBTWTE0C8YPN4J6GCP6",
+      "position": 1
+    },
+    {
+      "event_id": 6,
+      "file_id": "01M6CJEW9N5BDK2NBQJWWYGPEG",
+      "position": 2
+    }
+  ],
+  "documents": [
+    {
+      "registration_id": "01M6CHR3N7VZA7341QJR5WV5TM",
+      "file_id": "01M6CHR34DYYHRBH8EPYMBK5AM",
+      "position": 0
+    },
+    {
+      "registration_id": "01M6CHR3N7VZA7341QJR5WV5TM",
+      "file_id": "01M6CHR36N94MZPKG5PRRJV10P",
+      "position": 1
+    },
+    {
+      "registration_id": "01M6CHR3N7VZA7341QJR5WV5TM",
+      "file_id": "01M6CHR38NP0A260TZE2NW54GB",
+      "position": 2
+    }
+  ],
+  "batches": [
+    {
+      "batch_id": "3a68fe48-a64d-4874-9a80-a8ce54d8958b",
+      "actor_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "event_id": 7,
+      "fingerprint": "a41aa65c6fb35e9eab61bd8a4e24d37652c9d4ab3cbbd16ec82fce11f25ad607",
+      "receipt": "{\"contract_version\": \"rose.offline-sync.v2\", \"fingerprint_version\": \"raw-json-sortkeys-v1\", \"batch_id\": \"3a68fe48-a64d-4874-9a80-a8ce54d8958b\", \"event_public_id\": \"QtgOsOdTXS0deIe3pvbQL\", \"actor_id\": \"01M6CF0R66K0AQP1MJG1MNT36D\", \"recorded_at\": \"2026-11-01T22:11:34.884205+00:00\", \"items\": [{\"client_submission_id\": \"4496b294-5418-4ced-a5bb-6ae793adb484\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CJP090VKA5RY399GX23QMZ\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:11:34.785514+00:00\"}, {\"client_submission_id\": \"5cf763f6-0d45-4ff4-bca3-dfee37265773\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CJP0AAM5YCKWZ2C175WCBQ\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:11:34.851055+00:00\"}, {\"client_submission_id\": \"b8368c7d-f43f-47ef-b7f1-6f66d5c13a1f\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CJP0ASXG2BDMGKVXNPAP9B\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:11:34.865223+00:00\"}]}"
+    },
+    {
+      "batch_id": "79ccc7dc-fd5c-469a-81a1-93df8c5e1fd2",
+      "actor_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "event_id": 7,
+      "fingerprint": "8301e350a1732a913584cdee793d6edf14228a81b289cdd17b3586cbf6b9ea79",
+      "receipt": "{\"contract_version\": \"rose.offline-sync.v2\", \"fingerprint_version\": \"raw-json-sortkeys-v1\", \"batch_id\": \"79ccc7dc-fd5c-469a-81a1-93df8c5e1fd2\", \"event_public_id\": \"QtgOsOdTXS0deIe3pvbQL\", \"actor_id\": \"01M6CF0R66K0AQP1MJG1MNT36D\", \"recorded_at\": \"2026-11-01T22:22:25.604851+00:00\", \"items\": [{\"client_submission_id\": \"1832025f-3536-42e1-b287-d4cb85782451\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CK9VSXRHCQHNMXD4QYH4JX\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:22:25.588467+00:00\"}]}"
+    }
+  ],
+  "submissions": [
+    {
+      "client_submission_id": "1832025f-3536-42e1-b287-d4cb85782451",
+      "actor_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "event_id": 7,
+      "fingerprint": "c97d5739ca115a8a84fae128fa4c7cea6c4fe1815a5d4a208f9c31f65248084f",
+      "receipt": "{\"client_submission_id\": \"1832025f-3536-42e1-b287-d4cb85782451\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CK9VSXRHCQHNMXD4QYH4JX\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:22:25.588467+00:00\"}"
+    },
+    {
+      "client_submission_id": "4496b294-5418-4ced-a5bb-6ae793adb484",
+      "actor_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "event_id": 7,
+      "fingerprint": "0a714e21144a9b938b20a532ff03d9865d1dec748e05612e2c781c31ff313f4e",
+      "receipt": "{\"client_submission_id\": \"4496b294-5418-4ced-a5bb-6ae793adb484\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CJP090VKA5RY399GX23QMZ\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:11:34.785514+00:00\"}"
+    },
+    {
+      "client_submission_id": "5cf763f6-0d45-4ff4-bca3-dfee37265773",
+      "actor_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "event_id": 7,
+      "fingerprint": "289dcea556bc89449e8cd37c7c51b0477bc90a76287470f5954a55ba9af01b54",
+      "receipt": "{\"client_submission_id\": \"5cf763f6-0d45-4ff4-bca3-dfee37265773\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CJP0AAM5YCKWZ2C175WCBQ\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:11:34.851055+00:00\"}"
+    },
+    {
+      "client_submission_id": "b8368c7d-f43f-47ef-b7f1-6f66d5c13a1f",
+      "actor_id": "01M6CF0R66K0AQP1MJG1MNT36D",
+      "event_id": 7,
+      "fingerprint": "1f11c44795d4fded1caf377fc41448606c36e97ded88beab023198e88ad3c30a",
+      "receipt": "{\"client_submission_id\": \"b8368c7d-f43f-47ef-b7f1-6f66d5c13a1f\", \"outcome\": \"accepted\", \"code\": \"RECORDED\", \"registration_id\": \"01M6CJP0ASXG2BDMGKVXNPAP9B\", \"registration_status_at_recording\": \"pending\", \"recorded_at\": \"2026-11-01T22:11:34.865223+00:00\"}"
+    }
+  ]
+}

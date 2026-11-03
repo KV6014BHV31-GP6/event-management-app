@@ -78,6 +78,25 @@ test('proxy refuses remote upstream origins', () => {
   for (const upstream of ['https://example.com', 'http://example.com', 'http://127.0.0.1:8000/other']) assert.throws(() => createDevServer({upstream}), /loopback/);
 });
 
+test('v2 proxy admits only exact reviewed sync/file/organizer routes and preserves no-store auth boundary', async () => {
+  const calls = []; const fileId = '01K00000000000000000000001'; const uuid = '12345678-1234-4234-8234-123456789abc';
+  const upstream = http.createServer(async (req, res) => { req.resume(); calls.push({ path: req.url, method: req.method, auth: req.headers.authorization, cookie: req.headers.cookie }); res.writeHead(200, {'Content-Type':req.url.includes('/content') ? 'application/pdf' : 'application/json', 'Content-Disposition':'attachment; filename="synthetic.pdf"'}); res.end('{}'); });
+  const server = createDevServer({upstream:await listen(upstream)}); const base = await listen(server);
+  try {
+    for (const [method, path] of [['GET', `/api/v2/files/${fileId}/content`], ['GET', '/api/v2/me/events?page=1&pageSize=6'], ['GET', '/api/v2/analytics/registrations'], ['POST', `/api/v2/registrations/${fileId}/cancel`], ['POST', `/api/v2/events/${EVENT_ID}/offline-batches`], ['GET', `/api/v2/events/${EVENT_ID}/offline-batches/${uuid}`], ['GET', `/api/v2/events/${EVENT_ID}/offline-submissions/${uuid}`]]) {
+      const result = await fetch(base + path, {method, headers:{Authorization:'Bearer synthetic',Cookie:'must-not-forward'}, body:method==='POST' ? '{}' : undefined}); assert.equal(result.status,200,path); assert.equal(result.headers.get('cache-control'),'no-store'); if (path.includes('/content')) assert.match(result.headers.get('content-disposition'),/synthetic.pdf/);
+    }
+    for (const [method,path] of [['GET','/api/v2/unknown'],['DELETE',`/api/v2/files/${fileId}/content`],['POST',`/api/v2/events/${EVENT_ID}/offline-batches/${uuid}`],['GET',`/api/v2/files/${fileId}/content/`],['GET',`/api/v2/files/%30${fileId.slice(1)}/content`],['GET',`/api/v2/events/${EVENT_ID}/offline-batches/${uuid.toUpperCase()}`]]) assert.equal((await fetch(base+path,{method})).status,405,path);
+    assert.equal(calls.length,7); assert.ok(calls.every(row=>row.auth==='Bearer synthetic' && row.cookie===undefined));
+  } finally { await close(server); await close(upstream); }
+});
+
+test('larger body allowance applies only to authenticated v2 file path, preserving old 1MiB routes', async () => {
+  let requests=0; const upstream=http.createServer(async(req,res)=>{ requests++; const parts=[];for await(const part of req)parts.push(part);assert.equal(req.url,'/api/v2/files');assert.equal(Buffer.concat(parts).length,1024*1024+1);res.writeHead(201,{'Content-Type':'application/json'});res.end('{}'); });
+  const server=createDevServer({upstream:await listen(upstream)});const base=await listen(server);
+  try { assert.equal((await fetch(base+'/api/v2/files',{method:'POST',headers:{Authorization:'Bearer synthetic'},body:Buffer.alloc(1024*1024+1)})).status,201);assert.equal((await fetch(base+'/api/v2/files',{method:'POST',body:Buffer.alloc(8*1024*1024+64*1024+1)})).status,413);assert.equal((await fetch(base+`/api/v2/events/${EVENT_ID}/offline-batches`,{method:'POST',body:Buffer.alloc(1024*1024+1)})).status,413);assert.equal(requests,1); } finally{await close(server);await close(upstream);}
+});
+
 test('PATCH is forwarded only for an exact public event identifier', async () => {
   const receipts = [];
   const upstream = http.createServer(async (req, res) => {

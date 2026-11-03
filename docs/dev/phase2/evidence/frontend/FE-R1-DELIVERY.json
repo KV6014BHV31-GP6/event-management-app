@@ -1,0 +1,80 @@
+{
+  "baseline": {
+    "react_tests": 77,
+    "legacy_proxy_tests": 241,
+    "state": "Previously passed at82b1927; not rerun for1line UI addition"
+  },
+  "source_commit": "2ccb83264b203f6c9ea684f07112dc8bdf8fb7e6",
+  "service_worker_cache": "rose-public-shell-4d283d141aab8a72",
+  "native_failure_boundary": "Controller/reviewer retains firstU10 locator failure and actual missing detail share entry. Prior writes/DB reconciliation belong to their evidence, not a Backend failure",
+  "previous_full_candidate": "82b1927b61be6c1cffb1c88b660340e2e7e48c87",
+  "artifacts": [
+    {
+      "bytes": 508,
+      "sha256": "e236393a135cea7dc0035ba2e0466b6447b79b3ab711adcbd7a0a4f78d772dab",
+      "path": "frontend\\rose-pulse-react\\dist\\icon.svg"
+    },
+    {
+      "bytes": 788,
+      "sha256": "758c9a66acf7a2af72708bf4d711d6d01262c952d2674bfa1fc429fc15821e84",
+      "path": "frontend\\rose-pulse-react\\dist\\index.html"
+    },
+    {
+      "bytes": 296,
+      "sha256": "c48966b8c5c2ef3a718608e25ab5db480cf794486816265a70be2e63ef17c4a7",
+      "path": "frontend\\rose-pulse-react\\dist\\manifest.webmanifest"
+    },
+    {
+      "bytes": 1960,
+      "sha256": "61c6725cce8f752253c75e2e0de09d964ddef2cd9a145702cd8c56078f7c8124",
+      "path": "frontend\\rose-pulse-react\\dist\\sw.js"
+    },
+    {
+      "bytes": 524573,
+      "sha256": "6650f700204dd0e742744584826ea1da797800fc7c288169885da6308ccd4cc6",
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\index-BXRt6KCn.js"
+    },
+    {
+      "bytes": 34785,
+      "sha256": "ce5d22057da08633951dea606f587aa60fe864eb5f6db130ba79a4aa770c86d4",
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\index-DCe3DumD.css"
+    },
+    {
+      "bytes": 6465,
+      "sha256": "fc9b933eadf51c529e95f2685e3f67a96713905969ab38baf999fa62c723a4d9",
+      "path": "frontend\\rose-pulse-react\\dist\\assets\\OrganizerWorkspace-BReWg6vx.js"
+    },
+    {
+      "bytes": 607912,
+      "sha256": "8d3cba510166fd408dbbfac0ddff6437c2facff18f1c0726e12f9cd4b0ed4b0f",
+      "path": "frontend\\rose-pulse-react\\dist\\images\\community-lake.jpg"
+    }
+  ],
+  "state": "FROZEN_FOR_REVIEWER_CONTINUATION",
+  "validation": [
+    {
+      "command": "npm.cmd test -- src/App.test.jsx src/EventShare.test.jsx",
+      "log": "FE-R1-detail-share-tests.txt",
+      "passed": 17,
+      "exit_code": 0,
+      "failed": 0
+    },
+    {
+      "command": "npm.cmd run build",
+      "log": "FE-R1-detail-share-build.txt",
+      "advisory": "Main524.57kB gzip150.50kB, same size advisory",
+      "exit_code": 0
+    },
+    {
+      "exit_code": 0,
+      "command": "git diff --check -- frontend/rose-pulse-react/src/App.jsx frontend/rose-pulse-react/src/App.test.jsx"
+    }
+  ],
+  "files": [
+    "frontend/rose-pulse-react/src/App.jsx",
+    "frontend/rose-pulse-react/src/App.test.jsx"
+  ],
+  "schema_version": 1,
+  "product_diff": "One EventShare mount on public EventDetail; receipt sharing retained",
+  "finding": "FE-R1"
+}

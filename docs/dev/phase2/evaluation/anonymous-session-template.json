@@ -1,0 +1,99 @@
+{
+  "kind": "synthetic_pilot",
+  "provenance": "TEMPLATE ONLY. Replace with actual observations outside Git; no participants or ratings yet.",
+  "frontend_sha": null,
+  "backend_sha": null,
+  "sessions": [
+    {
+      "anonymous_id": "P001",
+      "version": "after",
+      "role": "leader",
+      "device": "UNTESTED",
+      "language": "en",
+      "consent": false,
+      "sus": null,
+      "tasks": [
+        {
+          "task_id": "U1",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U2",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U3",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U4",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U5",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U6",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U7",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U8",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U9",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        },
+        {
+          "task_id": "U10",
+          "attempted": false,
+          "result": null,
+          "seconds": null,
+          "seq": null,
+          "errors": []
+        }
+      ]
+    }
+  ]
+}

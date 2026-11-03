@@ -1,0 +1,25 @@
+
+STDERR
+....FF...
+======================================================================
+FAIL: test_rejects_nonmonthly_cost_period (test_evaluate_phase2.EvaluationTests.test_rejects_nonmonthly_cost_period)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\NU_Local_Environment_20261014\rose-pulse-phase2\20261102-050245\frontend\scripts\tests\test_evaluate_phase2.py", line 63, in test_rejects_nonmonthly_cost_period
+    with self.assertRaises(ValueError):evaluation.cost(data)
+         ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^
+AssertionError: ValueError not raised
+
+======================================================================
+FAIL: test_success_timing_has_its_own_denominator (test_evaluate_phase2.EvaluationTests.test_success_timing_has_its_own_denominator)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "E:\NU_Local_Environment_20261014\rose-pulse-phase2\20261102-050245\frontend\scripts\tests\test_evaluate_phase2.py", line 72, in test_success_timing_has_its_own_denominator
+    self.assertEqual(one.get('timed_success_attempts'),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: None != 1
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.005s
+
+FAILED (failures=2)

@@ -1,0 +1,47 @@
+{
+  "currency": "MYR",
+  "period": "month",
+  "unknown_categories": [
+    "hosting",
+    "database",
+    "storage",
+    "support",
+    "training",
+    "notifications",
+    "security"
+  ],
+  "scenarios": [
+    {
+      "registrations_per_month": 100,
+      "basis": "hypothetical volume; zero variable component is a calculator placeholder, not a provider quote",
+      "monthly_cost": null,
+      "cost_per_registration": null,
+      "known_cost_subtotal": 0
+    },
+    {
+      "registrations_per_month": 1000,
+      "basis": "hypothetical volume; zero variable component is a calculator placeholder, not a provider quote",
+      "monthly_cost": null,
+      "cost_per_registration": null,
+      "known_cost_subtotal": 0
+    },
+    {
+      "registrations_per_month": 5000,
+      "basis": "hypothetical volume; zero variable component is a calculator placeholder, not a provider quote",
+      "monthly_cost": null,
+      "cost_per_registration": null,
+      "known_cost_subtotal": 0
+    }
+  ],
+  "status": "COST_BASELINE_INCOMPLETE",
+  "funder_review": "NOT_RUN",
+  "impact_or_roi_proven": false,
+  "source_context": {
+    "frontend_sha": null,
+    "backend_sha": null,
+    "migration_id": null,
+    "contract_version": null
+  },
+  "input_sha256": "867d95a08055cd89dd52a02c03b162156ee49de97c79c0a0d149f7c3ddc32d5f",
+  "tool_sha256": "a39202d137dbcaeb16dd7193038f69a70b1f2449324563d8a93ce9314bd9a66d"
+}

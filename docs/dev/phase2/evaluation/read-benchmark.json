@@ -1,0 +1,502 @@
+{
+  "status": "PASS",
+  "frontend_sha": "4f2bb20c1234ff1db0cfd6f8fc48fb25675f361e",
+  "backend_sha": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "start": "2026-11-01T22:23:24.329067+00:00",
+  "end": "2026-11-01T22:23:30.044288+00:00",
+  "requests": 60,
+  "concurrency": 4,
+  "method": "GET",
+  "endpoint": "/api/v1/events?page=1&pageSize=6",
+  "scope": "Already-running local synthetic environment, not cold start/5000 users/production SLA",
+  "total_seconds": 1.5130765999201685,
+  "responses_per_second": 39.65430435125734,
+  "median_ms": 68.53049999999999,
+  "p95_nearest_rank_ms": 210.421,
+  "max_ms": 651.5,
+  "errors": 0,
+  "resource_before": [
+    {
+      "Id": 34220,
+      "ProcessName": "node",
+      "CPU": 0.90625,
+      "WorkingSet64": 63029248,
+      "StartTime": "/Date(1793571053424)/"
+    },
+    {
+      "Id": 36212,
+      "ProcessName": "node",
+      "CPU": 2.296875,
+      "WorkingSet64": 86507520,
+      "StartTime": "/Date(1793571057374)/"
+    },
+    {
+      "Id": 22116,
+      "ProcessName": "postgres",
+      "CPU": 9.296875,
+      "WorkingSet64": 26583040,
+      "StartTime": "/Date(1793567240114)/"
+    },
+    {
+      "Id": 22792,
+      "ProcessName": "python",
+      "CPU": 9.75,
+      "WorkingSet64": 118706176,
+      "StartTime": "/Date(1793571034141)/"
+    }
+  ],
+  "resource_after": [
+    {
+      "Id": 34220,
+      "ProcessName": "node",
+      "CPU": 1.109375,
+      "WorkingSet64": 65875968,
+      "StartTime": "/Date(1793571053424)/"
+    },
+    {
+      "Id": 36212,
+      "ProcessName": "node",
+      "CPU": 2.625,
+      "WorkingSet64": 88911872,
+      "StartTime": "/Date(1793571057374)/"
+    },
+    {
+      "Id": 22116,
+      "ProcessName": "postgres",
+      "CPU": 9.34375,
+      "WorkingSet64": 26583040,
+      "StartTime": "/Date(1793567240114)/"
+    },
+    {
+      "Id": 22792,
+      "ProcessName": "python",
+      "CPU": 10.8125,
+      "WorkingSet64": 119144448,
+      "StartTime": "/Date(1793571034141)/"
+    }
+  ],
+  "resource_limit": "Per-process snapshots/cumulativeCPU, not peak profiling; postgres workers may be separate",
+  "responses": [
+    {
+      "request": 1,
+      "elapsed_ms": 651.5,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 2,
+      "elapsed_ms": 627.36,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 3,
+      "elapsed_ms": 210.421,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 4,
+      "elapsed_ms": 634.26,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 5,
+      "elapsed_ms": 42.384,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 6,
+      "elapsed_ms": 47.554,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 7,
+      "elapsed_ms": 51.322,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 8,
+      "elapsed_ms": 46.171,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 9,
+      "elapsed_ms": 64.367,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 10,
+      "elapsed_ms": 40.973,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 11,
+      "elapsed_ms": 55.424,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 12,
+      "elapsed_ms": 56.477,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 13,
+      "elapsed_ms": 79.35,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 14,
+      "elapsed_ms": 62.345,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 15,
+      "elapsed_ms": 79.25,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 16,
+      "elapsed_ms": 74.902,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 17,
+      "elapsed_ms": 55.448,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 18,
+      "elapsed_ms": 75.607,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 19,
+      "elapsed_ms": 53.001,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 20,
+      "elapsed_ms": 73.942,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 21,
+      "elapsed_ms": 73.642,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 22,
+      "elapsed_ms": 78.25,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 23,
+      "elapsed_ms": 57.373,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 24,
+      "elapsed_ms": 68.84,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 25,
+      "elapsed_ms": 82.706,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 26,
+      "elapsed_ms": 66.819,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 27,
+      "elapsed_ms": 70.858,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 28,
+      "elapsed_ms": 62.731,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 29,
+      "elapsed_ms": 75.591,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 30,
+      "elapsed_ms": 71.859,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 31,
+      "elapsed_ms": 57.823,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 32,
+      "elapsed_ms": 63.222,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 33,
+      "elapsed_ms": 81.158,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 34,
+      "elapsed_ms": 42.287,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 35,
+      "elapsed_ms": 75.87,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 36,
+      "elapsed_ms": 67.289,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 37,
+      "elapsed_ms": 68.704,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 38,
+      "elapsed_ms": 63.48,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 39,
+      "elapsed_ms": 59.011,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 40,
+      "elapsed_ms": 85.776,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 41,
+      "elapsed_ms": 57.399,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 42,
+      "elapsed_ms": 78.392,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 43,
+      "elapsed_ms": 52.68,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 44,
+      "elapsed_ms": 85.523,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 45,
+      "elapsed_ms": 56.619,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 46,
+      "elapsed_ms": 65.541,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 47,
+      "elapsed_ms": 71.767,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 48,
+      "elapsed_ms": 70.353,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 49,
+      "elapsed_ms": 89.424,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 50,
+      "elapsed_ms": 71.973,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 51,
+      "elapsed_ms": 68.357,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 52,
+      "elapsed_ms": 63.622,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 53,
+      "elapsed_ms": 52.091,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 54,
+      "elapsed_ms": 59.708,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 55,
+      "elapsed_ms": 71.219,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 56,
+      "elapsed_ms": 82.545,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 57,
+      "elapsed_ms": 84.437,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 58,
+      "elapsed_ms": 76.869,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 59,
+      "elapsed_ms": 59.122,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    },
+    {
+      "request": 60,
+      "elapsed_ms": 50.345,
+      "status": 200,
+      "bytes": 4734,
+      "failure": null
+    }
+  ],
+  "no_business_writes": true
+}

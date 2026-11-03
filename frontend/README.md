@@ -1,5 +1,15 @@
 # Frontend workspace
 
+## Phase 2 isolated candidate — 2026-11-02
+
+The current branch extends the existing [React application](rose-pulse-react/README.md); it does not replace `live/`. Follow the [Phase 2 task](../docs/dev/tasks/FE-BE-ROSE-PHASE2-20261102.md), [additive API contract](../docs/dev/phase2/API_CONTRACT.md) and [W8 admission decisions](../docs/dev/phase2/W8-ADMISSION.md). PR56 is stacked on PR55 and depends on the separate Backend PR57. Prior acceptance below remains bound to its historical commits.
+
+For this candidate, run `npm ci`, `npm test` and `npm run build` under `frontend/rose-pulse-react`; production PWA verification uses `npm run preview` on **127.0.0.1:5205**. Start the existing proxy with `PORT=5206`, `BACKEND_URL=http://127.0.0.1:8028` and an absolute dedicated `UPLOAD_DIR`. Exact v2 routes are allowlisted; neither arbitrary API paths nor cookie forwarding are enabled. The matching Backend uses a dedicated native PostgreSQL database, not the original Demo DB. Do not point this frontend at an unverified older backend or substitute mock data after API failure.
+
+English/Malay resources and a synthetic-only IndexedDB workspace are part of this candidate. Production privacy approval, qualified translation review and physical iPhone testing are separate gates. Offline requires the built public Service Worker shell to have loaded online first; Vite dev mode does not prove disconnected reload. Keep the existing Phase1 services on5201/5202/8026/5437 separate. Local launchers and credentials are outside Git.
+
+The following sections preserve earlier source-qualified history and are not the startup instructions or acceptance verdict for this Phase2 branch.
+
 ## ROSE PULSE React V2 — 2026-11-02
 
 The new [React application](rose-pulse-react/README.md) is an isolated Vite workspace at `frontend/rose-pulse-react/`. It imports the reviewed legacy API, Session and write controllers while providing responsive ROSE PULSE components. Legacy `live/` remains available for regression. See the [source/ownership/acceptance task](../docs/dev/tasks/FE-ROSE-PULSE-V2-20261102.md) and CURRENT for the bounded validation status.

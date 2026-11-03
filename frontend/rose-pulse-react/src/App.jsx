@@ -1,3 +1,12 @@
+import { tr } from "./i18n/index.js";
+import {
+  i18n,
+  locale,
+  changeLanguage,
+  localizeInvalid,
+  clearInvalid,
+} from "./i18n/index.js";
+import { useTranslation } from "react-i18next";
 import React, {
   createContext,
   useContext,
@@ -9,11 +18,31 @@ import React, {
 } from "react";
 import { eventFormValues, safeImagePath } from "./service.js";
 import { validatedQuota } from "../../live/api.mjs";
-
+import OfflineWorkspace from "./offline/OfflineWorkspace.jsx";
+import { FilePicker, PrivateDocuments } from "./FilePicker.jsx";
+import { validateFileReference } from "./phase2-api.js";
+const OrganizerEvents = React.lazy(() =>
+  import("./OrganizerWorkspace.jsx").then((module) => ({
+    default: module.OrganizerEvents,
+  })),
+);
+const OrganizerAnalytics = React.lazy(() =>
+  import("./OrganizerWorkspace.jsx").then((module) => ({
+    default: module.OrganizerAnalytics,
+  })),
+);
+import EventShare from "./EventShare.jsx";
 const Context = createContext(null);
 const useApp = () => useContext(Context);
 export const hrefFor = (view = "home", params = {}) =>
-  `?${new URLSearchParams({ view, ...Object.fromEntries(Object.entries(params).filter(([, value]) => value !== "" && value != null)) })}`;
+  `?${new URLSearchParams({
+    view,
+    ...Object.fromEntries(
+      Object.entries(params).filter(
+        ([, value]) => value !== "" && value != null,
+      ),
+    ),
+  })}`;
 const readLocation = () => {
   const params = new URLSearchParams(window.location.search);
   return {
@@ -27,20 +56,19 @@ const readLocation = () => {
   };
 };
 const date = (value) =>
-  new Intl.DateTimeFormat("en-GB", { dateStyle: "medium" }).format(
-    new Date(value),
-  );
+  new Intl.DateTimeFormat(locale(), {
+    dateStyle: "medium",
+  }).format(new Date(value));
 const time = (value) =>
-  new Intl.DateTimeFormat("en-GB", { timeStyle: "short" }).format(
-    new Date(value),
-  );
+  new Intl.DateTimeFormat(locale(), {
+    timeStyle: "short",
+  }).format(new Date(value));
 const locked = (state) =>
   ["submitting", "success", "uncertain"].includes(state.status);
 const titleCase = (value) =>
   typeof value === "string"
-    ? value.charAt(0).toUpperCase() + value.slice(1)
+    ? tr(value.charAt(0).toUpperCase() + value.slice(1))
     : "Unknown";
-
 export function Icon({ name, size = 20, ...rest }) {
   const paths = {
     home: "m3 10 9-7 9 7v10H3Zm6 10v-7h6v7",
@@ -87,7 +115,6 @@ export function Icon({ name, size = 20, ...rest }) {
     </svg>
   );
 }
-
 export function Brand({ compact = false }) {
   return (
     <span className={`brand ${compact ? "brand-compact" : ""}`}>
@@ -117,13 +144,12 @@ export function Brand({ compact = false }) {
           <strong>
             ROSE<span className="brand-dot">·</span>PULSE
           </strong>
-          <small>Community Health · People · Opportunity</small>
+          <small>{tr("Community Health \xB7 People \xB7 Opportunity")}</small>
         </span>
       )}
     </span>
   );
 }
-
 function Link({ view, params, children, className = "", onClick, ...rest }) {
   const { navigate } = useApp();
   return (
@@ -157,7 +183,9 @@ export function Notice({ children, error = false, ...rest }) {
       role={error ? "alert" : "status"}
       {...rest}
     >
-      {children}
+      {React.Children.map(children, (child) =>
+        typeof child === "string" && child.length > 12 ? tr(child) : child,
+      )}
     </div>
   ) : null;
 }
@@ -177,11 +205,17 @@ function Back({ event }) {
   return (
     <Link
       view={event ? "event" : "events"}
-      params={event ? { event } : {}}
+      params={
+        event
+          ? {
+              event,
+            }
+          : {}
+      }
       className="back-link"
     >
       <Icon name="back" size={17} />
-      {event ? "Event details" : "All events"}
+      {event ? tr("Event details") : tr("All events")}
     </Link>
   );
 }
@@ -199,7 +233,7 @@ function Status({ value }) {
     : "unknown";
   return (
     <span className={`status status-${normalized}`}>
-      {normalized === "unknown" ? "Unknown" : titleCase(value)}
+      {normalized === "unknown" ? tr("Unknown") : titleCase(value)}
     </span>
   );
 }
@@ -209,7 +243,6 @@ function useController(store) {
     store.controller,
   ];
 }
-
 function Shell({ children }) {
   const { auth, route, runtime, navigate } = useApp();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -230,19 +263,44 @@ function Shell({ children }) {
     setMenuOpen(false);
   }, [route.view, route.keyword]);
   const nav = [
-    { view: "home", icon: "home", label: "Home" },
-    { view: "events", icon: "calendar", label: "Events" },
+    {
+      view: "home",
+      icon: "home",
+      label: "Home",
+    },
+    {
+      view: "events",
+      icon: "calendar",
+      label: "Events",
+    },
     {
       view: "registrations",
       icon: "ticket",
       label: "My registrations",
       role: "user",
     },
-    { view: "create", icon: "plus", label: "Create event", role: "organizer" },
+    {
+      view: "create",
+      icon: "plus",
+      label: "Create event",
+      role: "organizer",
+    },
     {
       view: "manage",
       icon: "users",
       label: "Manage registrations",
+      role: "organizer",
+    },
+    {
+      view: "organizer-events",
+      icon: "calendar",
+      label: "Your events",
+      role: "organizer",
+    },
+    {
+      view: "analytics",
+      icon: "users",
+      label: "Registration overview",
       role: "organizer",
     },
     {
@@ -251,7 +309,16 @@ function Shell({ children }) {
       label: "Leader workspace",
       role: "leader",
     },
-    { view: "profile", icon: "user", label: "Profile" },
+    {
+      view: "offline",
+      icon: "ticket",
+      label: "Offline drafts",
+    },
+    {
+      view: "profile",
+      icon: "user",
+      label: "Profile",
+    },
   ];
   const items = nav.filter(
     (item) =>
@@ -261,64 +328,73 @@ function Shell({ children }) {
   );
   const submitSearch = (event) => {
     event.preventDefault();
-    navigate("events", { keyword: search, page: 1, pageSize: route.pageSize });
+    navigate("events", {
+      keyword: search,
+      page: 1,
+      pageSize: route.pageSize,
+    });
   };
   return (
     <div className="app-shell">
       <a href="#main" className="skip-link">
-        Skip to main content
+        {tr("Skip to main content")}
       </a>
       <aside
         className={`sidebar ${menuOpen ? "is-open" : ""}`}
         inert={mobile && !menuOpen}
         aria-hidden={mobile && !menuOpen ? true : undefined}
       >
-        <Link view="home" className="sidebar-mark" aria-label="ROSE PULSE home">
+        <Link
+          view="home"
+          className="sidebar-mark"
+          aria-label={tr("ROSE PULSE home")}
+        >
           <Brand compact />
         </Link>
-        <nav aria-label="Main navigation">
+        <nav aria-label={tr("Main navigation")}>
           {items.map((item) => (
             <Link
               key={item.view}
               view={item.view}
               className={`nav-item ${route.view === item.view ? "is-active" : ""}`}
-              aria-label={item.label}
+              aria-label={tr(item.label)}
               aria-current={route.view === item.view ? "page" : undefined}
             >
               <Icon name={item.icon} />
-              <span>{item.label}</span>
+              <span>{tr(item.label)}</span>
             </Link>
           ))}
         </nav>
         <div className="sidebar-bottom">
           <p className="sidebar-note">
-            A place for everyone.
-            <br />A community for you.
+            {tr("A place for everyone.")}
+            <br />
+            {tr("A community for you.")}
           </p>
           <Link
             view="help"
             className="nav-item"
-            aria-label="Help & information"
+            aria-label={tr("Help & information")}
           >
             <Icon name="help" />
-            Help & information
+            {tr("Help & information")}
           </Link>
           {auth.user || auth.hasToken ? (
             <button
               className="nav-item"
-              aria-label="Log out"
+              aria-label={tr("Log out")}
               onClick={() => {
                 runtime.logout();
                 navigate("home");
               }}
             >
               <Icon name="logout" />
-              Log out
+              {tr("Log out")}
             </button>
           ) : (
-            <Link view="login" className="nav-item" aria-label="Log in">
+            <Link view="login" className="nav-item" aria-label={tr("Log in")}>
               <Icon name="logout" />
-              Log in
+              {tr("Log in")}
             </Link>
           )}
         </div>
@@ -326,7 +402,7 @@ function Shell({ children }) {
       {menuOpen && (
         <button
           className="menu-shade"
-          aria-label="Close navigation"
+          aria-label={tr("Close navigation")}
           onClick={() => setMenuOpen(false)}
         />
       )}
@@ -334,27 +410,28 @@ function Shell({ children }) {
         <header className="masthead">
           <button
             className="icon-button mobile-menu"
-            aria-label="Open navigation"
+            aria-label={tr("Open navigation")}
             aria-expanded={menuOpen}
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <Icon name="menu" />
           </button>
-          <Link view="home" aria-label="ROSE PULSE home">
+          <Link view="home" aria-label={tr("ROSE PULSE home")}>
             <Brand />
           </Link>
           <div className="masthead-message">
             <strong>
-              Connected communities.
+              {tr("Connected communities.")}
               <br />
-              Healthier lives.
+              {tr("Healthier lives.")}
             </strong>
-            <small>Events · Wellbeing · Together</small>
+            <small>{tr("Events \xB7 Wellbeing \xB7 Together")}</small>
           </div>
           <div className="masthead-detail">
             <Icon name="leaf" />
             <span>
-              Growing together<small>One community at a time</small>
+              {tr("Growing together")}
+              <small>{tr("One community at a time")}</small>
             </span>
           </div>
         </header>
@@ -362,16 +439,16 @@ function Shell({ children }) {
           <form className="search" role="search" onSubmit={submitSearch}>
             <Icon name="search" size={18} />
             <label className="sr-only" htmlFor="global-search">
-              Search events
+              {tr("Search events")}
             </label>
             <input
               id="global-search"
               type="search"
-              placeholder="Search events, keywords…"
+              placeholder={tr("Search events, keywords\u2026")}
               value={search}
               onChange={(event) => setSearch(event.target.value)}
             />
-            <button type="submit" aria-label="Search events">
+            <button type="submit" aria-label={tr("Search events")}>
               <Icon name="arrow" size={17} />
             </button>
           </form>
@@ -383,20 +460,45 @@ function Shell({ children }) {
                 onClick={() => setLanguageOpen(!languageOpen)}
               >
                 <Icon name="globe" size={18} />
-                EN
+                {i18n.resolvedLanguage === "ms" ? tr("MS") : "EN"}
               </button>
               {languageOpen && (
                 <div className="language-popover" role="status">
-                  <strong>Language: English</strong>
+                  <strong>{tr("Choose language")}</strong>
+                  <div className="language-options">
+                    <button
+                      className="text-button"
+                      lang="en"
+                      aria-pressed={i18n.resolvedLanguage === "en"}
+                      onClick={() => {
+                        changeLanguage("en");
+                        setLanguageOpen(false);
+                      }}
+                    >
+                      {tr("English")}
+                    </button>
+                    <button
+                      className="text-button"
+                      lang="ms"
+                      aria-pressed={i18n.resolvedLanguage === "ms"}
+                      onClick={() => {
+                        changeLanguage("ms");
+                        setLanguageOpen(false);
+                      }}
+                    >
+                      {tr("Bahasa Melayu")}
+                    </button>
+                  </div>
                   <p>
-                    This version is available in English. More languages are not
-                    yet available.
+                    {tr(
+                      "Malay wording is an engineering draft. NGO language and sensitive-consent review are pending.",
+                    )}
                   </p>
                   <button
                     className="text-button"
                     onClick={() => setLanguageOpen(false)}
                   >
-                    Close
+                    {tr("Close")}
                   </button>
                 </div>
               )}
@@ -408,7 +510,7 @@ function Shell({ children }) {
                   {auth.user.username.slice(0, 1).toUpperCase()}
                 </span>
                 <span>
-                  Welcome,
+                  {tr("Welcome,")}
                   <strong>
                     {titleCase(
                       auth.user.role === "user"
@@ -420,35 +522,45 @@ function Shell({ children }) {
               </Link>
             ) : (
               <Link view="login" className="button button-small">
-                Log in <Icon name="arrow" size={15} />
+                {tr("Log in")}
+                <Icon name="arrow" size={15} />
               </Link>
             )}
           </div>
         </div>
-        <main id="main" tabIndex={-1}>
-          {auth.checking && <Notice>Verifying your saved login…</Notice>}
+        <main
+          id="main"
+          tabIndex={-1}
+          onInvalidCapture={localizeInvalid}
+          onInputCapture={clearInvalid}
+          onChangeCapture={clearInvalid}
+        >
+          {auth.checking && (
+            <Notice>{tr("Verifying your saved login\u2026")}</Notice>
+          )}
           {auth.message && <Notice>{auth.message}</Notice>}
           {children}
         </main>
         <footer className="footer">
           <span>ROSE · PULSE</span>
-          <span>Community Health · People · Opportunity</span>
+          <span>{tr("Community Health \xB7 People \xB7 Opportunity")}</span>
           <Link view="help">
-            Help & information <Icon name="arrow" size={14} />
+            {tr("Help & information")}
+            <Icon name="arrow" size={14} />
           </Link>
         </footer>
       </div>
-      <nav className="mobile-nav" aria-label="Mobile navigation">
+      <nav className="mobile-nav" aria-label={tr("Mobile navigation")}>
         <Link view="home" className={route.view === "home" ? "is-active" : ""}>
           <Icon name="home" />
-          <span>Home</span>
+          <span>{tr("Home")}</span>
         </Link>
         <Link
           view="events"
           className={route.view === "events" ? "is-active" : ""}
         >
           <Icon name="calendar" />
-          <span>Events</span>
+          <span>{tr("Events")}</span>
         </Link>
         <Link
           view={auth.user?.role === "organizer" ? "manage" : "registrations"}
@@ -458,7 +570,7 @@ function Shell({ children }) {
         >
           <Icon name={auth.user?.role === "organizer" ? "users" : "ticket"} />
           <span>
-            {auth.user?.role === "organizer" ? "Manage" : "My bookings"}
+            {auth.user?.role === "organizer" ? tr("Manage") : tr("My bookings")}
           </span>
         </Link>
         <Link
@@ -466,15 +578,24 @@ function Shell({ children }) {
           className={route.view === "profile" ? "is-active" : ""}
         >
           <Icon name="user" />
-          <span>Profile</span>
+          <span>{tr("Profile")}</span>
         </Link>
       </nav>
     </div>
   );
 }
-
-function EventImage({ event, className = "", detail = false }) {
-  const source = safeImagePath(event.image_path);
+function EventImage({ event, className = "", detail = false, index = 0 }) {
+  let gallery = [];
+  try {
+    gallery = (event.image_files || []).map((file) =>
+      validateFileReference(file, "event_image"),
+    );
+  } catch {
+    gallery = [];
+  }
+  const source = gallery.length
+    ? gallery[Math.min(index, gallery.length - 1)].url
+    : safeImagePath(event.image_path);
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [source]);
   return source && !failed ? (
@@ -490,7 +611,7 @@ function EventImage({ event, className = "", detail = false }) {
     <div className={`event-placeholder ${className}`}>
       <Icon name="leaf" size={detail ? 70 : 45} />
       <span>ROSE · PULSE</span>
-      <small>Community events</small>
+      <small>{tr("Community events")}</small>
     </div>
   );
 }
@@ -499,9 +620,13 @@ export function EventCard({ event }) {
     <article className="event-card">
       <Link
         view="event"
-        params={{ event: event.public_id }}
+        params={{
+          event: event.public_id,
+        }}
         className="card-image-link"
-        aria-label={`View ${event.title}`}
+        aria-label={tr("View {{title}}", {
+          title: event.title,
+        })}
       >
         <EventImage event={event} className="card-image" />
         <span className="image-status">
@@ -510,7 +635,12 @@ export function EventCard({ event }) {
       </Link>
       <div className="card-body">
         <h3>
-          <Link view="event" params={{ event: event.public_id }}>
+          <Link
+            view="event"
+            params={{
+              event: event.public_id,
+            }}
+          >
             {event.title}
           </Link>
         </h3>
@@ -530,15 +660,17 @@ export function EventCard({ event }) {
         <Link
           className="button card-button"
           view="event"
-          params={{ event: event.public_id }}
+          params={{
+            event: event.public_id,
+          }}
         >
-          View details <Icon name="arrow" size={16} />
+          {tr("View details")}
+          <Icon name="arrow" size={16} />
         </Link>
       </div>
     </article>
   );
 }
-
 function Events({ home = false }) {
   const { runtime, route, navigate } = useApp();
   const [state, setState] = useState({
@@ -553,67 +685,96 @@ function Events({ home = false }) {
     keyword = home ? "" : route.keyword;
   useEffect(() => {
     const request = new AbortController();
-    setState({ status: "loading", data: null, error: "" });
+    setState({
+      status: "loading",
+      data: null,
+      error: "",
+    });
     runtime.api
-      .getEvents({ page, pageSize, keyword, signal: request.signal })
+      .getEvents({
+        page,
+        pageSize,
+        keyword,
+        signal: request.signal,
+      })
       .then((data) => {
         if (!request.signal.aborted)
-          setState({ status: "ready", data, error: "" });
+          setState({
+            status: "ready",
+            data,
+            error: "",
+          });
       })
       .catch((error) => {
         if (!request.signal.aborted && error.kind !== "aborted")
-          setState({ status: "error", data: null, error: error.message });
+          setState({
+            status: "error",
+            data: null,
+            error: error.message,
+          });
       });
     return () => request.abort();
   }, [runtime, page, pageSize, keyword, reload]);
   useEffect(() => setJump(String(page)), [page]);
   const goPage = (next) =>
-    navigate("events", { page: next, pageSize, keyword });
+    navigate("events", {
+      page: next,
+      pageSize,
+      keyword,
+    });
   return (
     <div className="browse-page">
       {home && (
         <section className="hero" aria-labelledby="hero-title">
           <img
             src="/images/community-lake.jpg"
-            alt="Mountain lake surrounded by a green forest"
+            alt={tr("Mountain lake surrounded by a green forest")}
           />
           <div className="hero-content">
-            <p className="eyebrow">GOOD THINGS HAPPEN TOGETHER</p>
+            <p className="eyebrow">{tr("GOOD THINGS HAPPEN TOGETHER")}</p>
             <h1 id="hero-title">
-              Healthy communities.
+              {tr("Healthy communities.")}
               <br />
-              Brighter tomorrows.
+              {tr("Brighter tomorrows.")}
             </h1>
-            <p>Find your next moment of connection.</p>
+            <p>{tr("Find your next moment of connection.")}</p>
             <Link view="events" className="button button-gold">
-              Browse events <Icon name="arrow" size={18} />
+              {tr("Browse events")}
+              <Icon name="arrow" size={18} />
             </Link>
           </div>
           <span className="hero-caption">
-            <span className="hero-dot" /> A little connection goes a long way
+            <span className="hero-dot" />
+            {tr("A little connection goes a long way")}
           </span>
         </section>
       )}
       {!home && (
-        <Heading eyebrow="FIND YOUR COMMUNITY" title="Explore events">
-          Find activities, meet people and make time for your wellbeing.
+        <Heading
+          eyebrow={tr("FIND YOUR COMMUNITY")}
+          title={tr("Explore events")}
+        >
+          {tr("Find activities, meet people and make time for your wellbeing.")}
         </Heading>
       )}
       <section className="events-section" aria-labelledby="events-title">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">{home ? "COME ALONG" : "WHAT’S ON"}</p>
+            <p className="eyebrow">
+              {home ? tr("COME ALONG") : tr("WHAT\u2019S ON")}
+            </p>
             <h2 id="events-title">
               {home
-                ? "Upcoming events"
+                ? tr("Upcoming events")
                 : keyword
                   ? `Results for “${keyword}”`
-                  : "All community events"}
+                  : tr("All community events")}
             </h2>
           </div>
           {home ? (
             <Link view="events" className="text-link">
-              View all events <Icon name="arrow" size={17} />
+              {tr("View all events")}
+              <Icon name="arrow" size={17} />
             </Link>
           ) : (
             <button
@@ -621,7 +782,7 @@ function Events({ home = false }) {
               onClick={() => setReload(reload + 1)}
             >
               <Icon name="calendar" size={16} />
-              Refresh
+              {tr("Refresh")}
             </button>
           )}
         </div>
@@ -630,16 +791,16 @@ function Events({ home = false }) {
             <p className="muted">
               {state.data
                 ? `${state.data.total_count} events`
-                : "Events from the community"}
+                : tr("Events from the community")}
               {keyword && (
                 <>
                   {" "}
-                  · <Link view="events">Clear search</Link>
+                  · <Link view="events">{tr("Clear search")}</Link>
                 </>
               )}
             </p>
             <label>
-              Events per page{" "}
+              {tr("Events per page")}{" "}
               <select
                 value={pageSize}
                 onChange={(event) =>
@@ -662,7 +823,7 @@ function Events({ home = false }) {
         {state.status === "loading" && (
           <div className="loading-state" role="status">
             <span className="spinner" />
-            Finding community events…
+            {tr("Finding community events\u2026")}
           </div>
         )}
         {state.status === "error" && (
@@ -672,7 +833,7 @@ function Events({ home = false }) {
               className="text-button"
               onClick={() => setReload(reload + 1)}
             >
-              Try reading again
+              {tr("Try reading again")}
             </button>
           </Notice>
         )}
@@ -687,29 +848,32 @@ function Events({ home = false }) {
             <div className="empty-state">
               <Icon name="calendar" size={38} />
               <h3>
-                {keyword ? "No events found" : "More moments are on their way"}
+                {keyword
+                  ? tr("No events found")
+                  : tr("More moments are on their way")}
               </h3>
               <p>
                 {keyword
-                  ? "Try another word in the event title or overview."
-                  : "There are no events on this page. Check back soon."}
+                  ? tr("Try another word in the event title or overview.")
+                  : tr("There are no events on this page. Check back soon.")}
               </p>
               {page > 1 && (
                 <button className="button" onClick={() => goPage(1)}>
-                  Back to first page
+                  {tr("Back to first page")}
                 </button>
               )}
             </div>
           ))}
         {!home && state.data && state.data.total_pages > 0 && (
-          <div className="pagination" aria-label="Event pages">
+          <div className="pagination" aria-label={tr("Event pages")}>
             <span>
-              Page {state.data.page} of {state.data.total_pages}
+              {tr("Page")}
+              {state.data.page} {tr("of")} {state.data.total_pages}
             </span>
             <div>
               <button
                 className="icon-button"
-                aria-label="First page"
+                aria-label={tr("First page")}
                 disabled={page === 1}
                 onClick={() => goPage(1)}
               >
@@ -717,7 +881,7 @@ function Events({ home = false }) {
               </button>
               <button
                 className="icon-button"
-                aria-label="Previous page"
+                aria-label={tr("Previous page")}
                 disabled={page === 1}
                 onClick={() => goPage(page - 1)}
               >
@@ -725,7 +889,7 @@ function Events({ home = false }) {
               </button>
               <button
                 className="icon-button"
-                aria-label="Next page"
+                aria-label={tr("Next page")}
                 disabled={page >= state.data.total_pages}
                 onClick={() => goPage(page + 1)}
               >
@@ -733,7 +897,7 @@ function Events({ home = false }) {
               </button>
               <button
                 className="icon-button"
-                aria-label="Last page"
+                aria-label={tr("Last page")}
                 disabled={page >= state.data.total_pages}
                 onClick={() => goPage(state.data.total_pages)}
               >
@@ -752,7 +916,7 @@ function Events({ home = false }) {
                   goPage(next);
               }}
             >
-              <label htmlFor="page-jump">Go to page</label>
+              <label htmlFor="page-jump">{tr("Go to page")}</label>
               <input
                 id="page-jump"
                 type="number"
@@ -762,13 +926,13 @@ function Events({ home = false }) {
                 value={jump}
                 onChange={(event) => setJump(event.target.value)}
               />
-              <button className="text-button">Go</button>
+              <button className="text-button">{tr("Go")}</button>
             </form>
           </div>
         )}
         <p className="timezone-note">
           <Icon name="clock" size={14} />
-          All times are shown in your browser timezone:{" "}
+          {tr("All times are shown in your browser timezone:")}{" "}
           {Intl.DateTimeFormat().resolvedOptions().timeZone}.
         </p>
       </section>
@@ -778,19 +942,23 @@ function Events({ home = false }) {
             <Icon name="leaf" size={40} />
           </span>
           <div>
-            <p className="eyebrow">BETTER, TOGETHER</p>
-            <h2>Your community. Your next chapter.</h2>
-            <p>Browse freely. Apply with an account or continue as a guest.</p>
+            <p className="eyebrow">{tr("BETTER, TOGETHER")}</p>
+            <h2>{tr("Your community. Your next chapter.")}</h2>
+            <p>
+              {tr(
+                "Browse freely. Apply with an account or continue as a guest.",
+              )}
+            </p>
           </div>
           <Link view="events" className="text-link">
-            Find an event <Icon name="arrow" />
+            {tr("Find an event")}
+            <Icon name="arrow" />
           </Link>
         </section>
       )}
     </div>
   );
 }
-
 function useEvent(id) {
   const { runtime } = useApp();
   const [reload, setReload] = useState(0);
@@ -801,16 +969,30 @@ function useEvent(id) {
   });
   useEffect(() => {
     const request = new AbortController();
-    setState({ status: "loading", event: null, error: "" });
+    setState({
+      status: "loading",
+      event: null,
+      error: "",
+    });
     runtime.api
-      .getEvent(id, { signal: request.signal })
+      .getEvent(id, {
+        signal: request.signal,
+      })
       .then((event) => {
         if (!request.signal.aborted)
-          setState({ status: "ready", event, error: "" });
+          setState({
+            status: "ready",
+            event,
+            error: "",
+          });
       })
       .catch((error) => {
         if (!request.signal.aborted)
-          setState({ status: "error", event: null, error: error.message });
+          setState({
+            status: "error",
+            event: null,
+            error: error.message,
+          });
       });
     return () => request.abort();
   }, [runtime, id, reload]);
@@ -820,37 +1002,38 @@ function Quota({ event }) {
   const quota = validatedQuota(event.quota);
   return (
     <div className="quota-summary">
-      <h3>Registration availability</h3>
+      <h3>{tr("Registration availability")}</h3>
       {quota ? (
         <>
           <div>
-            <span>Online places</span>
+            <span>{tr("Online places")}</span>
             <strong>
-              {quota.online.approved} approved / {quota.online.capacity}{" "}
-              capacity
+              {quota.online.approved} {tr("approved /")} {quota.online.capacity}{" "}
+              {tr("capacity")}
             </strong>
           </div>
           <div>
-            <span>Offline places</span>
+            <span>{tr("Offline places")}</span>
             <strong>
-              {quota.offline.approved} approved / {quota.offline.capacity}{" "}
-              capacity
+              {quota.offline.approved} {tr("approved /")}{" "}
+              {quota.offline.capacity} {tr("capacity")}
             </strong>
           </div>
           <div>
-            <span>Waiting</span>
+            <span>{tr("Waiting")}</span>
             <strong>{quota.waitingCount}</strong>
           </div>
         </>
       ) : (
-        <p className="muted">Current availability is unavailable.</p>
+        <p className="muted">{tr("Current availability is unavailable.")}</p>
       )}
-      <small>The server decides each application’s status.</small>
+      <small>{tr("The server decides each application\u2019s status.")}</small>
     </div>
   );
 }
 function EventDetail() {
   const { route, auth } = useApp();
+  const [imageIndex, setImageIndex] = useState(0);
   const [state, reload] = useEvent(route.event);
   const event = state.event;
   return (
@@ -859,26 +1042,51 @@ function EventDetail() {
       {state.status === "loading" && (
         <div className="loading-state" role="status">
           <span className="spinner" />
-          Loading event details…
+          {tr("Loading event details\u2026")}
         </div>
       )}
       {state.error && (
         <Notice error>
           {state.error}
           <button className="text-button" onClick={reload}>
-            Try reading again
+            {tr("Try reading again")}
           </button>
         </Notice>
       )}
       {event && (
         <article className="event-detail">
           <div className="detail-photo">
-            <EventImage event={event} detail />
+            <EventImage event={event} detail index={imageIndex} />
             <Status value={event.status} />
           </div>
+          {event.image_files?.length > 1 && (
+            <div
+              className="gallery-thumbnails"
+              aria-label={tr("Event image gallery")}
+            >
+              {event.image_files.map((file, index) => (
+                <button
+                  key={file.id}
+                  className={index === imageIndex ? "is-active" : ""}
+                  aria-label={tr("Show event image {{number}}", {
+                    number: index + 1,
+                  })}
+                  aria-pressed={index === imageIndex}
+                  onClick={() => setImageIndex(index)}
+                >
+                  <img
+                    src={file.url}
+                    alt={tr("Event image {{number}}", {
+                      number: index + 1,
+                    })}
+                  />
+                </button>
+              ))}
+            </div>
+          )}
           <div className="detail-layout">
             <div>
-              <p className="eyebrow">A MOMENT TO CONNECT</p>
+              <p className="eyebrow">{tr("A MOMENT TO CONNECT")}</p>
               <h1>{event.title}</h1>
               <p className="detail-overview">
                 {event.overview ||
@@ -888,53 +1096,63 @@ function EventDetail() {
                 <div>
                   <dt>
                     <Icon name="calendar" />
-                    Date & time
+                    {tr("Date & time")}
                   </dt>
                   <dd>
                     {date(event.start_time)} · {time(event.start_time)}
                     <br />
                     <span className="muted">
-                      Ends {date(event.end_time)} · {time(event.end_time)}
+                      {tr("Ends")}
+                      {date(event.end_time)} · {time(event.end_time)}
                     </span>
                   </dd>
                 </div>
                 <div>
                   <dt>
                     <Icon name="location" />
-                    Location
+                    {tr("Location")}
                   </dt>
                   <dd>{event.location}</dd>
                 </div>
               </dl>
               <p className="timezone-note">
-                Times use {Intl.DateTimeFormat().resolvedOptions().timeZone}.
+                {tr("Times use")}
+                {Intl.DateTimeFormat().resolvedOptions().timeZone}.
               </p>
+              <EventShare event={event} />
             </div>
             <aside className="detail-action">
               <Quota event={event} />
               {event.status.toLowerCase() === "active" ? (
                 <Link
                   view="apply"
-                  params={{ event: event.public_id }}
+                  params={{
+                    event: event.public_id,
+                  }}
                   className="button"
                 >
-                  Apply for this event <Icon name="arrow" size={17} />
+                  {tr("Apply for this event")}
+                  <Icon name="arrow" size={17} />
                 </Link>
               ) : (
-                <Notice>This event is not accepting applications.</Notice>
+                <Notice>
+                  {tr("This event is not accepting applications.")}
+                </Notice>
               )}
               <p className="muted small">
-                An application does not confirm a place.
+                {tr("An application does not confirm a place.")}
               </p>
               {auth.user?.role === "organizer" &&
                 auth.user.id === event.organizer_id && (
                   <Link
                     view="edit"
-                    params={{ event: event.public_id }}
+                    params={{
+                      event: event.public_id,
+                    }}
                     className="button button-quiet"
                   >
                     <Icon name="edit" size={17} />
-                    Edit event
+                    {tr("Edit event")}
                   </Link>
                 )}
             </aside>
@@ -944,12 +1162,14 @@ function EventDetail() {
     </>
   );
 }
-
 function AuthForm({ signup = false }) {
   const { runtime, route, navigate, auth } = useApp();
   const [show, setShow] = useState(false);
   const [, setSignupGeneration] = useState(0);
-  const [loginState, setLoginState] = useState({ status: "idle", message: "" });
+  const [loginState, setLoginState] = useState({
+    status: "idle",
+    message: "",
+  });
   const formRef = useRef(null);
   const busyRef = useRef(false);
   const [signupState, signupController] = useController(
@@ -971,11 +1191,18 @@ function AuthForm({ signup = false }) {
         await runtime.signIn(values);
         navigate(
           route.event ? "apply" : "home",
-          route.event ? { event: route.event } : {},
+          route.event
+            ? {
+                event: route.event,
+              }
+            : {},
         );
       }
     } catch (error) {
-      setLoginState({ status: "error", message: error.message });
+      setLoginState({
+        status: "error",
+        message: error.message,
+      });
     } finally {
       values.password = "";
       const password = formRef.current?.elements.namedItem("password");
@@ -988,28 +1215,35 @@ function AuthForm({ signup = false }) {
     <div className="auth-layout">
       <div className="auth-story">
         <Icon name="leaf" size={46} />
-        <p className="eyebrow">WELCOME TO YOUR COMMUNITY</p>
+        <p className="eyebrow">{tr("WELCOME TO YOUR COMMUNITY")}</p>
         <h1>
-          A little connection.
-          <br />A brighter day.
+          {tr("A little connection.")}
+          <br />
+          {tr("A brighter day.")}
         </h1>
-        <p>Come as you are. Find something that brings you together.</p>
-        <img src="/images/community-lake.jpg" alt="Peaceful lake and forest" />
+        <p>{tr("Come as you are. Find something that brings you together.")}</p>
+        <img
+          src="/images/community-lake.jpg"
+          alt={tr("Peaceful lake and forest")}
+        />
       </div>
       <section className="auth-panel">
         <p className="eyebrow">ROSE · PULSE</p>
-        <h2>{signup ? "Create your account" : "Welcome back"}</h2>
+        <h2>{signup ? tr("Create your account") : tr("Welcome back")}</h2>
         <p className="muted">
           {signup
-            ? "One account for your community events."
-            : "Log in to see your registrations and get involved."}
+            ? tr("One account for your community events.")
+            : tr("Log in to see your registrations and get involved.")}
         </p>
-        {route.event && <Notice>Your selected event will be kept.</Notice>}
+        {route.event && (
+          <Notice>{tr("Your selected event will be kept.")}</Notice>
+        )}
         {auth.user && (
           <Notice>
-            You are logged in as {auth.user.username}.{" "}
+            {tr("You are logged in as")}
+            {auth.user.username}.{" "}
             <button className="text-button" onClick={() => runtime.logout()}>
-              Log out locally
+              {tr("Log out locally")}
             </button>
           </Notice>
         )}
@@ -1021,16 +1255,21 @@ function AuthForm({ signup = false }) {
             <span className="success-check">
               <Icon name="check" size={25} />
             </span>
-            <h3>You’re ready to connect.</h3>
+            <h3>{tr("You\u2019re ready to connect.")}</h3>
             <p>
-              Account {state.user.username} was created. Log in to continue.
+              {tr("Account {{username}} was created. Log in to continue.", {
+                username: state.user.username,
+              })}
             </p>
             <Link
               view="login"
-              params={{ event: route.event }}
+              params={{
+                event: route.event,
+              }}
               className="button"
             >
-              Log in <Icon name="arrow" size={17} />
+              {tr("Log in")}
+              <Icon name="arrow" size={17} />
             </Link>
             <button
               className="text-button"
@@ -1039,28 +1278,31 @@ function AuthForm({ signup = false }) {
                   setSignupGeneration((value) => value + 1);
               }}
             >
-              Create another account
+              {tr("Create another account")}
             </button>
           </div>
         ) : (
           <form ref={formRef} method="dialog" onSubmit={submit}>
             <fieldset disabled={locked(state)}>
               <legend className="sr-only">
-                {signup ? "Create account" : "Login"} details
+                {signup ? tr("Create account") : tr("Login")}
+                {tr("details")}
               </legend>
               <Field
-                label="Username"
+                label={tr("Username")}
                 name="username"
                 required
                 autoComplete="username"
                 help={
                   signup
-                    ? "3–20 characters. Keep your chosen spelling and spacing."
+                    ? tr(
+                        "3\u201320 characters. Keep your chosen spelling and spacing.",
+                      )
                     : undefined
                 }
               />
               <div className="field">
-                <label htmlFor="password">Password</label>
+                <label htmlFor="password">{tr("Password")}</label>
                 <div className="password-input">
                   <input
                     id="password"
@@ -1075,41 +1317,46 @@ function AuthForm({ signup = false }) {
                     onClick={() => setShow(!show)}
                     aria-pressed={show}
                   >
-                    {show ? "Hide" : "Show"}
+                    {show ? tr("Hide") : tr("Show")}
                   </button>
                 </div>
                 {signup && (
-                  <small>At least 6 characters, up to 72 UTF-8 bytes.</small>
+                  <small>
+                    {tr("At least 6 characters, up to 72 UTF-8 bytes.")}
+                  </small>
                 )}
               </div>
               <button className="button full-width" type="submit">
                 {state.status === "submitting"
-                  ? "Please wait…"
+                  ? tr("Please wait\u2026")
                   : signup
-                    ? "Create account"
-                    : "Log in"}
+                    ? tr("Create account")
+                    : tr("Log in")}
                 <Icon name="arrow" size={17} />
               </button>
             </fieldset>
           </form>
         )}
         <p className="auth-switch">
-          {signup ? "Already part of the community?" : "New to ROSE · PULSE?"}{" "}
+          {signup
+            ? tr("Already part of the community?")
+            : tr("New to ROSE \xB7 PULSE?")}{" "}
           <Link
             view={signup ? "login" : "signup"}
-            params={{ event: route.event }}
+            params={{
+              event: route.event,
+            }}
           >
-            {signup ? "Log in" : "Create an account"}
+            {signup ? tr("Log in") : tr("Create an account")}
           </Link>
         </p>
         <p className="small muted">
-          You can also browse events and apply as a guest.
+          {tr("You can also browse events and apply as a guest.")}
         </p>
       </section>
     </div>
   );
 }
-
 export function Field({
   label,
   name,
@@ -1135,7 +1382,6 @@ export function Field({
     </div>
   );
 }
-
 function RoleGate({ role, children }) {
   const { auth } = useApp();
   if (auth.checking) return null;
@@ -1145,17 +1391,22 @@ function RoleGate({ role, children }) {
       <Icon name="user" size={40} />
       <h2>
         {auth.user
-          ? `${role === "user" ? "Participant" : "Organizer"} account required`
-          : "Log in to continue"}
+          ? tr(
+              role === "user"
+                ? "Participant account required"
+                : "Organizer account required",
+            )
+          : tr("Log in to continue")}
       </h2>
       <p>
         {auth.user
-          ? "This action is unavailable for your account role."
-          : "Verify your account to access this page."}
+          ? tr("This action is unavailable for your account role.")
+          : tr("Verify your account to access this page.")}
       </p>
       {!auth.user && (
         <Link view="login" className="button">
-          Log in <Icon name="arrow" size={17} />
+          {tr("Log in")}
+          <Icon name="arrow" size={17} />
         </Link>
       )}
     </div>
@@ -1171,13 +1422,14 @@ function ImageUpload({ store, disabled, onUploaded, onSelected }) {
   return (
     <div className="image-upload">
       <label htmlFor="event-image-file">
-        Event image <span className="muted">(optional)</span>
+        {tr("Event image")}
+        <span className="muted">{tr("(optional)")}</span>
       </label>
       <div className="upload-box">
         <Icon name="upload" size={25} />
         <div>
           <strong>{file?.name || "Add a little colour to your event"}</strong>
-          <small>PNG, JPEG, WebP or GIF · up to 900 KiB</small>
+          <small>{tr("PNG, JPEG, WebP or GIF \xB7 up to 900 KiB")}</small>
         </div>
       </div>
       <input
@@ -1199,7 +1451,7 @@ function ImageUpload({ store, disabled, onUploaded, onSelected }) {
           disabled={!file || disabled || locked(state)}
           onClick={() => controller.upload(file)}
         >
-          Upload selected image
+          {tr("Upload selected image")}
         </button>
         <button
           type="button"
@@ -1213,7 +1465,7 @@ function ImageUpload({ store, disabled, onUploaded, onSelected }) {
             }
           }}
         >
-          Clear selection
+          {tr("Clear selection")}
         </button>
       </div>
       <Notice error={["error", "uncertain"].includes(state.status)}>
@@ -1223,27 +1475,27 @@ function ImageUpload({ store, disabled, onUploaded, onSelected }) {
         <img
           className="upload-preview"
           src={state.url}
-          alt="Uploaded event preview"
+          alt={tr("Uploaded event preview")}
         />
       )}
       <small className="muted">
-        Upload is a separate action. The uploaded image stays available if
-        saving the event fails.
+        {tr(
+          "Upload is a separate action. The uploaded image stays available if saving the event fails.",
+        )}
       </small>
     </div>
   );
 }
-
 function EventEditor({ edit = false }) {
   const [generation, setGeneration] = useState(0);
   return (
     <>
       <Back />
       <Heading
-        eyebrow="BRING PEOPLE TOGETHER"
-        title={edit ? "Edit event" : "Create event"}
+        eyebrow={tr("BRING PEOPLE TOGETHER")}
+        title={edit ? tr("Edit event") : tr("Create event")}
       >
-        A welcoming space starts with the details.
+        {tr("A welcoming space starts with the details.")}
       </Heading>
       <RoleGate role="organizer">
         <EventEditorForm
@@ -1258,15 +1510,13 @@ function EventEditor({ edit = false }) {
 function EventEditorForm({ edit, onAnother }) {
   const { runtime, route, auth } = useApp();
   const store = runtime.store(edit ? "edit" : "create", {
-    event: { public_id: edit ? route.event : "" },
+    event: {
+      public_id: edit ? route.event : "",
+    },
   });
   const [state, controller] = useController(store);
-  const imageStore = runtime.store("image", {
-    event: { public_id: edit ? route.event : "create" },
-  });
-  const [imageState] = useController(imageStore);
-  const [imageUrl, setImageUrl] = useState(undefined);
-  const [fileSelected, setFileSelected] = useState(false);
+  const [galleryFiles, setGalleryFiles] = useState(null);
+  const [mediaBlocked, setMediaBlocked] = useState(false);
   const [removeImage, setRemoveImage] = useState(false);
   const form = useRef(null);
   useEffect(() => {
@@ -1290,20 +1540,15 @@ function EventEditorForm({ edit, onAnother }) {
         end_time: "",
       };
   const disabled =
-    locked(state) ||
-    (edit && !original) ||
-    ["submitting", "uncertain"].includes(imageState.status) ||
-    auth.user?.role !== "organizer";
-  const mediaBlocked =
-    imageState.status === "uncertain" ||
-    imageState.status === "submitting" ||
-    (fileSelected && imageState.status !== "success");
+    locked(state) || (edit && !original) || auth.user?.role !== "organizer";
   const submit = (event) => {
     event.preventDefault();
     if (disabled || mediaBlocked) return;
     const next = Object.fromEntries(new FormData(event.currentTarget));
-    if (imageUrl !== undefined) next.image_path = imageUrl;
-    else if (edit && removeImage) next.image_path = null;
+    next.image_file_ids = (galleryFiles || original?.image_files || []).map(
+      (file) => file.id,
+    );
+    if (edit && removeImage) next.image_path = null;
     controller.submit(next);
   };
   return (
@@ -1315,7 +1560,7 @@ function EventEditorForm({ edit, onAnother }) {
         {state.status === "loading" && (
           <div className="loading-state">
             <span className="spinner" />
-            Loading current event…
+            {tr("Loading current event\u2026")}
           </div>
         )}
         {state.status === "success" ? (
@@ -1325,23 +1570,29 @@ function EventEditorForm({ edit, onAnother }) {
             </span>
             <h2>
               {edit
-                ? "Your event is updated."
-                : "Your event is ready to bring people together."}
+                ? tr("Your event is updated.")
+                : tr("Your event is ready to bring people together.")}
             </h2>
             <p>{state.event.title}</p>
             <p className="small muted">
-              Event reference: {state.event.public_id}
+              {tr("Event reference:")}
+              {state.event.public_id}
             </p>
             <Link
               view="event"
-              params={{ event: state.event.public_id }}
+              params={{
+                event: state.event.public_id,
+              }}
               className="button"
             >
-              View event <Icon name="arrow" size={17} />
+              {tr("View event")}
+              <Icon name="arrow" size={17} />
             </Link>
             <button
               className="button button-quiet"
-              style={{ marginLeft: 12 }}
+              style={{
+                marginLeft: 12,
+              }}
               onClick={() => {
                 if (
                   edit
@@ -1351,7 +1602,7 @@ function EventEditorForm({ edit, onAnother }) {
                   onAnother();
               }}
             >
-              {edit ? "Make another edit" : "Create another event"}
+              {edit ? tr("Make another edit") : tr("Create another event")}
             </button>
           </div>
         ) : (
@@ -1360,17 +1611,15 @@ function EventEditorForm({ edit, onAnother }) {
             method="dialog"
             onSubmit={submit}
             key={original?.public_id || "new"}
-            onChange={(event) => {
-              if (event.target.id === "event-image-file")
-                setFileSelected(Boolean(event.target.files?.[0]));
-            }}
           >
             <fieldset disabled={disabled}>
-              <legend className="form-section-title">Event details</legend>
+              <legend className="form-section-title">
+                {tr("Event details")}
+              </legend>
               <div className="form-grid">
                 <Field
                   name="title"
-                  label="Event title"
+                  label={tr("Event title")}
                   required
                   maxLength={255}
                   defaultValue={values.title}
@@ -1378,14 +1627,14 @@ function EventEditorForm({ edit, onAnother }) {
                 />
                 <Field
                   name="overview"
-                  label="Overview (optional)"
+                  label={tr("Overview (optional)")}
                   type="textarea"
                   defaultValue={values.overview}
                   wide
                 />
                 <Field
                   name="location"
-                  label="Location"
+                  label={tr("Location")}
                   required
                   maxLength={255}
                   defaultValue={values.location}
@@ -1393,21 +1642,21 @@ function EventEditorForm({ edit, onAnother }) {
                 />
                 <Field
                   name="start_time"
-                  label="Start date and time"
+                  label={tr("Start date and time")}
                   type="datetime-local"
                   required
                   defaultValue={values.start_time}
                 />
                 <Field
                   name="end_time"
-                  label="End date and time"
+                  label={tr("End date and time")}
                   type="datetime-local"
                   required
                   defaultValue={values.end_time}
                 />
                 <Field
                   name="online_quota"
-                  label="Online quota"
+                  label={tr("Online quota")}
                   type="number"
                   required
                   min="0"
@@ -1417,7 +1666,7 @@ function EventEditorForm({ edit, onAnother }) {
                 />
                 <Field
                   name="offline_quota"
-                  label="Offline quota"
+                  label={tr("Offline quota")}
                   type="number"
                   required
                   min="0"
@@ -1428,35 +1677,38 @@ function EventEditorForm({ edit, onAnother }) {
                 {edit && (
                   <Field
                     name="status"
-                    label="Event status"
+                    label={tr("Event status")}
                     defaultValue={values.status}
                     required
                   >
-                    <option value="active">Active</option>
-                    <option value="cancelled">Cancelled</option>
-                    <option value="completed">Completed</option>
+                    <option value="active">{tr("Active")}</option>
+                    <option value="cancelled">{tr("Cancelled")}</option>
+                    <option value="completed">{tr("Completed")}</option>
                   </Field>
                 )}
               </div>
               <p className="timezone-note">
                 <Icon name="clock" size={14} />
-                Dates use {Intl.DateTimeFormat().resolvedOptions().timeZone}.
-                Quotas are capacities, not remaining places.
+                {tr("Dates use")}
+                {Intl.DateTimeFormat().resolvedOptions().timeZone}
+                {tr(". Quotas are capacities, not remaining places.")}
               </p>
-              <ImageUpload
-                store={imageStore}
+              <FilePicker
+                runtime={runtime}
+                purpose="event_image"
+                initialFiles={original?.image_files || []}
+                onChange={setGalleryFiles}
+                onBlocked={setMediaBlocked}
                 disabled={disabled}
-                onUploaded={setImageUrl}
-                onSelected={setFileSelected}
               />
-              {edit && original?.image_path && imageUrl === undefined && (
+              {edit && original?.image_path && (
                 <label className="checkbox-label">
                   <input
                     type="checkbox"
                     checked={removeImage}
                     onChange={(event) => setRemoveImage(event.target.checked)}
                   />
-                  Remove the current event image
+                  {tr("Remove the current event image")}
                 </label>
               )}
               <div className="form-actions">
@@ -1465,15 +1717,21 @@ function EventEditorForm({ edit, onAnother }) {
                   type="submit"
                   disabled={disabled || mediaBlocked}
                 >
-                  {edit ? "Save changes" : "Create event"}
+                  {edit ? tr("Save changes") : tr("Create event")}
                   <Icon name="arrow" size={17} />
                 </button>
                 <Link
                   view={edit ? "event" : "events"}
-                  params={edit ? { event: route.event } : {}}
+                  params={
+                    edit
+                      ? {
+                          event: route.event,
+                        }
+                      : {}
+                  }
                   className="text-link"
                 >
-                  Cancel
+                  {tr("Cancel")}
                 </Link>
               </div>
             </fieldset>
@@ -1482,40 +1740,47 @@ function EventEditorForm({ edit, onAnother }) {
       </section>
       <aside className="form-context">
         <Icon name="leaf" size={34} />
-        <h3>Make everyone feel welcome.</h3>
+        <h3>{tr("Make everyone feel welcome.")}</h3>
         <p>
-          A clear title, a helpful overview and a place to meet make it easier
-          to join.
+          {tr(
+            "A clear title, a helpful overview and a place to meet make it easier to join.",
+          )}
         </p>
         <div className="context-divider" />
-        <h4>Before you save</h4>
+        <h4>{tr("Before you save")}</h4>
         <p>
-          Check the dates and capacities. Registration status and available
-          places are decided by the server.
+          {tr(
+            "Check the dates and capacities. Registration status and available places are decided by the server.",
+          )}
         </p>
         <p className="small">
-          If a result cannot be confirmed, the form stays locked. Check the
-          event before trying again.
+          {tr(
+            "If a result cannot be confirmed, the form stays locked. Check the event before trying again.",
+          )}
         </p>
       </aside>
     </div>
   );
 }
-
 function Apply() {
   const { route } = useApp();
   const [state, reload] = useEvent(route.event);
   return (
     <>
       <Back event={route.event} />
-      <Heading eyebrow="MAKE TIME FOR COMMUNITY" title="Join this event">
-        {state.event ? state.event.title : "Loading your selected event…"}
+      <Heading
+        eyebrow={tr("MAKE TIME FOR COMMUNITY")}
+        title={tr("Join this event")}
+      >
+        {state.event
+          ? state.event.title
+          : tr("Loading your selected event\u2026")}
       </Heading>
       {state.error && (
         <Notice error>
           {state.error}
           <button className="text-button" onClick={reload}>
-            Try reading again
+            {tr("Try reading again")}
           </button>
         </Notice>
       )}
@@ -1526,8 +1791,14 @@ function Apply() {
 function Application({ event }) {
   const { auth, runtime } = useApp();
   const [guest, setGuest] = useState(false);
-  const guestStore = runtime.store("guest", { event }),
-    userStore = runtime.store("registration", { event });
+  const [supportingFiles, setSupportingFiles] = useState([]);
+  const [documentsBlocked, setDocumentsBlocked] = useState(false);
+  const guestStore = runtime.store("guest", {
+      event,
+    }),
+    userStore = runtime.store("registration", {
+      event,
+    });
   const [guestState, guestController] = useController(guestStore);
   const [userState, userController] = useController(userStore);
   const state = guest ? guestState : userState;
@@ -1538,24 +1809,30 @@ function Application({ event }) {
   const active = event.status.toLowerCase() === "active";
   const submit = (submitEvent) => {
     submitEvent.preventDefault();
-    if (!allowed || !active || locked(state)) return;
-    controller.submit(
-      Object.fromEntries(new FormData(submitEvent.currentTarget)),
-    );
+    if (!allowed || !active || locked(state) || documentsBlocked) return;
+    const values = Object.fromEntries(new FormData(submitEvent.currentTarget));
+    if (!guest && supportingFiles.length)
+      values.file_ids = supportingFiles.map((file) => file.id);
+    controller.submit(values);
   };
   return (
     <div className="editor-layout">
       <section className="form-surface">
-        {!active && <Notice>This event is not accepting applications.</Notice>}
+        {!active && (
+          <Notice>{tr("This event is not accepting applications.")}</Notice>
+        )}
         {auth.checking ? (
-          <Notice>Verifying your login before enabling the application…</Notice>
+          <Notice>
+            {tr("Verifying your login before enabling the application\u2026")}
+          </Notice>
         ) : anonymous && !guest ? (
           <div className="application-choice">
             <Icon name="users" size={36} />
-            <h2>How would you like to join?</h2>
+            <h2>{tr("How would you like to join?")}</h2>
             <p>
-              Continue as a guest, or use your account to keep track of your
-              registrations.
+              {tr(
+                "Continue as a guest, or use your account to keep track of your registrations.",
+              )}
             </p>
             <div className="form-actions">
               <button
@@ -1563,58 +1840,72 @@ function Application({ event }) {
                 onClick={() => setGuest(true)}
                 disabled={!active}
               >
-                Continue as guest <Icon name="arrow" size={17} />
+                {tr("Continue as guest")}
+                <Icon name="arrow" size={17} />
               </button>
               <Link
                 view="login"
-                params={{ event: event.public_id }}
+                params={{
+                  event: event.public_id,
+                }}
                 className="button button-quiet"
               >
-                Log in
+                {tr("Log in")}
               </Link>
               <Link
                 view="signup"
-                params={{ event: event.public_id }}
+                params={{
+                  event: event.public_id,
+                }}
                 className="text-link"
               >
-                Create account
+                {tr("Create account")}
               </Link>
             </div>
           </div>
         ) : auth.identityBlocked || (auth.hasToken && !auth.user) ? (
           <Notice error>
-            Your saved login could not be verified. Log in again or explicitly
-            log out before choosing Guest.
+            {tr(
+              "Your saved login could not be verified. Log in again or explicitly log out before choosing Guest.",
+            )}
             <div className="form-actions">
               <Link
                 view="login"
-                params={{ event: event.public_id }}
+                params={{
+                  event: event.public_id,
+                }}
                 className="button"
               >
-                Log in again
+                {tr("Log in again")}
               </Link>
               <button
                 className="button button-quiet"
                 onClick={() => runtime.logout()}
               >
-                Log out before choosing Guest
+                {tr("Log out before choosing Guest")}
               </button>
             </div>
           </Notice>
         ) : auth.user && auth.user.role !== "user" ? (
           <Notice>
-            Use a participant account to apply. An organizer or leader account
-            is not treated as Guest.
+            {tr(
+              "Use a participant account to apply. An organizer or leader account is not treated as Guest.",
+            )}
             <button className="text-button" onClick={() => runtime.logout()}>
-              Log out before choosing Guest
+              {tr("Log out before choosing Guest")}
             </button>
           </Notice>
         ) : (
           <>
             <Notice>
               {guest
-                ? "You are applying as a guest, without an account."
-                : `Applying with your verified participant account: ${auth.user?.username}`}
+                ? tr("You are applying as a guest, without an account.")
+                : tr(
+                    "Applying with your verified participant account: {{username}}",
+                    {
+                      username: auth.user?.username,
+                    },
+                  )}
             </Notice>
             <Notice error={["error", "uncertain"].includes(state.status)}>
               {state.message}
@@ -1624,30 +1915,40 @@ function Application({ event }) {
                 <span className="success-check">
                   <Icon name="check" size={25} />
                 </span>
-                <p className="eyebrow">APPLICATION RECEIVED</p>
-                <h2>Your application is pending.</h2>
+                <p className="eyebrow">{tr("APPLICATION RECEIVED")}</p>
+                <h2>{tr("Your application is pending.")}</h2>
                 <p>
-                  A place is not confirmed. Keep this reference and contact the
-                  organiser if you need help.
+                  {tr(
+                    "A place is not confirmed. Keep this reference and contact the organiser if you need help.",
+                  )}
                 </p>
+                <EventShare event={event} />
                 <dl className="receipt">
-                  <dt>Event</dt>
+                  <dt>{tr("Event")}</dt>
                   <dd>{event.title}</dd>
-                  <dt>Application reference</dt>
+                  <dt>{tr("Application reference")}</dt>
                   <dd>{state.receipt.id}</dd>
-                  <dt>Status</dt>
+                  <dt>{tr("Status")}</dt>
                   <dd>
                     <Status value={state.receipt.status} />
                   </dd>
                 </dl>
+                {!guest && (
+                  <PrivateDocuments
+                    runtime={runtime}
+                    files={state.receipt.supporting_documents || []}
+                  />
+                )}
                 {guest ? (
                   <Notice>
-                    Guest applications cannot be retrieved here after you leave
-                    or reload. Keep your reference.
+                    {tr(
+                      "Guest applications cannot be retrieved here after you leave or reload. Keep your reference.",
+                    )}
                   </Notice>
                 ) : (
                   <Link view="registrations" className="button">
-                    My registrations <Icon name="arrow" size={17} />
+                    {tr("My registrations")}
+                    <Icon name="arrow" size={17} />
                   </Link>
                 )}
               </div>
@@ -1655,75 +1956,88 @@ function Application({ event }) {
               <form method="dialog" autoComplete="off" onSubmit={submit}>
                 <fieldset disabled={!allowed || !active || locked(state)}>
                   <legend className="form-section-title">
-                    Participant information
+                    {tr("Participant information")}
                   </legend>
                   <div className="form-grid">
                     <Field
                       name="first_name"
-                      label="First name"
+                      required
+                      label={tr("First name")}
                       maxLength={20}
                     />
-                    <Field name="last_name" label="Last name" maxLength={20} />
+                    <Field
+                      name="last_name"
+                      required
+                      label={tr("Last name")}
+                      maxLength={20}
+                    />
                     <Field
                       name="date_of_birth"
-                      label="Date of birth"
+                      label={tr("Date of birth")}
                       type="date"
                       required
                     />
                     <Field
                       name="gender"
-                      label="Gender"
+                      label={tr("Gender")}
                       required
                       defaultValue=""
                     >
                       <option value="" disabled>
-                        Choose an option
+                        {tr("Choose an option")}
                       </option>
-                      <option value="male">Male</option>
-                      <option value="female">Female</option>
+                      <option value="male">{tr("Male")}</option>
+                      <option value="female">{tr("Female")}</option>
                     </Field>
-                    <Field name="phone" label="Phone" maxLength={20} />
+                    <Field
+                      name="phone"
+                      required
+                      label={tr("Phone")}
+                      maxLength={20}
+                    />
                     <Field
                       name="national_id"
-                      label="National ID"
-                      maxLength={50}
-                      help="Use the same participant details for each event."
-                    />
-                    <Field
-                      name="address"
-                      label="Address"
-                      type="textarea"
-                      wide
-                    />
-                    <Field
-                      name="income_band_code"
-                      label="Income band code"
-                      maxLength={20}
-                      help="Enter the code supplied for your application."
-                    />
-                    <Field
-                      name="marriage_status"
-                      label="Marital status"
                       required
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        Choose an option
-                      </option>
-                      {["single", "married", "divorced", "widowed"].map(
-                        (value) => (
-                          <option key={value} value={value}>
-                            {titleCase(value)}
-                          </option>
-                        ),
+                      label={tr("National ID")}
+                      maxLength={50}
+                      help={tr(
+                        "Use the same participant details for each event.",
                       )}
-                    </Field>
+                    />
                   </div>
+                  {!guest && (
+                    <details className="optional-documents">
+                      <summary>
+                        {tr("Supporting documents")} {tr("(optional)")}
+                      </summary>
+                      <FilePicker
+                        runtime={runtime}
+                        purpose="supporting_document"
+                        onChange={setSupportingFiles}
+                        onBlocked={setDocumentsBlocked}
+                        disabled={!allowed || !active || locked(state)}
+                      />
+                    </details>
+                  )}
+                  {guest && (
+                    <p className="small muted">
+                      {tr(
+                        "Guest applications cannot upload private documents. Supporting documents are optional in this version.",
+                      )}
+                    </p>
+                  )}
                   <p className="form-disclaimer">
-                    Submitting sends an application. A place is not confirmed.
+                    {tr(
+                      "Submitting sends an application. A place is not confirmed.",
+                    )}
                   </p>
-                  <button className="button" type="submit">
-                    Submit application <Icon name="arrow" size={17} />
+                  <button
+                    className="button"
+                    type="submit"
+                    disabled={documentsBlocked}
+                  >
+                    {tr("Submit application")}
+                    <Icon name="arrow" size={17} />
                   </button>
                 </fieldset>
               </form>
@@ -1750,17 +2064,22 @@ function Application({ event }) {
     </div>
   );
 }
-
 function Registrations({ organizer = false }) {
   return (
     <>
       <Heading
-        eyebrow={organizer ? "ORGANIZER WORKSPACE" : "YOUR COMMUNITY CALENDAR"}
-        title={organizer ? "Manage registrations" : "My registrations"}
+        eyebrow={
+          organizer ? tr("ORGANIZER WORKSPACE") : tr("YOUR COMMUNITY CALENDAR")
+        }
+        title={organizer ? tr("Manage registrations") : tr("My registrations")}
       >
         {organizer
-          ? "Review applications for your events. The server decides approval or waiting status."
-          : "Your applications and their current status, read from the server."}
+          ? tr(
+              "Review applications for your events. The server decides approval or waiting status.",
+            )
+          : tr(
+              "Your applications and their current status, read from the server.",
+            )}
       </Heading>
       <RoleGate role={organizer ? "organizer" : "user"}>
         <RegistrationList organizer={organizer} />
@@ -1771,17 +2090,63 @@ function Registrations({ organizer = false }) {
 function RegistrationList({ organizer }) {
   const { runtime, auth } = useApp();
   const [state, controller] = useController(
-    runtime.store("records", { mode: organizer ? "organizer" : "my" }),
+    runtime.store("records", {
+      mode: organizer ? "organizer" : "my",
+    }),
   );
   const [confirm, setConfirm] = useState(null);
+  const [cancelBusy, setCancelBusy] = useState(false);
+  const [cancelMessage, setCancelMessage] = useState("");
+  const uncertainCancel = useRef(new Set());
+  const cancelFlight = useRef(false);
+  const organizerCancel = async (record) => {
+    if (cancelFlight.current || uncertainCancel.current.has(record.id)) return;
+    cancelFlight.current = true;
+    setCancelBusy(true);
+    setCancelMessage("");
+    try {
+      const result = await runtime.withVerifiedAccount(
+        (token) => runtime.api.organizerCancelRegistration(record.id, token),
+        {
+          roles: ["organizer"],
+        },
+      );
+      if (
+        result.id !== record.id ||
+        result.event_id !== record.event_id ||
+        result.participant_id !== record.participant_id ||
+        result.created_by_user_id !== record.created_by_user_id ||
+        result.status !== "cancelled"
+      )
+        throw new Error("Unknown cancellation result");
+      setCancelMessage(
+        "The server cancelled this registration. Current records have been read again.",
+      );
+      await controller.load();
+    } catch (error) {
+      const known = [400, 401, 403, 404, 409, 422, 429].includes(error.status);
+      if (!known) uncertainCancel.current.add(record.id);
+      setCancelMessage(
+        known
+          ? error.message
+          : "The action result is unknown. Do not send it again. Refresh the records and ask the organiser to check.",
+      );
+    } finally {
+      cancelFlight.current = false;
+      setCancelBusy(false);
+    }
+  };
   useEffect(() => {
     controller.accountChanged();
     controller.load();
   }, [controller, auth.user?.id, auth.revision]);
-  const busy = controller.busy;
+  const busy = controller.busy || cancelBusy;
   return (
     <section className="registrations">
-      <div className="registration-filters" aria-label="Filter registrations">
+      <div
+        className="registration-filters"
+        aria-label={tr("Filter registrations")}
+      >
         {["", "pending", "approved", "waiting", "rejected", "cancelled"].map(
           (status) => (
             <button
@@ -1794,7 +2159,7 @@ function RegistrationList({ organizer }) {
                 controller.load(status);
               }}
             >
-              {status ? titleCase(status) : "All"}
+              {status ? titleCase(status) : tr("All")}
             </button>
           ),
         )}
@@ -1804,29 +2169,31 @@ function RegistrationList({ organizer }) {
           onClick={() => controller.load()}
         >
           <Icon name="calendar" size={16} />
-          Refresh
+          {tr("Refresh")}
         </button>
       </div>
       <Notice error={state.status === "error"}>{state.message}</Notice>
       <Notice error={state.actionError}>{state.actionMessage}</Notice>
+      <Notice>{cancelMessage}</Notice>
       {state.status === "loading" && (
         <div className="loading-state">
           <span className="spinner" />
-          Reading your registrations…
+          {tr("Reading your registrations\u2026")}
         </div>
       )}
       {state.status === "ready" && !state.records.length && (
         <div className="empty-state">
           <Icon name="ticket" size={38} />
-          <h2>No registrations here yet</h2>
+          <h2>{tr("No registrations here yet")}</h2>
           <p>
             {state.filter
-              ? "Try a different status."
-              : "Find an event and start your next community moment."}
+              ? tr("Try a different status.")
+              : tr("Find an event and start your next community moment.")}
           </p>
           {!organizer && (
             <Link view="events" className="button">
-              Browse events <Icon name="arrow" size={17} />
+              {tr("Browse events")}
+              <Icon name="arrow" size={17} />
             </Link>
           )}
         </div>
@@ -1838,16 +2205,19 @@ function RegistrationList({ organizer }) {
               <Icon name="ticket" size={26} />
             </div>
             <div className="record-main">
-              <span className="eyebrow">EVENT REFERENCE {record.event_id}</span>
+              <span className="eyebrow">
+                {tr("EVENT REFERENCE")} {record.event_id}
+              </span>
               <h3>
                 {organizer
                   ? [record.first_name, record.last_name]
                       .filter(Boolean)
                       .join(" ") || "Participant application"
-                  : "Community event application"}
+                  : tr("Community event application")}
               </h3>
               <p className="small muted">
-                Application <span className="reference">{record.id}</span>
+                {tr("Application")}
+                <span className="reference">{record.id}</span>
               </p>
               <p className="small muted">
                 {date(record.created_at)} · {titleCase(record.channel)}
@@ -1862,7 +2232,7 @@ function RegistrationList({ organizer }) {
                     disabled={busy}
                     onClick={() => controller.detail(record.id)}
                   >
-                    View
+                    {tr("View")}
                   </button>
                   {record.status === "pending" && (
                     <button
@@ -1870,7 +2240,22 @@ function RegistrationList({ organizer }) {
                       disabled={controller.locked(record.id)}
                       onClick={() => controller.approve(record.id)}
                     >
-                      Approve
+                      {tr("Approve")}
+                    </button>
+                  )}
+                  {["pending", "approved", "waiting"].includes(
+                    record.status,
+                  ) && (
+                    <button
+                      className="button button-quiet button-small"
+                      disabled={
+                        busy ||
+                        controller.locked(record.id) ||
+                        uncertainCancel.current.has(record.id)
+                      }
+                      onClick={() => setConfirm(record.id)}
+                    >
+                      {tr("Cancel")}
                     </button>
                   )}
                 </>
@@ -1881,7 +2266,7 @@ function RegistrationList({ organizer }) {
                     disabled={controller.locked(record.id)}
                     onClick={() => setConfirm(record.id)}
                   >
-                    Cancel
+                    {tr("Cancel")}
                   </button>
                 )
               )}
@@ -1889,26 +2274,37 @@ function RegistrationList({ organizer }) {
             {confirm === record.id && (
               <div className="cancel-confirm">
                 <p>
-                  Cancel this registration? The server may offer the released
-                  place to someone waiting.
+                  {tr(
+                    "Cancel this registration? The server may offer the released place to someone waiting.",
+                  )}
                 </p>
                 <button
                   className="button button-small"
                   disabled={controller.locked(record.id)}
                   onClick={() => {
                     setConfirm(null);
-                    controller.cancel(record.id, { confirmed: true });
+                    if (organizer) organizerCancel(record);
+                    else
+                      controller.cancel(record.id, {
+                        confirmed: true,
+                      });
                   }}
                 >
-                  Confirm cancellation
+                  {tr("Confirm cancellation")}
                 </button>
                 <button
                   className="text-button"
                   onClick={() => setConfirm(null)}
                 >
-                  Keep registration
+                  {tr("Keep registration")}
                 </button>
               </div>
+            )}
+            {!organizer && (
+              <PrivateDocuments
+                runtime={runtime}
+                files={record.supporting_documents || []}
+              />
             )}
           </article>
         ))}
@@ -1921,54 +2317,60 @@ function RegistrationList({ organizer }) {
           {state.detail && (
             <section className="form-surface">
               <div className="section-heading">
-                <h2>Application details</h2>
+                <h2>{tr("Application details")}</h2>
                 <button
                   className="icon-button"
-                  aria-label="Close application details"
+                  aria-label={tr("Close application details")}
                   onClick={() => controller.load()}
                 >
                   <Icon name="close" />
                 </button>
               </div>
               <dl className="receipt">
-                <dt>Reference</dt>
+                <dt>{tr("Reference")}</dt>
                 <dd>{state.detail.id}</dd>
-                <dt>Event reference</dt>
+                <dt>{tr("Event reference")}</dt>
                 <dd>{state.detail.event_id}</dd>
-                <dt>Participant</dt>
+                <dt>{tr("Participant")}</dt>
                 <dd>
                   {[state.detail.first_name, state.detail.last_name]
                     .filter(Boolean)
                     .join(" ") || "Name unavailable"}
                 </dd>
-                <dt>Status</dt>
+                <dt>{tr("Status")}</dt>
                 <dd>
                   <Status value={state.detail.status} />
                 </dd>
-                <dt>Channel</dt>
+                <dt>{tr("Channel")}</dt>
                 <dd>{titleCase(state.detail.channel)}</dd>
               </dl>
+              <PrivateDocuments
+                runtime={runtime}
+                files={state.detail.supporting_documents || []}
+              />
             </section>
           )}
         </div>
       )}
       <p className="small muted registration-footnote">
         {organizer
-          ? "Only applications returned for your organizer account are shown."
-          : "Guest applications are not linked to your account."}{" "}
-        Event names are unavailable when the API provides only a numeric event
-        reference.
+          ? tr(
+              "Only applications returned for your organizer account are shown.",
+            )
+          : tr("Guest applications are not linked to your account.")}{" "}
+        {tr(
+          "Event names are unavailable when the API provides only a numeric event reference.",
+        )}
       </p>
     </section>
   );
 }
-
 function Profile() {
   const { auth, runtime } = useApp();
   return (
     <>
-      <Heading eyebrow="YOUR ACCOUNT" title="Profile">
-        Your identity is verified with the server.
+      <Heading eyebrow={tr("YOUR ACCOUNT")} title={tr("Profile")}>
+        {tr("Your identity is verified with the server.")}
       </Heading>
       {auth.user ? (
         <section className="profile-panel">
@@ -1978,37 +2380,40 @@ function Profile() {
           <h2>{auth.user.username}</h2>
           <p>
             {auth.user.role === "user"
-              ? "Participant"
+              ? tr("Participant")
               : titleCase(auth.user.role)}
           </p>
           <p className="muted">
             {auth.persistent
-              ? "Your login is kept in this browser tab’s session storage."
-              : "Your login is kept only in memory for this page."}
+              ? tr(
+                  "Your login is kept in this browser tab\u2019s session storage.",
+                )
+              : tr("Your login is kept only in memory for this page.")}
           </p>
           <button
             className="button button-quiet"
             onClick={() => runtime.logout()}
           >
             <Icon name="logout" size={18} />
-            Log out locally
+            {tr("Log out locally")}
           </button>
           <p className="small muted">
-            Local logout removes this tab’s saved token. It does not revoke
-            issued tokens on the server.
+            {tr(
+              "Local logout removes this tab\u2019s saved token. It does not revoke issued tokens on the server.",
+            )}
           </p>
         </section>
       ) : (
         <div className="empty-state">
           <Icon name="user" size={38} />
-          <h2>Your community starts here</h2>
-          <p>Log in to see your account and registrations.</p>
+          <h2>{tr("Your community starts here")}</h2>
+          <p>{tr("Log in to see your account and registrations.")}</p>
           <div className="form-actions">
             <Link view="login" className="button">
-              Log in
+              {tr("Log in")}
             </Link>
             <Link view="signup" className="button button-quiet">
-              Create account
+              {tr("Create account")}
             </Link>
           </div>
         </div>
@@ -2021,52 +2426,51 @@ function Help({ leader = false }) {
     <>
       <Heading
         eyebrow="ROSE · PULSE"
-        title={leader ? "Leader workspace" : "Help & information"}
+        title={leader ? tr("Leader workspace") : tr("Help & information")}
       >
         {leader
-          ? "Your account is recognised as a community leader."
-          : "A little help for your next community moment."}
+          ? tr("Your account is recognised as a community leader.")
+          : tr("A little help for your next community moment.")}
       </Heading>
       <div className="help-content">
         {leader ? (
           <>
-            <h2>Leader tools are not available yet.</h2>
+            <h2>{tr("Leader tools are not available yet.")}</h2>
             <p>
-              Offline registration, referral links, messages and analytics are
-              not connected in this version. Browse public events, or use a
-              participant account to apply.
+              {tr(
+                "Offline registration, referral links, messages and analytics are not connected in this version. Browse public events, or use a participant account to apply.",
+              )}
             </p>
             <Link view="events" className="button">
-              Browse events <Icon name="arrow" size={17} />
+              {tr("Browse events")}
+              <Icon name="arrow" size={17} />
             </Link>
           </>
         ) : (
           <>
-            <h2>Joining an event</h2>
+            <h2>{tr("Joining an event")}</h2>
             <p>
-              Find an event and choose Apply. You can log in with a participant
-              account or explicitly continue as a guest. A pending application
-              does not confirm a place.
+              {tr(
+                "Find an event and choose Apply. You can log in with a participant account or explicitly continue as a guest. A pending application does not confirm a place.",
+              )}
             </p>
-            <h2>Checking an application</h2>
+            <h2>{tr("Checking an application")}</h2>
             <p>
-              Signed-in participants can read and cancel eligible applications
-              in My registrations. Guest applications cannot be retrieved here
-              after leaving the receipt page; keep your application reference
-              and contact the organiser.
+              {tr(
+                "Signed-in participants can read and cancel eligible applications in My registrations. Guest applications cannot be retrieved here after leaving the receipt page; keep your application reference and contact the organiser.",
+              )}
             </p>
-            <h2>If a result is unknown</h2>
+            <h2>{tr("If a result is unknown")}</h2>
             <p>
-              Do not submit the same action again. Read the event or
-              registration records and ask the organiser to reconcile the
-              result.
+              {tr(
+                "Do not submit the same action again. Read the event or registration records and ask the organiser to reconcile the result.",
+              )}
             </p>
-            <h2>Available in this version</h2>
+            <h2>{tr("Available in this version")}</h2>
             <p>
-              English event browsing, account access, online applications and
-              organizer registration review require an internet connection to
-              the local server. Offline mode, translations, messages and
-              analytics are not available.
+              {tr(
+                "Public browsing, account access and online writes require a connection. Synthetic local capture is available only in Offline drafts. Messages and automated notifications are not connected.",
+              )}
             </p>
           </>
         )}
@@ -2074,14 +2478,19 @@ function Help({ leader = false }) {
     </>
   );
 }
-
 export default function App({ runtime }) {
+  useTranslation(undefined, {
+    i18n,
+  });
   const [route, setRoute] = useState(readLocation);
   const auth = useSyncExternalStore(runtime.subscribe, runtime.getSnapshot);
   const navigate = (view, params = {}) => {
     window.history.pushState({}, "", hrefFor(view, params));
     setRoute(readLocation());
-    window.scrollTo?.({ top: 0, behavior: "instant" });
+    window.scrollTo?.({
+      top: 0,
+      behavior: "instant",
+    });
   };
   useEffect(() => {
     const changed = () => setRoute(readLocation());
@@ -2097,8 +2506,27 @@ export default function App({ runtime }) {
     };
   }, [runtime]);
   useEffect(() => {
-    document.title = `${{ home: "Community events", events: "Explore events", event: "Event details", apply: "Join an event", login: "Log in", signup: "Create account", create: "Create event", edit: "Edit event", registrations: "My registrations", manage: "Manage registrations", profile: "Profile", help: "Help", leader: "Leader workspace" }[route.view] || "Page not found"} | ROSE · PULSE`;
-  }, [route.view]);
+    document.title = `${tr(
+      {
+        home: "Community events",
+        events: "Explore events",
+        event: "Event details",
+        apply: "Join an event",
+        login: "Log in",
+        signup: "Create account",
+        create: "Create event",
+        edit: "Edit event",
+        registrations: "My registrations",
+        manage: "Manage registrations",
+        profile: "Profile",
+        help: "Help",
+        leader: "Offline drafts",
+        offline: "Offline drafts",
+        "organizer-events": "Your events",
+        analytics: "Registration overview",
+      }[route.view] || "Page not found",
+    )} | ROSE · PULSE`;
+  }, [route.view, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
     case "home":
@@ -2131,6 +2559,16 @@ export default function App({ runtime }) {
     case "manage":
       content = <Registrations organizer />;
       break;
+    case "organizer-events":
+      content = (
+        <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate} />
+      );
+      break;
+    case "analytics":
+      content = (
+        <OrganizerAnalytics runtime={runtime} auth={auth} navigate={navigate} />
+      );
+      break;
     case "profile":
       content = <Profile />;
       break;
@@ -2138,26 +2576,49 @@ export default function App({ runtime }) {
       content = <Help />;
       break;
     case "leader":
-      content = <Help leader />;
+    case "offline":
+      content = (
+        <OfflineWorkspace
+          runtime={runtime}
+          auth={auth}
+          initialEvent={route.event}
+          navigate={navigate}
+        />
+      );
       break;
     default:
       content = (
         <div className="empty-state">
-          <h1>Page not found</h1>
+          <h1>{tr("Page not found")}</h1>
           <Link view="home" className="button">
-            Back to home
+            {tr("Back to home")}
           </Link>
         </div>
       );
   }
   return (
-    <Context.Provider value={{ runtime, auth, route, navigate }}>
+    <Context.Provider
+      value={{
+        runtime,
+        auth,
+        route,
+        navigate,
+      }}
+    >
       <Shell>
         <div
           className="view-transition"
           key={`${route.view}:${route.event}:${auth.revision}`}
         >
-          {content}
+          <React.Suspense
+            fallback={
+              <div className="loading-state" role="status">
+                {"Loading current workspace…"}
+              </div>
+            }
+          >
+            {content}
+          </React.Suspense>
         </div>
       </Shell>
     </Context.Provider>

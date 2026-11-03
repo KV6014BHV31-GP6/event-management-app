@@ -34,7 +34,7 @@ const PARTICIPANT = {
   last_name: "Example",
   gender: "female",
   date_of_birth: "1990-01-01",
-  phone: "",
+  phone: "TEST",
   address: "",
   national_id: "SYNTHETIC-ONLY-001",
   income_band_code: "",
@@ -125,20 +125,18 @@ describe("React adapter preserves the reviewed write boundary", () => {
     expect(controller.state.status).toBe("success");
   });
   it("uses strict API signup validation, including rejection of a privileged success response", async () => {
-    const fetchImpl = vi
-      .fn()
-      .mockResolvedValue(
-        new Response(
-          JSON.stringify({
-            id: ID,
-            username: "synthetic",
-            role: "organizer",
-            created_at: EVENT.created_at,
-            updated_at: EVENT.updated_at,
-          }),
-          { status: 201 },
-        ),
-      );
+    const fetchImpl = vi.fn().mockResolvedValue(
+      new Response(
+        JSON.stringify({
+          id: ID,
+          username: "synthetic",
+          role: "organizer",
+          created_at: EVENT.created_at,
+          updated_at: EVENT.updated_at,
+        }),
+        { status: 201 },
+      ),
+    );
     const api = createApi({ fetchImpl });
     const controller = createSignupController({ api });
     await controller.submit({ username: "synthetic", password: "123456" });
@@ -182,14 +180,12 @@ describe("React adapter preserves the reviewed write boundary", () => {
       getMe: vi
         .fn()
         .mockRejectedValue(new ApiError("unauthorized", "Expired login", 401)),
-      registerGuestForEvent: vi
-        .fn()
-        .mockResolvedValue({
-          event_id: 1,
-          created_by_user_id: null,
-          channel: "online",
-          status: "pending",
-        }),
+      registerGuestForEvent: vi.fn().mockResolvedValue({
+        event_id: 1,
+        created_by_user_id: null,
+        channel: "online",
+        status: "pending",
+      }),
     };
     const runtime = createRuntime({ api, storage: kept });
     await runtime.restore();
@@ -307,15 +303,13 @@ describe("React adapter preserves the reviewed write boundary", () => {
   it("does not persist participant values or receipts in browser storage", async () => {
     const kept = storage();
     const api = {
-      registerGuestForEvent: vi
-        .fn()
-        .mockResolvedValue({
-          id: ID,
-          event_id: 1,
-          created_by_user_id: null,
-          channel: "online",
-          status: "pending",
-        }),
+      registerGuestForEvent: vi.fn().mockResolvedValue({
+        id: ID,
+        event_id: 1,
+        created_by_user_id: null,
+        channel: "online",
+        status: "pending",
+      }),
     };
     const runtime = createRuntime({ api, storage: kept });
     await runtime.restore();
@@ -416,17 +410,15 @@ describe("React adapter preserves the reviewed write boundary", () => {
   });
   it("refuses to display a participant list attributed to a different account", async () => {
     const { runtime } = await runtimeFor(USER, {
-      getMyRegistrations: vi
-        .fn()
-        .mockResolvedValue([
-          {
-            id: ID,
-            event_id: 1,
-            participant_id: ID,
-            created_by_user_id: "different",
-            status: "pending",
-          },
-        ]),
+      getMyRegistrations: vi.fn().mockResolvedValue([
+        {
+          id: ID,
+          event_id: 1,
+          participant_id: ID,
+          created_by_user_id: "different",
+          status: "pending",
+        },
+      ]),
     });
     const controller = runtime.store("records", { mode: "my" }).controller;
     await controller.load();

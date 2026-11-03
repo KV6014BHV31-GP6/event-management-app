@@ -10,6 +10,7 @@ import {
 import userEvent from "@testing-library/user-event";
 import App from "./App.jsx";
 import { ApiError, createRuntime } from "./service.js";
+import { changeLanguage, tr } from "./i18n/index.js";
 
 const ID = "01K00000000000000000000001";
 const event = {
@@ -76,7 +77,63 @@ beforeEach(() => {
 });
 
 describe("React application workflows (controlled API fixtures)", () => {
-  it("renders the live list and an honest English-only language control", async () => {
+  it.each([
+    [undefined, "en"],
+    ["user", "ms"],
+  ])(
+    "shows public detail sharing before application for role %s in %s",
+    async (role, language) => {
+      await changeLanguage(language);
+      const canary = "synthetic-private-must-not-share";
+      const registerGuestForEvent = vi.fn();
+      const registerForEvent = vi.fn();
+      const { user, api } = await setup({
+        view: "event",
+        role,
+        params: `&event=${event.public_id}&token=${canary}&registration=${canary}&national_id=${canary}`,
+        methods: {
+          getEvent: vi
+            .fn()
+            .mockResolvedValue({
+              ...event,
+              national_id: canary,
+              token: canary,
+              registration_id: canary,
+            }),
+          registerGuestForEvent,
+          registerForEvent,
+        },
+      });
+      const copy = vi
+        .spyOn(navigator.clipboard, "writeText")
+        .mockResolvedValue();
+      const share = await screen.findByRole("link", {
+        name: tr("Share on WhatsApp"),
+      });
+      const publicUrl = `${window.location.origin}/?view=event&event=${event.public_id}`;
+      const destination = new URL(share.href);
+      expect(destination.origin).toBe("https://wa.me");
+      expect([...destination.searchParams.keys()]).toEqual(["text"]);
+      expect(destination.searchParams.get("text")).toBe(
+        `${event.title}\n${publicUrl}`,
+      );
+      expect(share.href).not.toContain(canary);
+      expect(copy).not.toHaveBeenCalled();
+      expect(api.getEvent).toHaveBeenCalledWith(
+        event.public_id,
+        expect.objectContaining({ signal: expect.any(AbortSignal) }),
+      );
+      expect(registerGuestForEvent).not.toHaveBeenCalled();
+      expect(registerForEvent).not.toHaveBeenCalled();
+      await user.click(
+        screen.getByRole("button", { name: tr("Copy event link") }),
+      );
+      expect(copy).toHaveBeenCalledExactlyOnceWith(publicUrl);
+      expect(registerGuestForEvent).not.toHaveBeenCalled();
+      expect(registerForEvent).not.toHaveBeenCalled();
+    },
+  );
+  it("renders the live list and explicit EN/MS choices with formal review still pending", async () => {
     const { user, api } = await setup();
     expect(
       await screen.findByRole("heading", { name: event.title }),
@@ -86,8 +143,10 @@ describe("React application workflows (controlled API fixtures)", () => {
     );
     await user.click(screen.getByRole("button", { name: "EN" }));
     expect(
-      screen.getByText(/More languages are not yet available/),
+      screen.getByText(/NGO language and sensitive-consent review are pending/),
     ).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: "English" })).toBeEnabled();
+    expect(screen.getByRole("button", { name: "Bahasa Melayu" })).toBeEnabled();
     expect(screen.queryByText("5,000")).not.toBeInTheDocument();
   });
   it("uses only the server keyword search contract and resets pagination", async () => {
@@ -139,11 +198,14 @@ describe("React application workflows (controlled API fixtures)", () => {
     await user.click(screen.getByRole("button", { name: /Continue as guest/ }));
     await user.type(screen.getByLabelText("First name"), "Synthetic");
     await user.type(screen.getByLabelText("Last name"), "Example");
+    await user.type(screen.getByLabelText("Phone"), "TEST");
+    await user.type(screen.getByLabelText("National ID"), "SYNTHETIC-ONLY-001");
     fireEvent.change(screen.getByLabelText("Date of birth"), {
       target: { value: "1990-01-01" },
     });
     await user.selectOptions(screen.getByLabelText("Gender"), "female");
-    await user.selectOptions(screen.getByLabelText("Marital status"), "single");
+    for (const field of ["Marital status", "Address", "Income band code"])
+      expect(screen.queryByLabelText(field)).not.toBeInTheDocument();
     await user.click(
       screen.getByRole("button", { name: /Submit application/ }),
     );
@@ -157,10 +219,18 @@ describe("React application workflows (controlled API fixtures)", () => {
       event.public_id,
       expect.objectContaining({
         first_name: "Synthetic",
-        medical_record: null,
       }),
       1,
     );
+    for (const field of [
+      "address",
+      "income_band_code",
+      "marriage_status",
+      "medical_record",
+    ])
+      expect(Object.hasOwn(registerGuestForEvent.mock.calls[0][1], field)).toBe(
+        false,
+      );
     expect(storage.setItem).not.toHaveBeenCalled();
     expect(
       screen.getByText(
@@ -199,7 +269,7 @@ describe("React application workflows (controlled API fixtures)", () => {
     expect(api.login).toHaveBeenCalledTimes(1);
     expect(window.location.search).toContain("view=apply");
   });
-  it("blocks leader create without sending a write and explains unavailable leader tools", async () => {
+  it("blocks leader create without sending a write and opens the synthetic local workspace", async () => {
     const createEvent = vi.fn();
     const { user } = await setup({
       view: "create",
@@ -215,7 +285,7 @@ describe("React application workflows (controlled API fixtures)", () => {
     expect(createEvent).not.toHaveBeenCalled();
     await user.click(screen.getByRole("link", { name: "Leader workspace" }));
     expect(
-      screen.getByText("Leader tools are not available yet."),
+      screen.getByRole("heading", { name: "Offline registration drafts" }),
     ).toBeVisible();
   });
   it("clears a selected upload before Create and enables an explicit second event after success", async () => {

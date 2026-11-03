@@ -1,0 +1,335 @@
+{
+  "schema": "nu.independent.backend-source-review/1",
+  "reviewed_at_utc": "2026-11-01T21:53:01.265179+00:00",
+  "role": "Independent read-only product reviewer",
+  "base_sha": "dcbdf47ed8e4d9b816676df97aaa80015c9e1928",
+  "first_candidate": "5be160144f6c63282f8c87e88f54420062a85083",
+  "repaired_candidate": "54ab71d29852df26f17fb32317e405e5a48353ea",
+  "verdict": "NO_UNRESOLVED_BLOCKING_SOURCE_FINDING_RUNTIME_PENDING",
+  "findings": [
+    {
+      "id": "BE-R1",
+      "severity": "P2",
+      "found_at": "5be160144f6c63282f8c87e88f54420062a85083:backend/src/phase2/router.py:59-61; backend/src/registrations/service.py:178-181",
+      "title": "Organizer cancellation retained stale role while waiting for event lock",
+      "reproduction": "Hold event FOR UPDATE, start cancel after organizer role preread, wait until cancel waits on lock, commit organizer demotion, release event lock.",
+      "before": "Cancelled A and promoted B despite current role=user.",
+      "fixed_at": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/registrations/service.py:180-185",
+      "repair": "After event/registration lock, actor FOR UPDATE with populate_existing rechecks organizer role before ownership or mutation.",
+      "source_recheck": "RESOLVED",
+      "writer_native_recheck": "RED reproduced then GREEN403 with Aapproved/Bwaiting and no cancellation audit; restored controlled organizer role subsequently cancels/promotes.",
+      "independent_runtime_recheck": "NOT_RUN"
+    },
+    {
+      "id": "BE-R2",
+      "severity": "P2",
+      "found_at": "5be160144f6c63282f8c87e88f54420062a85083:backend/src/phase2/sync.py:59-91,97-112",
+      "title": "Reverse global UUID or national-identity order leaked deadlock DBAPIError as500",
+      "reproduction": "Different actors/events submit two-item batches in opposite shared-ID order; barrier after each first receipt flush forces40P01 at second receipt or domain identity insert.",
+      "before": "Loser rolled back but DBAPIError escaped instead of controlled envelope409.",
+      "fixed_at": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/sync.py:111-119",
+      "repair": "Catch DBAPIError SQLSTATE40P01/40001, roll back whole batch and return409 with original-ID reconciliation instruction. No domain write retry.",
+      "source_recheck": "RESOLVED",
+      "writer_native_recheck": "Both receipt and identity deadlocks captured as actual40P01; loser409, winner2 registrations/1batch/2receipts; extra read-only evidence confirms no loser participant prefix.",
+      "independent_runtime_recheck": "NOT_RUN"
+    }
+  ],
+  "source_scope": [
+    "Global receipt IDs, fingerprints, partial outcomes and transaction failure handling",
+    "Fresh role and actor authorization for sync/reconcile",
+    "Private document purpose/ownership and event-gallery association",
+    "Nullable field compatibility and legacy participant preservation",
+    "Development-only exact-database migration and preserved domain rows"
+  ],
+  "author_evidence_scope": "Raw native test outputs and test source reviewed; these are writer-run tests, not independent execution. First3native failures retained.",
+  "independent_business_writes": 0,
+  "independent_runtime_status": "AWAITING_FIXED_FRONTEND_PAIR",
+  "boundaries": [
+    "No full Security review or production assurance",
+    "No physical iPhone/hotspot or human/funder validation",
+    "Synthetic local data only; IndexedDB encryption not claimed"
+  ],
+  "source_manifest": [
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/sync.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__src__phase2__sync.py",
+      "sha256": "89b1ecf0ed4df6c3a7e47f476df4c3b9b2f84bbad6e7e34c721f33613a017705"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/assets.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__src__phase2__assets.py",
+      "sha256": "cda261af059b68988a5dd84d109cc914c210d073cbc42f0bb03656883d9c1215"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/router.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__src__phase2__router.py",
+      "sha256": "45a9d8087a941fa6e91f1e51a70bdb72eb3e9b3eb8bee177d058b29028c9931d"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/models.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__src__phase2__models.py",
+      "sha256": "e087c3be5cbe7b158e51d1683cafbe527564d78237f10de3d5ae33a24d9c0003"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/phase2/schemas.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__src__phase2__schemas.py",
+      "sha256": "1c458e3f8e60fe175c5c72ac7599fb15de09ac7de5d9b2398c744242025b128a"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/src/registrations/service.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__src__registrations__service.py",
+      "sha256": "d2887671b6a9b556113d99e5cdc2376bf0f2746eb3a80f9a2dde727f0b932ed2"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/scripts/migrate_phase2.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__scripts__migrate_phase2.py",
+      "sha256": "c3e0e47fda7713429e08fa84f1f7d69b71853b5f9973ad33c82a74da33bf2de9"
+    },
+    {
+      "kind": "fixed Git blob",
+      "origin": "54ab71d29852df26f17fb32317e405e5a48353ea:backend/tests/test_phase2_native.py",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\backend__tests__test_phase2_native.py",
+      "sha256": "1c277142465fd6962cf52267fc5753736bbfa0cd414bfcd2e37f745b46790bab"
+    },
+    {
+      "kind": "repair diff",
+      "origin": "5be160144f6c63282f8c87e88f54420062a85083..54ab71d29852df26f17fb32317e405e5a48353ea",
+      "evidence": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\independent\\backend-source\\review-repair.diff",
+      "sha256": "11ca8baff213c6179954722ca49823bda55e3acbe0be68562f1b520bca3d4ac3"
+    }
+  ],
+  "writer_native_raw_evidence": [
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-fixed-checks-BE-R1.json",
+      "sha256": "2ed23c9cae9b0a3f4c02fad93db8291c98cd3090aed3182ae68aae41328e645a",
+      "result": {
+        "event_lock_wait_observed": true,
+        "role_before_wait": "organizer",
+        "demotion_committed_before_unlock": true,
+        "result": 403,
+        "state_after_refusal": {
+          "A": "approved",
+          "B": "waiting",
+          "cancelled_at": null,
+          "cancelled_by": null
+        },
+        "restored_role_authorized_cancel_and_promotion": "PASS"
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-fixed-checks-BE-R2-identity.json",
+      "sha256": "f956f4269501c6587958ad1955803d6f4dd85380b785169bf99215b12ad05569",
+      "result": {
+        "barrier_after_first_receipt_flush": true,
+        "classified": [
+          {
+            "type": "DBAPIError",
+            "sqlstate": "40P01",
+            "stage": "business"
+          }
+        ],
+        "results": [
+          409,
+          "receipt"
+        ],
+        "counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        },
+        "expected_loser": 409,
+        "expected_counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        }
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-fixed-checks-BE-R2-submission.json",
+      "sha256": "94c9550fe3494b6ef9536f93a145af1bcdebf132db35f428929db40c853081b3",
+      "result": {
+        "barrier_after_first_receipt_flush": true,
+        "classified": [
+          {
+            "type": "DBAPIError",
+            "sqlstate": "40P01",
+            "stage": "receipt"
+          }
+        ],
+        "results": [
+          "receipt",
+          409
+        ],
+        "counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        },
+        "expected_loser": 409,
+        "expected_counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        }
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-R1-R2-green-BE-R1.json",
+      "sha256": "2ed23c9cae9b0a3f4c02fad93db8291c98cd3090aed3182ae68aae41328e645a",
+      "result": {
+        "event_lock_wait_observed": true,
+        "role_before_wait": "organizer",
+        "demotion_committed_before_unlock": true,
+        "result": 403,
+        "state_after_refusal": {
+          "A": "approved",
+          "B": "waiting",
+          "cancelled_at": null,
+          "cancelled_by": null
+        },
+        "restored_role_authorized_cancel_and_promotion": "PASS"
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-R1-R2-green-BE-R2-identity.json",
+      "sha256": "f956f4269501c6587958ad1955803d6f4dd85380b785169bf99215b12ad05569",
+      "result": {
+        "barrier_after_first_receipt_flush": true,
+        "classified": [
+          {
+            "type": "DBAPIError",
+            "sqlstate": "40P01",
+            "stage": "business"
+          }
+        ],
+        "results": [
+          409,
+          "receipt"
+        ],
+        "counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        },
+        "expected_loser": 409,
+        "expected_counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        }
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-R1-R2-green-BE-R2-submission.json",
+      "sha256": "8d7561c202f057e7b5900b5d908cb9463531c801c63e20353d9c6a187e872510",
+      "result": {
+        "barrier_after_first_receipt_flush": true,
+        "classified": [
+          {
+            "type": "DBAPIError",
+            "sqlstate": "40P01",
+            "stage": "receipt"
+          }
+        ],
+        "results": [
+          409,
+          "receipt"
+        ],
+        "counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        },
+        "expected_loser": 409,
+        "expected_counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        }
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-R1-R2-red-BE-R1.json",
+      "sha256": "dc35aa00ccb87a2c5ee8d7ac4adce7b115ae5be4aaf8b83ba3c4ca6f8c3148dd",
+      "result": {
+        "event_lock_wait_observed": true,
+        "role_before_wait": "organizer",
+        "demotion_committed_before_unlock": true,
+        "result": "cancelled",
+        "state_after": {
+          "A": "cancelled",
+          "B": "approved",
+          "cancelled_at": "2026-11-01 21:45:34.152739+00:00",
+          "cancelled_by": "01M6CH6BKAA6VPFVRFW8YRHCT8"
+        },
+        "expected_result": 403
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-R1-R2-red-BE-R2-identity.json",
+      "sha256": "51540502eba5a4eb7d3b39c6d93f87dcd9d63845d4f7b44d7db1a2df84fd64c5",
+      "result": {
+        "barrier_after_first_receipt_flush": true,
+        "classified": [
+          {
+            "type": "DBAPIError",
+            "sqlstate": "40P01",
+            "stage": "business"
+          }
+        ],
+        "results": [
+          "receipt",
+          "DBAPIError"
+        ],
+        "counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        },
+        "expected_loser": 409,
+        "expected_counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        }
+      }
+    },
+    {
+      "path": "E:\\NU_Local_Environment_20261014\\rose-pulse-phase2\\20261102-050245\\evidence\\backend\\native-review\\phase2-review-R1-R2-red-BE-R2-submission.json",
+      "sha256": "acfba63abf21280208615d3772556d33b5dd6061c347e190a980bb31645a8610",
+      "result": {
+        "barrier_after_first_receipt_flush": true,
+        "classified": [
+          {
+            "type": "DBAPIError",
+            "sqlstate": "40P01",
+            "stage": "receipt"
+          }
+        ],
+        "results": [
+          "DBAPIError",
+          "receipt"
+        ],
+        "counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        },
+        "expected_loser": 409,
+        "expected_counts": {
+          "registrations": 2,
+          "batches": 1,
+          "submissions": 2
+        }
+      }
+    }
+  ]
+}
