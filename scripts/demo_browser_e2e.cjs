@@ -131,7 +131,8 @@ async function main() {
     await page.getByRole('heading',{name:'CI browser '+process.env.NU_SMOKE_USERNAME,exact:true}).waitFor();
     await page.getByText('Registration review and booking',{exact:true}).click();
     await button('Choose a registration').click();
-    await page.getByLabel('Participant',{exact:true}).selectOption(fixture.registration_id);await button('Read registration').click();
+    // This legacy wrapping label includes option text in its computed label.
+    await page.locator('label').filter({hasText:/^Participant/}).locator('select').selectOption(fixture.registration_id);await button('Read registration').click();
     const thumbnail=page.getByRole('img',{name:'Document thumbnail: ci-private-synthetic.png',exact:true});
     await thumbnail.waitFor();await page.waitForFunction(()=>{const img=document.querySelector('.document-card img');return img?.complete&&img.naturalWidth===16&&img.naturalHeight===16;});
     await button('Preview ci-private-synthetic.png').click();
@@ -189,7 +190,7 @@ async function main() {
       draft_identity_sha256:hash(JSON.stringify(draftIdentity(after.drafts)))};checkpoint(phase);
 
     phase='restore-manual-lost-ack-get';
-    const restoreStart=requests.length;await button('Restore Connection').click();await page.waitForLoadState('networkidle');
+    const restoreStart=requests.length;await button('Restore Connection').click();await page.waitForLoadState('networkidle');await page.waitForTimeout(750);
     const autoPosts=requests.slice(restoreStart).filter(r=>r.method==='POST');assert.equal(autoPosts.length,0,'Restore automatically POSTed');
     // Fresh server login is required; do not edit storage or inject credentials.
     if(await button('Log out').count())await button('Log out').click();
