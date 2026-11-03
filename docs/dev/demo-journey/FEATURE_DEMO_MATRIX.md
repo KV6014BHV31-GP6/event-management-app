@@ -32,3 +32,7 @@ Source audit read current GitHub issue bodies in this run. Audit labels below ar
 | Owner US03/09/10 | Explicit current master requirements admitted; original-team AC unavailable | original source coverage BLOCKED; Owner requirement execution NOT_RUN |
 
 Inherited automatic waiting→approved promotion alone cannot satisfy #37. Missing originals do not turn the parent story into PASS. G3 requires an evidence row for every atomic criterion above and in the master table.
+
+## Superseding original-source readback
+
+All40 original amended AC are now indexed in AC_MATRIX.json. Earlier unavailable-original statements above are preserved intake history, superseded for story/AC text only. Raw hash and story-map graphic remain unverified. G3 must attach a real evidence receipt to each row; this source update itself changes no test result. AC09 offline attendance, AC01 Organizer provisioning, AC07 assisted correction and AC05 promotion pause are required coordinated additions.

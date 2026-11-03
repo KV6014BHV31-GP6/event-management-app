@@ -1,0 +1,329 @@
+{
+  "schema": "nu.demo-acceptance-matrix/1",
+  "source": "LIB-AMENDED-20261103",
+  "rows": [
+    {
+      "acceptance_id": "AC-01-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Own records; assisted participants need no account",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-01-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized organizer provisions/approves organizer and leader; assignment removal revokes event access",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-01-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Deactivated user cannot start authenticated actions; explicit cached/session revocation policy",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-01-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Server rejects unauthorized record access; operator audit for assisted and privileged changes",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-02-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized publish/change and cancellation/postponement notices",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-02-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Registration opening/closing/state enforced; separate walk-in window",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-02-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Pool/total capacity under concurrent confirmations and retries",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-02-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Existing bookings handled explicitly without silent deletion/reassignment",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-03-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Retain verified event/leader referral; operator separate",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-03-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Direct/Unknown explicit; route does not imply outreach channel",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-03-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Scoped event source totals after assignment change",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-03-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Only measured supported channel comparisons; otherwise Unknown/not reported",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-04-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Assigned leader copies approved text/referral and readable downloadable flyer",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-04-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Editable generated draft requires authorized approval",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-04-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Approved event data only, no participant PII; usable manual/template fallback",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-04-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Provider/language/workflow pending; actual AI remains planned unless authorized",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-05-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Current pending/confirmed/waiting separate with timestamp and reconciliation",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-05-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Remaining online/offline capacity and saved assigned-leader instruction",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-05-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Traceable threshold alerts; reported outreach not measured views/bookings",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-05-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Pause promotion independent of registration; current-event decisions",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-06-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Event date/venue/registration period/eligibility; signed-in application and own list",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-06-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Eligibility approved and quota before confirmation; no false success on connection loss",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-06-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized manual approve/reject/correction and recorded outcome",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-06-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Cross online/assisted duplicate rule; audited correction and eligibility/quota recheck",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-07-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized assisted submit/retrieve without participant account; original OCR clause superseded W8/Owner",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-07-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Approved eligibility+offline quota; capture is not place guarantee",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-07-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Cross-route duplicate matching; shared phone not sole identity",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-07-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized assisted correction audit preserves source, rechecks outcome and notifies contact",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-08-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Retrievable confirmation with configured reminder/contact route",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-08-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized cancellation releases original allocation once",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-08-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Eligible waiting when relevant allocation full; waiting not confirmed",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-08-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "FIFO/pool offer acceptance/expiry policy with no overbooking",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-09-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized roster search and duplicate-safe arrival",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-09-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Preloaded roster offline check-in and pending survives restart",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-09-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Reconnect accepted sync; rejected/conflict remains visible",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-09-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Eligible walk-in uses offline quota; disconnected walk-in/no-show release not enabled without rules",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-10-01",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Completed-event capacity/confirmed/cancelled/arrivals/no-show/walk-in definitions",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-10-02",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Recorded source/leader with Unknown; no inferred channels",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-10-03",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Pending sync/incomplete attendance flagged before finalize; reconcile shared aggregates",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    },
+    {
+      "acceptance_id": "AC-10-04",
+      "source_namespace": "LIB-AMENDED-20261103",
+      "requirement_summary": "Authorized closeout only; no clinical results/prediction/cross-event analysis",
+      "mode": "REAL_LOCAL",
+      "status": "NOT_RUN",
+      "evidence": null
+    }
+  ],
+  "original_source_status": "FULL_STORY_AND_AC_TEXT_READ",
+  "raw_file_hash": "NOT_VERIFIED",
+  "mapping_graphic": "NOT_READ"
+}

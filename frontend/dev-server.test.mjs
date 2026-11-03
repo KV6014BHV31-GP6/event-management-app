@@ -10,6 +10,34 @@ const listen = server => new Promise(resolve => server.listen(0, '127.0.0.1', ()
 const close = server => new Promise(resolve => { server.close(resolve); server.closeAllConnections(); });
 const PNG = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+aO7sAAAAASUVORK5CYII=', 'base64');
 const EVENT_ID = 'A'.repeat(20) + '-';
+
+test('journey proxy admits explicit operations and preserves scoped guest headers without broadening methods', async () => {
+  const observed = [];
+  const upstream = http.createServer(async (req, res) => {
+    observed.push({path:req.url, grant:req.headers['x-guest-grant'], challenge:req.headers['x-demo-challenge'], application:req.headers['x-application-key']});
+    for await (const part of req) {};
+    res.writeHead(403, {'Content-Type':'application/json'});
+    res.end(JSON.stringify({detail:{code:'FORBIDDEN',message:'Synthetic denied actor'}}));
+  });
+  const upstreamUrl = await listen(upstream);
+  const server = createDevServer({upstream:upstreamUrl}); const base = await listen(server);
+  try {
+    const suffixes = ['/accounts', `/events/${EVENT_ID}/promotion/pause`, `/events/${EVENT_ID}/attendance/intents`];
+    for (const suffix of suffixes) {
+      const response = await fetch(base+'/api/v2/operations'+suffix,{method:'POST',headers:{'Content-Type':'application/json','X-Guest-Grant':'synthetic-grant','X-Demo-Challenge':'synthetic-challenge','X-Application-Key':'synthetic-capability-forwarding-fixture'},body:'{}'});
+      assert.equal(response.status,403);
+      assert.equal((await response.json()).detail.code,'FORBIDDEN');
+      assert.equal(response.headers.get('cache-control'),'no-store');
+    }
+    assert.equal(observed.length,3);
+    assert(observed.every(row=>row.grant==='synthetic-grant'&&row.challenge==='synthetic-challenge'&&row.application==='synthetic-capability-forwarding-fixture'));
+    for (const [method,suffix] of [['DELETE','/accounts'],['POST','/arbitrary'],['GET','/accounts/../../private']]) {
+      const response=await fetch(base+'/api/v2/operations'+suffix,{method});
+      assert([403,405].includes(response.status));
+    }
+    assert.equal(observed.length,3);
+  } finally {await close(server);await close(upstream);}
+});
 const requestRaw = (base, path, method = 'GET') => new Promise((resolve, reject) => {
   const url = new URL(base);
   const request = http.request({hostname:url.hostname, port:url.port, path, method}, response => {

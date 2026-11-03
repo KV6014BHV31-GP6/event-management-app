@@ -1,0 +1,52 @@
+{
+  "schema": "nu.demo-assets/1",
+  "curated_event_count": 8,
+  "license_basis": "Prior authorized image_gen task created fictional reusable Demo images; visible AI-generated disclosure; no real subject or NGO endorsement",
+  "assets": [
+    {
+      "file": "cooking-gallery-banner-v2.png",
+      "sha256": "210150d59787261feffbaf2209999c7b2652fb964544d6cf3ca17a1dc6802fbc",
+      "bytes": 2214655,
+      "kind": "AI_GENERATED_DEMO_REUSED",
+      "local_bundle": "separately verified curated fixture bundle; not implicitly included in CI ZIP"
+    },
+    {
+      "file": "cooking-primary-banner-v2.png",
+      "sha256": "22fa526bd2d23666344704da60fa2754e98b6fd92760145bb85de998d9cb8820",
+      "bytes": 2395081,
+      "kind": "AI_GENERATED_DEMO_REUSED",
+      "local_bundle": "separately verified curated fixture bundle; not implicitly included in CI ZIP"
+    },
+    {
+      "file": "health-gallery-banner-v2.png",
+      "sha256": "36373c53dec914aa8677ef390e99b6ecaf565c10221d503440e9926efd47646f",
+      "bytes": 2251672,
+      "kind": "AI_GENERATED_DEMO_REUSED",
+      "local_bundle": "separately verified curated fixture bundle; not implicitly included in CI ZIP"
+    },
+    {
+      "file": "health-primary-banner-v2.png",
+      "sha256": "4b0261f6d36b55ab7b79d5b1a1f7a102b5d5725328d3e3a8013a8b7c3ced84d4",
+      "bytes": 2048249,
+      "kind": "AI_GENERATED_DEMO_REUSED",
+      "local_bundle": "separately verified curated fixture bundle; not implicitly included in CI ZIP"
+    },
+    {
+      "file": "wellness-gallery-banner-v2.png",
+      "sha256": "299491755a92f5ea2f685e6255f27100e9675670a2543a037d3f446dad0148cf",
+      "bytes": 2434720,
+      "kind": "AI_GENERATED_DEMO_REUSED",
+      "local_bundle": "separately verified curated fixture bundle; not implicitly included in CI ZIP"
+    },
+    {
+      "file": "wellness-primary-banner-v2.png",
+      "sha256": "035767a2cb9b41ac832c78dd830ca30aed40710206eeac67d4d63bcb8b7bbd25",
+      "bytes": 2532145,
+      "kind": "AI_GENERATED_DEMO_REUSED",
+      "local_bundle": "separately verified curated fixture bundle; not implicitly included in CI ZIP"
+    }
+  ],
+  "supporting_documents": "Private synthetic canaries excluded from public artifacts",
+  "flyer": "Original SVG generated from approved public text; no participant fields",
+  "acceptance": "Asset provenance/readback only; not G3/G7 acceptance"
+}

@@ -50,6 +50,21 @@
       "coverage": "full relay, no NGO signoff",
       "reviewer": "source_audit",
       "raw_original_public": false
+    },
+    {
+      "source_id": "LIB-AMENDED-20261103",
+      "coverage": "full original amended story/task/40AC viewer text",
+      "raw_hash": "NOT_VERIFIED",
+      "story_mapping_graphic": "NOT_READ",
+      "reviewer": "source_audit",
+      "raw_original_public": false
+    },
+    {
+      "source_id": "LIB-FEATURES-20261103",
+      "coverage": "full original18-feature5module viewer text and annotations",
+      "raw_hash": "NOT_VERIFIED",
+      "reviewer": "source_audit",
+      "raw_original_public": false
     }
   ],
   "current_github_issue_reads": [
@@ -74,14 +89,7 @@
     49,
     50
   ],
-  "missing_originals": [
-    "User Stories & Mapping (Amended)",
-    "Features Review.docx"
-  ],
-  "original_team_ac_unavailable": [
-    "US03",
-    "US09",
-    "US10"
-  ],
+  "missing_originals": [],
+  "original_team_ac_unavailable": [],
   "fallback_requirement_source": "OWNER-DEMO-20261103 explicit authorization, not substituted original read"
 }
