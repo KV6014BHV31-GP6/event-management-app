@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T08:30:08.732383+00:00",
-  "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻",
+  "reviewed_at": "2026-11-03T08:50:20.573602+00:00",
+  "reason": "R3 修正 CI 遞迴收集，納入既有 nested user tests；保留原 coverage 缺口",
   "document_count": 361,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -6848,7 +6848,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6865,13 +6865,20 @@
           "size_bytes": 8881,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 3,
+          "sha256": "0fcce5e18f2916ab9537825f3dab33cc59f44a7ae8b77e11b9878f4ee90a34c8",
+          "size_bytes": 10690,
+          "superseded_at": "2026-11-03T08:50:20.573602+00:00",
+          "reason": "R3 修正 CI 遞迴收集，納入既有 nested user tests；保留原 coverage 缺口"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "0fcce5e18f2916ab9537825f3dab33cc59f44a7ae8b77e11b9878f4ee90a34c8",
-      "size_bytes": 10690
+      "sha256": "ec173d4fdb23fa0ceb9cce66c69600d729a5dff9ba8e9401f16ea1bb77b03e81",
+      "size_bytes": 11153
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -7139,7 +7146,7 @@
     {
       "document_id": "DEMO-DOC-D79E0FEF840573FD",
       "path": "scripts/demo_ci.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7156,13 +7163,20 @@
           "size_bytes": 37307,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 3,
+          "sha256": "e3956933e01da83579f51bade6cff7c5feb16f38711a91b31a2c9de7231327ed",
+          "size_bytes": 38960,
+          "superseded_at": "2026-11-03T08:50:20.573602+00:00",
+          "reason": "R3 修正 CI 遞迴收集，納入既有 nested user tests；保留原 coverage 缺口"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e3956933e01da83579f51bade6cff7c5feb16f38711a91b31a2c9de7231327ed",
-      "size_bytes": 38960
+      "sha256": "8f21c834f5b92c5efa8b61d2e7bebf7ecba04cdb136b1058b64b011fc98d617c",
+      "size_bytes": 39118
     },
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
@@ -7375,15 +7389,23 @@
     {
       "document_id": "DEMO-DOC-A246709597685A64",
       "path": "tests/test_demo_ci.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ffc75d1c9f2fa89e110601287c43fdb813a4501a99b337b655fca3b75a7b8db5",
+          "size_bytes": 2985,
+          "superseded_at": "2026-11-03T08:50:20.573602+00:00",
+          "reason": "R3 修正 CI 遞迴收集，納入既有 nested user tests；保留原 coverage 缺口"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ffc75d1c9f2fa89e110601287c43fdb813a4501a99b337b655fca3b75a7b8db5",
-      "size_bytes": 2985
+      "sha256": "2d669a7805b9a2b808af0e299d6b2c9a60d5e5857916888a9b5943cc3a382504",
+      "size_bytes": 3302
     }
   ]
 }

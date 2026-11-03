@@ -14,6 +14,12 @@ spec.loader.exec_module(ci)
 
 
 class ProcessBoundaryTests(unittest.TestCase):
+    def test_nested_user_contracts_are_in_native_job_inventory(self):
+        paths = ci.backend_test_paths()
+        self.assertIn(ROOT/'backend/tests/users/test_create_user.py', paths)
+        self.assertIn(ROOT/'backend/tests/test_accounts_native.py', paths)
+        self.assertEqual(len(paths), len(set(paths)))
+
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory()
         ci.OUT = Path(self.temp.name)

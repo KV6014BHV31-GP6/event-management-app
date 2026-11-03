@@ -323,6 +323,10 @@ const {chromium} = require(path.join(process.env.NU_BROWSER_TOOLS, 'node_modules
 '''
 
 
+def backend_test_paths() -> list[Path]:
+    return sorted((ROOT / "backend/tests").rglob("test_*.py"))
+
+
 def native_browser(build_input: Path) -> None:
     source_identity()
     require_runtime(node=True)
@@ -357,7 +361,8 @@ def native_browser(build_input: Path) -> None:
                NU_ACCOUNTS_NATIVE_DATABASE=database, NU_ACCOUNTS_NATIVE_PORT=str(pgport),
                NU_ACCOUNTS_MIGRATION_DATABASE=migration_database,
                NU_ACCOUNTS_SHAPE_DATABASE=shape_database)
-    tests = sorted((ROOT / "backend/tests").glob("test_*.py"))
+    tests = backend_test_paths()
+    REPORT["backend_test_files"] = [p.relative_to(ROOT).as_posix() for p in tests]
     controlled = [p.relative_to(ROOT / "backend") for p in tests if "native" not in p.stem]
     controlled_report = OUT / "controlled-junit.xml"
     archive = work / "postgresql.zip"
