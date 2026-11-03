@@ -232,3 +232,9 @@ Assisted corrections preserve original entry/source attribution, return pending
 review and release a place/live offer atomically, but refuse arrived bookings.
 
 Fresh enabled Organizers may read only assignable namespace Leaders through `GET /api/v2/operations/accounts?scope=assignable_leaders`. Unscoped account administration remains restricted to seeded Demo admins; unknown scopes fail422. This directory grants no account-management permission.
+
+Managed legacy online admission also enforces current staff role and event assignment.
+Before a waitlist offer, the allocator rechecks enabled accounts for both the entry
+operator and linked participant, plus current Leader assignment. Disabled candidates
+receive neither a capacity hold nor an offer outbox record; FIFO continues to the next
+eligible candidate without changing original operator or referral attribution.

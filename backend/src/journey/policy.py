@@ -37,9 +37,9 @@ async def authorize_staff(db,event,actor_id,owner=False):
     fail('FORBIDDEN',403)
 async def admission(db,event,actor_id=None,staff=False):
     work=await workflow(db,event)
-    if actor_id:await fresh(db,actor_id)
+    actor=await fresh(db,actor_id) if actor_id else None
     if work:
-        if staff:await authorize_staff(db,event,actor_id)
+        if staff or actor and actor.role.value in {"leader","organizer"}:await authorize_staff(db,event,actor_id)
         if work.data['state']!='published':fail('EVENT_CLOSED')
         if not dt(work.data['registration_opens_at'])<=now()<=dt(work.data['registration_closes_at']):fail('WINDOW_CLOSED')
     return work

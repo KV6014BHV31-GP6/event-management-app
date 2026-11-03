@@ -815,5 +815,6 @@
   "Online event": "Online event",
   "Advanced event reference": "Advanced event reference",
   "The current account changed. Read the event list again.": "The current account changed. Read the event list again.",
-  "Unavailable": "Unavailable"
+  "Unavailable": "Unavailable",
+  "Discard refused local check-in": "Discard refused local check-in"
 }

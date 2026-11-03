@@ -155,7 +155,7 @@ def source_checks(local: bool) -> None:
     # This runs before npm/pip, because document control intentionally rejects unregistered files.
     run([sys.executable, "-B", "scripts/check_dev_control.py"], "document-control")
     run([sys.executable, "-B", "-m", "unittest", "discover", "-s", "tests", "-p", "test_document_control.py"], "document-control-tests")
-    tracked = git("ls-files", "-z").split("\0")
+    tracked = list(filter(None, git("ls-files", "-z").split("\0")))
     checks = 0
     for name in tracked:
         public_path(name, source_inventory=True)

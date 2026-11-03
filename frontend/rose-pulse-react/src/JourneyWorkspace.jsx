@@ -71,7 +71,7 @@ function JourneySession({
   }, []);
   const guestAllowed=!auth.user&&!auth.hasToken&&!auth.identityBlocked&&!auth.checking;
   const client = useMemo(() => createJourneyClient({
-    authorize: fn => (auth.user||auth.offlineActor) ? runtime.withVerifiedAccount(fn) : guestAllowed ? fn(null, {id:'guest'}) : Promise.reject(new Error('Verify your account or explicitly log out before Guest access.')),
+    authorize: fn => (auth.user||auth.offlineActor) ? runtime.withVerifiedAccount((token,actor)=>{if(actor?.id!==(auth.user?.id||auth.offlineActor?.id))throw new Error('The selected account or record changed.');return fn(token,actor);}) : guestAllowed ? fn(null, {id:'guest'}) : Promise.reject(new Error('Verify your account or explicitly log out before Guest access.')),
     guestHeaders: () => grant ? {
       'X-Guest-Grant': grant.grant_token
     } : {}
@@ -84,6 +84,7 @@ function JourneySession({
   useEffect(()=>{if(staff||!eventId||!runtime.api?.getEvent)return;let current=true;runtime.api.getEvent(eventId).then(value=>{if(current&&active.current)setLoaded(old=>({...old,publicEvent:value}));}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[runtime,staff,eventId]);
   useEffect(()=>{if(!initialRef)return;let current=true;client.publicGet('/referrals/'+encodeURIComponent(initialRef)).then(value=>{if(current&&active.current){if(!value.active||value.event_public_id!==eventId)throw new Error('This referral is inactive or does not match this event.');setLoaded(old=>({...old,referral:value}));}}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[client,initialRef,eventId]);
   const run = async fn => {
+    const operationEpoch=recordEpoch.current;
     if (lock.current) return;
     lock.current = true;
     setBusy(true);
@@ -92,14 +93,14 @@ function JourneySession({
     try {
       await fn();
     } catch (e) {
-      if (active.current) setError(e.message);
+      if (active.current && operationEpoch===recordEpoch.current) setError(e.message);
     } finally {
       lock.current = false;
       if (active.current) setBusy(false);
     }
   };
-  const read = async (key, path) => {
-    const epoch = recordEpoch.current;
+  const read = async (key, path, epoch = recordEpoch.current) => {
+    if(!active.current||epoch!==recordEpoch.current)throw new Error("The selected account or record changed.");
     const data = await client.get(path);
     if (!active.current || epoch !== recordEpoch.current) throw new Error('The selected account or record changed.');
     setLoaded(old => ({
@@ -109,14 +110,16 @@ function JourneySession({
     return data;
   };
   const mutate = (path, data, version) => run(async () => {
+    const mutationEpoch=recordEpoch.current;
+    const targetRegistration=registrationId;
     const receipt = await client.mutate(path, data, version);
-    if (!active.current) return;
+    if (!active.current || mutationEpoch!==recordEpoch.current) return;
     if(path.endsWith('/applications')){setRegistrationId(receipt.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:receipt.effects}));}
     setMessage(tr('Saved by server. Current information has been read again.'));
-    if (eventId && staff) await read('event', root);
-    if (path.includes('/promotion')) await read('promotion', root + '/promotion');
-    if (path.startsWith('/registrations/') || path.startsWith('/offers/')) await read('registration', '/registrations/' + registrationId);
-    if (path.startsWith('/accounts')) await read('accounts', '/accounts');
+    if (eventId && staff) await read('event', root, mutationEpoch);
+    if (path.includes('/promotion')) await read('promotion', root + '/promotion', mutationEpoch);
+    if (path.startsWith('/registrations/') || path.startsWith('/offers/')) await read('registration', '/registrations/' + targetRegistration, mutationEpoch);
+    if (path.startsWith('/accounts')) await read('accounts', '/accounts', mutationEpoch);
   });
   const loadEvent = () => run(async () => {
     setLoaded(old=>({referral:old.referral,eventOptions:old.eventOptions}));
@@ -161,7 +164,7 @@ function JourneySession({
           ...old,
           eventOptions: data.data
         }));
-      })}>{tr('Choose an event')}</button><label>{tr('Event')}<select value={eventId} onChange={e => {
+      })}>{tr('Choose an event')}</button><label>{tr('Event')}<select value={eventId} disabled={busy} onChange={e => {
           recordEpoch.current++;
           navigate('operations',{event:e.target.value});
           setEventId(e.target.value);
@@ -263,15 +266,16 @@ function JourneySession({
           } : {})
         },
         source: {kind:initialRef?'leader_referral':v.source_kind,referral_code:initialRef||null}
-      })}>{loaded.referral&&<p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>}{auth.user && <FilePicker runtime={runtime} purpose="supporting_document" onChange={applicationChanged} onBlocked={attachmentChanged} />}</ActionForm></details>
+      })}>{loaded.referral&&<p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>}{auth.user && <FilePicker runtime={runtime} key={eventId+":"+registrationId} purpose="supporting_document" onChange={applicationChanged} onBlocked={attachmentChanged} />}</ActionForm></details>
  <details className="journey-section"><summary>{tr('Registration review and booking')}</summary>{auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
           const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
           if (active.current) setLoaded(old => ({
             ...old,
             registrationOptions: data
           }));
-        })}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} onChange={e => {
+        })}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} disabled={busy} onChange={e => {
             recordEpoch.current++;
+            setError('');setMessage('');setApplicationFiles([]);
             setCorrectionFiles([]);
             setRegistrationId(e.target.value);
             setLoaded(old => ({

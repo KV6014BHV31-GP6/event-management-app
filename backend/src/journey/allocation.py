@@ -4,6 +4,8 @@ from uuid import uuid4
 from sqlalchemy import select
 from src.journey.policy import *
 from src.journey.models import JourneyState
+from src.users.models import UserModel
+from src.participants.models import ParticipantModel
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum as Status
 
 async def registrations(db,event):return list((await db.scalars(select(RegistrationModel).where(RegistrationModel.event_id==event.id).order_by(RegistrationModel.waitlisted_at.asc(),RegistrationModel.created_at.asc(),RegistrationModel.id.asc()))).all())
@@ -48,6 +50,21 @@ async def allocate(db,event,reg,actor_id):
     m.data={**m.data,'review':'eligible','reason':None,'updated_at':iso()};m.version+=1
     if reg.status==Status.approved:await message(db,event,reg,'confirmation','confirm:'+reg.id,'Your synthetic booking is confirmed.')
     await db.flush()
+async def candidate_enabled(db,event,reg):
+    # Participant identity and entry operator are independent account bindings.
+    # Lock current accounts before reading access so a concurrent disable cannot
+    # commit between this eligibility check and the offer/outbox transaction.
+    person=await db.get(ParticipantModel,reg.participant_id)
+    account_ids={reg.created_by_user_id,person.user_id if person else None}-{None}
+    for account_id in sorted(account_ids):
+        actor=await db.scalar(select(UserModel).where(UserModel.id==account_id).with_for_update().execution_options(populate_existing=True))
+        access=await state(db,'account:'+account_id)
+        if not actor or access and not access.data.get('enabled',True):return False
+        if account_id==reg.created_by_user_id and actor.role.value=='leader':
+            assignment=await state(db,'leader:'+event.public_id+':'+account_id)
+            if not assignment or not assignment.data['active']:return False
+    return True
+
 async def reconcile(db,event):
     work=await mutable(db,event)
     if work.data['state']!='published':fail('EVENT_CLOSED')
@@ -61,12 +78,7 @@ async def reconcile(db,event):
     for reg in await registrations(db,event):
         m=await meta(db,reg)
         if reg.status!=Status.waiting or m.data['review']!='eligible' or m.data.get('offer_expired'):continue
-        if reg.created_by_user_id:
-            actor=await db.get(__import__('src.users.models',fromlist=['UserModel']).UserModel,reg.created_by_user_id)
-            if actor and actor.role.value=='leader':
-                assignment=await state(db,'leader:'+event.public_id+':'+actor.id)
-                access=await state(db,'account:'+actor.id)
-                if not assignment or not assignment.data['active'] or access and not access.data['enabled']:continue
+        if not await candidate_enabled(db,event,reg):continue
         if any(o.data['registration_id']==reg.id and o.data['state']=='offered' and dt(o.data['expires_at'])>now() for o in await offers(db,event)):continue
         if await available(db,event,pool(reg),reg)<=0:continue
         identifier=str(uuid4());expiry=iso(now()+timedelta(minutes=work.data['policy']['offer_minutes']))

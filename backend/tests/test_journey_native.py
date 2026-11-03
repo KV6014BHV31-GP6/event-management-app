@@ -172,3 +172,50 @@ async def test_native_offline_offer_hold_blocks_walkin_last_place(journey_native
     assert 'error' not in result[0] and result[1]['error']==409,result
     async with sessions() as db:
         rows=(await db.scalars(select(RegistrationModel).where(RegistrationModel.event_id==event.id,RegistrationModel.status==Status.approved))).all();assert len(rows)==1 and rows[0].id==regs[1].id
+
+async def test_native_managed_legacy_admission_requires_staff_assignment(journey_native):
+    sessions,a,event,regs=journey_native
+    from httpx import AsyncClient, ASGITransport
+    from src.main import app
+    from src.core.database import get_async_db
+    from src.core.security import create_access_token
+    async def database():
+        async with sessions() as db:yield db
+    app.dependency_overrides[get_async_db]=database
+    try:
+        async with AsyncClient(transport=ASGITransport(app=app),base_url='http://test') as client:
+            header={'Authorization':'Bearer '+create_access_token({'sub':a[0].username})}
+            response=await client.post('/api/v1/events/'+event.public_id+'/registrations',json=form('DENIED-'+event.public_id),headers=header)
+            assert response.status_code==403
+            async with sessions() as db:
+                assert await db.scalar(select(func.count()).select_from(RegistrationModel).where(RegistrationModel.event_id==event.id,RegistrationModel.created_by_user_id==a[0].id))==0
+                await put(db,'leader:'+event.public_id+':'+a[0].id,'leader',{'leader_id':a[0].id,'active':True,'reserved_quota':0,'referral_code':'legacy-scope','public_url':'unused'},event.id);await db.commit()
+            accepted=await client.post('/api/v1/events/'+event.public_id+'/registrations',json=form('ASSIGNED-'+event.public_id),headers=header)
+            assert accepted.status_code==201
+            async with sessions() as db:
+                m=await state(db,'registration:'+accepted.json()['id']);assert m.data['source_kind']=='unknown' and m.data['attributed_leader_id'] is None and m.data['entry_operator_id']==a[0].id
+                unmanaged=await db.scalar(select(EventModel).where(EventModel.organizer_id==a[2].id,EventModel.id!=event.id).limit(1))
+                participant_actor=UserModel(id=str(__import__('ulid').ULID()),username='u'+str(uuid4())[:15],role=UserRoleEnum.user,password_hash='unusable-test');db.add(participant_actor);await db.commit()
+            assert (await client.post('/api/v1/events/'+unmanaged.public_id+'/registrations',json=form('ASSIGNED-'+event.public_id),headers=header)).status_code==201
+            participant_header={'Authorization':'Bearer '+create_access_token({'sub':participant_actor.username})}
+            assert (await client.post('/api/v1/events/'+event.public_id+'/registrations',json=form('ORDINARY-'+event.public_id),headers=participant_header)).status_code==201
+    finally:app.dependency_overrides.clear()
+
+@pytest.mark.parametrize('entry_operator',['participant','guest'])
+async def test_native_released_offer_skips_disabled_participant_account(journey_native,entry_operator):
+    sessions,a,event,regs=journey_native
+    from src.participants.models import ParticipantModel
+    async with sessions() as db:
+        user=UserModel(id=str(__import__('ulid').ULID()),username='d'+str(uuid4())[:15],role=UserRoleEnum.user,password_hash='unusable-test');db.add(user);await db.flush()
+        reg=await db.get(RegistrationModel,regs[1].id)
+        if entry_operator=='participant':reg.created_by_user_id=user.id
+        person=await db.get(ParticipantModel,reg.participant_id);person.user_id=user.id
+        await put(db,'account:'+user.id,'account',{'enabled':True});await db.commit()
+    for reg in regs:assert 'error' not in await invoke(sessions,'registrations/'+reg.id+'/review',a[2],{'decision':'approve','reason':''},1)
+    async with sessions() as db:await put(db,'account:'+user.id,'account',{'enabled':False});await db.commit()
+    result=await invoke(sessions,'registrations/'+regs[0].id+'/cancel',a[2],{'reason':'Synthetic capacity release'},await current(sessions,event,'registration:'+regs[0].id));assert 'error' not in result
+    async with sessions() as db:
+        offered=[r.data['registration_id'] for r in (await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='offer'))).all() if r.data['state']=='offered']
+        assert offered==[regs[2].id]
+        notifications=[r.data['registration_id'] for r in (await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outbox'))).all() if r.data['kind']=='waitlist_offer']
+        assert notifications==[regs[2].id]
