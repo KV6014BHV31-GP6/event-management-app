@@ -3,19 +3,36 @@
   "run_id": "20261103-132629",
   "source_sha": "8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5",
   "gates": {
-    "G0": "SOURCE_LOCKED_TEXT_WITH_DECLARED_LIMITS",
-    "G1": "DESIGN_LOCKED_FOR_EXPLICIT_OWNER_SCOPE",
-    "G2": "NOT_RUN",
-    "G3": "IN_PROGRESS_NO_ACCEPTANCE",
-    "G4": "NOT_RUN",
-    "G5": "NOT_RUN",
-    "G6": "NOT_RUN",
-    "G7": "NOT_RUN"
+    "G0": "PASS_SOURCE_TEXT_TABLE_IMAGES_LOCK; WORD_PAGE_LAYOUT_NOT_RUN",
+    "G1": "PASS_DESIGN_LOCK; FINAL_RENDERED_QA_PENDING_IN_G5",
+    "G2": "PARTIAL_HISTORICAL_AND_CI_AUTHOR_VIEWER; FINAL_INTEGRATED_GATE_PENDING",
+    "G3": "PARTIAL_IMPLEMENTED_AND_AUTHOR_RESULTS; FINAL40AC_PENDING",
+    "G4": "PARTIAL_HISTORICAL_PLUS_CI_AUTHOR; FINAL_INTEGRATED_RESTART_BINDING_PENDING",
+    "G5": "BLOCKED_NEW_INDEPENDENT_NATIVE_GREEN; OTHER_FINAL_CHECKS_PENDING",
+    "G6": "BLOCKED_PREMERGE_GATES; NOT_MERGED_NOT_LOCAL_RELEASED",
+    "G7": "NOT_RUN_FORMAL; ENGLISH_FEMALE_PREPRODUCTION_ONLY"
   },
-  "blockers": [],
+  "blockers": [
+    "New independent native GREEN for the repaired event-generation and migration-literal findings remains blocked by prior automatic runtime safety rejection",
+    "Final integrated fixed-SHA Browser/40AC/visual and affected acceptance pending",
+    "New candidate required hosted CI pending, including mandatory private-document and Offline E2E",
+    "Merge-SHA CI/artifact/localCD and formal same-artifact full video not run"
+  ],
   "continuation_authority": "Owner master: stop only affected gate; continue independent work",
   "source_limits": [
-    "raw DOCX bytes/hash NOT_VERIFIED",
-    "story mapping graphic NOT_READ"
-  ]
+    "Full Word page-layout rendering NOT_RUN; original text/tables/embedded images and source hashes admitted",
+    "Owner/W8 relay is not NGO policy approval or human UAT"
+  ],
+  "observed_at": "2026-11-03T09:45:06.195535+00:00",
+  "candidate_identity": "The commit containing this register; execution receipts must independently bind its exact full SHA",
+  "narration": {
+    "owner_override": "English natural female",
+    "subtitles": [
+      "Traditional Chinese",
+      "English SRT"
+    ],
+    "sample_provider": "REAL_LOCAL existing Microsoft Zira Desktop en-US Female",
+    "sample_status": "PREPRODUCTION_TECHNICAL_ONLY",
+    "naturalness": "NOT_MEASURED"
+  }
 }

@@ -63,3 +63,42 @@ Author completion is not independent acceptance. G0–G5 and required candidate 
 ## Integration clarification 7: indeterminate connection or commit
 
 The locked clarification6 body above has source SHA256 `0e71e64a52add565be277aae30beb9aead0aa5d836ea9730d177a55df311685f`. The controller and both writers accepted this additive error mapping: an indeterminate connection/commit failure returns bounded `500 OPERATION_OUTCOME_UNKNOWN` with `Cache-Control: no-store`. It makes no rollback assertion and permits no automatic business retry. Preserve the immutable operation ID, reconcile by GET, and use the existing exact-original-payload rules. Known PostgreSQL deadlock/serialization/integrity rollback remains `409 TRANSACTION_CONFLICT`. The native postcommit-fault author evidence records500 then the original durable receipt with one generation increment; final integrated independent acceptance remains required.
+
+
+Admission: the clarification8 below was independently reviewed at Astra/max as `APPROVE_BOUNDED_AUTHOR_IMPLEMENTATION_ONLY`. Its external source SHA256 is `100daa7e1a9ca814dbd87e8a61ecb5928fb1ef86997de7101cb1f0c96f122959`. The proposal wording is now admitted for this synthetic Demo; this admission is not product/native/CI acceptance.
+
+## Controller clarification 8: bounded protected account recovery
+
+Task DEMO-FULL-JOURNEY-20261103, R3. Proposed engineering amendment to the tracked account contract at b9b6c7b0fcae4c5c91e4496d90eb0e45382362df (SHA25684d0f1f9364b4493bebde42952979f38a53cacc451cbd4850a09a2db6e0cf098). Source findings RO-B9-01/02. This adds complete recovery and strict response binding; it changes no Backend route/schema/business authority. Synthetic-only local Demo remains the acceptance boundary.
+
+### Durable original protected request
+
+The existing four-field reset marker remains unchanged: challenge_id, operation_id, endpoint, unknown. Password, recovery capability, auth token and reset body MUST NOT be persisted, hashed into public evidence or logged. They remain current component memory only.
+
+For profile and challenge issuance only, permit a versioned typed original request record under the existing actor-specific storage namespace. Persist actor binding, canonical operation ID, exact endpoint and original envelope. A profile envelope contains only contract_version, operation_id, expected_version, data.display_name and data.preferred_language; an issuance envelope contains only contract_version, operation_id and data.account_id/synthetic=true. Reject unknown fields, mismatched actor/endpoint/operation IDs and malformed values. No contact fields, username/password/token/capability or arbitrary data are allowed. Ordinary logs, screenshots and public reports contain only counts/check results/operation IDs, never the stored profile body. This is not an encrypted personal-data production feature.
+
+Before any initial protected POST, durably save and read back the exact allowed record. A storage failure, changed reference or corrupted record sends no POST and preserves existing data. Prevent two tabs/client instances from overwriting one unresolved operation; choose the smallest supported origin-scoped serialization mechanism, fail closed if required capability is unavailable, and test the failure path. Never silently replace a different pending ID.
+
+Legacy four-field profile/issuance markers remain readable as unresolved references for receipt GET. They lack a trustworthy original body/version and therefore cannot be retried by inventing values or a new UUID. Explain their limitation and preserve the reference for manual source/receipt reconciliation. Do not clear them to hide a previous uncertain write.
+
+### Manual original-ID reconciliation and retry
+
+Reconciliation authenticates the same current actor and validates the complete receipt. A valid receipt clears only the matching stored operation; profile then reads current profile separately. A valid authenticated NOT_FOUND404 means only that no receipt was returned at that observation. It never means rollback or permission to discard/change the request.
+
+After an explicit user reconciliation returned valid404, a separate deliberate retry may use only the durable exact original envelope. Read the original record again, confirm unchanged binding, and perform a fresh receipt GET immediately before sending. If GET returns a valid receipt, resolve without another POST. Any other GET result (including auth denial, conflict, server error, malformed response or transport unknown) preserves the reference and sends no POST. If GET still returns valid404, send the original ID and byte-equivalent canonical envelope; no automatic retry, new UUID, changed name/language/target/expected_version or silent overwrite. Preserve the original reference after any uncertain replay or refusal; no rollback claim based solely on a replay error.
+
+Cancellation/unmount/actor replacement must not allow a stale completion to clear another actor or newer operation. Secret and delivery state still clear in memory. UI clearly separates checking original result, deliberately retrying that original request and beginning a later new action only after a validated resolution.
+
+### Receipt binding
+
+In addition to exact schema/version/operation ID/outcome/timestamp/effects:
+
+- Profile: kind=account_profile_update, resource_id=current original actor ID, positive resource_version=effects.profile_version. If a durable original expected_version is available, require resource_version=expected_version+1.
+- Issuance: kind=account_recovery_issue, resource_id=effects.challenge_id (canonical UUID), resource_version=1. The request's original target remains bound in the retained immutable envelope; no claim that an absent target field in the server receipt was independently verified.
+- Reset: kind=account_password_reset, resource_id=original challenge ID, positive integer resource_version. This is credential generation, not challenge version1. Do not assume the target had generation0.
+
+Wrong kind/resource/version, unknown fields or mismatched effects are outcome unknown, never success; keep the original reference and do not reveal delivery or clear inputs as completed. Tests must use actual Backend receipt families rather than invented account_test fixtures.
+
+### Required bounded evidence
+
+Preserve initial RED for precommit unknown→404 stranded profile/issuance and mismatched receipt binding. GREEN tests cover durable reload, original immutable retry, fresh GET receipt avoiding POST, storage failures, actor replacement, cross-instance serialization and malformed/401/403/409/500 receipt failures. Existing reset secret-lifecycle and exact-ID recovery tests remain. Relevant full React tests/build and real Browser flow are separate layers; no native security probe rejected by runtime is authorized through this amendment. Independent source/component review and remaining native acceptance blockers stay separate.

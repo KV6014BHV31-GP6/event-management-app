@@ -40,3 +40,11 @@ All40 original amended AC are now indexed in AC_MATRIX.json. Earlier unavailable
 ## R3 evidence reconciliation
 
 At fixed2e95f9882b20b39c3e0ee9f17e043cb6df3efc64 the supplemental real browser journey reports20 observed-positive author rows,19 partial and1 validation RED with later valid-path pass. Root G4 separately records actual IndexedDB/lost-ACK/native readback. These are historical author layers, not a sum yielding final40AC PASS. Account recovery/profile and overlength-phone notice repairs require fresh integrated browser/native/independent acceptance. ACCOUNT_CONTRACT_R3.md retains original task-level recovery/profile scope. Current implementation status and raw receipts stay in the external run checkpoint; no CI/merge/localCD/video/UAT claim is created by this document update.
+
+## Released R3 follow-up author layers
+
+FE5f6bd962006e06d3ef8974afd609c28086bcd66c addresses absent-receipt profile/issuance recovery and strict receipt binding. Original protected envelopes are typed, actor-bound and guarded by origin-scoped Web Locks; reset passwords/capabilities remain memory-only. Five initial functional REDs are preserved; author full React221/221 and build pass. Live tab, profile/recovery and final independent acceptance remain separate.
+
+CI63699c80e1247678319c37cc9d71104049b31263 adds a mandatory private-document/Offline E2E helper and native receipt reconciliation. Its AUTHOR_LOCAL proof has authenticated PNG thumbnail/modal/download, three IndexedDB drafts with identical IDs/payloads after reload, zero offline API/Restore autoPOST, one successful batchPOST, lostACK and one original GET, with native1batch/3submissions/3pending records. Three initial harness failures remain preserved; none is relabelled product PASS. Hosted CI and complete PDF/ACL/full40AC/final runtime acceptance cannot be inferred from this bounded layer.
+
+Owner voice revision: formal narration is natural English female; Traditional Chinese and English subtitles remain. The32shot/40AC preproduction mapping has planned times only. Every final feature timestamp must come from actual footage of the accepted merge-SHA artifact after G6. No old canary montage or planned subtitle is G7 evidence.
