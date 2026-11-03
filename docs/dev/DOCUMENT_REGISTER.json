@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T10:04:41.738542+00:00",
-  "reason": "R3 CI authentication intent 不保存密碼或登入 body；保留業務原請求及 outcome",
+  "reviewed_at": "2026-11-03T12:43:01.645672+00:00",
+  "reason": "R3 CI 增加完整 synthetic account 測試及獨立 JUnit，保留現有零 skip 驗收門檻",
   "document_count": 362,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -6891,7 +6891,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 6,
+      "revision": 7,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6929,13 +6929,20 @@
           "size_bytes": 14275,
           "superseded_at": "2026-11-03T10:04:41.738542+00:00",
           "reason": "R3 CI authentication intent 不保存密碼或登入 body；保留業務原請求及 outcome"
+        },
+        {
+          "revision": 6,
+          "sha256": "3995f46f9b9434a1f3967dba9bdaf50d7e3e3bbb0ed9379b361dc73aeb3a52a6",
+          "size_bytes": 14804,
+          "superseded_at": "2026-11-03T12:43:01.645672+00:00",
+          "reason": "R3 CI 增加完整 synthetic account 測試及獨立 JUnit，保留現有零 skip 驗收門檻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "3995f46f9b9434a1f3967dba9bdaf50d7e3e3bbb0ed9379b361dc73aeb3a52a6",
-      "size_bytes": 14804
+      "sha256": "303afa3e0ca5cb497562a7deda5d637de441b47ad4388632b744ddaa9755d6c9",
+      "size_bytes": 15317
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -7203,7 +7210,7 @@
     {
       "document_id": "DEMO-DOC-D79E0FEF840573FD",
       "path": "scripts/demo_ci.py",
-      "revision": 5,
+      "revision": 6,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7234,13 +7241,20 @@
           "size_bytes": 39118,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 5,
+          "sha256": "e1c3e3c66b7401a55f0c375575dbbf0a554d70c6a727e4fd1cebde294987fa41",
+          "size_bytes": 42820,
+          "superseded_at": "2026-11-03T12:43:01.645672+00:00",
+          "reason": "R3 CI 增加完整 synthetic account 測試及獨立 JUnit，保留現有零 skip 驗收門檻"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e1c3e3c66b7401a55f0c375575dbbf0a554d70c6a727e4fd1cebde294987fa41",
-      "size_bytes": 42820
+      "sha256": "3d9f7037330781c6cb05413f83338b7e1a75ce09008ed432b4b5e90f6e4a8128",
+      "size_bytes": 43166
     },
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
