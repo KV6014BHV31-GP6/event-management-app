@@ -232,6 +232,9 @@ function Status({ value }) {
     "rejected",
     "active",
     "completed",
+    "published",
+    "postponed",
+    "draft",
   ].includes(value?.toLowerCase())
     ? value.toLowerCase()
     : "unknown";
@@ -589,6 +592,19 @@ function Shell({ children }) {
     </div>
   );
 }
+export const eventDisplayState = event => event.workflow?.state || event.status;
+const acceptsApplications = (event, now=Date.now()) => {
+  if(event.status?.toLowerCase()!=="active")return false;
+  if(!event.workflow)return true;
+  if(event.workflow.state!=="published")return false;
+  const opens=Date.parse(event.workflow.registration_opens_at),closes=Date.parse(event.workflow.registration_closes_at);
+  return (!Number.isFinite(opens)||now>=opens)&&(!Number.isFinite(closes)||now<=closes);
+};
+function RegistrationWindow({event}) {
+  const workflow=event.workflow;if(!workflow)return null;
+  const format=value=>{try{return new Intl.DateTimeFormat(locale(),{dateStyle:"medium",timeStyle:"short",...(workflow.timezone?{timeZone:workflow.timezone}:{})}).format(new Date(value));}catch{return tr("Unavailable");}};
+  return <div className="registration-window small muted">{workflow.registration_opens_at&&<p>{tr("Registration opens")}: {format(workflow.registration_opens_at)}</p>}{workflow.registration_closes_at&&<p>{tr("Registration closes")}: {format(workflow.registration_closes_at)}</p>}{workflow.timezone&&<p>{workflow.timezone}</p>}{workflow.change_notice&&<p>{workflow.change_notice}</p>}</div>;
+}
 function EventImage({ event, className = "", detail = false, index = 0 }) {
   let gallery = [];
   try {
@@ -635,7 +651,7 @@ export function EventCard({ event }) {
       >
         <EventImage event={event} className="card-image" />
         <span className="image-status">
-          <Status value={event.status} />
+          <Status value={eventDisplayState(event)} />
         </span>
       </Link>
       <div className="card-body">
@@ -662,6 +678,7 @@ export function EventCard({ event }) {
           <Icon name="location" size={15} />
           <span>{event.location}</span>
         </p>
+        <RegistrationWindow event={event}/>
         <Link
           className="button card-button"
           view="event"
@@ -686,7 +703,7 @@ function Events({ home = false }) {
   const [reload, setReload] = useState(0);
   const [jump, setJump] = useState(String(route.page));
   const page = home ? 1 : route.page,
-    pageSize = home ? 3 : route.pageSize,
+    pageSize = home ? 24 : route.pageSize,
     keyword = home ? "" : route.keyword;
   useEffect(() => {
     const request = new AbortController();
@@ -727,9 +744,10 @@ function Events({ home = false }) {
       pageSize,
       keyword,
     });
+  const displayedEvents = home ? (state.data?.data||[]).filter(event => ["active","published"].includes(eventDisplayState(event).toLowerCase()) && Date.parse(event.start_time)>=Date.now()).sort((a,b)=>Date.parse(a.start_time)-Date.parse(b.start_time)).slice(0,3) : (state.data?.data||[]);
   return (
     <div className="browse-page">
-      {home && <Heading eyebrow="ROSE · PULSE" title={tr("Community events")}><p>{tr("Find an event, check the date and location, then apply. Places are confirmed by the server.")}</p></Heading>}
+      {home && <Heading eyebrow="ROSE · PULSE" title={tr("Community events")}>{tr("Find an event, check the date and location, then apply. Places are confirmed by the server.")}</Heading>}
       {!home && (
         <Heading
           eyebrow={tr("FIND YOUR COMMUNITY")}
@@ -819,9 +837,9 @@ function Events({ home = false }) {
           </Notice>
         )}
         {state.status === "ready" &&
-          (state.data.data.length ? (
+          (displayedEvents.length ? (
             <div className="event-grid">
-              {state.data.data.map((event) => (
+              {displayedEvents.map((event) => (
                 <EventCard event={event} key={event.public_id} />
               ))}
             </div>
@@ -1038,7 +1056,7 @@ function EventDetail() {
         <article className="event-detail">
           <div className="detail-photo">
             <EventImage event={event} detail index={imageIndex} />
-            <Status value={event.status} />
+            <Status value={eventDisplayState(event)} />
           </div>
           {event.image_files?.length > 1 && (
             <div
@@ -1100,12 +1118,12 @@ function EventDetail() {
                 {tr("Times use")}
                 {Intl.DateTimeFormat().resolvedOptions().timeZone}.
               </p>
-              <EventShare event={event} />
+              <RegistrationWindow event={event}/><EventShare event={event} />
             </div>
             <aside className="detail-action">
               <Quota event={event} />
               <Link view="operations" params={{event:event.public_id}} className="button button-quiet">{tr("Booking and event operations")}</Link>
-              {event.status.toLowerCase() === "active" ? (
+              {acceptsApplications(event) ? (
                 <Link
                   view="apply"
                   params={{
@@ -1745,8 +1763,9 @@ function EventEditorForm({ edit, onAnother }) {
   );
 }
 function Apply() {
-  const { route } = useApp();
+  const { route,runtime,auth,navigate } = useApp();
   const [state, reload] = useEvent(route.event);
+  if(state.event?.workflow)return <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} initialPublicEvent={state.event} navigate={navigate}/>;
   return (
     <>
       <Back event={route.event} />
@@ -1788,7 +1807,7 @@ function Application({ event }) {
   const anonymous =
     !auth.user && !auth.hasToken && !auth.checking && !auth.identityBlocked;
   const allowed = (guest && anonymous) || auth.user?.role === "user";
-  const active = event.status.toLowerCase() === "active";
+  const active = acceptsApplications(event);
   const submit = (submitEvent) => {
     submitEvent.preventDefault();
     if (!allowed || !active || locked(state) || documentsBlocked) return;
@@ -1904,7 +1923,7 @@ function Application({ event }) {
                     "A place is not confirmed. Keep this reference and contact the organiser if you need help.",
                   )}
                 </p>
-                <EventShare event={event} />
+                <RegistrationWindow event={event}/><EventShare event={event} />
                 <dl className="receipt">
                   <dt>{tr("Event")}</dt>
                   <dd>{event.title}</dd>
@@ -2030,7 +2049,7 @@ function Application({ event }) {
       <aside className="application-context">
         <EventImage event={event} />
         <div>
-          <Status value={event.status} />
+          <Status value={eventDisplayState(event)} />
           <h3>{event.title}</h3>
           <p className="event-meta">
             <Icon name="calendar" size={16} />

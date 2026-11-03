@@ -806,5 +806,14 @@
   "Keep your application reference": "Keep your application reference",
   "Original immutable action recovered. Read the current record.": "Original immutable action recovered. Read the current record.",
   "Retry exact saved action": "Retry exact saved action",
-  "Localhost demo links work only on this computer. No external delivery is claimed.": "Localhost demo links work only on this computer. No external delivery is claimed."
+  "Localhost demo links work only on this computer. No external delivery is claimed.": "Localhost demo links work only on this computer. No external delivery is claimed.",
+  "Published": "Published",
+  "Postponed": "Postponed",
+  "Guest application — no account will be created.": "Guest application — no account will be created.",
+  "Eligibility and places require Organizer review. A pending application is not a confirmed booking.": "Eligibility and places require Organizer review. A pending application is not a confirmed booking.",
+  "Load available events": "Load available events",
+  "Online event": "Online event",
+  "Advanced event reference": "Advanced event reference",
+  "The current account changed. Read the event list again.": "The current account changed. Read the event list again.",
+  "Unavailable": "Unavailable"
 }

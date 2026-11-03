@@ -806,5 +806,14 @@
   "Keep your application reference": "Simpan rujukan permohonan anda",
   "Original immutable action recovered. Read the current record.": "Tindakan asal yang tetap dipulihkan. Baca rekod semasa.",
   "Retry exact saved action": "Cuba semula tindakan asal yang tersimpan",
-  "Localhost demo links work only on this computer. No external delivery is claimed.": "Pautan demo localhost hanya berfungsi pada komputer ini. Tiada penghantaran luaran didakwa."
+  "Localhost demo links work only on this computer. No external delivery is claimed.": "Pautan demo localhost hanya berfungsi pada komputer ini. Tiada penghantaran luaran didakwa.",
+  "Published": "Diterbitkan",
+  "Postponed": "Ditangguhkan",
+  "Guest application — no account will be created.": "Permohonan tetamu — tiada akaun akan dicipta.",
+  "Eligibility and places require Organizer review. A pending application is not a confirmed booking.": "Kelayakan dan tempat memerlukan semakan penganjur. Permohonan belum selesai bukan tempahan disahkan.",
+  "Load available events": "Muatkan acara tersedia",
+  "Online event": "Acara dalam talian",
+  "Advanced event reference": "Rujukan acara lanjutan",
+  "The current account changed. Read the event list again.": "Akaun semasa berubah. Baca senarai acara semula.",
+  "Unavailable": "Tidak tersedia"
 }

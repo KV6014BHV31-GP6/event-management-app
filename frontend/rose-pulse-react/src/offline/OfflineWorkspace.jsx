@@ -40,6 +40,7 @@ export default function OfflineWorkspace({
   const [batches, setBatches] = useState([]);
   const [eventId, setEventId] = useState(initialEvent);
   const [downloadId, setDownloadId] = useState(initialEvent);
+  const [onlineEvents,setOnlineEvents]=useState([]);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -288,6 +289,15 @@ export default function OfflineWorkspace({
               )}
             </p>
             <div className="offline-download-controls">
+              <button className="button button-quiet" disabled={busy||!online} onClick={()=>operate(async()=>{
+                if(!online)throw new Error("Reconnect before downloading an event.");
+                await runtime.freshOfflineIdentity(actor);
+                const page=await runtime.api.getEvents({page:1,pageSize:24});
+                if(runtime.getSnapshot().offlineActor?.id!==actor.id)throw new Error("The current account changed. Read the event list again.");
+                setOnlineEvents(page.data);
+              })}>{tr("Load available events")}</button>
+              <label className="field"><span>{tr("Online event")}</span><select value={downloadId} disabled={busy||!online} onChange={event=>setDownloadId(event.target.value)}><option value="">{tr("Choose an event")}</option>{downloadId&&!onlineEvents.some(event=>event.public_id===downloadId)&&<option value={downloadId}>{events.find(row=>row.event.public_id===downloadId)?.event.title||tr("Selected event")}</option>}{onlineEvents.map(event=><option key={event.public_id} value={event.public_id}>{event.title}</option>)}</select></label>
+              <details><summary>{tr("Advanced event reference")}</summary>
               <label className="field">
                 <span>{tr("Event public reference")}</span>
                 <input
@@ -297,6 +307,7 @@ export default function OfflineWorkspace({
                   maxLength={21}
                 />
               </label>
+              </details>
               <button
                 className="button"
                 onClick={download}

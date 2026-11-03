@@ -2,7 +2,7 @@ import {downloadApprovedFlyer} from "./flyer.js";
 import AttendanceWorkspace from "./AttendanceWorkspace.jsx";
 import {createAttendanceStore} from "./offline/attendance.js";
 import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
-import { tr } from './i18n/index.js';
+import { tr,locale } from './i18n/index.js';
 import { createJourneyClient } from './journey-api.js';
 import { minimumRegistrationPayload } from './minimum-registration.js';
 import { FilePicker, PrivateDocuments } from './FilePicker.jsx';
@@ -44,10 +44,11 @@ function JourneySession({
   auth,
   initialEvent = '',
   initialRef = '',
+  initialPublicEvent = null,
   navigate
 }) {
   const [eventId, setEventId] = useState(initialEvent),
-    [loaded, setLoaded] = useState({}),
+    [loaded, setLoaded] = useState({publicEvent:initialPublicEvent}),
     [message, setMessage] = useState(''),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
@@ -80,6 +81,7 @@ function JourneySession({
     staff = owner || staffActor?.role === 'leader';
   const root = `/events/${eventId}`;
   const eventVersion = loaded.event?.workflow?.version;
+  useEffect(()=>{if(staff||!eventId||!runtime.api?.getEvent)return;let current=true;runtime.api.getEvent(eventId).then(value=>{if(current&&active.current)setLoaded(old=>({...old,publicEvent:value}));}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[runtime,staff,eventId]);
   useEffect(()=>{if(!initialRef)return;let current=true;client.publicGet('/referrals/'+encodeURIComponent(initialRef)).then(value=>{if(current&&active.current){if(!value.active||value.event_public_id!==eventId)throw new Error('This referral is inactive or does not match this event.');setLoaded(old=>({...old,referral:value}));}}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[client,initialRef,eventId]);
   const run = async fn => {
     if (lock.current) return;
@@ -147,7 +149,7 @@ function JourneySession({
           const recovered=await client.reconcile(row.body.operation_id);if(recovered.effects?.registration_id){setRegistrationId(recovered.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:recovered.effects}));}
           setMessage(tr('Original receipt recovered. Read the current resource.'));
         })}>{tr('Reconcile')}</button>{row.missing_receipts>=2&&!row.sensitive&&!row.immutable_conflict&&<button className="button button-quiet button-small" disabled={busy} onClick={()=>run(async()=>{const recovered=await client.replayExact(row.body.operation_id);if(recovered.effects?.registration_id){setRegistrationId(recovered.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:recovered.effects}));}setMessage(tr('Original immutable action recovered. Read the current record.'));})}>{tr('Retry exact saved action')}</button>}</div>)}</section>}
- <section className="journey-section"><h2>{tr('Selected event')}</h2><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
+ <section className="journey-section"><h2>{tr('Selected event')}</h2>{!staff&&loaded.publicEvent&&<PublicEventContext event={loaded.publicEvent}/>} {(staff||!eventId)&&<><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
         const data = owner ? await runtime.withVerifiedAccount((token, actor) => runtime.api.getOrganizerEvents(token, {
           page: 1,
           pageSize: 24
@@ -161,14 +163,16 @@ function JourneySession({
         }));
       })}>{tr('Choose an event')}</button><label>{tr('Event')}<select value={eventId} onChange={e => {
           recordEpoch.current++;
+          navigate('operations',{event:e.target.value});
           setEventId(e.target.value);
+          setApplicationFiles([]);setCorrectionFiles([]);
           setLoaded(old => ({
             eventOptions: old.eventOptions
           }));
           setGrant(null);
           setChallenge(null);
           setDemoCode('');
-        }}><option value="">{tr('Select event')}</option>{eventId && !loaded.eventOptions?.some(e => e.public_id === eventId) && <option value={eventId}>{current?.event.title || tr('Selected event')}</option>}{loaded.eventOptions?.map(e => <option value={e.public_id} key={e.public_id}>{e.title}</option>)}</select></label>{staff && <button className="button" disabled={busy || !eventId} onClick={loadEvent}>{tr('Read current event')}</button>}{current && <><h3>{current.event.title}</h3><p>{tr('Workflow')}: {tr(current.workflow.state)}</p><p>{current.event.location} · {current.event.start_time}</p><button className="text-button" onClick={() => navigate('event', {
+        }}><option value="">{tr('Select event')}</option>{eventId && !loaded.eventOptions?.some(e => e.public_id === eventId) && <option value={eventId}>{current?.event.title || loaded.publicEvent?.title || tr('Selected event')}</option>}{loaded.eventOptions?.map(e => <option value={e.public_id} key={e.public_id}>{e.title}</option>)}</select></label></>}{staff && <button className="button" disabled={busy || !eventId} onClick={loadEvent}>{tr('Read current event')}</button>}{current && <><h3>{current.event.title}</h3><p>{tr('Workflow')}: {tr(current.workflow.state)}</p><p>{current.event.location} · {current.event.start_time}</p><button className="text-button" onClick={() => navigate('event', {
           event: eventId
         })}>{tr('View public event')}</button></>}</section>
  {owner && <details className="journey-section"><summary>{tr('Create managed event')}</summary><ActionForm title="Create draft" busy={busy || filesBlocked} fields={[field('title', 'Event title'), field('overview', 'Overview', 'textarea'), field('location', 'Location'), field('start_time', 'Start', 'datetime-local'), field('end_time', 'End', 'datetime-local'), field('online_quota', 'Online quota', 'number', {
@@ -231,7 +235,7 @@ function JourneySession({
         leader_id: v.leader_id,
         reserved_quota: +v.reserved_quota,
         active: true
-      }, eventVersion)}><button type="button" className="text-button" disabled={busy} onClick={() => run(() => read('accounts', '/accounts'))}>{tr('Load leader accounts')}</button><label>{tr('Leader')}<select name="leader_id" required>{loaded.accounts?.accounts.filter(a => a.role === 'leader' && a.enabled).map(a => <option key={a.id} value={a.id}>{a.username}</option>)}</select></label></ActionForm>} {owner && loaded.leaders?.leaders.map(leader => <div key={leader.leader_id}><p>{loaded.accounts?.accounts.find(a => a.id === leader.leader_id)?.username || tr('Assigned leader')} · {tr('Reserved quota')}: {leader.reserved_quota}</p><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/leaders/' + leader.leader_id, {
+      }, eventVersion)}><button type="button" className="text-button" disabled={busy} onClick={() => run(() => read('accounts', '/accounts?scope=assignable_leaders'))}>{tr('Load leader accounts')}</button><label>{tr('Leader')}<select name="leader_id" required>{loaded.accounts?.accounts.filter(a => a.role === 'leader' && a.enabled).map(a => <option key={a.id} value={a.id}>{a.username}</option>)}</select></label></ActionForm>} {owner && loaded.leaders?.leaders.map(leader => <div key={leader.leader_id}><p>{loaded.accounts?.accounts.find(a => a.id === leader.leader_id)?.username || tr('Assigned leader')} · {tr('Reserved quota')}: {leader.reserved_quota}</p><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/leaders/' + leader.leader_id, {
           active: !leader.active
         }, leader.version)}>{tr(leader.active ? 'Revoke assignment' : 'Activate assignment')}</button></div>)}</details>}
  {staff && eventId && <details className="journey-section"><summary>{tr('Promotion and outreach')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(async()=>{await read('promotion',root+'/promotion');if(auth.user?.role==='leader')await read('leaders',root+'/leaders');})}>{tr('Read promotion')}</button><p>{tr('DEMO_TEMPLATE — editable text requires Organizer approval. WhatsApp sharing is manual.')}</p><ActionForm key={promotion?.version} title="Save promotion draft" busy={busy} fields={[field('text', 'Promotion text', 'textarea', {
@@ -251,7 +255,7 @@ function JourneySession({
  {staff && eventId && <details className="journey-section"><summary>{tr('Demand, quota and instructions')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('stats', root + '/stats'))}>{tr('Read current statistics')}</button>{loaded.stats && <Statistics data={loaded.stats} />} {owner && current && <><ActionForm title="Save leader instruction" busy={busy} fields={[field('text', 'Instruction', 'textarea', {
           value: loaded.stats?.instruction?.text
         })]} submit={v => mutate(root + '/instruction', v, eventVersion)} /><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/alerts', {}, eventVersion)}>{tr('Process demand alerts')}</button></>}</details>}
- <details className="journey-section"><summary>{tr('Application and source')}</summary><p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p><ActionForm title="Submit application" busy={busy || !eventId || attachmentBlocked || (!!initialRef&&!loaded.referral) || (!auth.user&&!auth.offlineActor&&!guestAllowed)} fields={[...applicationFields, field('source_kind', 'Source', 'text', {options:initialRef?['leader_referral']:['direct','unknown']})]} submit={v => mutate(root + '/applications', {
+ <details className="journey-section" open={!staff}><summary>{tr('Application and source')}</summary>{guestAllowed&&<p className="notice">{tr('Guest application — no account will be created.')} <button className="text-button" onClick={()=>navigate('login',{event:eventId})}>{tr('Log in')}</button></p>}<p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p><ActionForm title="Submit application" busy={busy || !eventId || attachmentBlocked || (!!initialRef&&!loaded.referral) || (!auth.user&&!auth.offlineActor&&!guestAllowed) || (!staff&&!!runtime.api?.getEvent&&!loaded.publicEvent)} fields={[...applicationFields, field('source_kind', 'Source', 'text', {options:initialRef?['leader_referral']:['direct','unknown']})]} submit={v => mutate(root + '/applications', {
         application: {
           ...appCopy(v),
           ...(applicationFiles.length ? {
@@ -355,4 +359,9 @@ function Closeout({
   data
 }) {
   return <section><p>{tr('As of')}: {data.as_of_utc} · {tr(data.state)}</p><div className="journey-metrics">{Object.entries(data.totals).map(([name, value]) => <div key={name}><strong>{value}</strong><span>{tr(name)}</span></div>)}</div><p>{tr('Attribution')}: {tr('direct')} {data.attribution?.direct??'—'} · {tr('leader_referral')} {data.attribution?.leader_referral??'—'} · {tr('unknown')} {data.attribution?.unknown??'—'}</p><p>{tr('Pending attendance')}: {data.pending_attendance_count} · {tr('Active offers')}: {data.active_offer_count}</p>{data.blockers.map(code => <p role="alert" key={code}>{tr(code)}</p>)}</section>;
+}
+
+function PublicEventContext({event}){
+ const zone=event.workflow?.timezone;const format=value=>{try{return new Intl.DateTimeFormat(locale(),{dateStyle:'medium',timeStyle:'short',...(zone?{timeZone:zone}:{})}).format(new Date(value));}catch{return '—';}};
+ return <article><h2>{event.title}</h2><p>{event.overview}</p><p>{event.location} · {format(event.start_time)} — {format(event.end_time)} {zone}</p><p>{tr('Status')}: {tr(event.workflow?.state||event.status)}</p>{event.workflow?.registration_opens_at&&<p>{tr('Registration opens')}: {format(event.workflow.registration_opens_at)}</p>}{event.workflow?.registration_closes_at&&<p>{tr('Registration closes')}: {format(event.workflow.registration_closes_at)}</p>}<p>{tr('Eligibility and places require Organizer review. A pending application is not a confirmed booking.')}</p></article>;
 }
