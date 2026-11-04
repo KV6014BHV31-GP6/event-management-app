@@ -57,10 +57,14 @@ services:
     stop_grace_period: 20s
     restart: unless-stopped
     mem_limit: 768m
-    networks: [private]
+    # Internal-only networks can report Healthy without publishing the host port.
+    # Only App joins ingress; PostgreSQL stays exclusively on private.
+    networks: [private, ingress]
 networks:
   private:
     internal: true
+  ingress:
+    driver: bridge
 volumes:
   pgdata:
   public_uploads:
