@@ -1,0 +1,74 @@
+name: nu-portable-demo
+services:
+  db:
+    image: postgres:17.11-bookworm
+    environment:
+      POSTGRES_DB: nu_container_demo
+      POSTGRES_USER: nu_bootstrap
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
+    secrets: [db_admin_password, db_app_password]
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./db/init-app.sh:/docker-entrypoint-initdb.d/10-nu-app.sh:ro
+    command: [postgres, -c, shared_buffers=64MB, -c, max_connections=40,
+              -c, log_statement=none, -c, log_min_error_statement=panic,
+              -c, log_parameter_max_length=0, -c, log_parameter_max_length_on_error=0]
+    healthcheck:
+      test: [CMD-SHELL, 'pg_isready -U nu_bootstrap -d nu_container_demo']
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    restart: unless-stopped
+    mem_limit: 256m
+    networks: [private]
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: nu-rose-demo:0e8b-docker-candidate
+    init: true
+    user: '10001:10001'
+    read_only: true
+    tmpfs: ['/tmp:rw,nosuid,noexec,size=64m']
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    environment:
+      NU_DB_HOST: db
+      NU_DB_PORT: '5432'
+      NU_DB_NAME: nu_container_demo
+      NU_DB_USER: nu_app
+      NU_DEMO_NAMESPACE: '${NU_DEMO_NAMESPACE:-vm1104}'
+      NU_DEMO_OWNER_IDS: '${NU_DEMO_OWNER_IDS:-}'
+      NU_EXPECTED_SOURCE_SHA: 0e8bba3863267223ede48ddca35f8bb2017a5e3a
+    secrets: [db_app_password, jwt_secret]
+    ports: ['127.0.0.1:${NU_HTTP_PORT:-5271}:8080']
+    volumes:
+      - public_uploads:/data/uploads
+      - private_uploads:/data/private_assets
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: [CMD, python, -B, /opt/nu/runtime/healthcheck.py]
+      interval: 10s
+      timeout: 5s
+      retries: 6
+      start_period: 20s
+    stop_grace_period: 20s
+    restart: unless-stopped
+    mem_limit: 768m
+    networks: [private]
+networks:
+  private:
+    internal: true
+volumes:
+  pgdata:
+  public_uploads:
+  private_uploads:
+secrets:
+  db_admin_password:
+    file: ./.secrets/db_admin_password
+  db_app_password:
+    file: ./.secrets/db_app_password
+  jwt_secret:
+    file: ./.secrets/jwt_secret
