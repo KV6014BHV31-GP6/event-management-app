@@ -1,0 +1,96 @@
+name: NU portable Docker packaging only
+
+on:
+  push:
+    branches: [feat/nu-portable-docker-20261104]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: nu-portable-docker-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  portable:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    defaults:
+      run:
+        shell: bash
+        working-directory: deploy/portable
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+          check-latest: false
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24.14.0'
+          check-latest: false
+      - name: Download existing successful artifact, not rerun product CI
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p vendor/download "${RUNNER_TEMP}/nu-docker-evidence"
+          gh run download 41650218052 --repo KV6014BHV31-GP6/event-management-app \
+            --name demo-release-0e8bba3863267223ede48ddca35f8bb2017a5e3a --dir vendor/download
+          cp vendor/download/nu-demo-0e8bba3863267223ede48ddca35f8bb2017a5e3a.zip vendor/nu-ci-artifact.zip
+          python prepare.py --new-secrets | tee "${RUNNER_TEMP}/nu-docker-evidence/prepare.json"
+      - name: New packaging checks only
+        run: |
+          set -euo pipefail
+          python -m pip install --disable-pip-version-check -r requirements-test.txt
+          python -m unittest discover -s tests -p 'test_*.py' -v 2>&1 | tee "${RUNNER_TEMP}/nu-docker-evidence/python-tests.txt"
+          node --test tests/gateway.test.mjs | tee "${RUNNER_TEMP}/nu-docker-evidence/gateway-tests.txt"
+          docker --version | tee "${RUNNER_TEMP}/nu-docker-evidence/docker-version.txt"
+          docker compose version | tee "${RUNNER_TEMP}/nu-docker-evidence/compose-version.txt"
+          docker compose config --quiet
+      - name: Build immutable-product Docker wrapper
+        run: |
+          set -euo pipefail
+          docker compose --progress plain build 2>&1 | tee "${RUNNER_TEMP}/nu-docker-evidence/build.txt"
+          docker image inspect nu-rose-demo:0e8b-docker-candidate --format '{{.Id}}' > "${RUNNER_TEMP}/nu-docker-evidence/image-id.txt"
+      - name: New ephemeral container schema and read-only readiness
+        run: |
+          set -euo pipefail
+          docker compose up -d --wait --wait-timeout 60 db
+          docker compose run --rm --no-deps app init-empty-schema --ack-new-synthetic-db nu_container_demo
+          docker compose up -d --wait --wait-timeout 90 app
+          curl --fail --silent http://127.0.0.1:5271/__container_health > "${RUNNER_TEMP}/nu-docker-evidence/health-before.json"
+          curl --fail --silent 'http://127.0.0.1:5271/api/v1/events?page=1&pageSize=1' > "${RUNNER_TEMP}/nu-docker-evidence/events-before.json"
+          docker compose restart app
+          docker compose up -d --wait --wait-timeout 90 app
+          curl --fail --silent http://127.0.0.1:5271/__container_health > "${RUNNER_TEMP}/nu-docker-evidence/health-after.json"
+          curl --fail --silent 'http://127.0.0.1:5271/api/v1/events?page=1&pageSize=1' > "${RUNNER_TEMP}/nu-docker-evidence/events-after.json"
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          p=Path(os.environ['RUNNER_TEMP'])/'nu-docker-evidence'
+          before=json.loads((p/'events-before.json').read_text())
+          after=json.loads((p/'events-after.json').read_text())
+          assert before['total_count']==after['total_count']==0
+          assert before['data']==after['data']==[]
+          receipt={'status':'PASS_CONTAINER_STARTUP_READONLY','wrapper_sha':os.environ['GITHUB_SHA'],'product_sha':'0e8bba3863267223ede48ddca35f8bb2017a5e3a','restart_readiness':'PASS','business_seed':'NOT_RUN','accounts_created':0,'events_created':0,'Grok_VM':'NOT_RUN','full40AC':'NOT_RUN','denied_native_probes':'NOT_RUN'}
+          (p/'RESULT.json').write_text(json.dumps(receipt,indent=2)+'\n')
+          PY
+      - name: Preserve scoped evidence and stop only this ephemeral stack
+        if: always()
+        run: |
+          mkdir -p "${RUNNER_TEMP}/nu-docker-evidence"
+          docker compose ps --all > "${RUNNER_TEMP}/nu-docker-evidence/containers.txt" 2>/dev/null || true
+          docker compose stop || true
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: nu-portable-docker-evidence-${{ github.sha }}
+          path: ${{ runner.temp }}/nu-docker-evidence
+          if-no-files-found: error
+          retention-days: 14
