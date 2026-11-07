@@ -2,11 +2,13 @@ import { defineConfig } from "vite";
 import { readFileSync } from "node:fs";
 import { createHash } from "node:crypto";
 
+const proxyOrigin = process.env.VITE_DEMO_PROXY_ORIGIN || "http://127.0.0.1:5206";
+const demoPort = Number(process.env.VITE_DEMO_PORT || 5205);
 // Preserve Host and Origin so the reviewed loopback proxy can enforce same-origin writes.
 const proxy = {
-  "/api/v1": { target: "http://127.0.0.1:5206", changeOrigin: false },
-  "/api/v2": { target: "http://127.0.0.1:5206", changeOrigin: false },
-  "/uploads": { target: "http://127.0.0.1:5206", changeOrigin: false },
+  "/api/v1": { target: proxyOrigin, changeOrigin: false },
+  "/api/v2": { target: proxyOrigin, changeOrigin: false },
+  "/uploads": { target: proxyOrigin, changeOrigin: false },
 };
 export default defineConfig({
   plugins: [
@@ -45,12 +47,12 @@ export default defineConfig({
   ],
   server: {
     host: "127.0.0.1",
-    port: 5205,
+    port: demoPort,
     strictPort: true,
     proxy,
     fs: { allow: [".."] },
   },
-  preview: { host: "127.0.0.1", port: 5205, strictPort: true, proxy },
+  preview: { host: "127.0.0.1", port: demoPort, strictPort: true, proxy },
   test: {
     environment: "jsdom",
     setupFiles: ["./src/test-setup.js"],

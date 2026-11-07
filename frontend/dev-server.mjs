@@ -7,13 +7,40 @@ import {fileURLToPath} from 'node:url';
 const ROOT = dirname(fileURLToPath(import.meta.url));
 const TYPES = {'.html':'text/html; charset=utf-8', '.css':'text/css; charset=utf-8',
   '.mjs':'text/javascript; charset=utf-8', '.js':'text/javascript; charset=utf-8',
-  '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.md':'text/plain; charset=utf-8'};
+  '.svg':'image/svg+xml', '.png':'image/png', '.jpg':'image/jpeg', '.md':'text/plain; charset=utf-8',
+  '.webmanifest':'application/manifest+json'};
 const MAX_BODY = 1024 * 1024;
 const MAX_V2_FILE_BODY = 8 * 1024 * 1024 + 64 * 1024;
 const V2_ID = '[0-7][0-9A-HJKMNP-TV-Z]{25}';
 const V2_UUID = '[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}';
 const V2_EVENT = '[A-Za-z0-9_-]{21}';
+const OP_ID = '[A-Za-z0-9_-]{1,128}';
+const ACCOUNT_UUID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+const recoveryCapabilityRoute = path => new RegExp(`^/api/v2/operations/account-recovery/challenges/${ACCOUNT_UUID}/(?:reset|receipts/${ACCOUNT_UUID})$`).test(path);
+const accountRoute = path => path === '/api/v2/operations/me/profile' || path.startsWith('/api/v2/operations/me/profile/') || path.startsWith('/api/v2/operations/account-recovery/');
+const operationsAllowed = (method, path) => {
+  const suffix = path.slice('/api/v2/operations'.length);
+  if (method === 'GET') return [
+    '^/me/profile$', `^/me/profile/receipts/${ACCOUNT_UUID}$`,
+    `^/account-recovery/challenges/${ACCOUNT_UUID}/(?:demo-message|receipts/${ACCOUNT_UUID})$`,
+    '^/(accounts|outbox)$', `^/(receipts|referrals)/${OP_ID}$`,
+    `^/registrations/${V2_ID}$`, `^/guest-access/challenges/${OP_ID}/demo-message$`,
+    `^/events/${V2_EVENT}(?:/(leaders|promotion|stats|outreach|roster|closeout))?$`,
+    `^/events/${V2_EVENT}/attendance/${OP_ID}$`,
+  ].some(pattern => new RegExp(pattern).test(suffix));
+  if (method !== 'POST') return false;
+  return [
+    '^/(me/profile|account-recovery/challenges)$', `^/account-recovery/challenges/${ACCOUNT_UUID}/reset$`,
+    '^/(accounts|events|guest-access/challenges)$', `^/accounts/${V2_ID}/access$`,
+    `^/guest-access/challenges/${OP_ID}/verify$`, `^/outbox/${OP_ID}/retry$`,
+    `^/offers/${OP_ID}/(accept|decline)$`, `^/registrations/${V2_ID}/(review|correction|cancel)$`,
+    `^/events/${V2_EVENT}/(edit|publish|postpone|resume|cancel|leaders|applications|promotion|instruction|outreach|alerts|reminders|attendance|walkins|closeout)$`,
+    `^/events/${V2_EVENT}/(promotion/(approve|pause)|offers/reconcile|attendance/intents)$`,
+    `^/events/${V2_EVENT}/leaders/${V2_ID}$`, `^/events/${V2_EVENT}/attendance/${OP_ID}/discard$`,
+  ].some(pattern => new RegExp(pattern).test(suffix));
+};
 const v2Allowed = (method, path) => {
+  if (path.startsWith('/api/v2/operations/')) return operationsAllowed(method, path);
   if (method === 'POST' && path === '/api/v2/files') return true;
   if (['GET', 'HEAD'].includes(method) && new RegExp(`^/api/v2/files/${V2_ID}/content$`).test(path)) return true;
   if (method === 'GET' && ['/api/v2/me/events', '/api/v2/me/registrations', '/api/v2/analytics/registrations'].includes(path)) return true;
@@ -62,6 +89,7 @@ export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT
         const v2 = url.pathname.startsWith('/api/v2/');
         const eventPatch = request.method === 'PATCH' && /^\/api\/v1\/events\/[A-Za-z0-9_-]{21}$/.test(rawPath);
         if (v2 ? !v2Allowed(request.method, rawPath) : !['GET', 'HEAD', 'POST'].includes(request.method) && !eventPatch) return json(response, 405, 'Method or route not supported by this development proxy.');
+        if (accountRoute(rawPath) && url.search) return json(response, 400, 'Account operations do not accept query parameters.');
         const bodyLimit = request.method === 'POST' && rawPath === '/api/v2/files' ? MAX_V2_FILE_BODY : MAX_BODY;
         const parts = []; let size = 0;
         for await (const part of request) {
@@ -70,7 +98,8 @@ export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT
           parts.push(part);
         }
         const headers = {'Accept':'application/json'};
-        for (const name of ['content-type', 'authorization']) if (request.headers[name]) headers[name] = request.headers[name];
+        for (const name of ['content-type', 'authorization', 'x-guest-grant', 'x-demo-challenge', 'x-application-key']) if (request.headers[name]) headers[name] = request.headers[name];
+        if (recoveryCapabilityRoute(rawPath) && request.headers['x-account-recovery']) headers['x-account-recovery'] = request.headers['x-account-recovery'];
         const controller = new AbortController();
         const timer = setTimeout(() => controller.abort(), timeout);
         try {
@@ -80,6 +109,14 @@ export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT
           });
           const data = Buffer.from(await result.arrayBuffer());
           const responseHeaders = {'Content-Type':result.headers.get('content-type') || 'application/json'};
+          if (request.method === 'POST' && recoveryCapabilityRoute(rawPath) && rawPath.endsWith('/reset') && result.status === 200) {
+            // Propagate only the successful reset's same-host refresh-cookie deletion.
+            // Generic cookie forwarding and refresh/login cookie integration stay unchanged.
+            const deletions = result.headers.getSetCookie().filter(cookie => /^refresh_token=(?:""|);/i.test(cookie)
+              && /(?:^|;)\s*Max-Age=0(?:;|$)/i.test(cookie) && /(?:^|;)\s*Path=\/(?:;|$)/i.test(cookie)
+              && !/(?:^|;)\s*Domain=/i.test(cookie));
+            if (deletions.length) responseHeaders['Set-Cookie'] = deletions;
+          }
           if (v2 && /\/content$/.test(rawPath) && result.headers.get('content-disposition')) responseHeaders['Content-Disposition'] = result.headers.get('content-disposition');
           response.writeHead(result.status, responseHeaders);
           response.end(request.method === 'HEAD' ? undefined : data);

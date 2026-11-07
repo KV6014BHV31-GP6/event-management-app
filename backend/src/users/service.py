@@ -1,3 +1,4 @@
+import os
 import ulid
 from fastapi import HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -35,6 +36,10 @@ class UserService:
         )
 
         db.add(new_user)
+        namespace = os.getenv('NU_DEMO_NAMESPACE', '')
+        if os.getenv('NU_DEMO_PROFILE') == 'synthetic' and namespace and new_user.username.startswith(namespace):
+            from src.journey.models import JourneyState
+            db.add(JourneyState(key='account:' + new_user.id, kind='account', version=1, data={'enabled': True}))
         try:
             await db.commit()
         except IntegrityError:

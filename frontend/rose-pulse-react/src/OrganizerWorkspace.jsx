@@ -138,6 +138,7 @@ function OwnedEventList({ runtime, navigate }) {
                 )}
               </div>
               <div className="record-actions">
+                <button className="button button-small" onClick={()=>navigate("operations",{event:event.public_id})}>{tr("Event operations")}</button>
                 <button
                   className="button button-quiet button-small"
                   onClick={() =>

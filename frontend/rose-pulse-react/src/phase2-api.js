@@ -1,3 +1,4 @@
+import { demoTransport } from "./demo-transport.js";
 import {
   ApiError,
   createApi,
@@ -166,7 +167,7 @@ export function validateBatchReceipt(data, { actor, eventId, request }) {
   };
 }
 export function createPhase2Api({
-  fetchImpl = globalThis.fetch,
+  fetchImpl = demoTransport.fetch,
   timeoutMs = 15000,
 } = {}) {
   const legacy = createApi({ fetchImpl, timeoutMs });
@@ -325,7 +326,7 @@ export function createPhase2Api({
       if (result.size !== file.size) bad();
       return result;
     },
-    async downloadSupportingDocument(reference, token) {
+    async downloadSupportingDocument(reference, token, { signal } = {}) {
       const file = validateFileReference(reference, "supporting_document");
       if (!token)
         throw new ApiError(
@@ -336,6 +337,7 @@ export function createPhase2Api({
       let response;
       try {
         response = await fetchImpl(file.url, {
+          signal,
           headers: { Authorization: `Bearer ${token}`, Accept: file.mime_type },
           credentials: "omit",
           redirect: "error",
@@ -346,8 +348,8 @@ export function createPhase2Api({
       }
       if (!response.ok)
         throw new ApiError(
-          response.status === 401 ? "unauthorized" : "forbidden",
-          "This document is unavailable to your current account.",
+          response.status === 401 ? "unauthorized" : response.status === 403 ? "forbidden" : response.status === 404 ? "not_found" : "server",
+          response.status === 401 ? "Your login has expired. Log in online again." : response.status === 403 ? "This document is unavailable to your current account." : response.status === 404 ? "This document no longer exists." : "The document service is unavailable. Try reading again.",
           response.status,
         );
       const blob = await response.blob();

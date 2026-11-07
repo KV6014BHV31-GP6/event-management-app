@@ -1,0 +1,14 @@
+# Source coverage for this run
+
+Task DEMO-FULL-JOURNEY-20261103. G0 source admission and product acceptance are separate.
+
+- Owner master: all278 lines read, SHA256 `400a3a4909acf54f01baa260c72c4fda6f06225e981d1f32aa4a932d879572c4`. R3 changes routing/effort/takeover; original functional/AC/G0–G7/media requirements remain. Only dev_demo_ben is conditionally merge-authorized.
+- Challenge5 original PDF: exact bytes/hash, full one-page text and rendered page read. Log Task1–4 originals: exact hashes reused from the complete main OOXML paragraph/table reads; all8 embedded images and remaining XML foot/endnote/footer layers read in R3. Images contain course headers and generic story-map examples, not additional NU scope. Full Word page-layout rendering remains NOT_RUN because prescribed bundled LibreOffice is unavailable.
+- Original amended User Stories & Mapping: authenticated original download, hash verified, complete story/task/40AC text read, actual embedded mapping PNG viewed by controller and independent Astra/max reviewer. Mapping image SHA256 `7a322bba41d47db3698253ec5ddbc0d7f799be805db5ad34bb3fb1df366f005d`. Historical release labels do not narrow current full Owner scope. Recovery and profile in T-01-01 exposed a real implementation gap; Guest OTP/read-only Profile do not satisfy it.
+- Features Review original: authenticated bytes/hash and all18-feature5module text read. Unadopted proposals are not silently added. Raw original private documents remain external to Git/artifacts.
+- Austin updated Offline proposal: all727 lines read, hash in SOURCE_REGISTER.json. It is not an adopted React Native/SQLite rewrite. Current implementation keeps rose.offline-sync.v2 and its durable transaction/receipt requirements. Austin original branch remains unchanged.
+- W8 remains Owner relay plus current GitHub issue context, not NGO/teacher or human UAT signoff. OCR is SUPERSEDED_BY_W8_OWNER. Current amended GitHub issue bodies were read; old SP-US numbering is not reused.
+- Existing source/requirements/ADR/contracts/packages/workflows were inspected. Source baseline was origin/dev_demo_ben8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5; latest target must be freshly checked before merge.
+- Retained six design SVG hashes match their historical manifest; engineering design updates do not claim a Figma edit. Design states, actual role visual QA and complete product acceptance require their own receipts.
+
+External evidence: R3/source-originals/SOURCE_ADMISSION_R3.json, SUPPLEMENTAL_LAYERS_READ.json and independent/ACCOUNT_SOURCE_COVERAGE.json. These supersede prior text-only/missing-original boundaries without changing immutable worker reports. Full40 AC are retained in AC_MATRIX.json; original task-level subfeatures remain mandatory even when not repeated verbatim in an AC.

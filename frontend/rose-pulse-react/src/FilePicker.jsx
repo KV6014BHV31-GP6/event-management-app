@@ -1,5 +1,6 @@
+import { DemoImage, DemoControls } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useId } from "react";
 export function FilePicker({
   runtime,
   purpose,
@@ -9,6 +10,7 @@ export function FilePicker({
   disabled = false,
 }) {
   const image = purpose === "event_image";
+  const inputId = `${purpose}-${useId()}`;
   const [entries, setEntries] = useState(() =>
     initialFiles.map((reference) => ({
       key: reference.id,
@@ -160,7 +162,7 @@ export function FilePicker({
   };
   return (
     <section className="image-upload file-picker">
-      <label htmlFor={`${purpose}-files`}>
+      <label htmlFor={inputId}>
         {tr(image ? "Event image" : "Supporting documents")}{" "}
         <span className="muted">{tr("(optional)")}</span>
       </label>
@@ -175,7 +177,7 @@ export function FilePicker({
         {entries.map((entry, index) => (
           <div className="file-preview" key={entry.key}>
             {image && (entry.localUrl || entry.reference?.url) ? (
-              <img
+              <DemoImage
                 src={entry.localUrl || entry.reference.url}
                 alt={tr("Selected event image {{number}}", {
                   number: index + 1,
@@ -212,7 +214,7 @@ export function FilePicker({
       </div>
       <input
         ref={input}
-        id={`${purpose}-files`}
+        id={inputId}
         type="file"
         multiple
         accept={
@@ -277,57 +279,4 @@ export function FilePicker({
     </section>
   );
 }
-export function PrivateDocuments({ runtime, files = [] }) {
-  const [message, setMessage] = useState("");
-  const [busy, setBusy] = useState(false);
-  const inFlight = useRef(false);
-  const download = async (file) => {
-    if (inFlight.current) return;
-    inFlight.current = true;
-    setBusy(true);
-    setMessage("");
-    try {
-      const blob = await runtime.withVerifiedAccount((token) =>
-        runtime.api.downloadSupportingDocument(file, token),
-      );
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = file.name;
-      document.body.append(link);
-      link.click();
-      link.remove();
-      setTimeout(() => URL.revokeObjectURL(url), 0);
-    } catch (error) {
-      setMessage(error.message);
-    } finally {
-      inFlight.current = false;
-      setBusy(false);
-    }
-  };
-  return files.length ? (
-    <div className="private-documents">
-      <h4>{tr("Supporting documents")}</h4>
-      <p className="small muted">
-        {tr(
-          "Private downloads verify your current account. No document is cached for offline access.",
-        )}
-      </p>
-      {files.map((file) => (
-        <button
-          className="text-button"
-          key={file.id}
-          disabled={busy}
-          onClick={() => download(file)}
-        >
-          {tr("Download")} {file.name}
-        </button>
-      ))}
-      {message && (
-        <div className="notice notice-error" role="alert">
-          {tr(message)}
-        </div>
-      )}
-    </div>
-  ) : null;
-}
+export { PrivateDocuments } from "./PrivateDocuments.jsx";

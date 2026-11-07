@@ -1,0 +1,41 @@
+{
+  "status": "DESIGN_PROPOSED",
+  "source": "existing src/styles.css",
+  "color": {
+    "forest": "#123f35",
+    "green": "#17684f",
+    "gold": "#dfbf85",
+    "cream": "#f7f5ef",
+    "text": "#22352f",
+    "muted": "#69736d",
+    "line": "#e7e7df"
+  },
+  "type": {
+    "body": "Arial, Helvetica, sans-serif",
+    "body_px": 16,
+    "body_line_height": 1.5
+  },
+  "spacing_px": [
+    4,
+    8,
+    12,
+    16,
+    24,
+    32,
+    48
+  ],
+  "control_min_px": 44,
+  "focus": "visible3px outline with offset; verify contrast",
+  "motion": "short functional transitions; reduced-motion disables animation",
+  "breakpoint_checks_px": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "zoom_check_percent": 200,
+  "locales": [
+    "en",
+    "ms"
+  ]
+}

@@ -1,3 +1,4 @@
+import { DEMO_PROFILE } from "./demo-transport.js";
 import { ApiError, createApi } from "../../live/api.mjs";
 import { browserSessionStorage, createSession } from "../../live/session.mjs";
 import { createOfflineStore } from "./offline/queue.js";
@@ -133,13 +134,26 @@ export function createRuntime({
   const sessionApi = {
     ...api,
     async login(values) {
+      const revision = session.revision;
       const token = await api.login(values);
+      if (revision !== session.revision)
+        throw new ApiError("aborted", "Login cancelled.");
       bearer = token;
       return token;
     },
   };
   const session = createSession({ api: sessionApi, storage });
-  const offline = createOfflineStore();
+  const identityContext = () => ({
+    revision: session.revision,
+    actorId: session.user?.id ?? null,
+    token: bearer,
+  });
+  const isCurrentIdentity = (context) => Boolean(context &&
+    context.revision === session.revision &&
+    context.actorId === (session.user?.id ?? null) &&
+    context.token === bearer && session.hasToken);
+  const changedIdentity = () => new ApiError("aborted", "Your account changed. Verify your login again.");
+  const offline = createOfflineStore(DEMO_PROFILE ? {name:"rose-demo-synthetic-offline-v1"} : {});
   const rememberActor = (profile) => {
     offlineActor = syntheticAccess.remember(profile);
   };
@@ -192,11 +206,30 @@ export function createRuntime({
   };
   let restorePromise;
   let runtime;
+  let manualIdentity;
+  const manualRequest = (method, args) => {
+    if (!isCurrentIdentity(manualIdentity) || args[2] !== manualIdentity.token ||
+      args[3]?.id !== manualIdentity.verifiedActorId) throw changedIdentity();
+    return api[method](...args);
+  };
   const manualSync = createManualSync({
     store: offline,
-    api,
-    verifyIdentity: (actor) => runtime.freshOfflineIdentity(actor),
-    blockAuth: (status) => runtime.blockOfflineAuth(status),
+    api: {
+      submitOfflineBatch: (...args) => manualRequest("submitOfflineBatch", args),
+      getOfflineBatch: (...args) => manualRequest("getOfflineBatch", args),
+    },
+    verifyIdentity: async (actor) => {
+      manualIdentity = null;
+      const context = identityContext();
+      const verified = await runtime.freshOfflineIdentity(actor);
+      if (!isCurrentIdentity(context) || verified.token !== context.token || verified.actor.id !== actor.id)
+        throw changedIdentity();
+      manualIdentity = { ...context, verifiedActorId: verified.actor.id };
+      return verified;
+    },
+    blockAuth: (status) => {
+      if (isCurrentIdentity(manualIdentity)) runtime.blockOfflineAuth(status);
+    },
   });
   runtime = {
     api,
@@ -212,15 +245,22 @@ export function createRuntime({
     restore() {
       if (!restorePromise) {
         const hadIdentity = session.hasToken;
-        restorePromise = session
-          .restore()
+        const token = bearer;
+        const pending = session.restore();
+        const revision = session.revision;
+        restorePromise = pending
           .then(() => {
+            if (revision !== session.revision || token !== bearer) return;
             if (session.user) rememberActor(session.user);
             publish({ checking: false, message: "" });
           })
           .catch((error) => {
+            // Only this restore's own current401 clear may advance its epoch once.
+            const ownedClear = error.status === 401 && session.revision === revision + 1 &&
+              !session.hasToken && !session.user && token === bearer;
+            if (!ownedClear && (revision !== session.revision || token !== bearer)) return;
             if (hadIdentity) identityBlocked = true;
-            if (error.status === 401) lockOfflineActor();
+            if (error.status === 401) { bearer = null; lockOfflineActor(); }
             publish({ checking: false, message: error.message });
           });
       }
@@ -228,8 +268,12 @@ export function createRuntime({
     },
     async signIn(values) {
       lockOfflineActor();
+      bearer = null;
+      const pending = session.signIn(values);
+      const revision = session.revision;
       try {
-        const result = await session.signIn(values);
+        const result = await pending;
+        if (revision !== session.revision) throw changedIdentity();
         rememberActor(result.user);
         identityBlocked = false;
         publish({
@@ -240,11 +284,14 @@ export function createRuntime({
         });
         return result;
       } catch (error) {
-        identityBlocked = true;
-        publish({ checking: false });
+        if (revision === session.revision) {
+          bearer = null;
+          identityBlocked = true;
+          publish({ checking: false });
+        }
         throw error;
       } finally {
-        sync();
+        if (revision === session.revision) sync();
       }
     },
     logout() {
@@ -277,11 +324,11 @@ export function createRuntime({
           "Log in online before syncing local drafts.",
           401,
         );
-      const revision = session.revision;
+      const context = identityContext();
       try {
-        const profile = await api.getMe(bearer);
+        const profile = await api.getMe(context.token);
+        if (!isCurrentIdentity(context)) throw changedIdentity();
         if (
-          revision !== session.revision ||
           profile.id !== expectedActor.id ||
           !["leader", "organizer"].includes(profile.role)
         )
@@ -292,10 +339,10 @@ export function createRuntime({
           );
         rememberActor(profile);
         publish({});
-        return { actor: { id: profile.id, role: profile.role }, token: bearer };
+        return { actor: { id: profile.id, role: profile.role }, token: context.token };
       } catch (error) {
-        if ([401, 403].includes(error.status)) {
-          if (error.status === 401) session.logout();
+        if (isCurrentIdentity(context) && [401, 403].includes(error.status)) {
+          if (error.status === 401) { session.logout(); bearer = null; }
           identityBlocked = true;
           lockOfflineActor();
           publish({});
@@ -305,7 +352,7 @@ export function createRuntime({
     },
     blockOfflineAuth(status) {
       if ([401, 403].includes(status)) {
-        if (status === 401) session.logout();
+        if (status === 401) { session.logout(); bearer = null; }
         identityBlocked = true;
         lockOfflineActor();
         publish({});
@@ -313,17 +360,18 @@ export function createRuntime({
     },
     async withVerifiedAccount(operation, { roles } = {}) {
       const expected = session.user;
-      const revision = session.revision;
+      const context = identityContext();
       if (!expected || !bearer || !session.hasToken)
         throw new ApiError(
           "unauthorized",
           "Please log in and verify your account first.",
           401,
         );
+      let sent = false;
       try {
-        const profile = await api.getMe(bearer);
+        const profile = await api.getMe(context.token);
+        if (!isCurrentIdentity(context)) throw changedIdentity();
         if (
-          revision !== session.revision ||
           profile.id !== expected.id ||
           (roles && !roles.includes(profile.role))
         )
@@ -332,16 +380,22 @@ export function createRuntime({
             "Your account identity or permissions changed. Log in again.",
             403,
           );
-        const result = await operation(bearer, profile);
-        if (revision !== session.revision || session.user?.id !== expected.id)
+        sent = true;
+        const result = await operation(context.token, profile);
+        if (!isCurrentIdentity(context))
           throw new ApiError(
             "uncertain",
             "Your session changed while submitting. Do not send this action again.",
           );
         return result;
       } catch (error) {
+        if (!isCurrentIdentity(context)) {
+          if (sent) throw new ApiError("uncertain", "Your session changed while submitting. Do not send this action again.");
+          throw changedIdentity();
+        }
         if (error.status === 401) {
           session.logout();
+          bearer = null;
           identityBlocked = true;
           lockOfflineActor();
           publish({});
