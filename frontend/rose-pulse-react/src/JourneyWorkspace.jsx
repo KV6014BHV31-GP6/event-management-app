@@ -1,7 +1,7 @@
 import {downloadApprovedFlyer} from "./flyer.js";
 import AttendanceWorkspace from "./AttendanceWorkspace.jsx";
 import {createAttendanceStore} from "./offline/attendance.js";
-import React, { useMemo, useState, useRef, useCallback, useEffect } from 'react';
+import React, { useMemo, useState, useRef, useCallback, useEffect, useId } from 'react';
 import { tr,locale } from './i18n/index.js';
 import { createJourneyClient } from './journey-api.js';
 import { minimumRegistrationPayload } from './minimum-registration.js';
@@ -62,6 +62,10 @@ function JourneySession({
     [applicationFiles, setApplicationFiles] = useState([]),
     [correctionFiles, setCorrectionFiles] = useState([]),
     [attachmentBlocked, setAttachmentBlocked] = useState(false),[editFiles,setEditFiles]=useState([]),[editBlocked,setEditBlocked]=useState(false);
+  const [applicationAttention, setApplicationAttention] = useState(null);
+  const receiptRef = useRef(null);
+  const errorRef = useRef(null);
+  const receiptId = useId();
   const lock = useRef(false),
     active = useRef(true),
     recordEpoch = useRef(0),
@@ -69,6 +73,12 @@ function JourneySession({
   useEffect(() => () => {
     active.current = false;
   }, []);
+  useEffect(() => {
+    if (!active.current || applicationAttention?.epoch !== recordEpoch.current) return;
+    const target = applicationAttention.result === 'receipt' ? receiptRef.current : errorRef.current;
+    target?.focus({preventScroll: true});
+    target?.scrollIntoView?.({block: 'center'});
+  }, [applicationAttention]);
   const guestAllowed=!auth.user&&!auth.hasToken&&!auth.identityBlocked&&!auth.checking;
   const client = useMemo(() => createJourneyClient({
     authorize: fn => (auth.user||auth.offlineActor) ? runtime.withVerifiedAccount((token,actor)=>{if(actor?.id!==(auth.user?.id||auth.offlineActor?.id))throw new Error('The selected account or record changed.');return fn(token,actor);}) : guestAllowed ? fn(null, {id:'guest'}) : Promise.reject(new Error('Verify your account or explicitly log out before Guest access.')),
@@ -83,20 +93,27 @@ function JourneySession({
   const eventVersion = loaded.event?.workflow?.version;
   useEffect(()=>{if(staff||!eventId||!runtime.api?.getEvent)return;let current=true;runtime.api.getEvent(eventId).then(value=>{if(current&&active.current)setLoaded(old=>({...old,publicEvent:value}));}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[runtime,staff,eventId]);
   useEffect(()=>{if(!initialRef)return;let current=true;client.publicGet('/referrals/'+encodeURIComponent(initialRef)).then(value=>{if(current&&active.current){if(!value.active||value.event_public_id!==eventId)throw new Error('This referral is inactive or does not match this event.');setLoaded(old=>({...old,referral:value}));}}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[client,initialRef,eventId]);
-  const run = async fn => {
+  const run = async (fn, {focusApplicationResult = false} = {}) => {
     const operationEpoch=recordEpoch.current;
     if (lock.current) return;
     lock.current = true;
     setBusy(true);
     setError('');
     setMessage('');
+    let result = 'receipt';
     try {
       await fn();
     } catch (e) {
+      result = 'error';
       if (active.current && operationEpoch===recordEpoch.current) setError(e.message);
     } finally {
       lock.current = false;
-      if (active.current) setBusy(false);
+      if (active.current) {
+        setBusy(false);
+        if (focusApplicationResult && operationEpoch === recordEpoch.current) {
+          setApplicationAttention({result, epoch: operationEpoch});
+        }
+      }
     }
   };
   const read = async (key, path, epoch = recordEpoch.current) => {
@@ -109,19 +126,25 @@ function JourneySession({
     }));
     return data;
   };
-  const mutate = (path, data, version) => run(async () => {
-    const mutationEpoch=recordEpoch.current;
-    const targetRegistration=registrationId;
-    const payload = typeof data === 'function' ? data() : data;
-    const receipt = await client.mutate(path, payload, version);
-    if (!active.current || mutationEpoch!==recordEpoch.current) return;
-    if(path.endsWith('/applications')){setRegistrationId(receipt.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:receipt.effects}));}
-    setMessage(tr('Saved by server. Current information has been read again.'));
-    if (eventId && staff) await read('event', root, mutationEpoch);
-    if (path.includes('/promotion')) await read('promotion', root + '/promotion', mutationEpoch);
-    if (path.startsWith('/registrations/') || path.startsWith('/offers/')) await read('registration', '/registrations/' + targetRegistration, mutationEpoch);
-    if (path.startsWith('/accounts')) await read('accounts', '/accounts', mutationEpoch);
-  });
+  const mutate = (path, data, version) => {
+    const isApplication = path.endsWith('/applications');
+    return run(async () => {
+      const mutationEpoch=recordEpoch.current;
+      const targetRegistration=registrationId;
+      const payload = typeof data === 'function' ? data() : data;
+      const receipt = await client.mutate(path, payload, version);
+      if (!active.current || mutationEpoch!==recordEpoch.current) return;
+      if (isApplication) {
+        setRegistrationId(receipt.effects.registration_id);
+        setLoaded(old => ({...old, applicationReceipt: receipt.effects}));
+      }
+      setMessage(tr('Saved by server. Current information has been read again.'));
+      if (eventId && staff) await read('event', root, mutationEpoch);
+      if (path.includes('/promotion')) await read('promotion', root + '/promotion', mutationEpoch);
+      if (path.startsWith('/registrations/') || path.startsWith('/offers/')) await read('registration', '/registrations/' + targetRegistration, mutationEpoch);
+      if (path.startsWith('/accounts')) await read('accounts', '/accounts', mutationEpoch);
+    }, {focusApplicationResult: isApplication});
+  };
   const loadEvent = () => run(async () => {
     setLoaded(old=>({referral:old.referral,eventOptions:old.eventOptions}));
     await read('event', root);
@@ -148,7 +171,16 @@ function JourneySession({
     }
   })();
   return <div className="journey-workspace"><div className="page-heading"><div><p className="eyebrow">ROSE · PULSE</p><h1>{tr(staff?'Event operations':'Apply and manage booking')}</h1><p>{tr('Synthetic local journey. The server confirms permissions, places and every final result.')}</p></div><button className="button button-quiet" onClick={() => navigate('events')}>{tr('Browse events')}</button></div>
- <div aria-live="polite">{message && <p className="notice">{message}</p>}{loaded.applicationReceipt&&<section className="notice"><h2>{tr('Application recorded — pending review')}</h2><p>{tr('Keep your application reference')}: <strong>{loaded.applicationReceipt.registration_id}</strong></p><p>{tr('An application does not confirm a place.')}</p></section>}{error && <p className="notice notice-error" role="alert">{tr(error)}</p>}</div>
+ <div aria-live="polite">
+   {message && <p className="notice">{message}</p>}
+   {loaded.applicationReceipt && <section className="notice" ref={receiptRef} tabIndex={-1}
+     aria-labelledby={receiptId + '-title'} aria-describedby={receiptId + '-reference ' + receiptId + '-scope'}>
+     <h2 id={receiptId + '-title'}>{tr('Application recorded — pending review')}</h2>
+     <p id={receiptId + '-reference'}>{tr('Keep your application reference')}: <strong>{loaded.applicationReceipt.registration_id}</strong></p>
+     <p id={receiptId + '-scope'}>{tr('An application does not confirm a place.')}</p>
+   </section>}
+   {error && <p className="notice notice-error" role="alert" ref={errorRef} tabIndex={-1}>{tr(error)}</p>}
+ </div>
  {!!pending.length && <section className="notice"><h2>{tr('Unknown operations — reconcile before another send')}</h2>{pending.map(row => <div key={row.body.operation_id}><p>{row.path} · {row.body.operation_id}</p><button disabled={busy} className="button button-small" onClick={() => run(async () => {
           const recovered=await client.reconcile(row.body.operation_id);if(recovered.effects?.registration_id){setRegistrationId(recovered.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:recovered.effects}));}
           setMessage(tr('Original receipt recovered. Read the current resource.'));

@@ -149,3 +149,9 @@ The final synthetic build passed (79 modules, main JS 670.86 kB / gzip 191.51 kB
 ## R3 registration-review test query scope
 
 The existing delayed registrationA receipt / programmatic selectionB regression now scopes positive queries to its actual registration details, select and current review form. The Alpha-heading absence assertion remains global; the busy-state `fireEvent.change`, delayed gate, B selection/heading, two POSTs and version7 assertion remain unchanged. Product code, mocks, test setup and the5000ms timeout are unchanged. One synthetic affected-file run passed all5 cases with zero skips/errors/failures; the target case took0.936seconds. The preserved original instrumented case took1.368seconds and measured468ms in synchronous whole-document screen queries, but focused timings do not establish the full-suite timeout cause. Final fixed-candidate whole-suite/CI acceptance remains required; earlier full-run failures stay preserved.
+
+## W9 managed application feedback
+
+After a managed application finishes in the current account and event, the workspace focuses and scrolls to the pending-review receipt or the refusal message. The receipt includes the registration reference. A refusal keeps the entered fields available for correction. The in-flight submission lock and actor, revision, event and record guards still apply.
+
+The English and Malay workspace displays readable review, source and statistics labels. The underlying source values and counts continue to come from the existing API.
