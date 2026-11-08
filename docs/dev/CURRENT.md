@@ -1,3 +1,11 @@
+# Current successor: bounded W9 closeout, 2026-11-09
+
+Task [W9-CLOSEOUT-20261109](tasks/W9-CLOSEOUT-20261109.md), base `e766cbec875f9f61755c4e244960f85461aadc8c`. Status: **PARTIAL_WITH_BLOCKERS**. The retained 5271 Demo and 5281 synthetic Lab still serve product `0e8bba3863267223ede48ddca35f8bb2017a5e3a`; their source/artifact/image/served asset binding is verified. The base has identical frontend/backend product files. New bounded local Browser Guest/account receipts, one-cohort HTTP/PostgreSQL pool/waiting/offer/cancellation/statistics checks and existing offline receipt readback are separate evidence layers; no full AC40 or UAT claim.
+
+A real mismatched-identity refusal was classified as an immutable operation collision, leaving the Browser reference unresolved after a no-write refusal. The scoped candidate uses existing `INVALID_INPUT` 422 for that linked-account validation only; true operation fingerprint conflicts remain protected. Historical stuck references/profiles are preserved. Candidate tests, independent review, CI, merge and runtime deployment each require their own evidence; the live Lab has not been replaced. Cross-device sharing lacks an approved reachable recipient. Original Log Task 4 Word/HTML is not present in the bounded local search; exact factual amendments are external, not an edited Word claim.
+
+The following entries retain their historical versions and scopes.
+
 # Current successor: portable repair, 2026-11-08
 
 Task [AC40-PORTABLE-REPAIR-20261108](tasks/AC40-PORTABLE-REPAIR-20261108.md), base `5479b9e1def06d1d917f7472325b4941cdca5569`, dedicated branch `fix/ac40-portable-20261108-1335`.

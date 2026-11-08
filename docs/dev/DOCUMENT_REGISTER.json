@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-08T05:43:51.753867+00:00",
-  "reason": "Record scoped AC40 portable repair and exact runtime restoration; preserve original AC results",
-  "document_count": 387,
+  "reviewed_at": "2026-11-08T19:12:46.213071+00:00",
+  "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps",
+  "document_count": 389,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,7 +107,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 7,
+      "revision": 8,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
       "revision_history": [
@@ -152,13 +152,20 @@
           "size_bytes": 23746,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 7,
+          "sha256": "aa1afc97724ff1629ab301ec18e46dc1b26ab46c7df5b0897fba239e41c0da7f",
+          "size_bytes": 30549,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "aa1afc97724ff1629ab301ec18e46dc1b26ab46c7df5b0897fba239e41c0da7f",
-      "size_bytes": 30549
+      "sha256": "ed647c4e15aad5629daabe642ecb62532cd6d1f4b5db27615c7519c814791a99",
+      "size_bytes": 30919
     },
     {
       "document_id": "DOC-06",
@@ -295,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 38,
+      "revision": 39,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -527,6 +534,13 @@
           "size_bytes": 26178,
           "superseded_at": "2026-11-08T05:43:51.753867+00:00",
           "reason": "Record scoped AC40 portable repair and exact runtime restoration; preserve original AC results"
+        },
+        {
+          "revision": 38,
+          "sha256": "b7a85e903c21383d31e6e12b90f89a21085597ed9ff2308d757842c957dc944d",
+          "size_bytes": 27421,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "import_lineage": {
@@ -539,8 +553,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "b7a85e903c21383d31e6e12b90f89a21085597ed9ff2308d757842c957dc944d",
-      "size_bytes": 27421,
+      "sha256": "37864a822fab5c0b68623f878d0c89831477ac33e7264c75d8aa87710bbcddd3",
+      "size_bytes": 28833,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -6867,7 +6881,7 @@
     {
       "document_id": "DEMO-DOC-6532F7F07E4BB796",
       "path": "backend/src/journey/router.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6877,13 +6891,20 @@
           "size_bytes": 51227,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 2,
+          "sha256": "509b5e440b0da3fbdf5978c461fce259e689c33cc9c8b0c93e7305034be7d0e9",
+          "size_bytes": 51371,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "509b5e440b0da3fbdf5978c461fce259e689c33cc9c8b0c93e7305034be7d0e9",
-      "size_bytes": 51371
+      "sha256": "382e57926ec3c5f07e93ef76c638a3383f5b1269827fb27b1a36230a97f2faad",
+      "size_bytes": 51382
     },
     {
       "document_id": "DEMO-DOC-807252A5DD52CAE8",
@@ -6970,7 +6991,7 @@
     {
       "document_id": "DEMO-DOC-DEECC58DE1D1D511",
       "path": "docs/dev/demo-journey/API_CONTRACT.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6987,13 +7008,20 @@
           "size_bytes": 21865,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 3,
+          "sha256": "682c10afaa52c09f05d513632bcd8d1caed2e8537d325fa40eb6e505d879db40",
+          "size_bytes": 23923,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "682c10afaa52c09f05d513632bcd8d1caed2e8537d325fa40eb6e505d879db40",
-      "size_bytes": 23923
+      "sha256": "5e79a4da3679672bac6ed8891e2408b8dffb6bfe9717cd95a5f9f837cfe43161",
+      "size_bytes": 24553
     },
     {
       "document_id": "DEMO-DOC-E16B1F8BCCCAA68A",
@@ -8056,6 +8084,32 @@
       ],
       "sha256": "95c6a1d6b4794dc78968dc33392bde5450e628206d404156b1b19b9d1800c12e",
       "size_bytes": 3465
+    },
+    {
+      "document_id": "W9-DOC-20261109",
+      "path": "docs/dev/tasks/W9-CLOSEOUT-20261109.md",
+      "revision": 1,
+      "owner": "Astra Integrator",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e4e9a6b45c8a931cfc7e45d7002c07bdcbcffc4fe3e9835af8da77cee4ebad23",
+      "size_bytes": 4196
+    },
+    {
+      "document_id": "W9-TEST-20261109",
+      "path": "backend/tests/test_w9_identity_refusal.py",
+      "revision": 1,
+      "owner": "Sol-BE; Astra Integrator",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "fcf10b9eece7f066255fb4243944d530aec05f297c417ae1f32a2996aebd3d7e",
+      "size_bytes": 3735
     }
   ]
 }
