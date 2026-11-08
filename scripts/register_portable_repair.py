@@ -91,7 +91,18 @@ def apply(root, output):
             'sha256': hashlib.sha256(body).hexdigest(), 'size_bytes': len(body),
         })
         added.append(relative)
-    old['documents'].sort(key=lambda entry: entry['path'])
+    # Preserve the base register's existing order; append only this task's new rows.
+    baseline = json.loads(subprocess.check_output(
+        ['git', 'show', '5479b9e1def06d1d917f7472325b4941cdca5569:' + REGISTER],
+        cwd=root, text=True, encoding='utf-8', timeout=30))
+    base_order = [entry['path'] for entry in baseline['documents']]
+    by_path = {entry['path']: entry for entry in old['documents']}
+    if len(by_path) != len(old['documents']) or not set(base_order) <= set(by_path):
+        raise ValueError('Baseline register identities changed')
+    ordered = base_order + [path for path in REVIEWED if path not in set(base_order)]
+    if set(ordered) != set(by_path):
+        raise ValueError('Unexpected task register member')
+    old['documents'] = [by_path[path] for path in ordered]
     old['document_count'] = len(old['documents'])
     old['reviewed_at'] = datetime.now(timezone.utc).isoformat()
     old['reason'] = REASON

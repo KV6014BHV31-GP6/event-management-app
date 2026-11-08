@@ -29,6 +29,7 @@ jobs:
       - name: Register reviewed wrapper files without promoting acceptance
         run: |
           set -euo pipefail
+          git fetch --depth=1 origin 5479b9e1def06d1d917f7472325b4941cdca5569
           python -B scripts/register_portable_repair.py --evidence "$RUNNER_TEMP/ac40-register"
           python -B -m unittest discover -s tests -p test_document_control.py -v > "$RUNNER_TEMP/ac40-register/document-control-tests.log" 2>&1
       - id: save
@@ -104,6 +105,7 @@ jobs:
           mkdir -p deploy/portable/vendor/download "$RUNNER_TEMP/ac40-portable"
           gh run download 41650218052 --repo KV6014BHV31-GP6/event-management-app --name demo-release-0e8bba3863267223ede48ddca35f8bb2017a5e3a --dir deploy/portable/vendor/download
           cp deploy/portable/vendor/download/nu-demo-0e8bba3863267223ede48ddca35f8bb2017a5e3a.zip deploy/portable/vendor/nu-ci-artifact.zip
+          python -B deploy/portable/prepare.py > "$RUNNER_TEMP/ac40-portable/prepare.json"
           git rev-parse HEAD > "$RUNNER_TEMP/ac40-portable/SOURCE_HEAD.txt"
           python -m pip install --disable-pip-version-check -r deploy/portable/requirements-test.txt
       - name: Full portable Python regressions
@@ -112,6 +114,7 @@ jobs:
           python -B -m unittest discover -s deploy/portable/tests -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/ac40-portable/python-tests.log"
       - name: Independent gateway regressions even after Python failure
         if: always()
+        timeout-minutes: 2
         run: |
           mkdir -p "$RUNNER_TEMP/ac40-portable"
           set -o pipefail
