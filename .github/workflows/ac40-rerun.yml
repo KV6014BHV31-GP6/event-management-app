@@ -1,0 +1,128 @@
+name: AC40 repair and independent portable regressions
+on:
+  push:
+    branches: [fix/ac40-rerun-20261108]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ac40-rerun-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  register:
+    if: github.repository == 'KV6014BHV31-GP6/event-management-app' && github.ref == 'refs/heads/fix/ac40-rerun-20261108' && !contains(github.event.head_commit.message, '[ac40-register]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      head: ${{ steps.save.outputs.head }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 1
+          persist-credentials: true
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+      - name: Register reviewed wrapper files without promoting acceptance
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin 5479b9e1def06d1d917f7472325b4941cdca5569
+          python -B scripts/register_portable_repair.py --evidence "$RUNNER_TEMP/ac40-register"
+          python -B -m unittest discover -s tests -p test_document_control.py -v > "$RUNNER_TEMP/ac40-register/document-control-tests.log" 2>&1
+      - id: save
+        name: Save only reviewed metadata on this task branch, without force
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import subprocess
+          changed=set(subprocess.check_output(['git','diff','--name-only'],text=True).splitlines())
+          allowed={'docs/dev/CURRENT.md','docs/dev/DOCUMENT_REGISTER.json'}
+          assert changed <= allowed, 'Unexpected tracked changes'
+          assert not subprocess.check_output(['git','ls-files','--others','--exclude-standard'],text=True).strip(), 'Unexpected untracked files'
+          PY
+          observed=$(git ls-remote origin refs/heads/fix/ac40-rerun-20261108 | cut -f1)
+          test "$observed" = "$GITHUB_SHA"
+          if ! git diff --quiet; then
+            git config user.name 'github-actions[bot]'
+            git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+            git add docs/dev/CURRENT.md docs/dev/DOCUMENT_REGISTER.json
+            git commit -m 'fix(docs): register reviewed AC40 portable repair [ac40-register]'
+            git push origin HEAD:refs/heads/fix/ac40-rerun-20261108
+          fi
+          git rev-parse HEAD | tee "$RUNNER_TEMP/ac40-register/HEAD.txt"
+          echo "head=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ac40-registration-${{ github.run_id }}
+          path: ${{ runner.temp }}/ac40-register
+          if-no-files-found: warn
+          retention-days: 14
+  secret_newlines:
+    needs: register
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-24.04, windows-2025]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ needs.register.outputs.head }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+      - name: Fresh-file newline and no-rotation regressions
+        run: python -B -m unittest discover -s deploy/portable/tests -p test_secret_newlines.py -v
+  portable:
+    needs: register
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803
+        with:
+          ref: ${{ needs.register.outputs.head }}
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1
+        with:
+          python-version: '3.14.8'
+      - uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38
+        with:
+          node-version: '24.14.0'
+      - name: Verify the original product artifact, without rebuild or seed
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          mkdir -p deploy/portable/vendor/download "$RUNNER_TEMP/ac40-portable"
+          gh run download 41650218052 --repo KV6014BHV31-GP6/event-management-app --name demo-release-0e8bba3863267223ede48ddca35f8bb2017a5e3a --dir deploy/portable/vendor/download
+          cp deploy/portable/vendor/download/nu-demo-0e8bba3863267223ede48ddca35f8bb2017a5e3a.zip deploy/portable/vendor/nu-ci-artifact.zip
+          python -B deploy/portable/prepare.py > "$RUNNER_TEMP/ac40-portable/prepare.json"
+          git rev-parse HEAD > "$RUNNER_TEMP/ac40-portable/SOURCE_HEAD.txt"
+          python -m pip install --disable-pip-version-check -r deploy/portable/requirements-test.txt
+      - name: Full portable Python regressions
+        run: |
+          set -o pipefail
+          python -B -m unittest discover -s deploy/portable/tests -p 'test_*.py' -v 2>&1 | tee "$RUNNER_TEMP/ac40-portable/python-tests.log"
+      - name: Independent gateway regressions even after Python failure
+        if: always()
+        timeout-minutes: 2
+        run: |
+          mkdir -p "$RUNNER_TEMP/ac40-portable"
+          set -o pipefail
+          node --test deploy/portable/tests/gateway.test.mjs 2>&1 | tee "$RUNNER_TEMP/ac40-portable/gateway-tests.log"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ac40-portable-${{ github.run_id }}
+          path: ${{ runner.temp }}/ac40-portable
+          if-no-files-found: warn
+          retention-days: 14

@@ -1,3 +1,16 @@
+# AC40 rerun successor, 2026-11-08
+
+Task: [AC40-RERUN-20261108](tasks/AC40-RERUN-20261108.md).
+Base: merged dev_demo_ben 5479b9e1def06d1d917f7472325b4941cdca5569.
+Current work is on a separate fix branch. The merged CI source gate failed on
+18 unregistered Docker paths. This successor registers those reviewed files and
+fixes fresh Windows secret newline generation; it does not rotate existing secrets.
+The original AC40 partial/failed acceptance and restricted-probe records remain.
+PC and VM were offline at intake. Hosted tests are not local Desktop acceptance.
+No UAT, deployment, automatic merge, or new acceptance claim is authorized here.
+
+Historical source-specific records below are preserved.
+
 # Current successor — full journey Demo, 2026-11-03
 
 Task DEMO-FULL-JOURNEY-20261103 / run20261103-132629. Owner authorizes new feature/integration branches and conditional dev_demo_ben merge after actual required CI/native/browser/independent gates. No product acceptance or merge has occurred. Latest target fetched/read back8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5. Old services and28 worktrees were inventoried and preserved.

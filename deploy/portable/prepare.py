@@ -83,7 +83,7 @@ def create_secrets(destination: Path=ROOT) -> dict:
     folder.mkdir(mode=0o700,exist_ok=False)
     for name in ('db_admin_password','db_app_password','jwt_secret'):
         descriptor=os.open(folder/name,os.O_WRONLY|os.O_CREAT|os.O_EXCL,0o444)
-        with os.fdopen(descriptor,'w',encoding='utf-8') as f:f.write(secrets.token_urlsafe(48)+'\n')
+        with os.fdopen(descriptor,'w',encoding='utf-8',newline='\n') as f:f.write(secrets.token_urlsafe(48)+'\n')
         # Compose file secrets are bind mounts. Keep parent private; mount file readable by UID10001.
         os.chmod(folder/name,0o444)
     return {'status':'THREE_LOCAL_SECRETS_CREATED','values_printed':False,

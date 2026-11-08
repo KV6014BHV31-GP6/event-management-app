@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T14:04:15.594891+00:00",
-  "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口",
-  "document_count": 367,
+  "reviewed_at": "2026-11-08T05:16:05.312204+00:00",
+  "reason": "AC40 rerun: admit the reviewed Docker wrapper and task files omitted from PR59 registration; verify the Windows LF fix without promoting acceptance.",
+  "document_count": 389,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -295,7 +295,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 37,
+      "revision": 38,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -520,6 +520,13 @@
           "size_bytes": 25006,
           "superseded_at": "2026-11-03T14:04:15.594891+00:00",
           "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
+        },
+        {
+          "revision": 37,
+          "sha256": "7c01826eb375ea83e484b455950d516cc6c193c3fe35b961745d453ad3fb5071",
+          "size_bytes": 26178,
+          "superseded_at": "2026-11-08T04:55:34.475391+00:00",
+          "reason": "AC40 rerun: admit the reviewed Docker wrapper and task files omitted from PR59 registration; verify the Windows LF fix without promoting acceptance."
         }
       ],
       "import_lineage": {
@@ -532,8 +539,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "7c01826eb375ea83e484b455950d516cc6c193c3fe35b961745d453ad3fb5071",
-      "size_bytes": 26178,
+      "sha256": "5fea9c983d53af807726eb156c49f4f147746d38d775b956f5f4bbea09b8003f",
+      "size_bytes": 26884,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -7789,6 +7796,308 @@
       ],
       "sha256": "a8dc10df613fa4cd52d891bf677bfe78cd386770e7316b6f7f5d2e3e6fe825e4",
       "size_bytes": 3582
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-01",
+      "path": ".github/workflows/nu-portable-docker.yml",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9f52c4a533549ff16659c0e8407efc9ab1a687502193b1caf13ab43032540260",
+      "size_bytes": 4869
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-02",
+      "path": "deploy/portable/.dockerignore",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "875fbaa1e171456b146e3c4112f21459bef3bdc75464b9127621d14fed8ed577",
+      "size_bytes": 453
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-03",
+      "path": "deploy/portable/.env.example",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8aba67a49b61666acd517feee5c0e9e21dd4e9d003bc8c682a996e4cc21c3162",
+      "size_bytes": 227
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-04",
+      "path": "deploy/portable/.gitignore",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2fd11d27173a45280b8cf0299858486c83d2f4924a804e2ef50f4203d9059055",
+      "size_bytes": 67
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-05",
+      "path": "deploy/portable/Dockerfile",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c2508d6b7df8f56fd8768f21caf7adf71d417a0b828e4db3b2cfadfae9c2a25c",
+      "size_bytes": 1388
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-06",
+      "path": "deploy/portable/NETWORK_FIX.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "66e8a3b7f6936901ab8dc25b1e21bcf1f97ecd95e3df241d5d4e81e49bdad320",
+      "size_bytes": 2282
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-07",
+      "path": "deploy/portable/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d8e34cf8d5104e6d8602c6a4497ee1fd143c7492c6d13897a2ec483f6668797b",
+      "size_bytes": 4332
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-08",
+      "path": "deploy/portable/compose.yaml",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "526018f82788762870a0976907c7a799f884c1122cb3a24bc609778ef40f6c9c",
+      "size_bytes": 2393
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-09",
+      "path": "deploy/portable/db/init-app.sh",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "bd39cf53babab0374be7c17145656798fe9e018c520a818762ba5030b806c9e3",
+      "size_bytes": 470
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-10",
+      "path": "deploy/portable/inspect_vm.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8b3f4a884373039d051356bdee6a6b2c6deb4bf307664c2e7e939326afc1fee3",
+      "size_bytes": 1379
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-11",
+      "path": "deploy/portable/prepare.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "32f048e9b8a2e97ffaa072cae0cf42213de3b6bc46beb3b1b6c53f6f985effef",
+      "size_bytes": 5428
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-12",
+      "path": "deploy/portable/requirements-test.txt",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0969da99a0bc2a1b71ed50584560f4588a37567ac63af3ddbaf3c4617ca5621a",
+      "size_bytes": 14
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-13",
+      "path": "deploy/portable/runtime/entrypoint.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5deb7dbe0e91e0d82d3d4ff134fbff6a7682cdaaf094c0fcfd6f6c813196fd49",
+      "size_bytes": 4819
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-14",
+      "path": "deploy/portable/runtime/healthcheck.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c449b7b00cce5a7576bfc5bf5df463fa444fffebb4c2addf62efec9573733a1a",
+      "size_bytes": 378
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-15",
+      "path": "deploy/portable/runtime/server.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d290263d180f9af4486d13569f2b54d4b7054452694804395483e075eea356e1",
+      "size_bytes": 2393
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-16",
+      "path": "deploy/portable/tests/gateway.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "61c81f0c861698602fa047947783181c7df8dd2830d21ab606319fa6bd41c9f1",
+      "size_bytes": 4218
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-17",
+      "path": "deploy/portable/tests/test_network_boundary.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2520b139837cfa77ea00326008a0cb0ffeb0864715c5c87d901519868898d2fc",
+      "size_bytes": 1984
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-18",
+      "path": "deploy/portable/tests/test_packaging.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "279e9f93aeefd5031dbdd3f8bce4d067b8799b81c4db4b4512bff26286043c9a",
+      "size_bytes": 6456
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-19",
+      "path": "deploy/portable/tests/test_secret_newlines.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "410b3556db81be7750d2cfddc73ab6732ef680d078cb8975d6dfed476566b4e0",
+      "size_bytes": 2903
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-20",
+      "path": "scripts/register_portable_repair.py",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "adc4e409d33d46509a7699c1fb096977b2216b95245c78bd7013d89acf2214e1",
+          "size_bytes": 6160,
+          "superseded_at": "2026-11-08T05:16:05.312204+00:00",
+          "reason": "AC40 rerun: admit the reviewed Docker wrapper and task files omitted from PR59 registration; verify the Windows LF fix without promoting acceptance."
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2d09736a83846267a6d302cb5a4c5a0516fde15c94c0014bf3c90ff10e0d68a7",
+      "size_bytes": 6905
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-21",
+      "path": ".github/workflows/ac40-rerun.yml",
+      "revision": 2,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9385b27362f03f1712f0543f5249405e1db7121ebeb04aa4f236acf3685058d8",
+          "size_bytes": 5614,
+          "superseded_at": "2026-11-08T05:16:05.312204+00:00",
+          "reason": "AC40 rerun: admit the reviewed Docker wrapper and task files omitted from PR59 registration; verify the Windows LF fix without promoting acceptance."
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "835f15cf7504514392d921d642c92a2b2c81f5d8d286682e7805573501909592",
+      "size_bytes": 5810
+    },
+    {
+      "document_id": "AC40-RERUN-20261108-22",
+      "path": "docs/dev/tasks/AC40-RERUN-20261108.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "80df93c3d64aa597e09873d6f9db68a4058bfd80f34a49962bab90d4f8c3bea1",
+      "size_bytes": 2762
     }
   ]
 }
