@@ -1,3 +1,13 @@
+# Current successor: portable repair, 2026-11-08
+
+Task [AC40-PORTABLE-REPAIR-20261108](tasks/AC40-PORTABLE-REPAIR-20261108.md), base `5479b9e1def06d1d917f7472325b4941cdca5569`, dedicated branch `fix/ac40-portable-20261108-1335`.
+
+PRs #58 and #59 are merged into `dev_demo_ben` with disclosed incomplete AC acceptance. This scoped successor repairs the 18 omitted portable document-register entries and LF-only NEW secret generation. Windows new regression: three RED assertions before repair, six PASS after repair; canonical document-control failure reproduced then repaired. Existing secrets, database records and the product artifact remain unchanged. Independent regression groups and hosted successor CI have separately recorded results. Full AC40 and UAT are not established; UAT remains excluded by Owner. Historical safety-blocked probes are not retried or bypassed.
+
+The connected Windows host and agent-desktop 1.0.2 were verified. Docker Engine was started through its existing CLI; existing localhost5271/5281 services resumed and returned HTTP200. No new image replaced either running stack. This is not a deployment or a complete acceptance statement.
+
+The sections below are historical, tied to their stated sources and tests.
+
 # Current successor — full journey Demo, 2026-11-03
 
 Task DEMO-FULL-JOURNEY-20261103 / run20261103-132629. Owner authorizes new feature/integration branches and conditional dev_demo_ben merge after actual required CI/native/browser/independent gates. No product acceptance or merge has occurred. Latest target fetched/read back8d25b9b0904ba0026d67b4ba8b4862fa705a2ca5. Old services and28 worktrees were inventoried and preserved.
