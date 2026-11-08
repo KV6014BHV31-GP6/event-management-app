@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-03T14:04:15.594891+00:00",
-  "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口",
-  "document_count": 367,
+  "reviewed_at": "2026-11-08T05:50:14.365835+00:00",
+  "reason": "Admit the 18 merged portable Docker files and one scoped LF-only secret regression; no workflow mutation.",
+  "document_count": 386,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -7789,6 +7789,253 @@
       ],
       "sha256": "a8dc10df613fa4cd52d891bf677bfe78cd386770e7316b6f7f5d2e3e6fe825e4",
       "size_bytes": 3582
+    },
+    {
+      "document_id": "PORTABLE-20261108-06e5dd3d5a56",
+      "path": ".github/workflows/nu-portable-docker.yml",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9f52c4a533549ff16659c0e8407efc9ab1a687502193b1caf13ab43032540260",
+      "size_bytes": 4869
+    },
+    {
+      "document_id": "PORTABLE-20261108-11ea4f90ff6d",
+      "path": "deploy/portable/.dockerignore",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "875fbaa1e171456b146e3c4112f21459bef3bdc75464b9127621d14fed8ed577",
+      "size_bytes": 453
+    },
+    {
+      "document_id": "PORTABLE-20261108-76b93834f810",
+      "path": "deploy/portable/.env.example",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8aba67a49b61666acd517feee5c0e9e21dd4e9d003bc8c682a996e4cc21c3162",
+      "size_bytes": 227
+    },
+    {
+      "document_id": "PORTABLE-20261108-797af6954fb3",
+      "path": "deploy/portable/.gitignore",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2fd11d27173a45280b8cf0299858486c83d2f4924a804e2ef50f4203d9059055",
+      "size_bytes": 67
+    },
+    {
+      "document_id": "PORTABLE-20261108-1160f8cc6bef",
+      "path": "deploy/portable/Dockerfile",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c2508d6b7df8f56fd8768f21caf7adf71d417a0b828e4db3b2cfadfae9c2a25c",
+      "size_bytes": 1388
+    },
+    {
+      "document_id": "PORTABLE-20261108-8d6580dd6bfb",
+      "path": "deploy/portable/NETWORK_FIX.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "66e8a3b7f6936901ab8dc25b1e21bcf1f97ecd95e3df241d5d4e81e49bdad320",
+      "size_bytes": 2282
+    },
+    {
+      "document_id": "PORTABLE-20261108-d0b43b432d36",
+      "path": "deploy/portable/README.md",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d8e34cf8d5104e6d8602c6a4497ee1fd143c7492c6d13897a2ec483f6668797b",
+      "size_bytes": 4332
+    },
+    {
+      "document_id": "PORTABLE-20261108-82810da540d6",
+      "path": "deploy/portable/compose.yaml",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "526018f82788762870a0976907c7a799f884c1122cb3a24bc609778ef40f6c9c",
+      "size_bytes": 2393
+    },
+    {
+      "document_id": "PORTABLE-20261108-9f4bb5ce114c",
+      "path": "deploy/portable/db/init-app.sh",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "bd39cf53babab0374be7c17145656798fe9e018c520a818762ba5030b806c9e3",
+      "size_bytes": 470
+    },
+    {
+      "document_id": "PORTABLE-20261108-e61e56a47fa8",
+      "path": "deploy/portable/inspect_vm.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8b3f4a884373039d051356bdee6a6b2c6deb4bf307664c2e7e939326afc1fee3",
+      "size_bytes": 1379
+    },
+    {
+      "document_id": "PORTABLE-20261108-2cb54333d96f",
+      "path": "deploy/portable/prepare.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "32f048e9b8a2e97ffaa072cae0cf42213de3b6bc46beb3b1b6c53f6f985effef",
+      "size_bytes": 5428
+    },
+    {
+      "document_id": "PORTABLE-20261108-02bdd03e413f",
+      "path": "deploy/portable/requirements-test.txt",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0969da99a0bc2a1b71ed50584560f4588a37567ac63af3ddbaf3c4617ca5621a",
+      "size_bytes": 14
+    },
+    {
+      "document_id": "PORTABLE-20261108-c5514ca269e7",
+      "path": "deploy/portable/runtime/entrypoint.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5deb7dbe0e91e0d82d3d4ff134fbff6a7682cdaaf094c0fcfd6f6c813196fd49",
+      "size_bytes": 4819
+    },
+    {
+      "document_id": "PORTABLE-20261108-09361bc10c95",
+      "path": "deploy/portable/runtime/healthcheck.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c449b7b00cce5a7576bfc5bf5df463fa444fffebb4c2addf62efec9573733a1a",
+      "size_bytes": 378
+    },
+    {
+      "document_id": "PORTABLE-20261108-f1efe8cd218a",
+      "path": "deploy/portable/runtime/server.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d290263d180f9af4486d13569f2b54d4b7054452694804395483e075eea356e1",
+      "size_bytes": 2393
+    },
+    {
+      "document_id": "PORTABLE-20261108-53835e610d66",
+      "path": "deploy/portable/tests/gateway.test.mjs",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "61c81f0c861698602fa047947783181c7df8dd2830d21ab606319fa6bd41c9f1",
+      "size_bytes": 4218
+    },
+    {
+      "document_id": "PORTABLE-20261108-e36ef5b30f2e",
+      "path": "deploy/portable/tests/test_network_boundary.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2520b139837cfa77ea00326008a0cb0ffeb0864715c5c87d901519868898d2fc",
+      "size_bytes": 1984
+    },
+    {
+      "document_id": "PORTABLE-20261108-116185e73a0a",
+      "path": "deploy/portable/tests/test_packaging.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "279e9f93aeefd5031dbdd3f8bce4d067b8799b81c4db4b4512bff26286043c9a",
+      "size_bytes": 6456
+    },
+    {
+      "document_id": "PORTABLE-20261108-472eed0387f6",
+      "path": "deploy/portable/tests/test_secret_newlines.py",
+      "revision": 1,
+      "owner": "Benjamin Dev workflow",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "657fb2ffa1e4a4601bc885d7123af44bb11d4d6624eb266b6009c2365f346300",
+      "size_bytes": 3710
     }
   ]
 }
