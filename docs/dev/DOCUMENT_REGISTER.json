@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-08T19:12:46.213071+00:00",
-  "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps",
+  "reviewed_at": "2026-11-08T20:20:21.802454+00:00",
+  "reason": "Preserve LF formatting for W9 continuation evidence entry",
   "document_count": 389,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -302,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 39,
+      "revision": 40,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -541,6 +541,13 @@
           "size_bytes": 27421,
           "superseded_at": "2026-11-08T19:12:46.213071+00:00",
           "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
+        },
+        {
+          "revision": 39,
+          "sha256": "37864a822fab5c0b68623f878d0c89831477ac33e7264c75d8aa87710bbcddd3",
+          "size_bytes": 28833,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
         }
       ],
       "import_lineage": {
@@ -553,8 +560,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "37864a822fab5c0b68623f878d0c89831477ac33e7264c75d8aa87710bbcddd3",
-      "size_bytes": 28833,
+      "sha256": "9f534d6db48dc387b2014753243e1f4f057c0d152b7803ccf5ab3628d2aa25a7",
+      "size_bytes": 29821,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -4793,7 +4800,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 7,
+      "revision": 8,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4838,13 +4845,20 @@
           "size_bytes": 26624,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 7,
+          "sha256": "5b1122a28ab7972879cf9378ce064107626b419813edcac068c59bc869c46e98",
+          "size_bytes": 37992,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "5b1122a28ab7972879cf9378ce064107626b419813edcac068c59bc869c46e98",
-      "size_bytes": 37992
+      "sha256": "812dbc84dd4ba8f0ceb2959b489c59300e18b52924412e539eddc1144bd5005a",
+      "size_bytes": 38555
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -6114,7 +6128,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 6,
+      "revision": 7,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6152,13 +6166,20 @@
           "size_bytes": 75263,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 6,
+          "sha256": "f6bf090c49d58207090800de3a34f60d7d51b1ce4829e01a1a83ab870f9aa932",
+          "size_bytes": 76435,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "f6bf090c49d58207090800de3a34f60d7d51b1ce4829e01a1a83ab870f9aa932",
-      "size_bytes": 76435
+      "sha256": "3f7bf07e5455661b0574262472be727338f2a334a7e47dc87c0cdb123601410f",
+      "size_bytes": 76437
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6204,7 +6225,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 6,
+      "revision": 7,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6242,13 +6263,20 @@
           "size_bytes": 77965,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 6,
+          "sha256": "80003c566c432b6655093edc87c2825d26ed44b968002b6a3e3420d315475440",
+          "size_bytes": 79171,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "80003c566c432b6655093edc87c2825d26ed44b968002b6a3e3420d315475440",
-      "size_bytes": 79171
+      "sha256": "52c4f9d6d8b316d7706ba98c7aac3cc2161c8c038cb2478b58a39b89035ad5bb",
+      "size_bytes": 79199
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -7156,7 +7184,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7180,18 +7208,25 @@
           "size_bytes": 37631,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 4,
+          "sha256": "ef9e0d465c2d8b74f5ade6e64b395c638f5bb52de480d46fd41b9ec9f117fe4a",
+          "size_bytes": 40816,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ef9e0d465c2d8b74f5ade6e64b395c638f5bb52de480d46fd41b9ec9f117fe4a",
-      "size_bytes": 40816
+      "sha256": "73a3847cbf8316773bdb770037aff10e34facf63a690d6487354f2688d8d5b6c",
+      "size_bytes": 42041
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7208,13 +7243,20 @@
           "size_bytes": 8383,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 3,
+          "sha256": "41a840c7a29ace52b2dced6180d45eef742b2c7300249bd81ef57e9d50d27048",
+          "size_bytes": 24009,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "41a840c7a29ace52b2dced6180d45eef742b2c7300249bd81ef57e9d50d27048",
-      "size_bytes": 24009
+      "sha256": "bed0cd6c19d386534f4c8d8d43ad3c46de9addaffa05457d58fb1ffde5627105",
+      "size_bytes": 28749
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -8088,15 +8130,30 @@
     {
       "document_id": "W9-DOC-20261109",
       "path": "docs/dev/tasks/W9-CLOSEOUT-20261109.md",
-      "revision": 1,
+      "revision": 3,
       "owner": "Astra Integrator",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e4e9a6b45c8a931cfc7e45d7002c07bdcbcffc4fe3e9835af8da77cee4ebad23",
+          "size_bytes": 4196,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 2,
+          "sha256": "69bdafa601c58090078693f8926a05da0cc7eb264c41f85b83e5664509dd45fe",
+          "size_bytes": 7450,
+          "superseded_at": "2026-11-08T20:20:21.802454+00:00",
+          "reason": "Preserve LF formatting for W9 continuation evidence entry"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e4e9a6b45c8a931cfc7e45d7002c07bdcbcffc4fe3e9835af8da77cee4ebad23",
-      "size_bytes": 4196
+      "sha256": "344f9cb0545dc21b7d4698c3afcaa280b376205c177c57860478ccb90479072d",
+      "size_bytes": 7449
     },
     {
       "document_id": "W9-TEST-20261109",

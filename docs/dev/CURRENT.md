@@ -1,4 +1,8 @@
-# Current successor: bounded W9 closeout, 2026-11-09
+# Current successor: W9 UI continuation, 2026-11-09 04:05 +08
+
+The [existing W9 task](tasks/W9-CLOSEOUT-20261109.md#ui-continuation-2026-11-09-0405-08) now records a fresh bounded old-runtime UI rehearsal: Guest/account application receipts and actual Organizer review/waiting/cancellation/offer/statistics with receipt/DB reconciliation. The same runtime reproduces offscreen receipt feedback and untranslated English enum labels; one isolated Sol-FE supplies the minimal presentation correction. Existing PR65 identity repair is preserved. New candidate checks/review are distinct from historical results. Both retained5271/5281 services remain on0e8b; no deployment or safety-blocked candidate restart. **PARTIAL_WITH_BLOCKERS**: local candidate acceptance, approved cross-device recipient and original Task4 Word/HTML remain outstanding. Current external evidence is `E:\Benjaminecraft_NU_External_20261109\closeout-20261109T040500-astra`; previous entries below remain historical.
+
+# Previous successor: bounded W9 closeout, 2026-11-09
 
 Task [W9-CLOSEOUT-20261109](tasks/W9-CLOSEOUT-20261109.md), base `e766cbec875f9f61755c4e244960f85461aadc8c`. Status: **PARTIAL_WITH_BLOCKERS**. The retained 5271 Demo and 5281 synthetic Lab still serve product `0e8bba3863267223ede48ddca35f8bb2017a5e3a`; their source/artifact/image/served asset binding is verified. The base has identical frontend/backend product files. New bounded local Browser Guest/account receipts, one-cohort HTTP/PostgreSQL pool/waiting/offer/cancellation/statistics checks and existing offline receipt readback are separate evidence layers; no full AC40 or UAT claim.
 
