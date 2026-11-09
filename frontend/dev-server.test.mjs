@@ -69,15 +69,100 @@ test('journey proxy admits explicit operations and preserves scoped guest header
     assert.equal(observed.length,3);
   } finally {await close(server);await close(upstream);}
 });
-const requestRaw = (base, path, method = 'GET') => new Promise((resolve, reject) => {
+const requestRaw = (base, path, method = 'GET', headers, body) => new Promise((resolve, reject) => {
   const url = new URL(base);
-  const request = http.request({hostname:url.hostname, port:url.port, path, method}, response => {
+  const request = http.request({hostname:url.hostname, port:url.port, path, method, headers}, response => {
     const parts = [];
     response.on('data', part => parts.push(part));
     response.on('end', () => resolve({status:response.statusCode, headers:response.headers, body:Buffer.concat(parts)}));
   });
-  request.on('error', reject); request.end();
+  request.on('error', reject); request.end(body);
 });
+
+const TRUSTED_HTTPS_ORIGIN = 'https://private-demo.example.invalid';
+
+test('trusted HTTPS origin admits only the configured host and same-origin writes', async () => {
+  const calls = [];
+  const upstream = http.createServer(async (req, res) => {
+    const parts = [];
+    for await (const part of req) parts.push(part);
+    calls.push({path:req.url, auth:req.headers.authorization, cookie:req.headers.cookie,
+      body:Buffer.concat(parts).toString()});
+    res.writeHead(201, {'Content-Type':'application/json', 'Set-Cookie':'refresh_token=synthetic; Path=/'});
+    res.end('{}');
+  });
+  const upstreamUrl = await listen(upstream);
+  const server = createDevServer({upstream:upstreamUrl, trustedHttpsOrigin:TRUSTED_HTTPS_ORIGIN + '/'});
+  const base = await listen(server);
+  const loopbackHost = new URL(base).host;
+  const host = new URL(TRUSTED_HTTPS_ORIGIN).host;
+  const postPath = '/api/v1/auth/login';
+  try {
+    assert.equal((await requestRaw(base, '/dev-server.mjs', 'GET', {Host:host})).status, 200);
+    const head = await requestRaw(base, '/dev-server.mjs', 'HEAD', {Host:host});
+    assert.equal(head.status, 200);
+    assert.equal(head.body.length, 0);
+    const post = await requestRaw(base, postPath, 'POST', {Host:host, Origin:TRUSTED_HTTPS_ORIGIN,
+      'Content-Type':'application/json', Authorization:'Bearer synthetic', Cookie:'refresh_token=synthetic'}, '{}');
+    assert.equal(post.status, 201);
+    assert.equal(post.headers['cache-control'], 'no-store');
+    assert.equal(post.headers['set-cookie'], undefined);
+    assert.equal((await requestRaw(base, postPath, 'POST', {Host:loopbackHost, Origin:base}, '{}')).status, 201);
+    for (const headers of [
+      {Host:'other.example.invalid', Origin:TRUSTED_HTTPS_ORIGIN},
+      {Host:host.toUpperCase(), Origin:TRUSTED_HTTPS_ORIGIN},
+      {Host:host + ':443', Origin:TRUSTED_HTTPS_ORIGIN},
+      {Host:host, Origin:'https://other.example.invalid'},
+      {Host:host, Origin:'http://' + host},
+      {Host:host, Origin:base},
+      {Host:host, Origin:TRUSTED_HTTPS_ORIGIN + '/'},
+      {Host:host, Origin:'null'},
+      {Host:host, Origin:''},
+      {Host:host},
+      {Host:host, Origin:[TRUSTED_HTTPS_ORIGIN, 'https://other.example.invalid']},
+      {Host:loopbackHost, Origin:TRUSTED_HTTPS_ORIGIN},
+      {Host:'other.example.invalid', Origin:TRUSTED_HTTPS_ORIGIN, 'X-Forwarded-Host':host, 'X-Forwarded-Proto':'https'},
+      {Host:host, 'X-Forwarded-Host':host, 'X-Forwarded-Proto':'https', 'X-Forwarded-Origin':TRUSTED_HTTPS_ORIGIN},
+    ]) assert.equal((await requestRaw(base, postPath, 'POST', headers, '{}')).status, 403, JSON.stringify(headers));
+    const duplicateHost = ['Host', host, 'Host', 'other.example.invalid'];
+    assert.equal((await requestRaw(base, '/dev-server.mjs', 'GET', duplicateHost)).status, 403);
+    assert.equal((await requestRaw(base, '/dev-server.mjs', 'GET', {Host:host, Origin:'null'})).status, 403);
+    assert.equal((await requestRaw(base, '/api/v2/unknown', 'POST', {Host:host, Origin:TRUSTED_HTTPS_ORIGIN}, '{}')).status, 405);
+    assert.deepEqual(calls, [
+      {path:postPath, auth:'Bearer synthetic', cookie:undefined, body:'{}'},
+      {path:postPath, auth:undefined, cookie:undefined, body:'{}'},
+    ]);
+  } finally { await close(server); await close(upstream); }
+});
+
+test('trusted HTTPS origin is off by default and rejects invalid configuration', async () => {
+  const server = createDevServer();
+  const base = await listen(server);
+  try {
+    assert.equal((await requestRaw(base, '/dev-server.mjs')).status, 200);
+    assert.equal((await requestRaw(base, '/dev-server.mjs', 'GET', {Host:new URL(TRUSTED_HTTPS_ORIGIN).host})).status, 403);
+  } finally { await close(server); }
+
+  for (const invalid of [
+    '', 123, 'http://private-demo.example.invalid', 'https://user:secret@private-demo.example.invalid',
+    'https://@private-demo.example.invalid', 'https://*.example.invalid',
+    TRUSTED_HTTPS_ORIGIN + '/other', TRUSTED_HTTPS_ORIGIN + '/./',
+    TRUSTED_HTTPS_ORIGIN + '?', TRUSTED_HTTPS_ORIGIN + '/?q=1',
+    TRUSTED_HTTPS_ORIGIN + '#', TRUSTED_HTTPS_ORIGIN + '/#fragment',
+    ' ' + TRUSTED_HTTPS_ORIGIN, TRUSTED_HTTPS_ORIGIN + '\n',
+    'https://private-demo.example.inva\tlid', 'https://private-demo..example.invalid',
+    'https:private-demo.example.invalid', 'https://%70rivate-demo.example.invalid',
+    'https://private-demo.example.invalid.', 'https://private-demo.example.invalid:443',
+    'https://private-demo.example.invalid:0', 'https://private-demo.example.invalid:65536',
+    'https://private-demo.example.invalid\\', 'https://PRIVATE-DEMO.example.invalid',
+    'https://localhost:8080',
+  ]) {
+    assert.throws(() => createDevServer({trustedHttpsOrigin:invalid}), {
+      message:'trustedHttpsOrigin must be a canonical HTTPS origin for a non-loopback host.',
+    });
+  }
+});
+
 async function imageFixture() {
   const directory = await mkdtemp(join(tmpdir(), 'nu-proxy-'));
   const uploads = join(directory, 'uploads');
