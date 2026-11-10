@@ -10,8 +10,16 @@ const response = data => ({
   json: async () => data
 });
 const scrollIntoView = vi.fn();
+const applicationReference = '01K00000000000000000000001';
+const publicEvent = {
+  title: 'Synthetic community activity',
+  public_id: '123456789012345678901',
+  start_time: '2026-11-18T01:00:00Z',
+  end_time: '2026-11-18T02:00:00Z',
+};
 beforeEach(() => {
   localStorage.clear();
+  sessionStorage.clear();
   scrollIntoView.mockClear();
   Element.prototype.scrollIntoView = scrollIntoView;
 });
@@ -23,6 +31,7 @@ function fillApplication(form) {
     ['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '00000001'],
     ['National ID', 'SIM-0001'], ['Date of birth', '1990-01-01'],
   ]) fireEvent.change(within(form).getByLabelText(label), {target: {value}});
+  fireEvent.click(within(form).getByRole('radio', {name: 'Male'}));
 }
 function deferApplication() {
   let finish;
@@ -32,15 +41,16 @@ function deferApplication() {
       contract_version: body.contract_version,
       operation_id: body.operation_id,
       outcome: 'applied',
-      resource_id: 'reg',
-      effects: {registration_id: 'reg', status: 'pending'},
+      kind: 'application_create',
+      resource_id: applicationReference,
+      effects: {registration_id: applicationReference, status: 'pending'},
     }));
   }));
   return {fetch, finish: () => finish()};
 }
 it('catches invalid application phone validation in the workspace without sending a POST', async () => {
   const fetch = vi.spyOn(globalThis, 'fetch');
-  render(<JourneyWorkspace runtime={{}} auth={{ user: null, revision: 1 }} initialEvent="123456789012345678901" navigate={() => {}} />);
+  render(<JourneyWorkspace runtime={{}} auth={{ user: null, revision: 1 }} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} navigate={() => {}} />);
   const form = screen.getByRole('form', { name: 'Submit application' });
   for (const [label, value] of [['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '0'.repeat(21)], ['National ID', 'SIM-INVALID-PHONE']])
     fireEvent.change(within(form).getByLabelText(label), { target: { value } });
@@ -55,7 +65,7 @@ it('submits all six admitted fields and explicit Direct source through the real 
   render(<JourneyWorkspace runtime={{}} auth={{
     user: null,
     revision: 1
-  }} initialEvent="123456789012345678901" navigate={() => {}} />);
+  }} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} navigate={() => {}} />);
   const form = screen.getByRole('form', {
     name: 'Submit application'
   });
@@ -87,11 +97,19 @@ it('submits all six admitted fields and explicit Direct source through the real 
   });
   await act(async () => finish());
   expect(await screen.findByText('Saved by server. Current information has been read again.')).toBeInTheDocument();
+  const dialog = screen.getByRole('dialog', {name: 'Application submitted successfully'});
+  expect(dialog).toHaveTextContent(applicationReference);
+  expect(dialog).toHaveTextContent(publicEvent.title);
+  expect(dialog).toHaveTextContent('Pending');
+  expect(dialog).not.toHaveTextContent('SIM-0001');
+  const close = within(dialog).getByRole('button', {name: 'Close'});
+  expect(close).toHaveFocus();
+  await user.click(close);
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   const receipt = screen.getByRole('region', {name: 'Application recorded — pending review'});
-  expect(receipt).toHaveAccessibleDescription('Keep your application reference: reg An application does not confirm a place.');
+  expect(receipt).toHaveAccessibleDescription(`Keep your application reference: ${applicationReference} An application does not confirm a place.`);
   expect(receipt).toHaveFocus();
-  expect(scrollIntoView).toHaveBeenCalledExactlyOnceWith({block: 'center'});
-  expect(scrollIntoView.mock.contexts[0]).toBe(receipt);
+  expect(screen.queryByRole('form', {name: 'Submit application'})).not.toBeInTheDocument();
   expect(fetch).toHaveBeenCalledTimes(1);
 });
 it('focuses a refused application result and retains entered values', async () => {
@@ -100,7 +118,7 @@ it('focuses a refused application result and retains entered values', async () =
     status: 422,
     json: async () => ({detail: {code: 'INVALID_INPUT', message: 'The operation was refused. Read the current record.'}}),
   });
-  render(<JourneyWorkspace runtime={{}} auth={{user: null, revision: 1}} initialEvent="123456789012345678901" navigate={() => {}} />);
+  render(<JourneyWorkspace runtime={{}} auth={{user: null, revision: 1}} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} navigate={() => {}} />);
   const form = screen.getByRole('form', {name: 'Submit application'});
   fillApplication(form);
   const submit = within(form).getByRole('button', {name: 'Submit application'});
@@ -114,6 +132,7 @@ it('focuses a refused application result and retains entered values', async () =
   expect(within(form).getByLabelText('National ID')).toHaveValue('SIM-0001');
   expect(submit).toBeEnabled();
   expect(screen.queryByRole('heading', {name: 'Application recorded — pending review'})).not.toBeInTheDocument();
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   expect(fetch).toHaveBeenCalledTimes(1);
 });
 it.each(['actor', 'revision', 'event'])('ignores the completed application after the %s changes', async context => {
@@ -121,7 +140,7 @@ it.each(['actor', 'revision', 'event'])('ignores the completed application after
   const actor = {id: 'synthetic-applicant', role: 'user'};
   const event = '123456789012345678901';
   const runtime = {withVerifiedAccount: fn => fn('synthetic-token', actor)};
-  const props = {runtime, auth: {user: actor, revision: 1}, initialEvent: event, navigate: () => {}};
+  const props = {runtime, auth: {user: actor, revision: 1}, initialEvent: event, initialPublicEvent: publicEvent, navigate: () => {}};
   const view = render(<JourneyWorkspace {...props} />);
   const form = screen.getByRole('form', {name: 'Submit application'});
   fillApplication(form);
@@ -256,10 +275,10 @@ it('clears private registration content immediately on actor change and ignores 
   await waitFor(() => expect(screen.queryByText('SECRET LATE')).not.toBeInTheDocument());
 });
 it('resolves an active public referral and sends it independently of the entry operator',async()=>{
- const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async(path,options)=>{if(path.includes('/referrals/'))return response({event_public_id:'123456789012345678901',active:true,leader_display_name:'Synthetic Leader'});const body=JSON.parse(options.body);return response({contract_version:body.contract_version,operation_id:body.operation_id,outcome:'applied',effects:{registration_id:'reg',status:'pending'}});});
- render(<JourneyWorkspace runtime={{}} auth={{user:null,revision:1}} initialEvent="123456789012345678901" initialRef="opaque-ref" navigate={()=>{}}/>);await screen.findByText(/Synthetic Leader/);const form=screen.getByRole('form',{name:'Submit application'});expect(within(form).getByRole('option',{name:'leader referral'})).toHaveValue('leader_referral');const user=userEvent.setup();for(const [label,value] of [['First name','Siti'],['Last name','Demo'],['Phone','00000001'],['National ID','SIM-0001']])await user.type(within(form).getByLabelText(label),value);fireEvent.change(within(form).getByLabelText('Date of birth'),{target:{value:'1990-01-01'}});await user.click(within(form).getByRole('button',{name:'Submit application'}));await screen.findByText('Application recorded — pending review');const body=JSON.parse(fetch.mock.calls.find(([,options])=>options.method==='POST')[1].body);expect(body.data.source).toEqual({kind:'leader_referral',referral_code:'opaque-ref'});expect(body.data.application).not.toHaveProperty('operator_id');expect(screen.getByText('reg')).toBeInTheDocument();
+ const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async(path,options)=>{if(path.includes('/referrals/'))return response({event_public_id:'123456789012345678901',active:true,leader_display_name:'Synthetic Leader'});const body=JSON.parse(options.body);return response({contract_version:body.contract_version,operation_id:body.operation_id,outcome:'applied',kind:'application_create',resource_id:applicationReference,effects:{registration_id:applicationReference,status:'pending'}});});
+ render(<JourneyWorkspace runtime={{}} auth={{user:null,revision:1}} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} initialRef="opaque-ref" navigate={()=>{}}/>);await screen.findByText(/Synthetic Leader/);const form=screen.getByRole('form',{name:'Submit application'});expect(within(form).queryByRole('group',{name:'Source'})).not.toBeInTheDocument();const user=userEvent.setup();for(const [label,value] of [['First name','Siti'],['Last name','Demo'],['Phone','00000001'],['National ID','SIM-0001']])await user.type(within(form).getByLabelText(label),value);fireEvent.change(within(form).getByLabelText('Date of birth'),{target:{value:'1990-01-01'}});await user.click(within(form).getByRole('radio',{name:'Female'}));await user.click(within(form).getByRole('button',{name:'Submit application'}));await screen.findByText('Application recorded — pending review');const body=JSON.parse(fetch.mock.calls.find(([,options])=>options.method==='POST')[1].body);expect(body.data.source).toEqual({kind:'leader_referral',referral_code:'opaque-ref'});expect(body.data.application).not.toHaveProperty('operator_id');expect(within(screen.getByRole('dialog')).getByText(applicationReference)).toBeInTheDocument();
 });
-it('does not fall back to Guest after a failed authenticated identity',()=>{render(<JourneyWorkspace runtime={{}} auth={{user:null,hasToken:true,identityBlocked:true,revision:1}} initialEvent="123456789012345678901" navigate={()=>{}}/>);expect(within(screen.getByRole('form',{name:'Submit application'})).getByRole('button',{name:'Submit application'})).toBeDisabled();expect(screen.queryByRole('form',{name:'Request Demo OTP'})).not.toBeInTheDocument();});
+it('does not fall back to Guest after a failed authenticated identity',()=>{render(<JourneyWorkspace runtime={{}} auth={{user:null,hasToken:true,identityBlocked:true,revision:1}} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} navigate={()=>{}}/>);expect(within(screen.getByRole('form',{name:'Submit application'})).getByRole('button',{name:'Submit application'})).toBeDisabled();expect(screen.queryByRole('form',{name:'Request Demo OTP'})).not.toBeInTheDocument();});
 
 const attributionEvent = '123456789012345678901';
 const attributionActor = {id:'synthetic-owner',role:'organizer'};

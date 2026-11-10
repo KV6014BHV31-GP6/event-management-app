@@ -34,7 +34,7 @@ Organizers may preview/remove/replace/upload/associate up to three images. Reloa
 
 Private document downloads use fresh authenticated fetch → Blob → temporary download URL → revoke, never a bearer query string or private offline cache. The organizer portal reads own events and server-scoped /api/v2/me/registrations, current quotas/waiting, approval, owner cancellation and permitted documents. Preserved global v1 organizer behavior is a separate Backend boundary. Analytics display actual own-event persisted registration counts with source/definition/actor/as-of, not attendance, outreach, conversion or ROI.
 
-Share/copy is user-triggered public title/link only. WhatsApp opens a user-controlled external URL; no provider API, automatic message, SMS or OTP exists. Localhost reachability is explicitly limited. ASSET_MANIFEST.json records the licensed demo lake image and original SVG icon. Stock imagery is not verified NGO people/venues. No flyer bitmap or fabricated gallery photo is claimed.
+Event sharing is user-triggered. The Demo V2 behavior below defines the allowed origin, content and available actions. ASSET_MANIFEST.json records the licensed demo lake image and original SVG icon. Stock imagery is not verified NGO people/venues. No flyer bitmap or fabricated gallery photo is claimed.
 
 ## English and Malay
 
@@ -155,3 +155,19 @@ The existing delayed registrationA receipt / programmatic selectionB regression 
 After a managed application finishes in the current account and event, the workspace focuses and scrolls to the pending-review receipt or the refusal message. The receipt includes the registration reference. A refusal keeps the entered fields available for correction. The in-flight submission lock and actor, revision, event and record guards still apply.
 
 The English and Malay workspace displays readable review, source and statistics labels. The underlying source values and counts continue to come from the existing API.
+
+## Demo V2 application and sharing
+
+On public event details, the share preview uses the actual event name, start/end, event timezone (UTC for legacy events), location and canonical `/?view=event&event=<public_id>` link. External actions require the served page to use the deployment-approved named HTTPS origin on the default port. Local HTTP, loopback, IP literals, local development names and nonstandard ports show a preview without a shareable URL. The serving gateway remains responsible for exact Host/Origin admission. For a private Demo site, each recipient needs access to the same origin.
+
+WhatsApp receives the encoded full message. Messages / SMS opens the native share sheet from the original click when the browser exposes Web Share in a secure context. The user chooses Messages and the delivery channel in their device. The same selectable preview and explicit message/link copy controls are available on the admitted HTTPS site. Cancel, unavailable sharing and unsuccessful Clipboard access have separate feedback. External composer, actual send, delivery and recipient access are separate verification steps.
+
+Managed and legacy forms retain first/last names, required DOB, phone, National ID and the original gender values. Gender is an explicit radio choice. Managed Direct/Unknown choices and a validated leader referral preserve the existing source payload. A review panel lets the applicant inspect the entered values and uploaded references before the single application submit. Text limits retain the existing Unicode character counts.
+
+Supporting documents remain optional and connected. Choose up to three PNG, JPEG, GIF, WebP or PDF files up to 8 MiB each. A photo chooser and a device-dependent camera shortcut use the native picker. Selected images have memory-only previews. PDFs can be downloaded locally for inspection. Each file shows its size, type and upload state. Replace keeps the prior selection until a valid replacement is chosen. A retry skips completed uploads, and an unknown upload still requires a check before another send. The private server read path and file ownership rules apply after submission.
+
+An accepted managed application must return the existing applied `application_create` receipt with the matching registration reference and `pending` effect. Only a new confirmed online submission opens the success dialog. Dismissing the dialog returns focus to the existing inline receipt. Signed-in participants can find the current status in My registrations. Managed Guests keep their reference and use the existing Guest booking access flow with that reference and phone after a refresh. Legacy Guest receipt access remains limited to the original session. A recovered original receipt is historical and current status comes from a fresh authorized read.
+
+The existing synthetic leader/organizer Offline Workspace continues to use manual sync and its saved IDs and receipt recovery. It stores application fields and can represent uploaded server file IDs. The existing file upload contract has no durable offline file-byte replay or upload receipt for a lost acknowledgement. Connected document selection does not create an offline submission, and a saved offline draft does not create a server Pending application.
+
+Targeted author checks use `npm test -- --no-cache src/EventShare.test.jsx src/FilePicker.test.jsx src/PrivateDocuments.test.jsx src/App.test.jsx src/JourneyWorkspace.test.jsx src/journey-api.test.js src/phase2-api.test.js src/i18n/i18n.test.jsx` and the production build. Real browser, database, physical iPhone and cross-device delivery results require separate evidence.

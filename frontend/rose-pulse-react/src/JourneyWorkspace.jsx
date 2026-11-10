@@ -6,6 +6,8 @@ import { tr,locale } from './i18n/index.js';
 import { createJourneyClient } from './journey-api.js';
 import { minimumRegistrationPayload } from './minimum-registration.js';
 import { FilePicker, PrivateDocuments } from './FilePicker.jsx';
+import ApplicationSuccess from './ApplicationSuccess.jsx';
+import { ApplicationOptions, ApplicationSummary, ParticipantFields, applicationSources } from './ApplicationFields.jsx';
 const utc = value => value ? new Date(value).toISOString() : value;
 const localInput=value=>{const d=new Date(value);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);};
 const field = (name, label, type = 'text', extra = {}) => ({
@@ -29,7 +31,7 @@ function ActionForm({
 }) {
   return <form aria-label={tr(title)} className="journey-form" onSubmit={e => {
     e.preventDefault();
-    submit(Object.fromEntries(new FormData(e.currentTarget)), e.currentTarget);
+    if (!busy) submit(Object.fromEntries(new FormData(e.currentTarget)), e.currentTarget);
   }}><h3>{tr(title)}</h3><Fields fields={fields} />{children}<button className="button button-small" disabled={busy}>{tr(button)}</button></form>;
 }
 const applicationFields = [field('first_name', 'First name'), field('last_name', 'Last name'), field('gender', 'Gender', 'text', {
@@ -37,7 +39,7 @@ const applicationFields = [field('first_name', 'First name'), field('last_name',
 }), field('date_of_birth', 'Date of birth', 'date'), field('phone', 'Phone'), field('national_id', 'National ID')];
 const appCopy = v => minimumRegistrationPayload(v);
 export default function JourneyWorkspace(props) {
-  return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}`} {...props} />;
+  return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}:${props.initialRef}`} {...props} />;
 }
 function JourneySession({
   runtime,
@@ -61,8 +63,13 @@ function JourneySession({
     [filesBlocked, setFilesBlocked] = useState(false),
     [applicationFiles, setApplicationFiles] = useState([]),
     [correctionFiles, setCorrectionFiles] = useState([]),
-    [attachmentBlocked, setAttachmentBlocked] = useState(false),[editFiles,setEditFiles]=useState([]),[editBlocked,setEditBlocked]=useState(false);
+    [attachmentBlocked, setAttachmentBlocked] = useState(false),
+    [correctionBlocked, setCorrectionBlocked] = useState(false),[editFiles,setEditFiles]=useState([]),[editBlocked,setEditBlocked]=useState(false);
   const [applicationAttention, setApplicationAttention] = useState(null);
+  const [applicationModal, setApplicationModal] = useState(false);
+  const [applicationForm, setApplicationForm] = useState(0);
+  const registrationDetails = useRef(null);
+  const guestAccess = useRef(null);
   const receiptRef = useRef(null);
   const errorRef = useRef(null);
   const receiptId = useId();
@@ -70,14 +77,14 @@ function JourneySession({
     active = useRef(true),
     recordEpoch = useRef(0),
     actorId = auth.user?.id || auth.offlineActor?.id || 'guest';
-  useEffect(() => () => {
-    active.current = false;
+  useEffect(() => {
+    active.current = true;
+    return () => { active.current = false; };
   }, []);
   useEffect(() => {
-    if (!active.current || applicationAttention?.epoch !== recordEpoch.current) return;
-    const target = applicationAttention.result === 'receipt' ? receiptRef.current : errorRef.current;
-    target?.focus({preventScroll: true});
-    target?.scrollIntoView?.({block: 'center'});
+    if (!active.current || applicationModal || applicationAttention?.epoch !== recordEpoch.current) return;
+    errorRef.current?.focus({preventScroll: true});
+    errorRef.current?.scrollIntoView?.({block: 'center'});
   }, [applicationAttention]);
   const guestAllowed=!auth.user&&!auth.hasToken&&!auth.identityBlocked&&!auth.checking;
   const client = useMemo(() => createJourneyClient({
@@ -100,18 +107,18 @@ function JourneySession({
     setBusy(true);
     setError('');
     setMessage('');
-    let result = 'receipt';
+    let failed = false;
     try {
       await fn();
     } catch (e) {
-      result = 'error';
+      failed = true;
       if (active.current && operationEpoch===recordEpoch.current) setError(e.message);
     } finally {
       lock.current = false;
       if (active.current) {
         setBusy(false);
-        if (focusApplicationResult && operationEpoch === recordEpoch.current) {
-          setApplicationAttention({result, epoch: operationEpoch});
+        if (focusApplicationResult && failed && operationEpoch === recordEpoch.current) {
+          setApplicationAttention({epoch: operationEpoch});
         }
       }
     }
@@ -137,6 +144,7 @@ function JourneySession({
       if (isApplication) {
         setRegistrationId(receipt.effects.registration_id);
         setLoaded(old => ({...old, applicationReceipt: receipt.effects}));
+        setApplicationModal(true);
       }
       setMessage(tr('Saved by server. Current information has been read again.'));
       if (eventId && staff) await read('event', root, mutationEpoch);
@@ -152,6 +160,38 @@ function JourneySession({
   const refreshRegistration = () => run(() => read('registration', `/registrations/${registrationId}`));
   const registration = loaded.registration;
   const current = loaded.event;
+  const applicationEvent = loaded.publicEvent || current?.event ||
+    loaded.eventOptions?.find(event => event.public_id === eventId);
+  const dismissApplication = () => {
+    setApplicationModal(false);
+    receiptRef.current?.focus();
+  };
+  const viewApplication = () => {
+    setApplicationModal(false);
+    if (auth.user?.role === 'user') {
+      navigate('registrations');
+      return;
+    }
+    const details = guestAllowed ? guestAccess.current : registrationDetails.current;
+    if (details) {
+      details.open = true;
+      details.querySelector('summary')?.focus();
+    }
+  };
+  const recoverOperation = (row, replay = false) => run(async () => {
+    const epoch = recordEpoch.current;
+    const operationId = row.body.operation_id;
+    const recovered = await (replay ? client.replayExact(operationId) : client.reconcile(operationId));
+    if (!active.current || epoch !== recordEpoch.current) return;
+    if (recovered.effects?.registration_id) {
+      setRegistrationId(recovered.effects.registration_id);
+      if (row.path === root + '/applications')
+        setLoaded(old => ({...old, applicationReceipt: {...recovered.effects, historical: true}}));
+    }
+    setMessage(tr(replay
+      ? 'Original immutable action recovered. Read the current record.'
+      : 'Original receipt recovered. Read the current resource.'));
+  });
   const promotionRaw = loaded.promotion;
   const ownAssignment=loaded.leaders?.leaders.find(row=>row.leader_id===auth.user?.id&&row.active);
   const publicLink=auth.user?.role==='leader'?ownAssignment?.public_url:promotionRaw?.public_url;
@@ -175,16 +215,41 @@ function JourneySession({
    {message && <p className="notice">{message}</p>}
    {loaded.applicationReceipt && <section className="notice" ref={receiptRef} tabIndex={-1}
      aria-labelledby={receiptId + '-title'} aria-describedby={receiptId + '-reference ' + receiptId + '-scope'}>
-     <h2 id={receiptId + '-title'}>{tr('Application recorded — pending review')}</h2>
+     <h2 id={receiptId + '-title'}>{tr(loaded.applicationReceipt.historical
+       ? 'Original application receipt' : 'Application recorded — pending review')}</h2>
      <p id={receiptId + '-reference'}>{tr('Keep your application reference')}: <strong>{loaded.applicationReceipt.registration_id}</strong></p>
-     <p id={receiptId + '-scope'}>{tr('An application does not confirm a place.')}</p>
+     <p id={receiptId + '-scope'}>{tr(loaded.applicationReceipt.historical
+       ? 'This receipt records the original submission. Read the application for its current status.'
+       : 'An application does not confirm a place.')}</p>
+     {guestAllowed && <p>{tr('Keep your reference. After a refresh, enter it in Guest booking access to read the current application.')}</p>}
    </section>}
    {error && <p className="notice notice-error" role="alert" ref={errorRef} tabIndex={-1}>{tr(error)}</p>}
  </div>
- {!!pending.length && <section className="notice"><h2>{tr('Unknown operations — reconcile before another send')}</h2>{pending.map(row => <div key={row.body.operation_id}><p>{row.path} · {row.body.operation_id}</p><button disabled={busy} className="button button-small" onClick={() => run(async () => {
-          const recovered=await client.reconcile(row.body.operation_id);if(recovered.effects?.registration_id){setRegistrationId(recovered.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:recovered.effects}));}
-          setMessage(tr('Original receipt recovered. Read the current resource.'));
-        })}>{tr('Reconcile')}</button>{row.missing_receipts>=2&&!row.sensitive&&!row.immutable_conflict&&<button className="button button-quiet button-small" disabled={busy} onClick={()=>run(async()=>{const recovered=await client.replayExact(row.body.operation_id);if(recovered.effects?.registration_id){setRegistrationId(recovered.effects.registration_id);setLoaded(old=>({...old,applicationReceipt:recovered.effects}));}setMessage(tr('Original immutable action recovered. Read the current record.'));})}>{tr('Retry exact saved action')}</button>}</div>)}</section>}
+ {applicationModal && loaded.applicationReceipt && applicationEvent && (
+   <ApplicationSuccess
+     eventTitle={applicationEvent.title}
+     reference={loaded.applicationReceipt.registration_id}
+     onDismiss={dismissApplication}
+     onView={viewApplication}
+     onDone={() => { setApplicationModal(false); navigate('event', {event: eventId}); }}
+   />
+ )}
+ {!!pending.length && (
+   <section className="notice">
+     <h2>{tr('Unknown operations — reconcile before another send')}</h2>
+     {pending.map(row => (
+       <div key={row.body.operation_id}>
+         <p>{row.path} · {row.body.operation_id}</p>
+         <button disabled={busy} className="button button-small" onClick={() => recoverOperation(row)}>{tr('Reconcile')}</button>
+         {row.missing_receipts >= 2 && !row.sensitive && !row.immutable_conflict && (
+           <button className="button button-quiet button-small" disabled={busy} onClick={() => recoverOperation(row, true)}>
+             {tr('Retry exact saved action')}
+           </button>
+         )}
+       </div>
+     ))}
+   </section>
+ )}
  <section className="journey-section"><h2>{tr('Selected event')}</h2>{!staff&&loaded.publicEvent&&<PublicEventContext event={loaded.publicEvent}/>} {(staff||!eventId)&&<><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
         const data = owner ? await runtime.withVerifiedAccount((token, actor) => runtime.api.getOrganizerEvents(token, {
           page: 1,
@@ -291,16 +356,49 @@ function JourneySession({
  {staff && eventId && <details className="journey-section"><summary>{tr('Demand, quota and instructions')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('stats', root + '/stats'))}>{tr('Read current statistics')}</button>{loaded.stats && <Statistics data={loaded.stats} actor={staffActor} />} {owner && current && <><ActionForm title="Save leader instruction" busy={busy} fields={[field('text', 'Instruction', 'textarea', {
           value: loaded.stats?.instruction?.text
         })]} submit={v => mutate(root + '/instruction', v, eventVersion)} /><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/alerts', {}, eventVersion)}>{tr('Process demand alerts')}</button></>}</details>}
- <details className="journey-section" open={!staff}><summary>{tr('Application and source')}</summary>{guestAllowed&&<p className="notice">{tr('Guest application — no account will be created.')} <button className="text-button" onClick={()=>navigate('login',{event:eventId})}>{tr('Log in')}</button></p>}<p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p><ActionForm title="Submit application" busy={busy || !eventId || attachmentBlocked || (!!initialRef&&!loaded.referral) || (!auth.user&&!auth.offlineActor&&!guestAllowed) || (!staff&&!!runtime.api?.getEvent&&!loaded.publicEvent)} fields={[...applicationFields, field('source_kind', 'Source', 'text', {options:initialRef?['leader_referral']:['direct','unknown']})]} submit={v => mutate(root + '/applications', () => ({
-        application: {
-          ...appCopy(v),
-          ...(applicationFiles.length ? {
-            file_ids: applicationFiles.map(f => f.id)
-          } : {})
-        },
-        source: {kind:initialRef?'leader_referral':v.source_kind,referral_code:initialRef||null}
-      }))}>{loaded.referral&&<p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>}{auth.user && <FilePicker runtime={runtime} key={eventId+":"+registrationId} purpose="supporting_document" onChange={applicationChanged} onBlocked={attachmentChanged} />}</ActionForm></details>
- <details className="journey-section"><summary>{tr('Registration review and booking')}</summary>{auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
+ <details className="journey-section" open={!staff}>
+   <summary>{tr('Application and source')}</summary>
+   {guestAllowed && <p className="notice">
+     {tr('Guest application — no account will be created.')}{' '}
+     <button className="text-button" onClick={() => navigate('login', {event: eventId})}>{tr('Log in')}</button>
+   </p>}
+   <p>{tr('Pending applications do not confirm a place. Supporting documents are optional and require an authenticated connection.')}</p>
+   {loaded.applicationReceipt ? (
+     staff && <button type="button" className="button button-quiet" disabled={busy} onClick={() => {
+       setLoaded(old => ({...old, applicationReceipt: null}));
+       setApplicationFiles([]);
+       setApplicationForm(value => value + 1);
+     }}>{tr('Start another application')}</button>
+   ) : (
+     <ActionForm
+       key={applicationForm}
+       title="Submit application"
+       busy={busy || !eventId || !applicationEvent || attachmentBlocked ||
+         (!!initialRef && !loaded.referral) || (!auth.user && !auth.offlineActor && !guestAllowed)}
+       submit={values => mutate(root + '/applications', () => ({
+         application: {
+           ...appCopy(values),
+           ...(applicationFiles.length ? {file_ids: applicationFiles.map(file => file.id)} : {}),
+         },
+         source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
+       }))}
+     >
+       <fieldset className="application-fields-group" disabled={busy}>
+         <ParticipantFields />
+           {initialRef ? (
+           loaded.referral && <p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>
+         ) : (
+           <ApplicationOptions label="Source" name="source_kind" choices={applicationSources} defaultValue="direct" />
+         )}
+         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document"
+           onChange={applicationChanged} onBlocked={attachmentChanged} disabled={busy} />}
+         <ApplicationSummary files={applicationFiles}
+           source={loaded.referral ? loaded.referral.leader_display_name : undefined} />
+       </fieldset>
+     </ActionForm>
+   )}
+ </details>
+ <details className="journey-section" ref={registrationDetails}><summary>{tr('Registration review and booking')}</summary>{auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
           const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
           if (active.current) setLoaded(old => ({
             ...old,
@@ -308,8 +406,9 @@ function JourneySession({
           }));
         })}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} disabled={busy} onChange={e => {
             recordEpoch.current++;
-            setError('');setMessage('');setApplicationFiles([]);
+            setError('');setMessage('');
             setCorrectionFiles([]);
+            setCorrectionBlocked(false);
             setRegistrationId(e.target.value);
             setLoaded(old => ({
               ...old,
@@ -319,15 +418,15 @@ function JourneySession({
           options: ['approve', 'reject', 'request_correction'].filter(a => registration.allowed_actions.includes(a))
         }), field('reason', 'Review reason', 'textarea', {
           required: false
-        })]} submit={v => mutate('/registrations/' + registrationId + '/review', v, registration.version)} />}{registration.allowed_actions?.includes('correct') && <ActionForm title="Submit correction" busy={busy || attachmentBlocked} fields={[field('phone', 'Corrected phone', 'text', {
+        })]} submit={v => mutate('/registrations/' + registrationId + '/review', v, registration.version)} />}{registration.allowed_actions?.includes('correct') && <ActionForm title="Submit correction" busy={busy || correctionBlocked} fields={[field('phone', 'Corrected phone', 'text', {
           required: false
         }), field('note', 'Correction note', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/correction', {
           ...Object.fromEntries(Object.entries(v).filter(([, x]) => x)),
           ...(correctionFiles.length ? {
             file_ids: correctionFiles.map(f => f.id)
           } : {})
-        }, registration.version)}>{auth.user && <FilePicker runtime={runtime} key={registrationId} purpose="supporting_document" onChange={correctionChanged} onBlocked={attachmentChanged} />}</ActionForm>} {registration.allowed_actions?.includes('cancel') && <ActionForm title="Cancel booking" busy={busy} fields={[field('reason', 'Cancellation reason', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/cancel', v, registration.version)} />} {!owner && registration.offer?.state === 'offered' && <div className="form-actions"><button className="button" disabled={busy || !registration.allowed_actions?.includes('accept_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/accept', {}, registration.offer.version)}>{tr('Accept held offer')}</button><button className="button button-quiet" disabled={busy || !registration.allowed_actions?.includes('decline_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/decline', {}, registration.offer.version)}>{tr('Decline offer')}</button></div>}</>}</details>
- {guestAllowed && <details className="journey-section"><summary>{tr('Guest booking access — DEMO OTP')}</summary><p>{tr('Simulated local delivery. This does not verify real phone ownership. Codes and grants stay in page memory.')}</p><ActionForm title="Request Demo OTP" busy={busy} fields={[field('registration_id', 'Registration reference', 'text', {
+        }, registration.version)}>{auth.user && <FilePicker runtime={runtime} key={registrationId} purpose="supporting_document" onChange={correctionChanged} onBlocked={setCorrectionBlocked} disabled={busy} />}</ActionForm>} {registration.allowed_actions?.includes('cancel') && <ActionForm title="Cancel booking" busy={busy} fields={[field('reason', 'Cancellation reason', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/cancel', v, registration.version)} />} {!owner && registration.offer?.state === 'offered' && <div className="form-actions"><button className="button" disabled={busy || !registration.allowed_actions?.includes('accept_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/accept', {}, registration.offer.version)}>{tr('Accept held offer')}</button><button className="button button-quiet" disabled={busy || !registration.allowed_actions?.includes('decline_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/decline', {}, registration.offer.version)}>{tr('Decline offer')}</button></div>}</>}</details>
+ {guestAllowed && <details className="journey-section" ref={guestAccess}><summary>{tr('Guest booking access — DEMO OTP')}</summary><p>{tr('Simulated local delivery. This does not verify real phone ownership. Codes and grants stay in page memory.')}</p><ActionForm key={loaded.applicationReceipt?.registration_id || ""} title="Request Demo OTP" busy={busy} fields={[field('registration_id', 'Registration reference', 'text', {
         value: registrationId
       }), field('phone', 'Phone')]} submit={v => run(async () => {
         setGrant(null);

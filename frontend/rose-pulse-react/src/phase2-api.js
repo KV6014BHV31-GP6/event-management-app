@@ -41,6 +41,25 @@ const mimes = {
   "image/webp": ["webp"],
   "application/pdf": ["pdf"],
 };
+const MAX_FILE_BYTES = 8 * 1024 * 1024;
+export const imageFileAccept = Object.keys(mimes).filter((mime) => mime.startsWith("image/")).join(",");
+export const documentFileAccept = Object.keys(mimes).join(",");
+
+export function uploadFileProblem(file, purpose) {
+  const extension = file?.name?.split(".").at(-1)?.toLowerCase();
+  if (!Number.isSafeInteger(file?.size) || file.size < 1)
+    return "This file is empty. Choose a file with content.";
+  if (file.size > MAX_FILE_BYTES)
+    return "The selected file is too large. Maximum 8 MiB per file.";
+  if (["heic", "heif"].includes(extension) || /image\/hei[cf]/.test(file.type))
+    return "HEIC and HEIF are unsupported. Choose a JPEG, PNG, GIF, WebP or PDF file.";
+  if (!Object.hasOwn(mimes, file.type) || (purpose === "event_image" && file.type === "application/pdf"))
+    return "This file type is not supported.";
+  if (!mimes[file.type].includes(extension))
+    return "The file extension does not match the file type.";
+  return "";
+}
+
 export function validateFileReference(file, purpose) {
   if (
     !file ||
@@ -50,7 +69,7 @@ export function validateFileReference(file, purpose) {
     /[\\/\u0000-\u001f]/.test(file.name) ||
     !Number.isSafeInteger(file.size) ||
     file.size < 1 ||
-    file.size > 8 * 1024 * 1024 ||
+    file.size > MAX_FILE_BYTES ||
     !mimes[file.mime_type] ||
     !["event_image", "supporting_document"].includes(file.purpose) ||
     (purpose && file.purpose !== purpose) ||
@@ -292,7 +311,6 @@ export function createPhase2Api({
   return {
     ...legacy,
     async uploadFile(file, purpose, token) {
-      const extension = file?.name?.split(".").at(-1)?.toLowerCase();
       if (!token)
         throw new ApiError(
           "unauthorized",
@@ -301,11 +319,7 @@ export function createPhase2Api({
         );
       if (
         !["event_image", "supporting_document"].includes(purpose) ||
-        !mimes[file?.type]?.includes(extension) ||
-        (purpose === "event_image" && file.type === "application/pdf") ||
-        !Number.isSafeInteger(file.size) ||
-        file.size < 1 ||
-        file.size > 8 * 1024 * 1024
+        uploadFileProblem(file, purpose)
       )
         throw new ApiError(
           "validation",

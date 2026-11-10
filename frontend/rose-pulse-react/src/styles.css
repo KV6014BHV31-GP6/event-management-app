@@ -2683,3 +2683,146 @@ legend {
 .account-delivery { margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--line); }
 .account-delivery textarea { min-height: 100px; overflow-wrap: anywhere; resize: vertical; }
 @media (max-width: 390px) { .account-section, .account-recovery { padding: 16px; } }
+
+/* Application and share controls use the existing ROSE PULSE surfaces. */
+.event-share .button,
+.application-success .button {
+  min-height: 44px;
+  white-space: normal;
+}
+.event-share > .small,
+.event-share .public-share-link {
+  font-size: 14px;
+}
+.event-share > label {
+  display: block;
+  margin-top: 16px;
+}
+.event-share .public-share-link {
+  min-width: 0;
+  resize: vertical;
+  overflow-wrap: anywhere;
+}
+.participant-fields {
+  row-gap: 12px;
+}
+.participant-fields .field {
+  margin-bottom: 0;
+}
+.participant-fields .field label,
+.application-options legend {
+  font-size: 14px;
+  font-weight: 600;
+}
+.participant-fields .field input {
+  font-size: 16px;
+  min-width: 0;
+}
+.participant-fields .field small {
+  font-size: 12px;
+  color: var(--muted);
+}
+.participant-fields > .application-options {
+  grid-column: 1 / -1;
+}
+.application-options-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 6px 0 10px;
+}
+.application-options-row label,
+.journey-form .application-options-row label {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  background: #fff;
+  cursor: pointer;
+}
+.application-options-row input,
+.journey-form .application-options-row input,
+.journey-form .supporting-file-picker .checkbox-label input {
+  width: auto;
+  min-height: 0;
+  accent-color: var(--green);
+}
+.application-options-row label:has(input:checked) {
+  border-color: var(--green);
+  font-weight: 600;
+}
+.application-fields-group {
+  display: grid;
+  gap: 16px;
+}
+.application-summary summary,
+.journey-section .application-summary summary {
+  font-size: 14px;
+  padding: 10px 0;
+}
+.application-summary > .text-button {
+  min-height: 44px;
+}
+.supporting-file-picker .file-preview > span,
+.supporting-file-picker .file-preview > small,
+.supporting-file-picker .file-preview > .text-button,
+.supporting-file-picker .file-preview > .text-link {
+  font-size: 13px;
+}
+.supporting-file-picker .file-preview > img {
+  object-fit: contain;
+  background: #f7f5ef;
+}
+.supporting-file-picker .file-preview > .text-link {
+  display: inline-flex;
+  margin-inline: 9px;
+}
+.supporting-file-picker .text-button,
+.supporting-file-picker .file-preview > .text-link {
+  min-height: 44px;
+  align-items: center;
+}
+.supporting-file-picker .file-preview > [role=alert] {
+  color: #842c34;
+}
+.journey-form .supporting-file-picker .checkbox-label {
+  flex-direction: row;
+  align-items: flex-start;
+}
+.application-success {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(calc(100% - 24px), 34rem);
+  max-height: calc(100dvh - max(12px, env(safe-area-inset-top)) - max(12px, env(safe-area-inset-bottom)));
+  border: 1px solid var(--line);
+  padding-bottom: max(24px, env(safe-area-inset-bottom));
+}
+.application-success::backdrop {
+  background: #102c26cc;
+}
+.application-success .section-heading {
+  align-items: flex-start;
+  margin-bottom: 12px;
+}
+.application-success .receipt {
+  grid-template-columns: minmax(0, 8rem) minmax(0, 1fr);
+  gap: 10px;
+  font-size: 14px;
+}
+.application-success .receipt dt {
+  color: var(--muted);
+}
+@media (max-width: 480px) {
+  .participant-fields,
+  .supporting-file-picker .file-previews {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .application-success .section-heading {
+    gap: 8px;
+  }
+}
