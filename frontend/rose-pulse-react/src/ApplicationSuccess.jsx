@@ -1,11 +1,27 @@
-import React, { useEffect, useId, useRef } from "react";
+import React, { useEffect, useId, useLayoutEffect, useRef } from "react";
 import { tr } from "./i18n/index.js";
 
 export default function ApplicationSuccess({ eventTitle, reference, onDismiss, onView, onDone }) {
   const dialog = useRef(null);
   const closeButton = useRef(null);
+  const timer = useRef(null);
+  const finished = useRef(false);
+  const latestDone = useRef(onDone);
   const titleId = useId();
   const descriptionId = useId();
+  const returnId = useId();
+
+  useLayoutEffect(() => {
+    latestDone.current = onDone;
+  }, [onDone]);
+
+  const close = (action) => {
+    if (finished.current) return;
+    finished.current = true;
+    window.clearTimeout(timer.current);
+    if (dialog.current?.open) dialog.current.close();
+    action();
+  };
 
   useEffect(() => {
     const panel = dialog.current;
@@ -13,20 +29,20 @@ export default function ApplicationSuccess({ eventTitle, reference, onDismiss, o
       onDismiss();
       return;
     }
+    finished.current = false;
     panel.showModal();
     closeButton.current?.focus();
+    timer.current = window.setTimeout(() => close(latestDone.current), 5000);
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
+      finished.current = true;
+      window.clearTimeout(timer.current);
       if (panel.open) panel.close();
       document.body.style.overflow = overflow;
     };
   }, []);
 
-  const close = (action) => {
-    dialog.current.close();
-    action();
-  };
 
   return (
     <dialog
@@ -34,7 +50,7 @@ export default function ApplicationSuccess({ eventTitle, reference, onDismiss, o
       className="document-viewer application-success"
       aria-modal="true"
       aria-labelledby={titleId}
-      aria-describedby={descriptionId}
+      aria-describedby={`${descriptionId} ${returnId}`}
       onCancel={(event) => {
         event.preventDefault();
         close(onDismiss);
@@ -60,6 +76,7 @@ export default function ApplicationSuccess({ eventTitle, reference, onDismiss, o
         <dd><span className="status status-pending">{tr("Pending")}</span></dd>
       </dl>
       <p id={descriptionId}>{tr("Awaiting organiser review. A place is not confirmed.")}</p>
+      <p id={returnId}>{tr("Returning to the event in 5 seconds.")}</p>
       <div className="form-actions">
         <button className="button" type="button" onClick={() => close(onView)}>
           {tr("View application")}
