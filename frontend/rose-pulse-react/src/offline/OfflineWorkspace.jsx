@@ -1,6 +1,7 @@
 import { demoTransport, DEMO_PROFILE } from "../demo-transport.js";
 import { tr } from "../i18n/index.js";
 import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { DemoFormTemplate } from "../ApplicationFields.jsx";
 import { minimumRegistrationPayload } from "../minimum-registration.js";
 const messages = {
   offline_storage_full:
@@ -354,6 +355,7 @@ export default function OfflineWorkspace({
                   <legend className="sr-only">
                     {tr("Synthetic participant details")}
                   </legend>
+                  <DemoFormTemplate disabled={busy || !selected} />
                   <div className="form-grid">
                     {[
                       ["first_name", "First name"],

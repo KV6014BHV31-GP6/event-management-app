@@ -1,4 +1,6 @@
-import { DemoImage } from "./DemoControls.jsx";
+import { DEMO_PROFILE } from "./demo-transport.js";
+import demoDocument from "./demo-assets/demo-supporting-document.pdf?inline";
+import { DemoImage, useDemoTool } from "./DemoControls.jsx";
 import { locale, tr } from "./i18n/index.js";
 import React, { useEffect, useRef, useState, useId } from "react";
 import { documentFileAccept, imageFileAccept, uploadFileProblem } from "./phase2-api.js";
@@ -16,6 +18,7 @@ export function FilePicker({
   runtime,
   purpose,
   initialFiles = [],
+  allowDemoSample = false,
   onChange,
   onBlocked,
   disabled = false,
@@ -31,6 +34,7 @@ export function FilePicker({
   );
   const [message, setMessage] = useState("");
   const [synthetic, setSynthetic] = useState(false);
+  const picker = useRef(null);
   const replacement = useRef(null);
   const replaceKey = useRef(null);
   const photo = useRef(null);
@@ -71,9 +75,7 @@ export function FilePicker({
     setEntries((current) => current.filter((item) => item.key !== key));
   };
 
-  const select = (event, key = null) => {
-    const files = Array.from(event.target.files || []);
-    event.target.value = "";
+  const selectFiles = (files, key = null) => {
     if (!files.length || busy.current || locked || disabled) return;
     if (files.length + entries.length - (key ? 1 : 0) > 3) {
       setMessage("Choose no more than three files.");
@@ -98,6 +100,25 @@ export function FilePicker({
       setEntries((current) => [...current, ...selected]);
     }
   };
+
+  const select = (event, key = null) => {
+    const files = Array.from(event.target.files || []);
+    event.target.value = "";
+    selectFiles(files, key);
+  };
+
+  const demoName = "synthetic-demo-supporting-document.pdf";
+  const demoSampleEnabled = allowDemoSample && purpose === "supporting_document";
+  const canChooseDemo = demoSampleEnabled && canChoose &&
+    !entries.some((entry) => (entry.file?.name || entry.reference?.name) === demoName);
+  const chooseDemoDocument = () => {
+    if (!canChooseDemo || busy.current) return;
+    const section = picker.current?.closest("details");
+    if (section) section.open = true;
+    const bytes = Uint8Array.from(atob(demoDocument.split(",")[1]), (char) => char.charCodeAt(0));
+    selectFiles([new File([bytes], demoName, { type: "application/pdf" })]);
+  };
+  useDemoTool("Select synthetic demo document", chooseDemoDocument, canChooseDemo);
 
   const upload = async () => {
     if (busy.current || locked || disabled || !synthetic) return;
@@ -142,7 +163,7 @@ export function FilePicker({
   };
 
   return (
-    <section className={`image-upload file-picker${image ? "" : " supporting-file-picker"}`}>
+    <section ref={picker} className={`image-upload file-picker${image ? "" : " supporting-file-picker"}`}>
       <label htmlFor={inputId}>
         {tr(image ? "Event image" : "Supporting documents")}{" "}
         <span className="muted">{tr("(optional)")}</span>
@@ -201,6 +222,15 @@ export function FilePicker({
         id={inputId} type="file" multiple accept={image ? imageFileAccept : documentFileAccept}
         disabled={!canChoose} onChange={select}
       />
+      {DEMO_PROFILE && demoSampleEnabled && (
+        <div className="form-inline-actions">
+          <button type="button" className="button button-quiet button-small"
+            disabled={!canChooseDemo}
+            onClick={chooseDemoDocument}>
+            {tr("Select synthetic demo document")}
+          </button>
+        </div>
+      )}
       {!image && <>
         <input ref={replacement} type="file" hidden aria-label={tr("Choose replacement file")}
           accept={documentFileAccept} disabled={disabled || locked}

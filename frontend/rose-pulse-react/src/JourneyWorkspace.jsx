@@ -384,13 +384,13 @@ function JourneySession({
        }))}
      >
        <fieldset className="application-fields-group" disabled={busy}>
-         <ParticipantFields />
+         <ParticipantFields preserveNationalId={auth.user?.role === 'user'} />
            {initialRef ? (
            loaded.referral && <p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>
          ) : (
            <ApplicationOptions label="Source" name="source_kind" choices={applicationSources} defaultValue="direct" />
          )}
-         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document"
+         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document" allowDemoSample
            onChange={applicationChanged} onBlocked={attachmentChanged} disabled={busy} />}
          <ApplicationSummary files={applicationFiles}
            source={loaded.referral ? loaded.referral.leader_display_name : undefined} />

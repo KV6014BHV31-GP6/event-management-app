@@ -966,5 +966,9 @@
   "Local demo link": "Pautan demo setempat",
   "Copy demo link": "Salin pautan demo",
   "Local demo link copied.": "Pautan demo setempat disalin.",
-  "Copy is unavailable. Select the local demo link and copy it manually.": "Salinan automatik tidak tersedia. Pilih pautan demo setempat dan salin secara manual."
+  "Copy is unavailable. Select the local demo link and copy it manually.": "Salinan automatik tidak tersedia. Pilih pautan demo setempat dan salin secara manual.",
+  "Fill synthetic demo details": "Isi butiran demo sintetik",
+  "Fills blank fields with fictional details for review.": "Mengisi medan kosong dengan butiran rekaan untuk semakan.",
+  "Fills blank demo fields. Enter the National ID linked to this account yourself.": "Mengisi medan demo yang kosong. Masukkan sendiri ID kebangsaan yang dipautkan kepada akaun ini.",
+  "Select synthetic demo document": "Pilih dokumen demo sintetik"
 }

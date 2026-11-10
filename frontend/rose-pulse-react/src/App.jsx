@@ -1,6 +1,6 @@
 import JourneyWorkspace from "./JourneyWorkspace.jsx";
 import { AccountProfile, RecoveryWorkspace } from "./AccountWorkspace.jsx";
-import { DemoImage, DemoControls } from "./DemoControls.jsx";
+import { DemoImage, DemoControls, DemoToolsProvider } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
 import {
   i18n,
@@ -1977,7 +1977,7 @@ function Application({ event }) {
                   <legend className="form-section-title">
                     {tr("Participant information")}
                   </legend>
-                  <ParticipantFields />
+                  <ParticipantFields preserveNationalId={!guest} />
                   {!guest && (
                     <details className="optional-documents">
                       <summary>
@@ -1986,6 +1986,7 @@ function Application({ event }) {
                       <FilePicker
                         runtime={runtime}
                         purpose="supporting_document"
+                        allowDemoSample
                         onChange={setSupportingFiles}
                         onBlocked={setDocumentsBlocked}
                         disabled={!allowed || !active || locked(state)}
@@ -2622,6 +2623,7 @@ export default function App({ runtime }) {
         reportLoginFailure,
       }}
     >
+      <DemoToolsProvider>
       <Shell>
         <DemoControls navigate={navigate}/>
         <div
@@ -2639,6 +2641,7 @@ export default function App({ runtime }) {
           </React.Suspense>
         </div>
       </Shell>
+      </DemoToolsProvider>
     </Context.Provider>
   );
 }

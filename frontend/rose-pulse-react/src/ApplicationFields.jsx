@@ -1,4 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
+import { useDemoTool } from "./DemoControls.jsx";
+import { DEMO_PROFILE } from "./demo-transport.js";
 import { tr } from "./i18n/index.js";
 
 const participantFields = [
@@ -34,30 +36,76 @@ export function ApplicationOptions({ label, name, choices, defaultValue }) {
   );
 }
 
-export function ParticipantFields() {
+export function DemoFormTemplate({ preserveNationalId = false, disabled = false }) {
+  const control = useRef(null);
+  const fill = () => {
+    const button = control.current;
+    if (!button || button.matches(":disabled")) return;
+    const form = button.form;
+    const section = form.closest("details");
+    if (section) section.open = true;
+    const current = new FormData(form);
+    const id = crypto.randomUUID();
+    const random = crypto.getRandomValues(new Uint32Array(1))[0];
+    const values = {
+      first_name: "Demo",
+      last_name: `Sample ${id.slice(0, 8)}`,
+      date_of_birth: `${1985 + random % 20}-06-15`,
+      phone: `0000${String(random % 100000000).padStart(8, "0")}`,
+      gender: random % 2 ? "female" : "male",
+      ...(preserveNationalId ? {} : { national_id: `DEMO-${id}` }),
+    };
+    for (const [name, value] of Object.entries(values)) {
+      const field = form.elements.namedItem(name);
+      if (!field || current.get(name) || field.matches?.(":disabled")) continue;
+      field.value = value;
+      field.setCustomValidity?.("");
+    }
+    form.dispatchEvent(new Event("input", { bubbles: true }));
+  };
+
+  useDemoTool("Fill synthetic demo details", fill, !disabled);
+  if (!DEMO_PROFILE) return null;
+
+  return (
+    <div>
+      <button ref={control} className="button button-quiet button-small" type="button" disabled={disabled} onClick={fill}>
+        {tr("Fill synthetic demo details")}
+      </button>
+      <p className="small muted">{tr(preserveNationalId
+        ? "Fills blank demo fields. Enter the National ID linked to this account yourself."
+        : "Fills blank fields with fictional details for review.")}</p>
+    </div>
+  );
+}
+
+export function ParticipantFields({ preserveNationalId = false }) {
   const prefix = useId();
   return (
-    <div className="form-grid participant-fields">
-      {participantFields.map(({ label, name, type = "text", maxLength, autoComplete }) => {
-        const id = prefix + name;
-        return (
-          <div className="field" key={name}>
-            <label htmlFor={id}>{tr(label)}</label>
-            <input
-              id={id}
-              name={name}
-              type={type}
-              autoComplete={autoComplete || "off"}
-              aria-describedby={maxLength ? id + "-limit" : undefined}
-              pattern={maxLength ? `(?=.*\\S).{1,${maxLength}}` : undefined}
-              required
-            />
-            {maxLength && <small id={id + "-limit"}>{tr("Up to {{number}} characters", { number: maxLength })}</small>}
-          </div>
-        );
-      })}
-      <ApplicationOptions label="Gender" name="gender" choices={genderChoices} />
-    </div>
+    <>
+      <DemoFormTemplate preserveNationalId={preserveNationalId} />
+      <div className="form-grid participant-fields">
+        {participantFields.map(({ label, name, type = "text", maxLength, autoComplete }) => {
+          const id = prefix + name;
+          return (
+            <div className="field" key={name}>
+              <label htmlFor={id}>{tr(label)}</label>
+              <input
+                id={id}
+                name={name}
+                type={type}
+                autoComplete={autoComplete || "off"}
+                aria-describedby={maxLength ? id + "-limit" : undefined}
+                pattern={maxLength ? `(?=.*\\S).{1,${maxLength}}` : undefined}
+                required
+              />
+              {maxLength && <small id={id + "-limit"}>{tr("Up to {{number}} characters", { number: maxLength })}</small>}
+            </div>
+          );
+        })}
+        <ApplicationOptions label="Gender" name="gender" choices={genderChoices} />
+      </div>
+    </>
   );
 }
 

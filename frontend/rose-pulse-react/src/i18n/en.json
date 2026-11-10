@@ -966,5 +966,9 @@
   "Local demo link": "Local demo link",
   "Copy demo link": "Copy demo link",
   "Local demo link copied.": "Local demo link copied.",
-  "Copy is unavailable. Select the local demo link and copy it manually.": "Copy is unavailable. Select the local demo link and copy it manually."
+  "Copy is unavailable. Select the local demo link and copy it manually.": "Copy is unavailable. Select the local demo link and copy it manually.",
+  "Fill synthetic demo details": "Fill synthetic demo details",
+  "Fills blank fields with fictional details for review.": "Fills blank fields with fictional details for review.",
+  "Fills blank demo fields. Enter the National ID linked to this account yourself.": "Fills blank demo fields. Enter the National ID linked to this account yourself.",
+  "Select synthetic demo document": "Select synthetic demo document"
 }
