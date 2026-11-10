@@ -1977,7 +1977,7 @@ function Application({ event }) {
                   <legend className="form-section-title">
                     {tr("Participant information")}
                   </legend>
-                  <ParticipantFields preserveNationalId={!guest} />
+                  <ParticipantFields preserveNationalId={!guest} account={auth.user} />
                   {!guest && (
                     <details className="optional-documents">
                       <summary>

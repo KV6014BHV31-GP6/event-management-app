@@ -110,3 +110,15 @@ it('preselects the bundled PDF from Demo tools without uploading or consenting',
   expect(onChange.mock.lastCall[0]).toEqual([]);
   expect(uploadFile).not.toHaveBeenCalled();
 });
+
+it.each([
+  ['http://127.0.0.1:5291', 'ac40s1_px', 'user', 'SYNTHETIC_AC40_PX'],
+  ['http://127.0.0.1:5291', 'different-participant', 'user', ''],
+  ['http://127.0.0.1:5291', 'ac40s1_px', 'leader', ''],
+  ['https://demo.example.com', 'ac40s1_px', 'user', ''],
+])('fills the linked fixture ID only for the verified local participant on %s', async (origin, username, role, expected) => {
+  vi.stubGlobal('location', new URL(origin));
+  render(<form><ParticipantFields preserveNationalId account={{ username, role }} /></form>);
+  await userEvent.click(screen.getByRole('button', {name: 'Fill synthetic demo details'}));
+  expect(screen.getByLabelText('National ID')).toHaveValue(expected);
+});

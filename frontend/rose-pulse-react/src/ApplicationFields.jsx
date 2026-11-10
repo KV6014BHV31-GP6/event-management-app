@@ -36,7 +36,10 @@ export function ApplicationOptions({ label, name, choices, defaultValue }) {
   );
 }
 
-export function DemoFormTemplate({ preserveNationalId = false, disabled = false }) {
+export function DemoFormTemplate({ preserveNationalId = false, account, disabled = false }) {
+  const localFixture = DEMO_PROFILE && preserveNationalId &&
+    ["localhost", "127.0.0.1", "[::1]"].includes(globalThis.location.hostname) &&
+    account?.role === "user" && account.username === "ac40s1_px";
   const control = useRef(null);
   const fill = () => {
     const button = control.current;
@@ -53,7 +56,9 @@ export function DemoFormTemplate({ preserveNationalId = false, disabled = false 
       date_of_birth: `${1985 + random % 20}-06-15`,
       phone: `0000${String(random % 100000000).padStart(8, "0")}`,
       gender: random % 2 ? "female" : "male",
-      ...(preserveNationalId ? {} : { national_id: `DEMO-${id}` }),
+      ...(localFixture
+        ? { national_id: "SYNTHETIC_AC40_PX" }
+        : preserveNationalId ? {} : { national_id: `DEMO-${id}` }),
     };
     for (const [name, value] of Object.entries(values)) {
       const field = form.elements.namedItem(name);
@@ -72,18 +77,18 @@ export function DemoFormTemplate({ preserveNationalId = false, disabled = false 
       <button ref={control} className="button button-quiet button-small" type="button" disabled={disabled} onClick={fill}>
         {tr("Fill synthetic demo details")}
       </button>
-      <p className="small muted">{tr(preserveNationalId
+      <p className="small muted">{tr(preserveNationalId && !localFixture
         ? "Fills blank demo fields. Enter the National ID linked to this account yourself."
         : "Fills blank fields with fictional details for review.")}</p>
     </div>
   );
 }
 
-export function ParticipantFields({ preserveNationalId = false }) {
+export function ParticipantFields({ preserveNationalId = false, account }) {
   const prefix = useId();
   return (
     <>
-      <DemoFormTemplate preserveNationalId={preserveNationalId} />
+      <DemoFormTemplate preserveNationalId={preserveNationalId} account={account} />
       <div className="form-grid participant-fields">
         {participantFields.map(({ label, name, type = "text", maxLength, autoComplete }) => {
           const id = prefix + name;

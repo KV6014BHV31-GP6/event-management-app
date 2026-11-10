@@ -384,7 +384,7 @@ function JourneySession({
        }))}
      >
        <fieldset className="application-fields-group" disabled={busy}>
-         <ParticipantFields preserveNationalId={auth.user?.role === 'user'} />
+         <ParticipantFields preserveNationalId={auth.user?.role === 'user'} account={auth.user} />
            {initialRef ? (
            loaded.referral && <p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>
          ) : (
