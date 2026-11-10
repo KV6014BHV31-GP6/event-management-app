@@ -2,7 +2,7 @@ import { DEMO_PROFILE } from "./demo-transport.js";
 import demoDocument from "./demo-assets/demo-supporting-document.pdf?inline";
 import { DemoImage, useDemoTool } from "./DemoControls.jsx";
 import { locale, tr } from "./i18n/index.js";
-import React, { useEffect, useRef, useState, useId } from "react";
+import React, { useEffect, useImperativeHandle, useRef, useState, useId } from "react";
 import { documentFileAccept, imageFileAccept, uploadFileProblem } from "./phase2-api.js";
 
 const uploadLabels = {
@@ -19,6 +19,7 @@ export function FilePicker({
   purpose,
   initialFiles = [],
   allowDemoSample = false,
+  ref,
   onChange,
   onBlocked,
   disabled = false,
@@ -40,6 +41,7 @@ export function FilePicker({
   const photo = useRef(null);
   const camera = useRef(null);
   const busy = useRef(false);
+  const uncertain = useRef(false);
   const active = useRef(false);
   const objectUrls = useRef(new Set());
   const locked = entries.some((entry) =>
@@ -47,12 +49,18 @@ export function FilePicker({
   );
   const canChoose = !disabled && !locked && entries.length < 3;
   const useCamera = navigator.maxTouchPoints > 0 && "capture" in HTMLInputElement.prototype;
-  const pending = entries.some((entry) => !entry.reference);
+  const pendingEntries = entries.filter((entry) => !entry.reference);
+  const pending = pendingEntries.length > 0;
+  const demoSubmitEnabled = DEMO_PROFILE && Boolean(ref) && allowDemoSample &&
+    purpose === "supporting_document" &&
+    ["localhost", "127.0.0.1", "[::1]"].includes(globalThis.location.hostname);
+  const hasDemoUpload = demoSubmitEnabled && pendingEntries.length === 1 &&
+    pendingEntries[0].bundledDemo && !locked;
 
   useEffect(() => {
     onChange(entries.filter((entry) => entry.reference).map((entry) => entry.reference));
-    onBlocked(locked || pending);
-  }, [entries, locked, pending, onChange, onBlocked]);
+    onBlocked(locked || (pending && !hasDemoUpload));
+  }, [entries, locked, pending, hasDemoUpload, onChange, onBlocked]);
   useEffect(() => {
     active.current = true;
     return () => {
@@ -68,15 +76,15 @@ export function FilePicker({
     objectUrls.current.delete(entry.localUrl);
   };
   const remove = (key) => {
-    if (busy.current || locked || disabled) return;
+    if (busy.current || uncertain.current || locked || disabled) return;
     const entry = entries.find((item) => item.key === key);
     if (!entry) return;
     revoke(entry);
     setEntries((current) => current.filter((item) => item.key !== key));
   };
 
-  const selectFiles = (files, key = null) => {
-    if (!files.length || busy.current || locked || disabled) return;
+  const selectFiles = (files, key = null, bundledDemo = false) => {
+    if (!files.length || busy.current || uncertain.current || locked || disabled) return;
     if (files.length + entries.length - (key ? 1 : 0) > 3) {
       setMessage("Choose no more than three files.");
       return;
@@ -90,7 +98,7 @@ export function FilePicker({
     const selected = files.map((file) => {
       const localUrl = URL.createObjectURL?.(file);
       if (localUrl) objectUrls.current.add(localUrl);
-      return { key: crypto.randomUUID(), file, localUrl, status: "selected" };
+      return { key: crypto.randomUUID(), file, localUrl, status: "selected", bundledDemo };
     });
     if (key) {
       const previous = entries.find((entry) => entry.key === key);
@@ -110,18 +118,19 @@ export function FilePicker({
   const demoName = "synthetic-demo-supporting-document.pdf";
   const demoSampleEnabled = allowDemoSample && purpose === "supporting_document";
   const canChooseDemo = demoSampleEnabled && canChoose &&
-    !entries.some((entry) => (entry.file?.name || entry.reference?.name) === demoName);
+    !entries.some((entry) => entry.bundledDemo);
   const chooseDemoDocument = () => {
     if (!canChooseDemo || busy.current) return;
     const section = picker.current?.closest("details");
     if (section) section.open = true;
     const bytes = Uint8Array.from(atob(demoDocument.split(",")[1]), (char) => char.charCodeAt(0));
-    selectFiles([new File([bytes], demoName, { type: "application/pdf" })]);
+    selectFiles([new File([bytes], demoName, { type: "application/pdf" })], null, true);
   };
   useDemoTool("Select synthetic demo document", chooseDemoDocument, canChooseDemo);
 
-  const upload = async () => {
-    if (busy.current || locked || disabled || !synthetic) return;
+  const upload = async ({ onSubmit = false } = {}) => {
+    if (!active.current || busy.current || uncertain.current || locked || disabled ||
+      (onSubmit ? !hasDemoUpload : !synthetic)) return null;
     const identity = runtime.getSnapshot?.();
     const isCurrent = () => {
       const current = runtime.getSnapshot?.();
@@ -131,36 +140,50 @@ export function FilePicker({
     const update = (key, changes) => {
       setEntries((current) => current.map((item) => item.key === key ? { ...item, ...changes } : item));
     };
+    const uploaded = new Map();
+    let failed = false;
     busy.current = true;
     setMessage("");
     try {
-      for (const entry of entries.filter((item) => item.file && !item.reference)) {
-        if (!isCurrent()) return;
+      for (const entry of pendingEntries) {
+        if (!isCurrent()) return null;
         update(entry.key, { status: "uploading", error: "" });
         try {
           const reference = await runtime.withVerifiedAccount(
             (token) => runtime.api.uploadFile(entry.file, purpose, token),
             { roles: image ? ["organizer"] : ["user", "organizer", "leader"] },
           );
-          if (!isCurrent()) return;
+          if (!isCurrent()) return null;
+          uploaded.set(entry.key, reference);
           update(entry.key, { reference, status: "uploaded" });
         } catch (error) {
-          if (!isCurrent()) return;
+          if (!isCurrent()) return null;
+          failed = true;
           const known = ["validation", "unauthorized", "forbidden", "verification"].includes(error.kind);
           update(entry.key, {
             status: known ? "error" : "uncertain",
             error: known ? error.message : "",
           });
           if (!known) {
+            uncertain.current = true;
             setMessage("The file upload result is unknown. Do not upload it again or save this association until checked.");
           }
           if (image || !known || error.kind !== "validation") break;
         }
       }
+      return failed ? null : entries.map((entry) => entry.reference || uploaded.get(entry.key));
     } finally {
       busy.current = false;
     }
   };
+
+  useImperativeHandle(ref, () => ({
+    hasDemoUpload,
+    prepareSubmission() {
+      if (!active.current || busy.current || uncertain.current || locked || disabled) return null;
+      return pending ? upload({ onSubmit: true }) : entries.map((entry) => entry.reference);
+    },
+  }));
 
   return (
     <section ref={picker} className={`image-upload file-picker${image ? "" : " supporting-file-picker"}`}>
@@ -173,6 +196,7 @@ export function FilePicker({
           ? "Up to three event images. Remove an image before selecting a replacement."
           : "Choose up to three synthetic documents (PNG, JPEG, GIF, WebP or PDF). Uploads are optional.")}
       </p>
+      {hasDemoUpload && <p className="small">{tr("The demo PDF will be uploaded when you submit.")}</p>}
       <div className="file-previews">
         {entries.map((entry, index) => {
           const name = entry.file?.name || entry.reference.name;
@@ -264,7 +288,7 @@ export function FilePicker({
       </label>
       <div className="form-inline-actions">
         <button className="button button-quiet button-small" type="button"
-          disabled={disabled || locked || !synthetic || !pending} onClick={upload}>
+          disabled={disabled || locked || !synthetic || !pending} onClick={() => upload()}>
           {tr(!image && entries.some((entry) => entry.status === "error") ? "Retry upload" : "Upload selected files")}
         </button>
         <button className="text-button" type="button" disabled={disabled || locked || !pending}

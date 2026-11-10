@@ -36,6 +36,7 @@ const OrganizerAnalytics = React.lazy(() =>
 );
 import EventShare from "./EventShare.jsx";
 import ApplicationSuccess from "./ApplicationSuccess.jsx";
+import { minimumRegistrationPayload } from "./minimum-registration.js";
 import { ApplicationSummary, ParticipantFields } from "./ApplicationFields.jsx";
 const Context = createContext(null);
 const useApp = () => useContext(Context);
@@ -1795,6 +1796,9 @@ function Application({ event }) {
   };
   const [supportingFiles, setSupportingFiles] = useState([]);
   const [documentsBlocked, setDocumentsBlocked] = useState(false);
+  const [preparingDocuments, setPreparingDocuments] = useState(false);
+  const documentPicker = useRef(null);
+  const submission = useRef(false);
   const guestStore = runtime.store("guest", {
       event,
     }),
@@ -1811,13 +1815,37 @@ function Application({ event }) {
   const active = acceptsApplications(event);
   const submit = async (submitEvent) => {
     submitEvent.preventDefault();
-    if (!allowed || !active || locked(state) || documentsBlocked) return;
-    const values = Object.fromEntries(new FormData(submitEvent.currentTarget));
-    if (!guest && supportingFiles.length)
-      values.file_ids = supportingFiles.map((file) => file.id);
-    await controller.submit(values);
-    if (controller.state.status === "success" && controller.state.receipt?.status === "pending")
-      setApplicationModal(true);
+    if (!allowed || !active || locked(state) || documentsBlocked || submission.current) return;
+    const form = submitEvent.currentTarget;
+    const picker = documentPicker.current;
+    if (picker?.hasDemoUpload && !form.reportValidity()) return;
+    const values = Object.fromEntries(new FormData(form));
+    const identity = runtime.getSnapshot();
+    submission.current = true;
+    try {
+      if (!guest && picker) {
+        if (picker.hasDemoUpload) {
+          try {
+            minimumRegistrationPayload(values);
+          } catch {
+            await controller.submit(values);
+            return;
+          }
+          setPreparingDocuments(true);
+        }
+        const refs = await picker.prepareSubmission();
+        const current = runtime.getSnapshot();
+        if (!refs || !form.isConnected || current.revision !== identity.revision ||
+            current.user?.id !== identity.user?.id) return;
+        if (refs.length) values.file_ids = refs.map((file) => file.id);
+      }
+      await controller.submit(values);
+      if (controller.state.status === "success" && controller.state.receipt?.status === "pending")
+        setApplicationModal(true);
+    } finally {
+      submission.current = false;
+      setPreparingDocuments(false);
+    }
   };
   return (
     <div className="editor-layout">
@@ -1973,7 +2001,7 @@ function Application({ event }) {
               </div>
             ) : (
               <form method="dialog" autoComplete="off" onSubmit={submit}>
-                <fieldset disabled={!allowed || !active || locked(state)}>
+                <fieldset disabled={!allowed || !active || locked(state) || preparingDocuments}>
                   <legend className="form-section-title">
                     {tr("Participant information")}
                   </legend>
@@ -1986,6 +2014,7 @@ function Application({ event }) {
                       <FilePicker
                         runtime={runtime}
                         purpose="supporting_document"
+                        ref={documentPicker}
                         allowDemoSample
                         onChange={setSupportingFiles}
                         onBlocked={setDocumentsBlocked}

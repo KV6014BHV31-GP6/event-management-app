@@ -970,5 +970,6 @@
   "Fill synthetic demo details": "Isi butiran demo sintetik",
   "Fills blank fields with fictional details for review.": "Mengisi medan kosong dengan butiran rekaan untuk semakan.",
   "Fills blank demo fields. Enter the National ID linked to this account yourself.": "Mengisi medan demo yang kosong. Masukkan sendiri ID kebangsaan yang dipautkan kepada akaun ini.",
-  "Select synthetic demo document": "Pilih dokumen demo sintetik"
+  "Select synthetic demo document": "Pilih dokumen demo sintetik",
+  "The demo PDF will be uploaded when you submit.": "PDF demo akan dimuat naik apabila anda menghantar permohonan."
 }

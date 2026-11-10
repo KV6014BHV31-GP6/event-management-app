@@ -970,5 +970,6 @@
   "Fill synthetic demo details": "Fill synthetic demo details",
   "Fills blank fields with fictional details for review.": "Fills blank fields with fictional details for review.",
   "Fills blank demo fields. Enter the National ID linked to this account yourself.": "Fills blank demo fields. Enter the National ID linked to this account yourself.",
-  "Select synthetic demo document": "Select synthetic demo document"
+  "Select synthetic demo document": "Select synthetic demo document",
+  "The demo PDF will be uploaded when you submit.": "The demo PDF will be uploaded when you submit."
 }

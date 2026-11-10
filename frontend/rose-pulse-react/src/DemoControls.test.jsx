@@ -1,11 +1,12 @@
 import React from 'react';
 import { expect, it, vi } from 'vitest';
-import { render, screen, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { DemoControls, DemoToolsProvider } from './DemoControls.jsx';
 import { demoTransport } from './demo-transport.js';
 import { DemoFormTemplate, ParticipantFields } from './ApplicationFields.jsx';
 import { FilePicker } from './FilePicker.jsx';
+import JourneyWorkspace from './JourneyWorkspace.jsx';
 import { changeLanguage } from './i18n/index.js';
 
 vi.mock('./demo-transport.js', async (importOriginal) => {
@@ -121,4 +122,69 @@ it.each([
   render(<form><ParticipantFields preserveNationalId account={{ username, role }} /></form>);
   await userEvent.click(screen.getByRole('button', {name: 'Fill synthetic demo details'}));
   expect(screen.getByLabelText('National ID')).toHaveValue(expected);
+});
+
+it('uses one managed submit to attach the bundled file, then retains its reference after refusal', async () => {
+  vi.stubGlobal('location', new URL('http://127.0.0.1:5291'));
+  const user = userEvent.setup();
+  const event = {public_id: 'ABCDEFGHIJKLMNOPQRSTU', title: 'Synthetic form event'};
+  const actor = {id: 'demo-participant', username: 'ac40s1_px', role: 'user'};
+  const file = {id: '01K00000000000000000000001', name: 'synthetic-demo-supporting-document.pdf'};
+  const reference = '01K00000000000000000000002';
+  let releaseUpload;
+  const uploadFile = vi.fn(() => new Promise(resolve => { releaseUpload = resolve; }));
+  const appPost = vi.spyOn(globalThis, 'fetch')
+    .mockResolvedValueOnce({ok: false, status: 422, json: async () => ({detail: {code: 'INVALID_INPUT', message: 'Invalid input'}})})
+    .mockImplementationOnce(async (_url, request) => {
+      const body = JSON.parse(request.body);
+      return {ok: true, status: 200, json: async () => ({
+        contract_version: body.contract_version, operation_id: body.operation_id, outcome: 'applied',
+        kind: 'application_create', resource_id: reference, effects: {registration_id: reference, status: 'pending'},
+      })};
+    });
+  render(<JourneyWorkspace initialEvent={event.public_id} initialPublicEvent={event}
+    auth={{user: actor, revision: 1}} navigate={vi.fn()}
+    runtime={{api: {uploadFile}, withVerifiedAccount: fn => fn('synthetic-token', actor)}} />);
+  const form = screen.getByRole('form', {name: 'Submit application'});
+  const submit = within(form).getByRole('button', {name: 'Submit application'});
+  await user.click(within(form).getByRole('button', {name: 'Select synthetic demo document'}));
+  expect(within(form).getByText('The demo PDF will be uploaded when you submit.')).toBeVisible();
+  await user.click(submit);
+  expect(uploadFile).not.toHaveBeenCalled();
+  await user.click(within(form).getByRole('button', {name: 'Fill synthetic demo details'}));
+  await user.click(submit);
+  await waitFor(() => expect(uploadFile).toHaveBeenCalledTimes(1));
+  fireEvent.submit(form);
+  expect(uploadFile).toHaveBeenCalledTimes(1);
+  expect(appPost).not.toHaveBeenCalled();
+  releaseUpload(file);
+  expect(await screen.findByRole('alert')).toHaveTextContent('Invalid input');
+  expect(JSON.parse(appPost.mock.calls[0][1].body).data.application.file_ids).toEqual([file.id]);
+  expect(screen.getByText('Uploaded file')).toBeVisible();
+  await user.click(submit);
+  expect(await screen.findByRole('dialog', {name: 'Application submitted successfully'})).toHaveTextContent(reference);
+  expect(uploadFile).toHaveBeenCalledTimes(1);
+  expect(JSON.parse(appPost.mock.calls[1][1].body).data.application.file_ids).toEqual([file.id]);
+});
+
+it('blocks a filename lookalike and prevents a second upload after an unknown acknowledgement', async () => {
+  vi.stubGlobal('location', new URL('http://127.0.0.1:5291'));
+  const picker = React.createRef();
+  const user = userEvent.setup();
+  const uploadFile = vi.fn().mockRejectedValue(new Error('response lost'));
+  const runtime = {api: {uploadFile}, withVerifiedAccount: fn => fn('synthetic-token')};
+  render(<FilePicker runtime={runtime} ref={picker} purpose="supporting_document" allowDemoSample
+    onChange={vi.fn()} onBlocked={vi.fn()} />);
+  await user.upload(screen.getByLabelText(/Supporting documents/), new File(
+    ['%PDF-'], 'synthetic-demo-supporting-document.pdf', {type: 'application/pdf'},
+  ));
+  expect(picker.current.hasDemoUpload).toBe(false);
+  expect(await picker.current.prepareSubmission()).toBeNull();
+  expect(uploadFile).not.toHaveBeenCalled();
+  await user.click(screen.getByRole('button', {name: 'Remove file 1'}));
+  await user.click(screen.getByRole('button', {name: 'Select synthetic demo document'}));
+  expect(await picker.current.prepareSubmission()).toBeNull();
+  expect(await screen.findByRole('alert')).toHaveTextContent(/upload result is unknown/);
+  expect(await picker.current.prepareSubmission()).toBeNull();
+  expect(uploadFile).toHaveBeenCalledTimes(1);
 });

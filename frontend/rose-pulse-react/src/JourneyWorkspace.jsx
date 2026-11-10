@@ -69,6 +69,7 @@ function JourneySession({
   const [applicationModal, setApplicationModal] = useState(false);
   const [applicationForm, setApplicationForm] = useState(0);
   const registrationDetails = useRef(null);
+  const applicationPicker = useRef(null);
   const guestAccess = useRef(null);
   const receiptRef = useRef(null);
   const errorRef = useRef(null);
@@ -138,7 +139,10 @@ function JourneySession({
     return run(async () => {
       const mutationEpoch=recordEpoch.current;
       const targetRegistration=registrationId;
-      const payload = typeof data === 'function' ? data() : data;
+      if (isApplication && client.pending(actorId).some((row) => row.path === path))
+        throw new Error('This action has an unresolved reference. Reconcile it first.');
+      const payload = typeof data === 'function' ? await data() : data;
+      if (payload === null || !active.current || mutationEpoch !== recordEpoch.current) return;
       const receipt = await client.mutate(path, payload, version);
       if (!active.current || mutationEpoch!==recordEpoch.current) return;
       if (isApplication) {
@@ -375,13 +379,20 @@ function JourneySession({
        title="Submit application"
        busy={busy || !eventId || !applicationEvent || attachmentBlocked ||
          (!!initialRef && !loaded.referral) || (!auth.user && !auth.offlineActor && !guestAllowed)}
-       submit={values => mutate(root + '/applications', () => ({
-         application: {
-           ...appCopy(values),
-           ...(applicationFiles.length ? {file_ids: applicationFiles.map(file => file.id)} : {}),
-         },
-         source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
-       }))}
+       submit={(values, form) => {
+         const picker = applicationPicker.current;
+         if (picker?.hasDemoUpload && !form.reportValidity()) return;
+         return mutate(root + '/applications', async () => {
+           const application = appCopy(values);
+           const files = picker ? await picker.prepareSubmission() : [];
+           if (!files || !form.isConnected) return null;
+           if (files.length) application.file_ids = files.map(file => file.id);
+           return {
+             application,
+             source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
+           };
+         });
+       }}
      >
        <fieldset className="application-fields-group" disabled={busy}>
          <ParticipantFields preserveNationalId={auth.user?.role === 'user'} account={auth.user} />
@@ -390,7 +401,7 @@ function JourneySession({
          ) : (
            <ApplicationOptions label="Source" name="source_kind" choices={applicationSources} defaultValue="direct" />
          )}
-         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document" allowDemoSample
+         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document" allowDemoSample ref={applicationPicker}
            onChange={applicationChanged} onBlocked={attachmentChanged} disabled={busy} />}
          <ApplicationSummary files={applicationFiles}
            source={loaded.referral ? loaded.referral.leader_display_name : undefined} />
