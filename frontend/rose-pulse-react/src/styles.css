@@ -2847,3 +2847,14 @@ legend {
     gap: 8px;
   }
 }
+
+.document-cards-compact {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 112px), 1fr));
+  gap: 8px;
+}
+.document-cards-compact .document-card {
+  padding: 8px;
+}
+.document-cards-compact .document-card > img {
+  height: 76px;
+}

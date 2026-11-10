@@ -141,13 +141,13 @@ function JourneySession({
       const targetRegistration=registrationId;
       if (isApplication && client.pending(actorId).some((row) => row.path === path))
         throw new Error('This action has an unresolved reference. Reconcile it first.');
-      const payload = typeof data === 'function' ? await data() : data;
-      if (payload === null || !active.current || mutationEpoch !== recordEpoch.current) return;
-      const receipt = await client.mutate(path, payload, version);
+      const prepared = typeof data === 'function' ? await data() : data;
+      if (prepared === null || !active.current || mutationEpoch !== recordEpoch.current) return;
+      const receipt = await client.mutate(path, isApplication ? prepared.payload : prepared, version);
       if (!active.current || mutationEpoch!==recordEpoch.current) return;
       if (isApplication) {
         setRegistrationId(receipt.effects.registration_id);
-        setLoaded(old => ({...old, applicationReceipt: receipt.effects}));
+        setLoaded(old => ({...old, applicationReceipt: {...receipt.effects, files: prepared.files}}));
         setApplicationModal(true);
       }
       setMessage(tr('Saved by server. Current information has been read again.'));
@@ -233,6 +233,8 @@ function JourneySession({
    <ApplicationSuccess
      eventTitle={applicationEvent.title}
      reference={loaded.applicationReceipt.registration_id}
+     runtime={auth.user ? runtime : undefined}
+     files={loaded.applicationReceipt.files}
      onDismiss={dismissApplication}
      onView={viewApplication}
      onDone={() => { setApplicationModal(false); navigate('event', {event: eventId}); }}
@@ -388,8 +390,11 @@ function JourneySession({
            if (!files || !form.isConnected) return null;
            if (files.length) application.file_ids = files.map(file => file.id);
            return {
-             application,
-             source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
+             files,
+             payload: {
+               application,
+               source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
+             },
            };
          });
        }}
@@ -403,7 +408,7 @@ function JourneySession({
          )}
          {auth.user && <FilePicker runtime={runtime} purpose="supporting_document" allowDemoSample ref={applicationPicker}
            onChange={applicationChanged} onBlocked={attachmentChanged} disabled={busy} />}
-         <ApplicationSummary files={applicationFiles}
+         <ApplicationSummary runtime={auth.user ? runtime : undefined} files={applicationFiles}
            source={loaded.referral ? loaded.referral.leader_display_name : undefined} />
        </fieldset>
      </ActionForm>

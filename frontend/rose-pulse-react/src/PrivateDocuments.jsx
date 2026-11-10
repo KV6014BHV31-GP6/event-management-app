@@ -5,24 +5,30 @@ const empty = () => null;
 export function PrivateDocuments({
   runtime,
   files = [],
-  recordId = ''
+  recordId = '',
+  thumbnailOnly = false
 }) {
   const auth = useSyncExternalStore(runtime.subscribe || noop, runtime.getSnapshot || empty);
   const identity = `${auth?.revision || 0}:${auth?.user?.id || ''}:${recordId}:${files.map(f => f.id).join(',')}`;
-  return <DocumentSession key={identity} runtime={runtime} files={files} />;
+  const previewOwner = useRef({ runtime, id: auth?.user?.id, revision: auth?.revision });
+  if (thumbnailOnly && (!auth?.user || auth.checking || auth.identityBlocked ||
+    previewOwner.current.runtime !== runtime || previewOwner.current.id !== auth.user.id ||
+    previewOwner.current.revision !== auth.revision)) return null;
+  return <DocumentSession key={identity} runtime={runtime} files={files} thumbnailOnly={thumbnailOnly} />;
 }
-function DocumentSession({
-  runtime,
-  files
-}) {
+function DocumentSession({ runtime, files, thumbnailOnly }) {
   const [selected, setSelected] = useState(null);
+  const cards = (
+    <div className={thumbnailOnly ? "document-cards document-cards-compact" : "document-cards"}>
+      {files.map(file => <DocumentCard key={file.id} runtime={runtime} file={file}
+        thumbnailOnly={thumbnailOnly} onPreview={trigger => setSelected({ file, trigger })} />)}
+    </div>
+  );
+  if (thumbnailOnly) return cards;
   return <section className="private-documents"><h4>{tr('Supporting documents')} ({files.length})</h4>
  <p className="small muted">{tr('Private downloads verify your current account. No document is cached for offline access.')}</p>
  {!files.length && <p>{tr('No supporting documents.')}</p>}
- <div className="document-cards">{files.map(file => <DocumentCard key={file.id} runtime={runtime} file={file} onPreview={trigger => setSelected({
-        file,
-        trigger
-      })} />)}</div>
+ {cards}
  {selected && <DocumentViewer runtime={runtime} file={selected.file} onClose={() => {
       setSelected(null);
       selected.trigger?.focus();
@@ -72,9 +78,10 @@ function usePrivateBlob(runtime, file, enabled = true) {
 function DocumentCard({
   runtime,
   file,
-  onPreview
+  onPreview,
+  thumbnailOnly
 }) {
-  const image = file.mime_type.startsWith('image/');
+  const image = file.mime_type?.startsWith('image/');
   const state = usePrivateBlob(runtime, file, image);
   const [failed, setFailed] = useState(false);
   const [download, setDownload] = useState(false);
@@ -93,8 +100,8 @@ function DocumentCard({
  <strong>{file.name}</strong><span className="small muted">{file.mime_type}</span>
  <span role="status" className="small">{tr(state.loading ? 'Loading private document…' : state.error || failed ? 'Preview unavailable' : 'Private document')}</span>
  {state.error && <p role="alert">{tr(state.error)}</p>}
- <div className="form-actions"><button type="button" className="button button-small" onClick={event => onPreview(event.currentTarget)}>{tr('Preview')} {file.name}</button>
- <button type="button" className="text-button" disabled={original.loading && download} onClick={() => setDownload(true)}>{tr('Download')} {file.name}</button></div>
+ {!thumbnailOnly && <div className="form-actions"><button type="button" className="button button-small" onClick={event => onPreview(event.currentTarget)}>{tr('Preview')} {file.name}</button>
+ <button type="button" className="text-button" disabled={original.loading && download} onClick={() => setDownload(true)}>{tr('Download')} {file.name}</button></div>}
  {original.error && <p role="alert">{tr(original.error)}</p>}
  </article>;
 }

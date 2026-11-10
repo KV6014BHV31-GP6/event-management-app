@@ -1,7 +1,8 @@
 import React, { useEffect, useId, useLayoutEffect, useRef } from "react";
 import { tr } from "./i18n/index.js";
+import { PrivateDocuments } from "./PrivateDocuments.jsx";
 
-export default function ApplicationSuccess({ eventTitle, reference, onDismiss, onView, onDone }) {
+export default function ApplicationSuccess({ eventTitle, reference, runtime, files = [], onDismiss, onView, onDone }) {
   const dialog = useRef(null);
   const closeButton = useRef(null);
   const timer = useRef(null);
@@ -77,6 +78,12 @@ export default function ApplicationSuccess({ eventTitle, reference, onDismiss, o
       </dl>
       <p id={descriptionId}>{tr("Awaiting organiser review. A place is not confirmed.")}</p>
       <p id={returnId}>{tr("Returning to the event in 5 seconds.")}</p>
+      {runtime && files.length > 0 && (
+        <section>
+          <h3>{tr("Supporting documents")}</h3>
+          <PrivateDocuments runtime={runtime} files={files} recordId={reference} thumbnailOnly />
+        </section>
+      )}
       <div className="form-actions">
         <button className="button" type="button" onClick={() => close(onView)}>
           {tr("View application")}

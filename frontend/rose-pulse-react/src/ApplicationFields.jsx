@@ -1,6 +1,7 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { useDemoTool } from "./DemoControls.jsx";
 import { DEMO_PROFILE } from "./demo-transport.js";
+import { PrivateDocuments } from "./PrivateDocuments.jsx";
 import { tr } from "./i18n/index.js";
 
 const participantFields = [
@@ -114,7 +115,7 @@ export function ParticipantFields({ preserveNationalId = false, account }) {
   );
 }
 
-export function ApplicationSummary({ files = [], source }) {
+export function ApplicationSummary({ files = [], runtime, source }) {
   const section = useRef(null);
   const [review, setReview] = useState(null);
   const update = () => {
@@ -150,7 +151,9 @@ export function ApplicationSummary({ files = [], source }) {
           <dt>{tr("Gender")}</dt><dd>{gender ? tr(gender[1]) : "—"}</dd>
           {(source || attribution) && <><dt>{tr("Source")}</dt><dd>{source || tr(attribution[1])}</dd></>}
           <dt>{tr("Supporting documents")}</dt>
-          <dd>{files.length ? files.map((file) => file.name).join(", ") : tr("No uploaded files")}</dd>
+          <dd>{runtime && files.length
+            ? <PrivateDocuments runtime={runtime} files={files} thumbnailOnly />
+            : tr("No uploaded files")}</dd>
         </dl>
       )}
       <button className="text-button" type="button" onClick={() => {

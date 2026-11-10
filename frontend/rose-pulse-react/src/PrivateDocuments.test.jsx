@@ -1,6 +1,6 @@
 import React from 'react';
 import { it, expect, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PrivateDocuments } from './FilePicker.jsx';
 it('shows an explicit empty document state', () => {
@@ -90,4 +90,40 @@ it('keeps Escape and Tab inside a document dialog nested in a registration dialo
  URL.createObjectURL=vi.fn(()=> 'blob:private');URL.revokeObjectURL=vi.fn();const parentKey=vi.fn();const runtime={withVerifiedAccount:fn=>fn('token'),api:{downloadSupportingDocument:vi.fn(async()=>new Blob(['abc'],{type:'image/png'}))}};
  render(<section role="dialog" aria-label="Registration" onKeyDown={parentKey}><PrivateDocuments runtime={runtime} recordId="record" files={[{id:'one',name:'proof.png',mime_type:'image/png'}]}/></section>);
  const user=userEvent.setup();await user.click(screen.getByRole('button',{name:'Preview proof.png'}));await screen.findByRole('dialog',{name:'proof.png'});parentKey.mockClear();await user.keyboard('{Tab}');expect(parentKey).not.toHaveBeenCalled();await user.keyboard('{Escape}');expect(parentKey).not.toHaveBeenCalled();expect(screen.getByRole('dialog',{name:'Registration'})).toBeInTheDocument();
+});
+
+it('shows private image thumbnails and PDF names only to the original verified account', async () => {
+  const user = {id: 'synthetic-participant'};
+  let auth = {user, revision: 1};
+  let notify;
+  const create = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:accepted-support-image');
+  const revoke = vi.spyOn(URL, 'revokeObjectURL');
+  const download = vi.fn(async () => new Blob(['synthetic'], {type: 'image/png'}));
+  const runtime = {
+    getSnapshot: () => auth,
+    subscribe: (listener) => { notify = listener; return () => {}; },
+    withVerifiedAccount: (fn) => fn('synthetic-test-token'),
+    api: {downloadSupportingDocument: download},
+  };
+  const files = [
+    {id: 'image', name: 'example.png', mime_type: 'image/png'},
+    {id: 'pdf', name: 'example.pdf', mime_type: 'application/pdf'},
+  ];
+  render(<PrivateDocuments runtime={runtime} files={files} recordId="accepted" thumbnailOnly />);
+  const thumbnail = await screen.findByRole('img', {name: 'Document thumbnail: example.png'});
+  expect(thumbnail).toHaveAttribute('src', 'blob:accepted-support-image');
+  expect(screen.getByText('example.pdf')).toBeVisible();
+  expect(screen.queryByRole('button', {name: /Preview|Download/})).not.toBeInTheDocument();
+  expect(download).toHaveBeenCalledExactlyOnceWith(files[0], 'synthetic-test-token', {signal: expect.any(AbortSignal)});
+  const signal = download.mock.calls[0][2].signal;
+  act(() => {
+    auth = {user: {id: 'different-account'}, revision: 2};
+    notify();
+  });
+  expect(thumbnail).not.toBeInTheDocument();
+  expect(screen.queryByText('example.pdf')).not.toBeInTheDocument();
+  expect(signal.aborted).toBe(true);
+  expect(revoke).toHaveBeenCalledWith('blob:accepted-support-image');
+  expect(create).toHaveBeenCalledTimes(1);
+  expect(download).toHaveBeenCalledTimes(1);
 });

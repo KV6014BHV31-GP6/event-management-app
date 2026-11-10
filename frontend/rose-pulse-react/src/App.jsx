@@ -1958,6 +1958,8 @@ function Application({ event }) {
                   <ApplicationSuccess
                     eventTitle={event.title}
                     reference={state.receipt.id}
+                    runtime={guest ? undefined : runtime}
+                    files={guest ? [] : state.receipt.supporting_documents}
                     onDismiss={dismissApplication}
                     onView={guest ? dismissApplication : () => {
                       setApplicationModal(false);
@@ -1980,7 +1982,7 @@ function Application({ event }) {
                     <Status value={state.receipt.status} />
                   </dd>
                 </dl>
-                {!guest && (
+                {!guest && !applicationModal && (
                   <PrivateDocuments
                     runtime={runtime}
                     files={state.receipt.supporting_documents || []}
@@ -2029,7 +2031,7 @@ function Application({ event }) {
                       )}
                     </p>
                   )}
-                  <ApplicationSummary files={supportingFiles} />
+                  <ApplicationSummary runtime={guest ? undefined : runtime} files={supportingFiles} />
                   <p className="form-disclaimer">
                     {tr(
                       "Submitting sends an application. A place is not confirmed.",
