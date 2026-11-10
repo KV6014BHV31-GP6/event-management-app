@@ -1,6 +1,6 @@
 import React from "react";
 import { describe, expect, it, vi } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import EventShare, { publicShare } from "./EventShare.jsx";
 
@@ -54,7 +54,8 @@ describe("user-triggered public sharing", () => {
     const local = "http://127.0.0.1:5291/?view=event&event=" + event.public_id;
     expect(screen.getByLabelText("Local demo link")).toHaveValue(local);
     expect(screen.getByText(/Another phone cannot open it/)).toBeVisible();
-    expect(screen.getByRole("button", { name: "Share on WhatsApp" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "WhatsApp demo" })).toBeEnabled();
+    expect(screen.queryByRole("link", { name: "Share on WhatsApp" })).not.toBeInTheDocument();
     expect(screen.getByRole("button", { name: "Messages / SMS" })).toBeDisabled();
     expect(write).not.toHaveBeenCalled();
     await user.click(screen.getByRole("button", { name: "Copy demo link" }));
@@ -70,6 +71,49 @@ describe("user-triggered public sharing", () => {
     await user.click(screen.getByRole("button", { name: "Copy demo link" }));
     expect(screen.getByRole("status")).toHaveTextContent(/Select the local demo link and copy it manually/);
     expect(screen.getByLabelText("Local demo link")).toHaveAttribute("readonly");
+  });
+
+  it("opens a local WhatsApp simulation, copies only on demand and restores focus on Escape", async () => {
+    locationAt("http://127.0.0.1:5291/?token=must-not-share");
+    const user = userEvent.setup();
+    const write = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue();
+    const fetch = vi.spyOn(globalThis, "fetch");
+    render(<EventShare event={event} />);
+    const trigger = screen.getByRole("button", { name: "WhatsApp demo" });
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    await user.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: "WhatsApp demo" });
+    const close = within(dialog).getByRole("button", { name: "Close" });
+    expect(close).toHaveFocus();
+    expect(dialog).toHaveAccessibleDescription(/No message was sent/);
+    const local = "http://127.0.0.1:5291/?view=event&event=" + event.public_id;
+    const preview = within(dialog).getByLabelText("WhatsApp demo message");
+    expect(preview.value).toBe(publicShare(event).text + "\n" + local);
+    expect(preview.value).not.toContain("must-not-share");
+    expect(within(dialog).getByRole("link", { name: "Open event" })).toHaveAttribute("href", local);
+    expect(write).not.toHaveBeenCalled();
+    await user.click(within(dialog).getByRole("button", { name: "Copy message" }));
+    expect(write).toHaveBeenCalledExactlyOnceWith(preview.value);
+    expect(within(dialog).getByRole("status")).toHaveTextContent("Event share message copied.");
+    expect(fetch).not.toHaveBeenCalled();
+    fireEvent(dialog, new Event("cancel", { cancelable: true }));
+    expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
+    expect(trigger).toHaveFocus();
+  });
+
+  it("keeps the simulated WhatsApp message selectable when copying fails", async () => {
+    locationAt("http://localhost:5291");
+    const user = userEvent.setup();
+    vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(new Error("denied"));
+    render(<EventShare event={event} />);
+    const trigger = screen.getByRole("button", { name: "WhatsApp demo" });
+    await user.click(trigger);
+    const dialog = screen.getByRole("dialog", { name: "WhatsApp demo" });
+    await user.click(within(dialog).getByRole("button", { name: "Copy message" }));
+    expect(within(dialog).getByRole("status")).toHaveTextContent(/Select and copy the message below/);
+    expect(within(dialog).getByLabelText("WhatsApp demo message")).toHaveAttribute("readonly");
+    await user.click(within(dialog).getByRole("button", { name: "Close" }));
+    expect(trigger).toHaveFocus();
   });
 
   it("opens only user-triggered actions, encodes WhatsApp once and preserves a selectable fallback", async () => {

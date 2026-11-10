@@ -973,5 +973,10 @@
   "Fills blank fields with fictional details for review.": "Fills blank fields with fictional details for review.",
   "Fills blank demo fields. Enter the National ID linked to this account yourself.": "Fills blank demo fields. Enter the National ID linked to this account yourself.",
   "Select synthetic demo document": "Select synthetic demo document",
-  "The demo PDF will be uploaded when you submit.": "The demo PDF will be uploaded when you submit."
+  "The demo PDF will be uploaded when you submit.": "The demo PDF will be uploaded when you submit.",
+  "WhatsApp demo": "WhatsApp demo",
+  "WhatsApp demo message": "WhatsApp demo message",
+  "Simulated WhatsApp preview. No message was sent.": "Simulated WhatsApp preview. No message was sent.",
+  "Copy message": "Copy message",
+  "Open event": "Open event"
 }

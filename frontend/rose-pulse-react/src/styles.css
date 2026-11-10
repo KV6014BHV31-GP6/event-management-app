@@ -2881,3 +2881,26 @@ legend {
   object-fit: contain;
   background: #f7f5ef;
 }
+
+.whatsapp-demo-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(calc(100% - 24px), 30rem);
+  border: 1px solid var(--line);
+}
+.whatsapp-demo-dialog::backdrop {
+  background: #102c26cc;
+}
+.whatsapp-demo-message {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px solid #b8d7ac;
+  border-radius: 12px 12px 12px 3px;
+  background: #e1f3d7;
+  color: #173425;
+  font: inherit;
+  resize: vertical;
+}

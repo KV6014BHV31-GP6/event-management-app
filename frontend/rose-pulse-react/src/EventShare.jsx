@@ -1,5 +1,5 @@
 import { locale, tr } from "./i18n/index.js";
-import React, { useId, useState } from "react";
+import React, { useId, useRef, useState } from "react";
 import { DEMO_PROFILE } from "./demo-transport.js";
 
 function shareOrigin(value) {
@@ -57,6 +57,61 @@ export function publicShare(event, origin = globalThis.location.origin) {
     ? eventLink(event.public_id, shareOrigin(origin))
     : "";
   return { title, text, url, message: url ? `${text}\n${url}` : text };
+}
+
+function WhatsAppDemo({ text, url }) {
+  const dialog = useRef(null);
+  const trigger = useRef(null);
+  const closeButton = useRef(null);
+  const titleId = useId();
+  const noticeId = useId();
+  const messageId = useId();
+  const [status, setStatus] = useState("");
+  const message = `${text}\n${url}`;
+  const close = () => {
+    dialog.current.close();
+    trigger.current?.focus();
+  };
+  const copy = async () => {
+    try {
+      await navigator.clipboard.writeText(message);
+      setStatus("Event share message copied.");
+    } catch {
+      setStatus("Copy is unavailable. Select and copy the message below.");
+    }
+  };
+  return (
+    <>
+      <button ref={trigger} type="button" className="button button-quiet button-small"
+        aria-haspopup="dialog"
+        onClick={() => {
+          setStatus("");
+          dialog.current.showModal();
+          closeButton.current?.focus();
+        }}>
+        {tr("WhatsApp demo")}
+      </button>
+      <dialog ref={dialog} className="document-viewer whatsapp-demo-dialog" aria-modal="true"
+        aria-labelledby={titleId} aria-describedby={noticeId}
+        onClose={() => trigger.current?.focus()}
+        onCancel={(event) => { event.preventDefault(); close(); }}>
+        <div className="section-heading">
+          <h2 id={titleId}>{tr("WhatsApp demo")}</h2>
+          <button ref={closeButton} type="button" className="button button-quiet button-small" onClick={close}>
+            {tr("Close")}
+          </button>
+        </div>
+        <p id={noticeId}>{tr("Simulated WhatsApp preview. No message was sent.")}</p>
+        {status && <p className="notice" role="status">{tr(status)}</p>}
+        <label htmlFor={messageId}>{tr("WhatsApp demo message")}</label>
+        <textarea id={messageId} className="whatsapp-demo-message" rows={5} readOnly value={message} />
+        <div className="form-actions">
+          <button type="button" className="button button-small" onClick={copy}>{tr("Copy message")}</button>
+          <a className="button button-quiet button-small" href={url}>{tr("Open event")}</a>
+        </div>
+      </dialog>
+    </>
+  );
 }
 
 export default function EventShare({ event }) {
@@ -125,6 +180,8 @@ export default function EventShare({ event }) {
           >
             {tr("Share on WhatsApp")}
           </a>
+        ) : demoUrl ? (
+          <WhatsAppDemo text={text} url={demoUrl} />
         ) : (
           <button type="button" className="button button-quiet button-small" disabled>
             {tr("Share on WhatsApp")}
