@@ -961,5 +961,10 @@
   "The selected file is too large. Maximum 8 MiB per file.": "Fail dipilih terlalu besar. Maksimum 8 MiB bagi setiap fail.",
   "HEIC and HEIF are unsupported. Choose a JPEG, PNG, GIF, WebP or PDF file.": "HEIC dan HEIF tidak disokong. Pilih fail JPEG, PNG, GIF, WebP atau PDF.",
   "The file extension does not match the file type.": "Sambungan fail tidak sepadan dengan jenis fail.",
-  "Keep your reference. After a refresh, enter it in Guest booking access to read the current application.": "Simpan nombor rujukan anda. Selepas menyegar semula halaman, masukkan nombor itu dalam akses tempahan tetamu untuk melihat permohonan semasa."
+  "Keep your reference. After a refresh, enter it in Guest booking access to read the current application.": "Simpan nombor rujukan anda. Selepas menyegar semula halaman, masukkan nombor itu dalam akses tempahan tetamu untuk melihat permohonan semasa.",
+  "This local demo link opens on this computer while the demo is running. Another phone cannot open it.": "Pautan demo setempat ini boleh dibuka pada komputer ini semasa demo berjalan. Telefon lain tidak boleh membukanya.",
+  "Local demo link": "Pautan demo setempat",
+  "Copy demo link": "Salin pautan demo",
+  "Local demo link copied.": "Pautan demo setempat disalin.",
+  "Copy is unavailable. Select the local demo link and copy it manually.": "Salinan automatik tidak tersedia. Pilih pautan demo setempat dan salin secara manual."
 }

@@ -4,6 +4,8 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import EventShare, { publicShare } from "./EventShare.jsx";
 
+vi.mock("./demo-transport.js", () => ({ DEMO_PROFILE: true }));
+
 const origin = "https://demo.example.com";
 const event = {
   public_id: "ABCDEFGHIJKLMNOPQRSTU",
@@ -43,6 +45,32 @@ describe("user-triggered public sharing", () => {
       expect(screen.getByRole("button", { name: "Copy event link" })).toBeDisabled();
     },
   );
+
+  it("generates a same-event loopback link and copies only after the explicit local action", async () => {
+    locationAt("http://127.0.0.1:5291/?view=apply&token=must-not-share#private");
+    const user = userEvent.setup();
+    const write = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue();
+    render(<EventShare event={event} />);
+    const local = "http://127.0.0.1:5291/?view=event&event=" + event.public_id;
+    expect(screen.getByLabelText("Local demo link")).toHaveValue(local);
+    expect(screen.getByText(/Another phone cannot open it/)).toBeVisible();
+    expect(screen.getByRole("button", { name: "Share on WhatsApp" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Messages / SMS" })).toBeDisabled();
+    expect(write).not.toHaveBeenCalled();
+    await user.click(screen.getByRole("button", { name: "Copy demo link" }));
+    expect(write).toHaveBeenCalledExactlyOnceWith(local);
+    expect(screen.getByRole("status")).toHaveTextContent("Local demo link copied.");
+  });
+
+  it("keeps the local link selectable when copying fails", async () => {
+    locationAt("http://localhost:5291");
+    const user = userEvent.setup();
+    vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(new Error("denied"));
+    render(<EventShare event={event} />);
+    await user.click(screen.getByRole("button", { name: "Copy demo link" }));
+    expect(screen.getByRole("status")).toHaveTextContent(/Select the local demo link and copy it manually/);
+    expect(screen.getByLabelText("Local demo link")).toHaveAttribute("readonly");
+  });
 
   it("opens only user-triggered actions, encodes WhatsApp once and preserves a selectable fallback", async () => {
     locationAt(origin);

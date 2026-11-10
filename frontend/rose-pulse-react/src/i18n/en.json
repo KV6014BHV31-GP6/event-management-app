@@ -961,5 +961,10 @@
   "The selected file is too large. Maximum 8 MiB per file.": "The selected file is too large. Maximum 8 MiB per file.",
   "HEIC and HEIF are unsupported. Choose a JPEG, PNG, GIF, WebP or PDF file.": "HEIC and HEIF are unsupported. Choose a JPEG, PNG, GIF, WebP or PDF file.",
   "The file extension does not match the file type.": "The file extension does not match the file type.",
-  "Keep your reference. After a refresh, enter it in Guest booking access to read the current application.": "Keep your reference. After a refresh, enter it in Guest booking access to read the current application."
+  "Keep your reference. After a refresh, enter it in Guest booking access to read the current application.": "Keep your reference. After a refresh, enter it in Guest booking access to read the current application.",
+  "This local demo link opens on this computer while the demo is running. Another phone cannot open it.": "This local demo link opens on this computer while the demo is running. Another phone cannot open it.",
+  "Local demo link": "Local demo link",
+  "Copy demo link": "Copy demo link",
+  "Local demo link copied.": "Local demo link copied.",
+  "Copy is unavailable. Select the local demo link and copy it manually.": "Copy is unavailable. Select the local demo link and copy it manually."
 }
