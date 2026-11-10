@@ -95,12 +95,23 @@ function DocumentCard({
     const timer = setTimeout(() => setDownload(false), 0);
     return () => clearTimeout(timer);
   }, [original.url]);
+  const label = <>
+    {image && state.url && !failed
+      ? <img src={state.url} alt={`${tr('Document thumbnail')}: ${file.name}`} onError={() => setFailed(true)} />
+      : <span className="document-symbol">{image ? tr('Image') : tr('PDF document')}</span>}
+    <strong>{file.name}</strong>
+  </>;
   return <article className="document-card">
- {image && state.url && !failed ? <img src={state.url} alt={`${tr('Document thumbnail')}: ${file.name}`} onError={() => setFailed(true)} /> : <div className="document-symbol">{image ? tr('Image') : tr('PDF document')}</div>}
- <strong>{file.name}</strong><span className="small muted">{file.mime_type}</span>
+ {thumbnailOnly ? label : (
+   <button type="button" className="document-preview-trigger"
+     aria-label={tr('Preview') + ' ' + file.name} onClick={event => onPreview(event.currentTarget)}>
+     {label}
+   </button>
+ )}
+ <span className="small muted">{file.mime_type}</span>
  <span role="status" className="small">{tr(state.loading ? 'Loading private document…' : state.error || failed ? 'Preview unavailable' : 'Private document')}</span>
  {state.error && <p role="alert">{tr(state.error)}</p>}
- {!thumbnailOnly && <div className="form-actions"><button type="button" className="button button-small" onClick={event => onPreview(event.currentTarget)}>{tr('Preview')} {file.name}</button>
+ {!thumbnailOnly && <div className="form-actions">
  <button type="button" className="text-button" disabled={original.loading && download} onClick={() => setDownload(true)}>{tr('Download')} {file.name}</button></div>}
  {original.error && <p role="alert">{tr(original.error)}</p>}
  </article>;
@@ -111,6 +122,7 @@ function DocumentViewer({
   onClose
 }) {
   const state = usePrivateBlob(runtime, file);
+  const image = file.mime_type.startsWith('image/');
   const panel = useRef(null);
   const [zoom, setZoom] = useState(1);
   const [failed, setFailed] = useState(false);
@@ -142,10 +154,23 @@ function DocumentViewer({
     }
   };
   return <div className="document-backdrop"><section ref={panel} className="document-viewer" role="dialog" aria-modal="true" aria-label={file.name} onKeyDown={keyboard}>
- <h2>{file.name}</h2><div className="document-toolbar"><button className="button" onClick={onClose}>{tr('Close')}</button><button className="button button-quiet" onClick={() => setZoom(1)}>{tr('Fit')}</button><button className="button button-quiet" aria-label={tr('Zoom out')} disabled={zoom <= 0.5} onClick={() => setZoom(z => Math.max(.5, z - .25))}>−</button><span>{Math.round(zoom * 100)}%</span><button className="button button-quiet" aria-label={tr('Zoom in')} disabled={zoom >= 3} onClick={() => setZoom(z => Math.min(3, z + .25))}>+</button>{state.url && <a className="button" href={state.url} download={file.name}>{tr('Download')}</a>}</div>
+ <h2>{file.name}</h2>
+ <div className="document-toolbar">
+   <button className="button" onClick={onClose}>{tr('Close')}</button>
+   {image && <>
+     <button className="button button-quiet" onClick={() => setZoom(1)}>{tr('Fit')}</button>
+     <button className="button button-quiet" aria-label={tr('Zoom out')} disabled={zoom <= 0.5} onClick={() => setZoom(z => Math.max(.5, z - .25))}>−</button>
+     <span>{Math.round(zoom * 100)}%</span>
+     <button className="button button-quiet" aria-label={tr('Zoom in')} disabled={zoom >= 3} onClick={() => setZoom(z => Math.min(3, z + .25))}>+</button>
+   </>}
+   {state.url && <>
+     <a className="button" href={state.url} target="_blank" rel="noopener noreferrer">{tr('Open original')}</a>
+     <a className="button button-quiet" href={state.url} download={file.name}>{tr('Download')}</a>
+   </>}
+ </div>
  {state.loading && <p role="status">{tr('Loading private document…')}</p>}{state.error && <p role="alert">{tr(state.error)}</p>}
- <div className="document-stage">{state.url && (file.mime_type.startsWith('image/') && !failed ? <img src={state.url} style={{
+ <div className="document-stage">{state.url && (image && !failed ? <img src={state.url} style={{
           width: `${zoom * 100}%`
-        }} alt={file.name} onError={() => setFailed(true)} /> : <p>{tr(file.mime_type === 'application/pdf' ? 'PDF inline preview is unavailable in this build. Download the original to inspect it in a trusted viewer.' : 'Preview unavailable. Download the original document to inspect it in a trusted viewer.')}</p>)}</div>
+        }} alt={file.name} onError={() => setFailed(true)} /> : <p>{tr(file.mime_type === 'application/pdf' ? 'Open the PDF in a new tab or download the original.' : 'Preview unavailable. Download the original document to inspect it in a trusted viewer.')}</p>)}</div>
  </section></div>;
 }

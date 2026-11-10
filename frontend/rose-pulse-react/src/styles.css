@@ -2858,3 +2858,26 @@ legend {
 .document-cards-compact .document-card > img {
   height: 76px;
 }
+
+.document-preview-trigger {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--forest);
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.document-preview-trigger > strong {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.document-preview-trigger > img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  background: #f7f5ef;
+}

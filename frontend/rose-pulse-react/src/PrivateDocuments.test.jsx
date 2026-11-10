@@ -1,6 +1,6 @@
 import React from 'react';
 import { it, expect, vi } from 'vitest';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { PrivateDocuments } from './FilePicker.jsx';
 it('shows an explicit empty document state', () => {
@@ -27,7 +27,9 @@ it('authenticated image opens a labelled viewer and Escape restores trigger focu
   const trigger = screen.getByRole('button', {
     name: 'Preview proof.png'
   });
-  await user.click(trigger);
+  expect(trigger).toContainElement(await screen.findByRole('img', {name: 'Document thumbnail: proof.png'}));
+  trigger.focus();
+  await user.keyboard('{Enter}');
   expect(await screen.findByRole('dialog', {
     name: 'proof.png'
   })).toBeInTheDocument();
@@ -63,7 +65,7 @@ it('ignores a late private response after record change and aborts the old reque
   await waitFor(() => expect(screen.getByText('No supporting documents.')).toBeInTheDocument());
   expect(URL.createObjectURL).not.toHaveBeenCalled();
 });
-it('uses an explicit PDF download fallback without embedding a private document URL', async () => {
+it('opens the PDF filename and exposes a verified Blob for viewing or download', async () => {
   URL.createObjectURL = vi.fn(() => 'blob:pdf');
   URL.revokeObjectURL = vi.fn();
   const runtime = {
@@ -79,11 +81,22 @@ it('uses an explicit PDF download fallback without embedding a private document 
     name: 'proof.pdf',
     mime_type: 'application/pdf'
   }]} />);
-  await userEvent.click(screen.getByRole('button', {
-    name: 'Preview proof.pdf'
-  }));
-  expect(await screen.findByText('PDF inline preview is unavailable in this build. Download the original to inspect it in a trusted viewer.')).toBeInTheDocument();
+  const user = userEvent.setup();
+  const trigger = screen.getByRole('button', {name: 'Preview proof.pdf'});
+  await user.click(within(trigger).getByText('proof.pdf'));
+  const dialog = screen.getByRole('dialog', {name: 'proof.pdf'});
+  const open = await within(dialog).findByRole('link', {name: 'Open original'});
+  expect(open).toHaveAttribute('href', 'blob:pdf');
+  expect(open).toHaveAttribute('target', '_blank');
+  expect(open).toHaveAttribute('rel', 'noopener noreferrer');
+  expect(within(dialog).getByRole('link', {name: 'Download'})).toHaveAttribute('download', 'proof.pdf');
+  expect(runtime.api.downloadSupportingDocument).toHaveBeenCalledExactlyOnceWith(
+    expect.objectContaining({id: 'pdf'}), 'token', {signal: expect.any(AbortSignal)}
+  );
   expect(document.querySelector('iframe,object,embed')).toBeNull();
+  await user.keyboard('{Escape}');
+  expect(URL.revokeObjectURL).toHaveBeenCalledWith('blob:pdf');
+  expect(trigger).toHaveFocus();
 });
 
 it('keeps Escape and Tab inside a document dialog nested in a registration dialog',async()=>{
