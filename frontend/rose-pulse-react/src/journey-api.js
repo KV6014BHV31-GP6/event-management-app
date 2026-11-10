@@ -11,10 +11,32 @@ export function createJourneyClient({fetchImpl=demoTransport.fetch,storage=globa
  function archive(actor,row,reason){const historyKey=key(actor)+'.refused';const rows=JSON.parse(storage.getItem(historyKey)||'[]');const text=JSON.stringify([...rows,{...row,terminal_reason:reason}]);storage.setItem(historyKey,text);if(storage.getItem(historyKey)!==text)throw new Error('The refusal could not be saved. Keep the original reference.');save(actor,pending(actor).filter(r=>r.body.operation_id!==row.body.operation_id));keyStorage?.removeItem(privateKey(row.body.operation_id));}
  function boundHeaders(id){const saved=keyStorage?.getItem(privateKey(id));return saved?{'X-Application-Key':saved}:{};}
  async function request(path,{token,headers={},method='GET',body}={}){const response=await fetchImpl(PREFIX+path,{method,headers:{Accept:'application/json',...(token?{Authorization:`Bearer ${token}`}:{ }),...guestHeaders(),...headers,...(body?{'Content-Type':'application/json'}:{})},...(body?{body:JSON.stringify(body)}:{}),cache:'no-store',credentials:'omit',redirect:'error'});let data;try{data=await response.json();}catch{throw new Error('The response could not be verified. Reconcile before sending again.');}if(!response.ok){const error=new Error(data.detail?.message||'The operation was refused. Read the current record.');error.status=response.status;error.code=data.detail?.code;throw error;}return data;}
- function validateReceipt(data,id){if(data.contract_version!==VERSION||data.operation_id!==id||data.outcome!=='applied')throw new Error('The operation receipt could not be verified.');return data;}
+ function validateReceipt(data, id, path) {
+   const invalid = () => new Error('The operation receipt could not be verified.');
+   if (data?.contract_version !== VERSION || data.operation_id !== id || data.outcome !== 'applied')
+     throw invalid();
+   if (path?.endsWith('/applications')) {
+     const reference = data.effects?.registration_id;
+     if (data.kind !== 'application_create' || data.effects?.status !== 'pending' ||
+       typeof reference !== 'string' || !/^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(reference) ||
+       data.resource_id !== reference) throw invalid();
+   }
+   return data;
+ }
  function finish(actor,id){save(actor,pending(actor).filter(r=>r.body.operation_id!==id));keyStorage?.removeItem(privateKey(id));}
- async function receipt(actor,id,token){try{const data=validateReceipt(await request('/receipts/'+id,{token,headers:boundHeaders(id)}),id);finish(actor,id);return data;}catch(error){if(error.status===404){const row=pending(actor).find(r=>r.body.operation_id===id);if(row)patch(actor,id,{missing_receipts:Math.min(2,(row.missing_receipts||0)+1)});}throw error;}}
- async function send(actor,row,token,body=row.body){try{const data=validateReceipt(await request(row.path,{method:'POST',token,headers:boundHeaders(body.operation_id),body}),body.operation_id);finish(actor,body.operation_id);return data;}catch(error){if([400,422,429].includes(error.status)||(error.status===409&&rollbackCodes.has(error.code))){archive(actor,row,error.code||String(error.status));error.terminal=true;error.refusal={operation_id:body.operation_id,path:row.path,code:error.code,fingerprint:row.fingerprint,attendance_operation_id:body.data?.attendance_operation_id};}else if(error.status===409&&error.code==='IMMUTABLE_CONFLICT')patch(actor,row.body.operation_id,{immutable_conflict:true});throw error;}}
+ async function receipt(actor, id, token) {
+   const row = pending(actor).find(item => item.body.operation_id === id);
+   try {
+     const data = validateReceipt(await request('/receipts/' + id, {token, headers: boundHeaders(id)}), id, row?.path);
+     finish(actor, id);
+     return data;
+   } catch (error) {
+     if (error.status === 404 && row)
+       patch(actor, id, {missing_receipts: Math.min(2, (row.missing_receipts || 0) + 1)});
+     throw error;
+   }
+ }
+ async function send(actor,row,token,body=row.body){try{const data=validateReceipt(await request(row.path,{method:'POST',token,headers:boundHeaders(body.operation_id),body}),body.operation_id,row.path);finish(actor,body.operation_id);return data;}catch(error){if([400,422,429].includes(error.status)||(error.status===409&&rollbackCodes.has(error.code))){archive(actor,row,error.code||String(error.status));error.terminal=true;error.refusal={operation_id:body.operation_id,path:row.path,code:error.code,fingerprint:row.fingerprint,attendance_operation_id:body.data?.attendance_operation_id};}else if(error.status===409&&error.code==='IMMUTABLE_CONFLICT')patch(actor,row.body.operation_id,{immutable_conflict:true});throw error;}}
  return {pending,refused:actor=>JSON.parse(storage.getItem(key(actor)+'.refused')||'[]'),get:(path,options={})=>authorize(token=>request(path,{...options,token})),publicGet:(path,options)=>request(path,options),publicPost:(path,body,headers)=>request(path,{method:'POST',body,headers}),
  mutate:(path,data,expectedVersion)=>authorize(async(token,actor)=>{const actorId=actor?.id||'guest';if(pending(actorId).some(r=>r.path===path))throw new Error('This action has an unresolved reference. Reconcile it first.');const body={contract_version:VERSION,operation_id:crypto.randomUUID(),...(expectedVersion!==undefined?{expected_version:expectedVersion}:{}),data};const fingerprint=await payloadFingerprint(body);const sensitive=path==='/accounts';const row={path,body:sensitive?{...body,data:{...data,password:undefined}}:body,fingerprint,sensitive,created_at:new Date().toISOString(),anonymous_application:!token&&path.endsWith('/applications')};if(row.anonymous_application){const secret=applicationKey();keyStorage.setItem(privateKey(body.operation_id),secret);if(keyStorage.getItem(privateKey(body.operation_id))!==secret)throw new Error('Private application recovery key was not confirmed saved. Nothing was sent.');}const current=pending(actorId);if(current.some(r=>r.path===path))throw new Error('This action has an unresolved reference. Reconcile it first.');save(actorId,[...current,row]);return send(actorId,row,token,body);}),
  reconcile:id=>authorize((token,actor)=>receipt(actor?.id||'guest',id,token)),

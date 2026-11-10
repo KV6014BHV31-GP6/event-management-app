@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-08T05:43:51.753867+00:00",
-  "reason": "Record scoped AC40 portable repair and exact runtime restoration; preserve original AC results",
-  "document_count": 387,
+  "reviewed_at": "2026-11-10T10:07:01.943892+00:00",
+  "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries",
+  "document_count": 392,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,7 +107,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 7,
+      "revision": 8,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
       "revision_history": [
@@ -152,13 +152,20 @@
           "size_bytes": 23746,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 7,
+          "sha256": "aa1afc97724ff1629ab301ec18e46dc1b26ab46c7df5b0897fba239e41c0da7f",
+          "size_bytes": 30549,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "aa1afc97724ff1629ab301ec18e46dc1b26ab46c7df5b0897fba239e41c0da7f",
-      "size_bytes": 30549
+      "sha256": "ed647c4e15aad5629daabe642ecb62532cd6d1f4b5db27615c7519c814791a99",
+      "size_bytes": 30919
     },
     {
       "document_id": "DOC-06",
@@ -295,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 38,
+      "revision": 41,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -527,6 +534,27 @@
           "size_bytes": 26178,
           "superseded_at": "2026-11-08T05:43:51.753867+00:00",
           "reason": "Record scoped AC40 portable repair and exact runtime restoration; preserve original AC results"
+        },
+        {
+          "revision": 38,
+          "sha256": "b7a85e903c21383d31e6e12b90f89a21085597ed9ff2308d757842c957dc944d",
+          "size_bytes": 27421,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
+        },
+        {
+          "revision": 39,
+          "sha256": "37864a822fab5c0b68623f878d0c89831477ac33e7264c75d8aa87710bbcddd3",
+          "size_bytes": 28833,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 40,
+          "sha256": "9f534d6db48dc387b2014753243e1f4f057c0d152b7803ccf5ab3628d2aa25a7",
+          "size_bytes": 29821,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "import_lineage": {
@@ -539,8 +567,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "b7a85e903c21383d31e6e12b90f89a21085597ed9ff2308d757842c957dc944d",
-      "size_bytes": 27421,
+      "sha256": "35782133ca73bdf719e5594281272c075ea032537c8c4b809c8af7fb1e144dc0",
+      "size_bytes": 32330,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1536,7 +1564,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-001",
       "path": "frontend/README.md",
-      "revision": 21,
+      "revision": 22,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1679,13 +1707,20 @@
           "size_bytes": 23089,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 21,
+          "sha256": "d012c47ea26fca467a31af100091e75f62aa701b672f8f9a428cca9d33583336",
+          "size_bytes": 23991,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d012c47ea26fca467a31af100091e75f62aa701b672f8f9a428cca9d33583336",
-      "size_bytes": 23991,
+      "sha256": "412ce94b50a01bc643051360f1d740977d341a4d0e7acc7dccbf80890e76cebf",
+      "size_bytes": 25140,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -3144,7 +3179,7 @@
     {
       "document_id": "FE-LIVE-20261014-043",
       "path": "frontend/dev-server.mjs",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -3175,19 +3210,26 @@
           "size_bytes": 11048,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 5,
+          "sha256": "5962ee8bb27744efc25bb4340f8a474fdd06f88929aa8a7030abe1d32b53df1a",
+          "size_bytes": 12717,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "5962ee8bb27744efc25bb4340f8a474fdd06f88929aa8a7030abe1d32b53df1a",
-      "size_bytes": 12717
+      "sha256": "ad51242da260eab2416b2fabe592c769197e81a8143d6d98d08c37a3050bb7e0",
+      "size_bytes": 14185
     },
     {
       "document_id": "FE-LIVE-20261014-044",
       "path": "frontend/dev-server.test.mjs",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -3218,14 +3260,21 @@
           "size_bytes": 17352,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 5,
+          "sha256": "e1eb7857c7b39b14d8f77f4fbd72d483ba0fa0137c48855b7f8e473b263fa964",
+          "size_bytes": 19948,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "e1eb7857c7b39b14d8f77f4fbd72d483ba0fa0137c48855b7f8e473b263fa964",
-      "size_bytes": 19948
+      "sha256": "a9b90a831c25bb13dbbc149de66a15974dd1b2a7bed2c6b844f2fc1786cd64e8",
+      "size_bytes": 24811
     },
     {
       "document_id": "FE-LIVE-20261014-045",
@@ -4779,7 +4828,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 7,
+      "revision": 9,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4824,13 +4873,27 @@
           "size_bytes": 26624,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 7,
+          "sha256": "5b1122a28ab7972879cf9378ce064107626b419813edcac068c59bc869c46e98",
+          "size_bytes": 37992,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 8,
+          "sha256": "812dbc84dd4ba8f0ceb2959b489c59300e18b52924412e539eddc1144bd5005a",
+          "size_bytes": 38555,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "5b1122a28ab7972879cf9378ce064107626b419813edcac068c59bc869c46e98",
-      "size_bytes": 37992
+      "sha256": "fce61a00723f9c5825cede670027d17464285b824c50b0ee98964461504275af",
+      "size_bytes": 42299
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -4911,7 +4974,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 5,
+      "revision": 6,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4942,18 +5005,25 @@
           "size_bytes": 87162,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 5,
+          "sha256": "22fad7eb4795186e21ef53027905453de6bc5fea172bc47740d5aaec5b29f504",
+          "size_bytes": 88665,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "22fad7eb4795186e21ef53027905453de6bc5fea172bc47740d5aaec5b29f504",
-      "size_bytes": 88665
+      "sha256": "a9b73de012e69540e7de040c82c4fd44750c9f0bcc61f6a9d6c2b44e516b3bc7",
+      "size_bytes": 88191
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 5,
+      "revision": 6,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4984,13 +5054,20 @@
           "size_bytes": 23103,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 5,
+          "sha256": "339a5edc7040547d63593686d0237658b01a407313c5549182b2d9fb432c4809",
+          "size_bytes": 36157,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "339a5edc7040547d63593686d0237658b01a407313c5549182b2d9fb432c4809",
-      "size_bytes": 36157
+      "sha256": "dd1173c5a83946011740b677784f26a9a5191c8bd1f1face24a1b66cdcf55743",
+      "size_bytes": 37302
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -5079,7 +5156,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5103,18 +5180,25 @@
           "size_bytes": 48377,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 4,
+          "sha256": "cb6753c9e012bf95e526c7c92b8a016794334f131e99d4a3ec50bb5b139fd951",
+          "size_bytes": 49412,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "cb6753c9e012bf95e526c7c92b8a016794334f131e99d4a3ec50bb5b139fd951",
-      "size_bytes": 49412
+      "sha256": "55be6b9b2e66309d0d4951036208863bafe6fa0ad5457ef17f40709a8899a29a",
+      "size_bytes": 53177
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
       "path": "frontend/rose-pulse-react/src/test-setup.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5124,13 +5208,20 @@
           "size_bytes": 188,
           "superseded_at": "2026-11-01T22:32:46.225801+00:00",
           "reason": "Record Phase2 native acceptance, repaired findings, evaluation packages and exact source/evidence boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "2350922e01a4f7a4718206662cf6a01a1325fcfd6c5066ba665759819d127d1e",
+          "size_bytes": 508,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "2350922e01a4f7a4718206662cf6a01a1325fcfd6c5066ba665759819d127d1e",
-      "size_bytes": 508
+      "sha256": "435f03dca16cc393f13b8c7a35f4f0089e1f5d96f16b385bba634b1bdd36bf29",
+      "size_bytes": 798
     },
     {
       "document_id": "ROSE-V2-07f1f563f112",
@@ -5998,33 +6089,49 @@
     {
       "document_id": "ROSE-P2-370e9c1895ba",
       "path": "frontend/rose-pulse-react/src/EventShare.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6abf9bf4198924aaba33470208e07e0fe5b3384285fd8e247b2be739f285cf96",
+          "size_bytes": 2211,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "6abf9bf4198924aaba33470208e07e0fe5b3384285fd8e247b2be739f285cf96",
-      "size_bytes": 2211
+      "sha256": "267b7b76c723f0e4d19826f6c7d90bb157455a73062aa3895e0bf74c4d857936",
+      "size_bytes": 4990
     },
     {
       "document_id": "ROSE-P2-8d511394a1a5",
       "path": "frontend/rose-pulse-react/src/EventShare.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6d8c3e45b3e2ab8053eeefecac82dec78c6d08e686ef2e84a7e4db041b4b3d73",
+          "size_bytes": 1658,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "6d8c3e45b3e2ab8053eeefecac82dec78c6d08e686ef2e84a7e4db041b4b3d73",
-      "size_bytes": 1658
+      "sha256": "df3ab7a3209653aece3b8796fc73948b978117749d3400816c9e8524a11568d8",
+      "size_bytes": 4159
     },
     {
       "document_id": "ROSE-P2-650d560abc95",
       "path": "frontend/rose-pulse-react/src/FilePicker.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6034,18 +6141,25 @@
           "size_bytes": 9664,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "58adce7258d551a87d97d1f84d286f27237722f9621c7ace28247b2caf400269",
+          "size_bytes": 8260,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "58adce7258d551a87d97d1f84d286f27237722f9621c7ace28247b2caf400269",
-      "size_bytes": 8260
+      "sha256": "33436f08089b154d7e6aa3986ce8df3620b6e1936da90816c536f930a5acc36d",
+      "size_bytes": 10458
     },
     {
       "document_id": "ROSE-P2-78e229b4c24d",
       "path": "frontend/rose-pulse-react/src/FilePicker.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6055,13 +6169,20 @@
           "size_bytes": 4550,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "989234cae21f1fb26cc8a445d8c671e61a297e5e381f788f9662fadd5dedce0b",
+          "size_bytes": 4595,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "989234cae21f1fb26cc8a445d8c671e61a297e5e381f788f9662fadd5dedce0b",
-      "size_bytes": 4595
+      "sha256": "e786f2c8c8313b219ec804d1385aec634209e3c80d929b9122b58c3808f2bb3a",
+      "size_bytes": 7844
     },
     {
       "document_id": "ROSE-P2-28e512608732",
@@ -6100,7 +6221,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 6,
+      "revision": 8,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6138,18 +6259,32 @@
           "size_bytes": 75263,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 6,
+          "sha256": "f6bf090c49d58207090800de3a34f60d7d51b1ce4829e01a1a83ab870f9aa932",
+          "size_bytes": 76435,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 7,
+          "sha256": "3f7bf07e5455661b0574262472be727338f2a334a7e47dc87c0cdb123601410f",
+          "size_bytes": 76437,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "f6bf090c49d58207090800de3a34f60d7d51b1ce4829e01a1a83ab870f9aa932",
-      "size_bytes": 76435
+      "sha256": "be95303022047936407eb921f57b6b1fd32079805bf1345e2224b9919a2560ed",
+      "size_bytes": 80075
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
       "path": "frontend/rose-pulse-react/src/i18n/i18n.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6166,13 +6301,20 @@
           "size_bytes": 4386,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 3,
+          "sha256": "125c7aafcb58319bac763ffc8a7a61e817b78dd4a985f2e96e1a2bc7df40c53b",
+          "size_bytes": 4777,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "125c7aafcb58319bac763ffc8a7a61e817b78dd4a985f2e96e1a2bc7df40c53b",
-      "size_bytes": 4777
+      "sha256": "c0310527e59b8a3f1c2c5f06388fc1cdf24792da343e9ae015cd611f291d3614",
+      "size_bytes": 4848
     },
     {
       "document_id": "ROSE-P2-0b9828150d85",
@@ -6190,7 +6332,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 6,
+      "revision": 8,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6228,13 +6370,27 @@
           "size_bytes": 77965,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 6,
+          "sha256": "80003c566c432b6655093edc87c2825d26ed44b968002b6a3e3420d315475440",
+          "size_bytes": 79171,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 7,
+          "sha256": "52c4f9d6d8b316d7706ba98c7aac3cc2161c8c038cb2478b58a39b89035ad5bb",
+          "size_bytes": 79199,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "80003c566c432b6655093edc87c2825d26ed44b968002b6a3e3420d315475440",
-      "size_bytes": 79171
+      "sha256": "99d3615dbabc0b8a492d66eac2e7d4808320d7381ae369551caf2b2d7fd8475e",
+      "size_bytes": 82917
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -6393,7 +6549,7 @@
     {
       "document_id": "ROSE-P2-43290066b2df",
       "path": "frontend/rose-pulse-react/src/phase2-api.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6403,13 +6559,20 @@
           "size_bytes": 17855,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "93c5ba2cde9f9fadfb63a549f118704d364f8d28c17e89a67f48b5d86a1be170",
+          "size_bytes": 18246,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "93c5ba2cde9f9fadfb63a549f118704d364f8d28c17e89a67f48b5d86a1be170",
-      "size_bytes": 18246
+      "sha256": "a9a4a55a39666bf61bc835e3a6ed62f43bb26de6212882da0143adfbc474eba0",
+      "size_bytes": 18982
     },
     {
       "document_id": "ROSE-P2-b56089bda207",
@@ -6867,7 +7030,7 @@
     {
       "document_id": "DEMO-DOC-6532F7F07E4BB796",
       "path": "backend/src/journey/router.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6877,13 +7040,20 @@
           "size_bytes": 51227,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 2,
+          "sha256": "509b5e440b0da3fbdf5978c461fce259e689c33cc9c8b0c93e7305034be7d0e9",
+          "size_bytes": 51371,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "509b5e440b0da3fbdf5978c461fce259e689c33cc9c8b0c93e7305034be7d0e9",
-      "size_bytes": 51371
+      "sha256": "382e57926ec3c5f07e93ef76c638a3383f5b1269827fb27b1a36230a97f2faad",
+      "size_bytes": 51382
     },
     {
       "document_id": "DEMO-DOC-807252A5DD52CAE8",
@@ -6970,7 +7140,7 @@
     {
       "document_id": "DEMO-DOC-DEECC58DE1D1D511",
       "path": "docs/dev/demo-journey/API_CONTRACT.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -6987,13 +7157,20 @@
           "size_bytes": 21865,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 3,
+          "sha256": "682c10afaa52c09f05d513632bcd8d1caed2e8537d325fa40eb6e505d879db40",
+          "size_bytes": 23923,
+          "superseded_at": "2026-11-08T19:12:46.213071+00:00",
+          "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "682c10afaa52c09f05d513632bcd8d1caed2e8537d325fa40eb6e505d879db40",
-      "size_bytes": 23923
+      "sha256": "5e79a4da3679672bac6ed8891e2408b8dffb6bfe9717cd95a5f9f837cfe43161",
+      "size_bytes": 24553
     },
     {
       "document_id": "DEMO-DOC-E16B1F8BCCCAA68A",
@@ -7115,20 +7292,28 @@
     {
       "document_id": "DEMO-DOC-E44721AB8360969D",
       "path": "frontend/rose-pulse-react/src/DemoControls.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "08e55545a65dd6c4472f9dfcd114aa3f904e839e3d0f107c814d6b68ecc6480a",
+          "size_bytes": 1788,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "08e55545a65dd6c4472f9dfcd114aa3f904e839e3d0f107c814d6b68ecc6480a",
-      "size_bytes": 1788
+      "sha256": "a19aafc1ef3b04f251720b996cddbf6d60b655e6ea64edb74d1fb189396dc3f2",
+      "size_bytes": 2093
     },
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 4,
+      "revision": 6,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7152,18 +7337,32 @@
           "size_bytes": 37631,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 4,
+          "sha256": "ef9e0d465c2d8b74f5ade6e64b395c638f5bb52de480d46fd41b9ec9f117fe4a",
+          "size_bytes": 40816,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 5,
+          "sha256": "73a3847cbf8316773bdb770037aff10e34facf63a690d6487354f2688d8d5b6c",
+          "size_bytes": 42041,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ef9e0d465c2d8b74f5ade6e64b395c638f5bb52de480d46fd41b9ec9f117fe4a",
-      "size_bytes": 40816
+      "sha256": "000d760dde1eb70af7c8a85d45ec8076378dea1c82801992e9843a596c69df7a",
+      "size_bytes": 45033
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 3,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7180,13 +7379,27 @@
           "size_bytes": 8383,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 3,
+          "sha256": "41a840c7a29ace52b2dced6180d45eef742b2c7300249bd81ef57e9d50d27048",
+          "size_bytes": 24009,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 4,
+          "sha256": "bed0cd6c19d386534f4c8d8d43ad3c46de9addaffa05457d58fb1ffde5627105",
+          "size_bytes": 28749,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "41a840c7a29ace52b2dced6180d45eef742b2c7300249bd81ef57e9d50d27048",
-      "size_bytes": 24009
+      "sha256": "4dd859120bde542ca099dcd2159735e241cba7d4a62bf5147c4ab18195c992ae",
+      "size_bytes": 30046
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -7269,7 +7482,7 @@
     {
       "document_id": "DEMO-DOC-5A1D8022DD23E165",
       "path": "frontend/rose-pulse-react/src/journey-api.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7279,26 +7492,41 @@
           "size_bytes": 5942,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "b87ddbd7c57ad1a365f848223922a9ce1c026e7d2c562c94f81902c63bc8b194",
+          "size_bytes": 6178,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "b87ddbd7c57ad1a365f848223922a9ce1c026e7d2c562c94f81902c63bc8b194",
-      "size_bytes": 6178
+      "sha256": "a2937d7139f86a2045f0daeac928f9bc57b1c8431be5e482e6ce37d6bbc34aae",
+      "size_bytes": 6697
     },
     {
       "document_id": "DEMO-DOC-055E7FEBAF328681",
       "path": "frontend/rose-pulse-react/src/journey-api.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "f83b2e0189c49bc754e260b1c7a532a039f2554143dc9817be1bf8bc29126e96",
+          "size_bytes": 5161,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f83b2e0189c49bc754e260b1c7a532a039f2554143dc9817be1bf8bc29126e96",
-      "size_bytes": 5161
+      "sha256": "60cb00ffdff29e1a75d4f25efa02db9149b3323477e3295e28a2b8c16140e3ab",
+      "size_bytes": 6559
     },
     {
       "document_id": "DEMO-DOC-AA71BA408012FF59",
@@ -8056,6 +8284,93 @@
       ],
       "sha256": "95c6a1d6b4794dc78968dc33392bde5450e628206d404156b1b19b9d1800c12e",
       "size_bytes": 3465
+    },
+    {
+      "document_id": "W9-DOC-20261109",
+      "path": "docs/dev/tasks/W9-CLOSEOUT-20261109.md",
+      "revision": 4,
+      "owner": "Astra Integrator",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e4e9a6b45c8a931cfc7e45d7002c07bdcbcffc4fe3e9835af8da77cee4ebad23",
+          "size_bytes": 4196,
+          "superseded_at": "2026-11-08T20:19:57.093902+00:00",
+          "reason": "Record bounded W9 visible receipts, existing EN/MS labels and actual old-runtime UI rehearsal"
+        },
+        {
+          "revision": 2,
+          "sha256": "69bdafa601c58090078693f8926a05da0cc7eb264c41f85b83e5664509dd45fe",
+          "size_bytes": 7450,
+          "superseded_at": "2026-11-08T20:20:21.802454+00:00",
+          "reason": "Preserve LF formatting for W9 continuation evidence entry"
+        },
+        {
+          "revision": 3,
+          "sha256": "344f9cb0545dc21b7d4698c3afcaa280b376205c177c57860478ccb90479072d",
+          "size_bytes": 7449,
+          "superseded_at": "2026-11-10T10:07:01.943892+00:00",
+          "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5534a11acf9ef3e57b1b10925b6a28f937cdf68c09743745befc897968b24e82",
+      "size_bytes": 12243
+    },
+    {
+      "document_id": "W9-TEST-20261109",
+      "path": "backend/tests/test_w9_identity_refusal.py",
+      "revision": 1,
+      "owner": "Sol-BE; Astra Integrator",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "fcf10b9eece7f066255fb4243944d530aec05f297c417ae1f32a2996aebd3d7e",
+      "size_bytes": 3735
+    },
+    {
+      "document_id": "FE-DEMO-V2-APPLICATION-FIELDS",
+      "path": "frontend/rose-pulse-react/src/ApplicationFields.jsx",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "6b21682afd565474de6c3d01c5601f2b482f2314afe2fd003cb16c20e4bb55af",
+      "size_bytes": 4129
+    },
+    {
+      "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS",
+      "path": "frontend/rose-pulse-react/src/ApplicationSuccess.jsx",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "1dbf89ad8544602a1fab610af2137ca8a0af3596118552284918c0b880dec056",
+      "size_bytes": 2186
+    },
+    {
+      "document_id": "FE-DEMO-V2-CONTROLS-TEST",
+      "path": "frontend/rose-pulse-react/src/DemoControls.test.jsx",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8b84bb2e27174d53cd01c56f12ca59f519d6f7cd7a65dff1bc49f720aac95050",
+      "size_bytes": 2200
     }
   ]
 }

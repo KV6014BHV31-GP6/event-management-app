@@ -1,5 +1,13 @@
 # Frontend workspace
 
+## Private HTTPS gateway origin
+
+The development proxy accepts loopback HTTP by default. For a private HTTPS gateway, pass `trustedHttpsOrigin` to `createDevServer`. The container gateway reads optional `NU_TRUSTED_HTTPS_ORIGIN` at startup and passes it to the proxy. Set one canonical HTTPS origin such as `https://private-demo.example.invalid`. An optional root slash is accepted. Use a lowercase hostname and omit the default HTTPS port. Wildcards, credentials, paths other than `/`, query strings, fragments and ambiguous spellings fail startup. Keep the actual value in the external runtime configuration.
+
+Private HTTPS requests must supply the configured `Host` exactly. GET and HEAD may omit `Origin`. Other methods require the exact HTTPS `Origin`, and a supplied `Origin` must always match. Forwarded headers do not establish either value. The gateway must terminate TLS, preserve the request Host and Origin, and control access to its private listener. The existing proxy still enforces its API route, header, body and cookie rules.
+
+Run `node --test frontend/dev-server.test.mjs` from the repository root for the proxy boundary checks.
+
 ## R3 account transport integration
 
 The loopback proxy admits the exact profile and assisted-recovery routes in [the account contract](../docs/dev/demo-journey/ACCOUNT_CONTRACT_R3.md). Canonical UUID receipt paths are checked; account query parameters are rejected. `X-Account-Recovery` is forwarded only for the exact reset and recovery-receipt routes, never stored in a URL. Existing bearer and no-store behavior is retained. Request cookies remain excluded. Only a successful reset may propagate an empty, `Max-Age=0`, same-host `refresh_token` deletion; unrelated cookies and new cookie values are discarded. Generic login/refresh cookie integration is unchanged.

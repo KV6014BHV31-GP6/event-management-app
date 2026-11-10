@@ -116,7 +116,8 @@ async def new_application(db,event,data,user,source=None,walkin=False):
     own_user=user.id if user and user.role.value=='user' else None
     person=await db.scalar(select(ParticipantModel).where(ParticipantModel.national_id==form.national_id))
     own=await db.scalar(select(ParticipantModel).where(ParticipantModel.user_id==own_user)) if own_user else None
-    if own and own.national_id!=form.national_id:fail('IMMUTABLE_CONFLICT')
+    if own and own.national_id != form.national_id:
+        fail('INVALID_INPUT', 422)
     if person:
         if not own_user or person.user_id!=own_user:fail('IMMUTABLE_CONFLICT')
         if await db.scalar(select(RegistrationModel.id).where(RegistrationModel.event_id==event.id,RegistrationModel.participant_id==person.id)):fail('IMMUTABLE_CONFLICT')

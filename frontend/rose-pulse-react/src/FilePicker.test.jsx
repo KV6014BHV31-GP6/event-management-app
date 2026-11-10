@@ -124,3 +124,56 @@ describe("three-file gallery and authenticated supporting documents", () => {
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 });
+
+it("previews chosen documents and replaces a rejected file while retaining successful references", async () => {
+  const onChange = vi.fn();
+  const onBlocked = vi.fn();
+  const uploadFile = vi.fn(async (file) => {
+    if (file.name === "reject.pdf") throw new ApiError("validation", "Please check the required fields and file limits.", 422);
+    return {...fileReference(file.name === "good.png" ? 1 : 2, "supporting_document"),
+      name: file.name, mime_type: file.type, size: file.size};
+  });
+  const runtime = {
+    api: {uploadFile},
+    withVerifiedAccount: (operation) => operation("synthetic"),
+  };
+  render(<FilePicker runtime={runtime} purpose="supporting_document" onChange={onChange} onBlocked={onBlocked} />);
+  const user = userEvent.setup();
+  await user.upload(screen.getByLabelText(/Supporting documents/), [
+    new File(["abc"], "good.png", {type: "image/png"}),
+    new File(["abc"], "reject.pdf", {type: "application/pdf"}),
+  ]);
+  expect(screen.getByAltText("Selected document image 1")).toHaveAttribute("src", expect.stringMatching(/^blob:/));
+  expect(screen.getByRole("link", {name: "Download to view PDF"})).toHaveAttribute("download", "reject.pdf");
+  expect(screen.getByText(/application\/pdf · 3/)).toBeVisible();
+  expect(onBlocked.mock.lastCall[0]).toBe(true);
+  await user.click(screen.getByRole("checkbox", {name: /synthetic test data only/}));
+  await user.click(screen.getByRole("button", {name: "Upload selected files"}));
+  expect(await screen.findByText("Upload failed")).toBeVisible();
+  expect(onChange.mock.lastCall[0].map((file) => file.name)).toEqual(["good.png"]);
+  await user.click(screen.getByRole("button", {name: "Replace file 2"}));
+  expect(screen.getByText("reject.pdf")).toBeVisible();
+  const replacement = screen.getByLabelText("Choose replacement file");
+  await user.upload(replacement, new File(["xyz"], "replacement.pdf", {type: "application/pdf"}));
+  expect(screen.queryByText("reject.pdf")).not.toBeInTheDocument();
+  await user.click(screen.getByRole("button", {name: "Upload selected files"}));
+  await waitFor(() => expect(onChange.mock.lastCall[0].map((file) => file.name)).toEqual(["good.png", "replacement.pdf"]));
+  expect(onBlocked.mock.lastCall[0]).toBe(false);
+  expect(uploadFile.mock.calls.map(([file]) => file.name)).toEqual(["good.png", "reject.pdf", "replacement.pdf"]);
+});
+
+it.each([
+  ["empty.pdf", "application/pdf", 0, /file is empty/],
+  ["large.pdf", "application/pdf", 8 * 1024 * 1024 + 1, /too large/],
+  ["mislabelled.png", "application/pdf", 1, /extension does not match/],
+  ["phone.HEIC", "image/heic", 1, /HEIC and HEIF are unsupported/],
+])("rejects %s before creating a preview or starting an upload", async (name, mime, size, message) => {
+  const uploadFile = vi.fn();
+  render(<FilePicker runtime={{api: {uploadFile}}} purpose="supporting_document"
+    onChange={vi.fn()} onBlocked={vi.fn()} />);
+  const user = userEvent.setup({applyAccept: false});
+  await user.upload(screen.getByLabelText(/Supporting documents/), new File([new Uint8Array(size)], name, {type: mime}));
+  expect(screen.getByRole("alert")).toHaveTextContent(message);
+  expect(screen.queryByText(name)).not.toBeInTheDocument();
+  expect(uploadFile).not.toHaveBeenCalled();
+});

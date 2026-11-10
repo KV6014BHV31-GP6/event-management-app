@@ -224,6 +224,13 @@ it privately before POST alongside the immutable operation. The backend stores o
 its SHA256 actor binding; exact POST replay and creation-receipt GET require the same
 capability. This key only recovers that creation receipt; booking management still
 requires the separate scoped DemoOTP grant. Never put it in URLs, logs or exports.
+
+An ordinary account with a linked participant receives a generic 422
+`INVALID_INPUT` for a different National ID on a managed application. The
+refusal creates no registration or receipt. Submit corrected input explicitly
+with a new operation ID. Existing pending `IMMUTABLE_CONFLICT` entries in
+retained browser profiles require explicit review before further action.
+
 Normal authorized Organizers can create their own managed events; only the seeded
 Demo admin allowlist can provision accounts. Promotion GET uses the current assigned
 Leader's stable referral, or an owner's explicit `?leader_id=<assigned-ULID>` selection;
