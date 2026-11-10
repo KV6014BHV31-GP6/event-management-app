@@ -978,5 +978,10 @@
   "WhatsApp demo message": "WhatsApp demo message",
   "Simulated WhatsApp preview. No message was sent.": "Simulated WhatsApp preview. No message was sent.",
   "Copy message": "Copy message",
-  "Open event": "Open event"
+  "Open event": "Open event",
+  "Reconnect before syncing queued drafts.": "Reconnect before syncing queued drafts.",
+  "Open Demo tools and select Restore Connection before syncing.": "Open Demo tools and select Restore Connection before syncing.",
+  "Sync this event": "Sync this event",
+  "Sync this event sends the queued drafts for that event.": "Sync this event sends the queued drafts for that event.",
+  "Your Leader account is not assigned to this event. Choose an assigned event or ask its Organizer. Your queued drafts are still on this device.": "Your Leader account is not assigned to this event. Choose an assigned event or ask its Organizer. Your queued drafts are still on this device."
 }

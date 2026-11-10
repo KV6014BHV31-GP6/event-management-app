@@ -978,5 +978,10 @@
   "WhatsApp demo message": "Mesej demo WhatsApp",
   "Simulated WhatsApp preview. No message was sent.": "Pratonton simulasi WhatsApp. Tiada mesej dihantar.",
   "Copy message": "Salin mesej",
-  "Open event": "Buka acara"
+  "Open event": "Buka acara",
+  "Reconnect before syncing queued drafts.": "Sambung semula sebelum menyegerakkan draf dalam baris gilir.",
+  "Open Demo tools and select Restore Connection before syncing.": "Buka Alat demo dan pilih Pulihkan Sambungan sebelum menyegerakkan.",
+  "Sync this event": "Segerakkan acara ini",
+  "Sync this event sends the queued drafts for that event.": "Segerakkan acara ini menghantar draf dalam baris gilir bagi acara tersebut.",
+  "Your Leader account is not assigned to this event. Choose an assigned event or ask its Organizer. Your queued drafts are still on this device.": "Akaun Pemimpin anda tidak ditugaskan untuk acara ini. Pilih acara yang ditugaskan atau hubungi penganjurnya. Draf dalam baris gilir masih disimpan pada peranti ini."
 }

@@ -49,12 +49,15 @@ export const hrefFor = (view = "home", params = {}) =>
       ),
     ),
   })}`;
+const validRegistrationId = (value) => /^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(value);
 const readLocation = () => {
   const params = new URLSearchParams(window.location.search);
+  const registration = params.get("registration") || "";
   return {
     view: params.get("view") || "home",
     event: params.get("event") || "",
     ref: params.get("ref") || "",
+    registration: validRegistrationId(registration) ? registration : "",
     keyword: params.get("keyword") || "",
     page: Math.max(1, Number(params.get("page")) || 1),
     pageSize: [3, 6, 12, 24].includes(Number(params.get("pageSize")))
@@ -2241,6 +2244,12 @@ function RegistrationList({ organizer }) {
                   >
                     {tr("View")}
                   </button>
+                  {record.status === "pending" && validRegistrationId(record.id) && (
+                    <Link view="operations" params={{ registration: record.id }}
+                      className="button button-quiet button-small">
+                      {tr("Review application")}
+                    </Link>
+                  )}
                   {record.status === "pending" && (
                     <button
                       className="button button-small"
@@ -2352,6 +2361,12 @@ function RegistrationList({ organizer }) {
                 <dt>{tr("Channel")}</dt>
                 <dd>{titleCase(state.detail.channel)}</dd>
               </dl>
+              {state.detail.status === "pending" && validRegistrationId(state.detail.id) && (
+                <Link view="operations" params={{ registration: state.detail.id }}
+                  className="button button-quiet button-small">
+                  {tr("Review application")}
+                </Link>
+              )}
               <PrivateDocuments
                 runtime={runtime}
                 recordId={state.detail.id}
@@ -2568,9 +2583,15 @@ export default function App({ runtime }) {
   }, [route.view, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
-    case "operations":
-      content = <JourneyWorkspace key={`${auth.user?.id}:${auth.revision}:${route.event}`} runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/>;
+    case "operations": {
+      const workspace = <JourneyWorkspace runtime={runtime} auth={auth}
+        initialEvent={route.registration ? "" : route.event}
+        initialRef={route.registration ? "" : route.ref}
+        initialRegistration={route.registration}
+        navigate={navigate} />;
+      content = route.registration ? <RoleGate role="organizer">{workspace}</RoleGate> : workspace;
       break;
+    }
     case "home":
       content = auth.user?.role === "organizer" ? <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate}/> : auth.user?.role === "leader" ? <OfflineWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Events home />;
       break;
