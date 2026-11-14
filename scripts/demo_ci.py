@@ -117,10 +117,11 @@ def source_identity(local: bool = False) -> str:
         event = os.environ.get("GITHUB_EVENT_NAME")
         ref = os.environ.get("GITHUB_REF", "")
         if event == "pull_request":
-            if os.environ.get("GITHUB_BASE_REF") != "dev_demo_ben":
+            if os.environ.get("GITHUB_BASE_REF") not in {"dev_demo_ben", "dev_demo"}:
                 raise RuntimeError("Unexpected PR target")
         elif event not in {"push", "workflow_dispatch"} or not (
-            ref == "refs/heads/dev_demo_ben" or ref.startswith("refs/heads/integration/ben-demo-release-")
+            ref in {"refs/heads/dev_demo_ben", "refs/heads/dev_demo"}
+            or ref.startswith("refs/heads/integration/ben-demo-release-")
         ):
             raise RuntimeError("Unexpected trigger/ref")
     REPORT.update(source_sha=sha, trigger_sha=os.environ.get("GITHUB_SHA"),

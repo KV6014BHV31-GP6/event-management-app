@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-14T14:40:55.367332+00:00",
-  "reason": "PR65 second hosted CI proved collapsed Demo tools also block original offline controls; reusable visible-summary reveal with all business assertions retained",
-  "document_count": 392,
+  "reviewed_at": "2026-11-14T17:01:07.198594+00:00",
+  "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits",
+  "document_count": 394,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -302,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 43,
+      "revision": 44,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -569,6 +569,13 @@
           "size_bytes": 32912,
           "superseded_at": "2026-11-14T14:40:55.367332+00:00",
           "reason": "PR65 second hosted CI proved collapsed Demo tools also block original offline controls; reusable visible-summary reveal with all business assertions retained"
+        },
+        {
+          "revision": 43,
+          "sha256": "4bba39a58bce782df4d188d26b4ae1659f54d4e12d802ebd41bdcf78e7f7b391",
+          "size_bytes": 33284,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "import_lineage": {
@@ -581,8 +588,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "4bba39a58bce782df4d188d26b4ae1659f54d4e12d802ebd41bdcf78e7f7b391",
-      "size_bytes": 33284,
+      "sha256": "8b3aa424dd202ef48fa05f91220e9c7bef1ca8e2bdd1e3b90ab3e5d47ab58a18",
+      "size_bytes": 34797,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -4842,7 +4849,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 9,
+      "revision": 10,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4901,13 +4908,20 @@
           "size_bytes": 38555,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 9,
+          "sha256": "fce61a00723f9c5825cede670027d17464285b824c50b0ee98964461504275af",
+          "size_bytes": 42299,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "fce61a00723f9c5825cede670027d17464285b824c50b0ee98964461504275af",
-      "size_bytes": 42299
+      "sha256": "920ae59183eaf950697352e82bf8915a10fcba14afea78ea0189b8a6872ce592",
+      "size_bytes": 44732
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -4988,7 +5002,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 6,
+      "revision": 7,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5026,13 +5040,20 @@
           "size_bytes": 88665,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 6,
+          "sha256": "a9b73de012e69540e7de040c82c4fd44750c9f0bcc61f6a9d6c2b44e516b3bc7",
+          "size_bytes": 88191,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "a9b73de012e69540e7de040c82c4fd44750c9f0bcc61f6a9d6c2b44e516b3bc7",
-      "size_bytes": 88191
+      "sha256": "fdc21e5871b4a3e559e71e67fb04ea0fcaadb5222f31925c5a223a12997e2232",
+      "size_bytes": 90720
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
@@ -5170,7 +5191,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 5,
+      "revision": 6,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5201,13 +5222,20 @@
           "size_bytes": 49412,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 5,
+          "sha256": "55be6b9b2e66309d0d4951036208863bafe6fa0ad5457ef17f40709a8899a29a",
+          "size_bytes": 53177,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "55be6b9b2e66309d0d4951036208863bafe6fa0ad5457ef17f40709a8899a29a",
-      "size_bytes": 53177
+      "sha256": "e468249d009876e6bcfaee5d3b5b6aadedc7a02a3656e55e27c09fc1e8105c02",
+      "size_bytes": 54296
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -6103,7 +6131,7 @@
     {
       "document_id": "ROSE-P2-370e9c1895ba",
       "path": "frontend/rose-pulse-react/src/EventShare.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6113,18 +6141,25 @@
           "size_bytes": 2211,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "267b7b76c723f0e4d19826f6c7d90bb157455a73062aa3895e0bf74c4d857936",
+          "size_bytes": 4990,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "267b7b76c723f0e4d19826f6c7d90bb157455a73062aa3895e0bf74c4d857936",
-      "size_bytes": 4990
+      "sha256": "4f92811249426c9d78a6c95708a51d2db7c6d53db8f449f2576ba41f22a9d84b",
+      "size_bytes": 8467
     },
     {
       "document_id": "ROSE-P2-8d511394a1a5",
       "path": "frontend/rose-pulse-react/src/EventShare.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6134,18 +6169,25 @@
           "size_bytes": 1658,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "df3ab7a3209653aece3b8796fc73948b978117749d3400816c9e8524a11568d8",
+          "size_bytes": 4159,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "df3ab7a3209653aece3b8796fc73948b978117749d3400816c9e8524a11568d8",
-      "size_bytes": 4159
+      "sha256": "d75eaf1a7a7663c9ea28b1d6c851a251e16557e5a3ac2b4d545cf233fd4efe8b",
+      "size_bytes": 8478
     },
     {
       "document_id": "ROSE-P2-650d560abc95",
       "path": "frontend/rose-pulse-react/src/FilePicker.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6162,13 +6204,20 @@
           "size_bytes": 8260,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 3,
+          "sha256": "33436f08089b154d7e6aa3986ce8df3620b6e1936da90816c536f930a5acc36d",
+          "size_bytes": 10458,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "33436f08089b154d7e6aa3986ce8df3620b6e1936da90816c536f930a5acc36d",
-      "size_bytes": 10458
+      "sha256": "37598e19131b5ce10a72a125610142bea087cce56332abfa4c06a4245b953692",
+      "size_bytes": 13054
     },
     {
       "document_id": "ROSE-P2-78e229b4c24d",
@@ -6235,7 +6284,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 8,
+      "revision": 9,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6287,13 +6336,20 @@
           "size_bytes": 76437,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 8,
+          "sha256": "be95303022047936407eb921f57b6b1fd32079805bf1345e2224b9919a2560ed",
+          "size_bytes": 80075,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "be95303022047936407eb921f57b6b1fd32079805bf1345e2224b9919a2560ed",
-      "size_bytes": 80075
+      "sha256": "e47a96bb8dbed9447bb5ddada7903e77738d790cc19d36c61ca0a2e033df464f",
+      "size_bytes": 82029
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6346,7 +6402,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 8,
+      "revision": 9,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6398,13 +6454,20 @@
           "size_bytes": 79199,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 8,
+          "sha256": "99d3615dbabc0b8a492d66eac2e7d4808320d7381ae369551caf2b2d7fd8475e",
+          "size_bytes": 82917,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "99d3615dbabc0b8a492d66eac2e7d4808320d7381ae369551caf2b2d7fd8475e",
-      "size_bytes": 82917
+      "sha256": "33dda5fa6106b9e4e9783401126c898cb2f464b636e9b334e0d18616712a1f5b",
+      "size_bytes": 85003
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -6435,7 +6498,7 @@
     {
       "document_id": "ROSE-P2-4d5ba300321d",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6445,18 +6508,25 @@
           "size_bytes": 25230,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "9491d7ec0cca61c6fc68d09bd87874e2a9f7ae5b070c1ee7cfb53d47aadd046c",
+          "size_bytes": 26780,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "9491d7ec0cca61c6fc68d09bd87874e2a9f7ae5b070c1ee7cfb53d47aadd046c",
-      "size_bytes": 26780
+      "sha256": "0cb3ec453afb4a64b6cdd0ee1e2dc088b13fb0d287725ab182582e0dc995c6a2",
+      "size_bytes": 28595
     },
     {
       "document_id": "ROSE-P2-a74207d91712",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6466,13 +6536,20 @@
           "size_bytes": 5109,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "439bcc3ccd40b3904ae776a99a65d4e5cac1f05a16b7dea1929b20d700b074f9",
+          "size_bytes": 6274,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "439bcc3ccd40b3904ae776a99a65d4e5cac1f05a16b7dea1929b20d700b074f9",
-      "size_bytes": 6274
+      "sha256": "2ada8a50c5f19b33c2fa5acd393c529096c10be5c0a99364a7feee31511085c9",
+      "size_bytes": 6455
     },
     {
       "document_id": "ROSE-P2-7d0ca7caa536",
@@ -6943,15 +7020,23 @@
     {
       "document_id": "DEMO-DOC-1586F447E06AFC40",
       "path": ".github/workflows/demo-journey.yml",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6882d78fb4d439bb8c8bad3fb4234f2b5e09befce04bce7c85c100a106cd2494",
+          "size_bytes": 10217,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6882d78fb4d439bb8c8bad3fb4234f2b5e09befce04bce7c85c100a106cd2494",
-      "size_bytes": 10217
+      "sha256": "afdda7b6f424fcc06729135092c3f2304a929ecd1debb5fba7359d8c0eea4f2d",
+      "size_bytes": 10237
     },
     {
       "document_id": "DEMO-DOC-E31C662593542923",
@@ -7202,7 +7287,7 @@
     {
       "document_id": "DEMO-DOC-43E860D32E28E334",
       "path": "docs/dev/demo-journey/CI.md",
-      "revision": 9,
+      "revision": 10,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7261,13 +7346,20 @@
           "size_bytes": 15881,
           "superseded_at": "2026-11-03T14:04:15.594891+00:00",
           "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
+        },
+        {
+          "revision": 9,
+          "sha256": "48127a7f5430f5687b842e46ad1161f7038b18dc0b08f932cded7449a87584bb",
+          "size_bytes": 16618,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "48127a7f5430f5687b842e46ad1161f7038b18dc0b08f932cded7449a87584bb",
-      "size_bytes": 16618
+      "sha256": "1a882d2880f4c3d6f01ef7aae3f3a8cf14c679fb268cab6021ef2b4f50ee454d",
+      "size_bytes": 16632
     },
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
@@ -7306,7 +7398,7 @@
     {
       "document_id": "DEMO-DOC-E44721AB8360969D",
       "path": "frontend/rose-pulse-react/src/DemoControls.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7316,18 +7408,25 @@
           "size_bytes": 1788,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "a19aafc1ef3b04f251720b996cddbf6d60b655e6ea64edb74d1fb189396dc3f2",
+          "size_bytes": 2093,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a19aafc1ef3b04f251720b996cddbf6d60b655e6ea64edb74d1fb189396dc3f2",
-      "size_bytes": 2093
+      "sha256": "4b8dab0fc3ec40abea17dcf68579f3319e0bb0ee510c54e2ee09a2dde016b2d7",
+      "size_bytes": 3284
     },
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 6,
+      "revision": 7,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7365,13 +7464,20 @@
           "size_bytes": 42041,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 6,
+          "sha256": "000d760dde1eb70af7c8a85d45ec8076378dea1c82801992e9843a596c69df7a",
+          "size_bytes": 45033,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "000d760dde1eb70af7c8a85d45ec8076378dea1c82801992e9843a596c69df7a",
-      "size_bytes": 45033
+      "sha256": "6a783d2b55913e8263733f3caea1eeaaaa2e108ffa742c6039cfd8e339b053ed",
+      "size_bytes": 47301
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
@@ -7418,28 +7524,44 @@
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
       "path": "frontend/rose-pulse-react/src/PrivateDocuments.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e59f8a0ee0d58621b60d9da108a0781b0a416c1977505bb7136179bff841fc53",
+          "size_bytes": 6485,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e59f8a0ee0d58621b60d9da108a0781b0a416c1977505bb7136179bff841fc53",
-      "size_bytes": 6485
+      "sha256": "40411287590756ae1b0a5acaab87796eeba6c6a21fec91199c5e61a3b57a32c6",
+      "size_bytes": 7374
     },
     {
       "document_id": "DEMO-DOC-84C1EC662C97296B",
       "path": "frontend/rose-pulse-react/src/PrivateDocuments.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e3c14b40c06b116cbc27a8c758b046ac8a2046713b3f8effffbf9003ea4e8603",
+          "size_bytes": 4154,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e3c14b40c06b116cbc27a8c758b046ac8a2046713b3f8effffbf9003ea4e8603",
-      "size_bytes": 4154
+      "sha256": "8c0f2a606173bd4ea8ddc665aac7fecd65fa34e175ec093369d7219127f560ef",
+      "size_bytes": 6747
     },
     {
       "document_id": "DEMO-DOC-278A3947E34F49D9",
@@ -7600,7 +7722,7 @@
     {
       "document_id": "DEMO-DOC-D79E0FEF840573FD",
       "path": "scripts/demo_ci.py",
-      "revision": 6,
+      "revision": 7,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7638,13 +7760,20 @@
           "size_bytes": 42820,
           "superseded_at": "2026-11-03T12:43:01.645672+00:00",
           "reason": "R3 CI 增加完整 synthetic account 測試及獨立 JUnit，保留現有零 skip 驗收門檻"
+        },
+        {
+          "revision": 6,
+          "sha256": "3d9f7037330781c6cb05413f83338b7e1a75ce09008ed432b4b5e90f6e4a8128",
+          "size_bytes": 43166,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "3d9f7037330781c6cb05413f83338b7e1a75ce09008ed432b4b5e90f6e4a8128",
-      "size_bytes": 43166
+      "sha256": "5c3c40845a6661c8fbceb847f17d24f8ee96b7bab3ebdf55c2323c8879efacec",
+      "size_bytes": 43221
     },
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
@@ -7912,7 +8041,7 @@
     {
       "document_id": "DEMO-DOC-A246709597685A64",
       "path": "tests/test_demo_ci.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7929,13 +8058,20 @@
           "size_bytes": 3302,
           "superseded_at": "2026-11-03T09:45:18.567483+00:00",
           "reason": "R3 整合已交權帳戶原請求及 receipt 修復、必要 CI Browser E2E，核對來源與 Gate 邊界，Owner 改用英文女聲"
+        },
+        {
+          "revision": 3,
+          "sha256": "1efd18ed2ba3fec2d054e2954cb6ac8ec41c4453755b0eff1bab4d1b12c2140c",
+          "size_bytes": 7057,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1efd18ed2ba3fec2d054e2954cb6ac8ec41c4453755b0eff1bab4d1b12c2140c",
-      "size_bytes": 7057
+      "sha256": "8e7294d0d296cfc05c0479eaf59f9d9185cff56e44189dba5d64c518fa1605a2",
+      "size_bytes": 8333
     },
     {
       "document_id": "DEMO-DOC-580A20D516BCA136",
@@ -8316,7 +8452,7 @@
     {
       "document_id": "W9-DOC-20261109",
       "path": "docs/dev/tasks/W9-CLOSEOUT-20261109.md",
-      "revision": 6,
+      "revision": 7,
       "owner": "Astra Integrator",
       "status": "working-baseline",
       "revision_history": [
@@ -8354,13 +8490,20 @@
           "size_bytes": 13421,
           "superseded_at": "2026-11-14T14:40:55.367332+00:00",
           "reason": "PR65 second hosted CI proved collapsed Demo tools also block original offline controls; reusable visible-summary reveal with all business assertions retained"
+        },
+        {
+          "revision": 6,
+          "sha256": "7d23345123c2864136581ce6a6bc02db1f25d69af4885d0b8eb42ed7c249cb9b",
+          "size_bytes": 14016,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "7d23345123c2864136581ce6a6bc02db1f25d69af4885d0b8eb42ed7c249cb9b",
-      "size_bytes": 14016
+      "sha256": "e57fff263672eb30a819347f68b1c1c914fda9b1539aef553a1d6acdc29bcc3b",
+      "size_bytes": 16331
     },
     {
       "document_id": "W9-TEST-20261109",
@@ -8378,32 +8521,69 @@
     {
       "document_id": "FE-DEMO-V2-APPLICATION-FIELDS",
       "path": "frontend/rose-pulse-react/src/ApplicationFields.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6b21682afd565474de6c3d01c5601f2b482f2314afe2fd003cb16c20e4bb55af",
+          "size_bytes": 4129,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6b21682afd565474de6c3d01c5601f2b482f2314afe2fd003cb16c20e4bb55af",
-      "size_bytes": 4129
+      "sha256": "8b367164882e5ca325bfc1b8a0420fb386278adb889616a74d0476d5ad3acaf5",
+      "size_bytes": 6534
     },
     {
       "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS",
       "path": "frontend/rose-pulse-react/src/ApplicationSuccess.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1dbf89ad8544602a1fab610af2137ca8a0af3596118552284918c0b880dec056",
+          "size_bytes": 2186,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1dbf89ad8544602a1fab610af2137ca8a0af3596118552284918c0b880dec056",
-      "size_bytes": 2186
+      "sha256": "31d470927cfee61f370452fc49bcfa650a00050e59f56a6b2e5b0005aa0c67da",
+      "size_bytes": 3120
     },
     {
       "document_id": "FE-DEMO-V2-CONTROLS-TEST",
       "path": "frontend/rose-pulse-react/src/DemoControls.test.jsx",
+      "revision": 2,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "8b84bb2e27174d53cd01c56f12ca59f519d6f7cd7a65dff1bc49f720aac95050",
+          "size_bytes": 2200,
+          "superseded_at": "2026-11-14T17:01:07.198594+00:00",
+          "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "87d4b0dff9735350c6d05e21fd8d57c1015d87e8815fe6e3c0f93c0073f5a7f8",
+      "size_bytes": 11095
+    },
+    {
+      "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS-TEST-20261115",
+      "path": "frontend/rose-pulse-react/src/ApplicationSuccess.test.jsx",
       "revision": 1,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
@@ -8411,8 +8591,21 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8b84bb2e27174d53cd01c56f12ca59f519d6f7cd7a65dff1bc49f720aac95050",
-      "size_bytes": 2200
+      "sha256": "66f117f616d1d39d81d3d47c11d994f8ac8007ad2f2344a7a2ab55031f55ec80",
+      "size_bytes": 2164
+    },
+    {
+      "document_id": "FE-DEMO-V2-SYNTHETIC-PDF-GENERATOR-20261115",
+      "path": "frontend/rose-pulse-react/src/demo-assets/synthetic-demo-pdf.js",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8e139f39b8aa0fbd47d97e94d17ce7fca918f71fdc51364c4bfa6530b31d4d4b",
+      "size_bytes": 1308
     }
   ]
 }

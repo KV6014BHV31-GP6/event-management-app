@@ -1,4 +1,12 @@
-# Current successor: Demo V2 bounded P0 closeout, 2026-11-10
+# Current successor: dev_demo unification candidate, 2026-11-15
+
+The Owner requested unifying the verified `dev_demo` baseline (`62018df582202d10311ba05e29c124ce5117605a`) with all nine local Demo V2 Frontend commits ending at `3c87a41e5bdf2bd4f8152b1c5a590741896d0292`, without replacing existing services or data. The integration worktree and branch `integration/dev-demo-unified-20261115` retain both histories. No Backend, database schema, credential, network or live service change is involved.
+
+Local Frontend 354/354 PASS, production build PASS, and CI process regressions 11/11 PASS. The changed OfflineWorkspace mock now provides the actual event-read contract, preserving all original unknown-write/no-replay assertions. The synthetic PDF sample is generated from clearly fictional text in memory; its one-page PDF was parsed, and no raw PDF source is introduced. The existing Demo tools, application modal, local sharing and attachment paths remain synthetic or private-HTTPS gated. Existing fixed-source Browser/Native/Package/AC40 evidence does not automatically cover this uncommitted unified candidate. Hosted CI, independent reviewer, merge, new Docker image, private phone recipient and real UAT are NOT_RUN at this checkpoint.
+
+The `demo-journey` workflow and source identity allowlist are extended only to the exact new `dev_demo` PR/push target; all existing tests, source-hash pinning, privacy controls and packaging gates are preserved. See [W9 successor](tasks/W9-CLOSEOUT-20261109.md).
+
+## Previous successor: Demo V2 bounded P0 closeout, 2026-11-10
 
 2026-11-14 CI-only successor for PR65: the hosted native-browser step failed after authentic signup/login at the previously unchanged visible Build-SHA assertion. In `scripts/demo_browser_e2e.cjs` the test now explicitly opens the existing collapsed Demo Tools before checking the same SHA. No product, API, DB, auth or business assertion changes. Original failed receipt stays preserved. Hosted CI 43605165299 then passed signup/login/Build SHA and document viewer, with Backend controlled153/native87 PASS, but exposed the same collapsed-controls selector mismatch at offline-save-reload. The CI helper now expands the controls before using Simulated Offline, Restore Connection and lost-ACK actions, without changing offline/no-POST/receipt assertions. The next fixed-SHA hosted CI and merge remain NOT_RUN at this checkpoint; physical iPhone/share, P1 auto-sync and full AC40/UAT remain separate gates. See [W9 task](tasks/W9-CLOSEOUT-20261109.md).
 

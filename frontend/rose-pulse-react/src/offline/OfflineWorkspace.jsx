@@ -1,6 +1,8 @@
 import { demoTransport, DEMO_PROFILE } from "../demo-transport.js";
 import { tr } from "../i18n/index.js";
 import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { DemoFormTemplate } from "../ApplicationFields.jsx";
+import { createJourneyClient } from "../journey-api.js";
 import { minimumRegistrationPayload } from "../minimum-registration.js";
 const messages = {
   offline_storage_full:
@@ -136,6 +138,30 @@ export default function OfflineWorkspace({
       setMessage(
         "Public event details downloaded and read back locally. Availability may change while offline.",
       );
+    });
+  const syncEvent = (targetEventId) =>
+    operate(async () => {
+      if (!online) throw new Error("Reconnect before syncing queued drafts.");
+      if (actor.role === "leader") {
+        const event = await runtime.api.getEvent(targetEventId);
+        if (event.workflow) {
+          const client = createJourneyClient({
+            authorize: (operation) => runtime.withVerifiedAccount((token, verifiedActor) => {
+              if (verifiedActor.id !== actor.id) throw new Error("The selected account or record changed.");
+              return operation(token, verifiedActor);
+            }, { roles: ["leader"] }),
+          });
+          try {
+            await client.get(`/events/${targetEventId}`);
+          } catch (failure) {
+            if (failure.status === 403)
+              throw new Error("Your Leader account is not assigned to this event. Choose an assigned event or ask its Organizer. Your queued drafts are still on this device.");
+            throw failure;
+          }
+        }
+      }
+      await runtime.manualSync.sync(actor, targetEventId);
+      setMessage("Server batch receipt verified. Synced records are pending, not approved.");
     });
   const save = (event) => {
     event.preventDefault();
@@ -354,6 +380,7 @@ export default function OfflineWorkspace({
                   <legend className="sr-only">
                     {tr("Synthetic participant details")}
                   </legend>
+                  <DemoFormTemplate disabled={busy || !selected} />
                   <div className="form-grid">
                     {[
                       ["first_name", "First name"],
@@ -471,6 +498,12 @@ export default function OfflineWorkspace({
                 "local records. Names and identity details are hidden from this summary. Synced means recorded by the server, not approved.",
               )}
             </p>
+            {!online && <p className="notice">
+              {tr(DEMO_PROFILE && simulation.mode === "offline"
+                ? "Open Demo tools and select Restore Connection before syncing."
+                : "Reconnect before syncing queued drafts.")}
+            </p>}
+            <p className="small muted">{tr("Sync this event sends the queued drafts for that event.")}</p>
             <div className="registration-list">
               {drafts.map((draft, index) => (
                 <article
@@ -523,6 +556,12 @@ export default function OfflineWorkspace({
                         {tr("Queue for manual sync")}
                       </button>
                     )}
+                    {draft.state === "pending_sync" && !draft.batch_id && (
+                      <button type="button" className="button button-small" disabled={busy || !online}
+                        onClick={() => syncEvent(draft.event_public_id)}>
+                        {tr("Sync this event")}
+                      </button>
+                    )}
                     {!draft.batch_id && (
                       <button
                         className="text-button"
@@ -556,14 +595,7 @@ export default function OfflineWorkspace({
                       !row.batch_id,
                   )
                 }
-                onClick={() =>
-                  operate(async () => {
-                    await runtime.manualSync.sync(actor, eventId);
-                    setMessage(
-                      "Server batch receipt verified. Synced records are pending, not approved.",
-                    );
-                  })
-                }
+                onClick={() => syncEvent(eventId)}
               >
                 {tr("Manually sync selected event")}
               </button>

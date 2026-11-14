@@ -2,9 +2,9 @@ name: Demo journey pinned Windows acceptance
 
 on:
   pull_request:
-    branches: [dev_demo_ben]
+    branches: [dev_demo_ben, dev_demo]
   push:
-    branches: [dev_demo_ben, 'integration/ben-demo-release-*']
+    branches: [dev_demo_ben, dev_demo, 'integration/ben-demo-release-*']
   workflow_dispatch:
 
 permissions:

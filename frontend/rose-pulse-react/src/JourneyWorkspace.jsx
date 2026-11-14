@@ -39,13 +39,14 @@ const applicationFields = [field('first_name', 'First name'), field('last_name',
 }), field('date_of_birth', 'Date of birth', 'date'), field('phone', 'Phone'), field('national_id', 'National ID')];
 const appCopy = v => minimumRegistrationPayload(v);
 export default function JourneyWorkspace(props) {
-  return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}:${props.initialRef}`} {...props} />;
+  return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}:${props.initialRef}:${props.initialRegistration}`} {...props} />;
 }
 function JourneySession({
   runtime,
   auth,
   initialEvent = '',
   initialRef = '',
+  initialRegistration = '',
   initialPublicEvent = null,
   navigate
 }) {
@@ -54,7 +55,7 @@ function JourneySession({
     [message, setMessage] = useState(''),
     [error, setError] = useState(''),
     [busy, setBusy] = useState(false),
-    [registrationId, setRegistrationId] = useState(''),
+    [registrationId, setRegistrationId] = useState(initialRegistration),
     [attendanceBlocked,setAttendanceBlocked]=useState(true);
   const [grant, setGrant] = useState(null),
     [challenge, setChallenge] = useState(null),
@@ -69,6 +70,7 @@ function JourneySession({
   const [applicationModal, setApplicationModal] = useState(false);
   const [applicationForm, setApplicationForm] = useState(0);
   const registrationDetails = useRef(null);
+  const applicationPicker = useRef(null);
   const guestAccess = useRef(null);
   const receiptRef = useRef(null);
   const errorRef = useRef(null);
@@ -127,6 +129,8 @@ function JourneySession({
     if(!active.current||epoch!==recordEpoch.current)throw new Error("The selected account or record changed.");
     const data = await client.get(path);
     if (!active.current || epoch !== recordEpoch.current) throw new Error('The selected account or record changed.');
+    if (initialRegistration && key === 'registration' && data.registration?.id !== initialRegistration)
+      throw new Error('The registration details could not be verified.');
     setLoaded(old => ({
       ...old,
       [key]: data
@@ -138,12 +142,15 @@ function JourneySession({
     return run(async () => {
       const mutationEpoch=recordEpoch.current;
       const targetRegistration=registrationId;
-      const payload = typeof data === 'function' ? data() : data;
-      const receipt = await client.mutate(path, payload, version);
+      if (isApplication && client.pending(actorId).some((row) => row.path === path))
+        throw new Error('This action has an unresolved reference. Reconcile it first.');
+      const prepared = typeof data === 'function' ? await data() : data;
+      if (prepared === null || !active.current || mutationEpoch !== recordEpoch.current) return;
+      const receipt = await client.mutate(path, isApplication ? prepared.payload : prepared, version);
       if (!active.current || mutationEpoch!==recordEpoch.current) return;
       if (isApplication) {
         setRegistrationId(receipt.effects.registration_id);
-        setLoaded(old => ({...old, applicationReceipt: receipt.effects}));
+        setLoaded(old => ({...old, applicationReceipt: {...receipt.effects, files: prepared.files}}));
         setApplicationModal(true);
       }
       setMessage(tr('Saved by server. Current information has been read again.'));
@@ -158,6 +165,10 @@ function JourneySession({
     await read('event', root);
   });
   const refreshRegistration = () => run(() => read('registration', `/registrations/${registrationId}`));
+  useEffect(() => {
+    if (initialRegistration && auth.user?.role === 'organizer') refreshRegistration();
+  }, [initialRegistration]);
+
   const registration = loaded.registration;
   const current = loaded.event;
   const applicationEvent = loaded.publicEvent || current?.event ||
@@ -205,11 +216,74 @@ function JourneySession({
     attachmentChanged = useCallback(setAttachmentBlocked, []);
   const pending = (() => {
     try {
-      return client.pending(actorId);
+      return client.pending(actorId).filter(row =>
+        !initialRegistration || row.path.startsWith(`/registrations/${initialRegistration}/`));
     } catch {
       return [];
     }
   })();
+  const pendingOperations = !!pending.length && (
+   <section className="notice">
+     <h2>{tr('Unknown operations — reconcile before another send')}</h2>
+     {pending.map(row => (
+       <div key={row.body.operation_id}>
+         <p>{row.path} · {row.body.operation_id}</p>
+         <button disabled={busy} className="button button-small" onClick={() => recoverOperation(row)}>{tr('Reconcile')}</button>
+         {row.missing_receipts >= 2 && !row.sensitive && !row.immutable_conflict && (
+           <button className="button button-quiet button-small" disabled={busy} onClick={() => recoverOperation(row, true)}>
+             {tr('Retry exact saved action')}
+           </button>
+         )}
+       </div>
+     ))}
+   </section>
+ );
+  const registrationReview = (
+    <details className="journey-section" ref={registrationDetails} open={initialRegistration ? true : undefined}><summary>{tr('Registration review and booking')}</summary>{!initialRegistration && (auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
+          const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
+          if (active.current) setLoaded(old => ({
+            ...old,
+            registrationOptions: data
+          }));
+        })}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} disabled={busy} onChange={e => {
+            recordEpoch.current++;
+            setError('');setMessage('');
+            setCorrectionFiles([]);
+            setCorrectionBlocked(false);
+            setRegistrationId(e.target.value);
+            setLoaded(old => ({
+              ...old,
+              registration: null
+            }));
+          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || !registrationId} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: {tr(registration.booking_state)}</p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
+          options: ['approve', 'reject', 'request_correction'].filter(a => registration.allowed_actions.includes(a))
+        }), field('reason', 'Review reason', 'textarea', {
+          required: false
+        })]} submit={v => mutate('/registrations/' + registrationId + '/review', v, registration.version)} />}{registration.allowed_actions?.includes('correct') && <ActionForm title="Submit correction" busy={busy || correctionBlocked} fields={[field('phone', 'Corrected phone', 'text', {
+          required: false
+        }), field('note', 'Correction note', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/correction', {
+          ...Object.fromEntries(Object.entries(v).filter(([, x]) => x)),
+          ...(correctionFiles.length ? {
+            file_ids: correctionFiles.map(f => f.id)
+          } : {})
+        }, registration.version)}>{auth.user && <FilePicker runtime={runtime} key={registrationId} purpose="supporting_document" onChange={correctionChanged} onBlocked={setCorrectionBlocked} disabled={busy} />}</ActionForm>} {registration.allowed_actions?.includes('cancel') && <ActionForm title="Cancel booking" busy={busy} fields={[field('reason', 'Cancellation reason', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/cancel', v, registration.version)} />} {!owner && registration.offer?.state === 'offered' && <div className="form-actions"><button className="button" disabled={busy || !registration.allowed_actions?.includes('accept_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/accept', {}, registration.offer.version)}>{tr('Accept held offer')}</button><button className="button button-quiet" disabled={busy || !registration.allowed_actions?.includes('decline_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/decline', {}, registration.offer.version)}>{tr('Decline offer')}</button></div>}</>}</details>
+  );
+  if (initialRegistration) {
+    return (
+      <div className="journey-workspace">
+        <div className="page-heading">
+          <h1>{tr('Review application')}</h1>
+          <button type="button" className="button button-quiet" onClick={() => navigate('manage')}>
+            {tr('Manage registrations')}
+          </button>
+        </div>
+        {message && <p className="notice" role="status">{message}</p>}
+        {error && <p className="notice notice-error" role="alert">{tr(error)}</p>}
+        {pendingOperations}
+        {registrationReview}
+      </div>
+    );
+  }
   return <div className="journey-workspace"><div className="page-heading"><div><p className="eyebrow">ROSE · PULSE</p><h1>{tr(staff?'Event operations':'Apply and manage booking')}</h1><p>{tr('Synthetic local journey. The server confirms permissions, places and every final result.')}</p></div><button className="button button-quiet" onClick={() => navigate('events')}>{tr('Browse events')}</button></div>
  <div aria-live="polite">
    {message && <p className="notice">{message}</p>}
@@ -229,27 +303,14 @@ function JourneySession({
    <ApplicationSuccess
      eventTitle={applicationEvent.title}
      reference={loaded.applicationReceipt.registration_id}
+     runtime={auth.user ? runtime : undefined}
+     files={loaded.applicationReceipt.files}
      onDismiss={dismissApplication}
      onView={viewApplication}
      onDone={() => { setApplicationModal(false); navigate('event', {event: eventId}); }}
    />
  )}
- {!!pending.length && (
-   <section className="notice">
-     <h2>{tr('Unknown operations — reconcile before another send')}</h2>
-     {pending.map(row => (
-       <div key={row.body.operation_id}>
-         <p>{row.path} · {row.body.operation_id}</p>
-         <button disabled={busy} className="button button-small" onClick={() => recoverOperation(row)}>{tr('Reconcile')}</button>
-         {row.missing_receipts >= 2 && !row.sensitive && !row.immutable_conflict && (
-           <button className="button button-quiet button-small" disabled={busy} onClick={() => recoverOperation(row, true)}>
-             {tr('Retry exact saved action')}
-           </button>
-         )}
-       </div>
-     ))}
-   </section>
- )}
+ {pendingOperations}
  <section className="journey-section"><h2>{tr('Selected event')}</h2>{!staff&&loaded.publicEvent&&<PublicEventContext event={loaded.publicEvent}/>} {(staff||!eventId)&&<><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
         const data = owner ? await runtime.withVerifiedAccount((token, actor) => runtime.api.getOrganizerEvents(token, {
           page: 1,
@@ -375,57 +436,40 @@ function JourneySession({
        title="Submit application"
        busy={busy || !eventId || !applicationEvent || attachmentBlocked ||
          (!!initialRef && !loaded.referral) || (!auth.user && !auth.offlineActor && !guestAllowed)}
-       submit={values => mutate(root + '/applications', () => ({
-         application: {
-           ...appCopy(values),
-           ...(applicationFiles.length ? {file_ids: applicationFiles.map(file => file.id)} : {}),
-         },
-         source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
-       }))}
+       submit={(values, form) => {
+         const picker = applicationPicker.current;
+         if (picker?.hasDemoUpload && !form.reportValidity()) return;
+         return mutate(root + '/applications', async () => {
+           const application = appCopy(values);
+           const files = picker ? await picker.prepareSubmission() : [];
+           if (!files || !form.isConnected) return null;
+           if (files.length) application.file_ids = files.map(file => file.id);
+           return {
+             files,
+             payload: {
+               application,
+               source: {kind: initialRef ? 'leader_referral' : values.source_kind, referral_code: initialRef || null},
+             },
+           };
+         });
+       }}
      >
        <fieldset className="application-fields-group" disabled={busy}>
-         <ParticipantFields />
+         <ParticipantFields preserveNationalId={auth.user?.role === 'user'} account={auth.user} />
            {initialRef ? (
            loaded.referral && <p>{tr('Referred by')}: {loaded.referral.leader_display_name}</p>
          ) : (
            <ApplicationOptions label="Source" name="source_kind" choices={applicationSources} defaultValue="direct" />
          )}
-         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document"
+         {auth.user && <FilePicker runtime={runtime} purpose="supporting_document" allowDemoSample ref={applicationPicker}
            onChange={applicationChanged} onBlocked={attachmentChanged} disabled={busy} />}
-         <ApplicationSummary files={applicationFiles}
+         <ApplicationSummary runtime={auth.user ? runtime : undefined} files={applicationFiles}
            source={loaded.referral ? loaded.referral.leader_display_name : undefined} />
        </fieldset>
      </ActionForm>
    )}
  </details>
- <details className="journey-section" ref={registrationDetails}><summary>{tr('Registration review and booking')}</summary>{auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
-          const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
-          if (active.current) setLoaded(old => ({
-            ...old,
-            registrationOptions: data
-          }));
-        })}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} disabled={busy} onChange={e => {
-            recordEpoch.current++;
-            setError('');setMessage('');
-            setCorrectionFiles([]);
-            setCorrectionBlocked(false);
-            setRegistrationId(e.target.value);
-            setLoaded(old => ({
-              ...old,
-              registration: null
-            }));
-          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>}<button className="button button-quiet" disabled={busy || !registrationId} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: {tr(registration.booking_state)}</p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
-          options: ['approve', 'reject', 'request_correction'].filter(a => registration.allowed_actions.includes(a))
-        }), field('reason', 'Review reason', 'textarea', {
-          required: false
-        })]} submit={v => mutate('/registrations/' + registrationId + '/review', v, registration.version)} />}{registration.allowed_actions?.includes('correct') && <ActionForm title="Submit correction" busy={busy || correctionBlocked} fields={[field('phone', 'Corrected phone', 'text', {
-          required: false
-        }), field('note', 'Correction note', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/correction', {
-          ...Object.fromEntries(Object.entries(v).filter(([, x]) => x)),
-          ...(correctionFiles.length ? {
-            file_ids: correctionFiles.map(f => f.id)
-          } : {})
-        }, registration.version)}>{auth.user && <FilePicker runtime={runtime} key={registrationId} purpose="supporting_document" onChange={correctionChanged} onBlocked={setCorrectionBlocked} disabled={busy} />}</ActionForm>} {registration.allowed_actions?.includes('cancel') && <ActionForm title="Cancel booking" busy={busy} fields={[field('reason', 'Cancellation reason', 'textarea')]} submit={v => mutate('/registrations/' + registrationId + '/cancel', v, registration.version)} />} {!owner && registration.offer?.state === 'offered' && <div className="form-actions"><button className="button" disabled={busy || !registration.allowed_actions?.includes('accept_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/accept', {}, registration.offer.version)}>{tr('Accept held offer')}</button><button className="button button-quiet" disabled={busy || !registration.allowed_actions?.includes('decline_offer')} onClick={() => mutate('/offers/' + registration.offer.id + '/decline', {}, registration.offer.version)}>{tr('Decline offer')}</button></div>}</>}</details>
+ {registrationReview}
  {guestAllowed && <details className="journey-section" ref={guestAccess}><summary>{tr('Guest booking access — DEMO OTP')}</summary><p>{tr('Simulated local delivery. This does not verify real phone ownership. Codes and grants stay in page memory.')}</p><ActionForm key={loaded.applicationReceipt?.registration_id || ""} title="Request Demo OTP" busy={busy} fields={[field('registration_id', 'Registration reference', 'text', {
         value: registrationId
       }), field('phone', 'Phone')]} submit={v => run(async () => {

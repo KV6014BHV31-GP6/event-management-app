@@ -40,6 +40,7 @@ async function setup({ failReadback = false } = {}) {
   let lost = false;
   let committed;
   const api = {
+    getEvent: vi.fn(async () => event),
     submitOfflineBatch: vi.fn(async (_, request) => {
       committed = structuredClone(request);
       lost = true;
@@ -64,6 +65,7 @@ async function setup({ failReadback = false } = {}) {
     token: "synthetic-token",
   }));
   const runtime = {
+    api,
     offline: { ...store, drafts: readDrafts },
     manualSync: createManualSync({ store, api, verifyIdentity }),
     getSnapshot: () => ({ offlineActor: actor }),
@@ -101,6 +103,7 @@ describe("offline workspace after a durable unknown write", () => {
         screen.getByRole("button", { name: "Manually sync selected event" }),
       ).toBeDisabled();
       expect(screen.getAllByText("Needs review / reconcile")).toHaveLength(3);
+      expect(api.getEvent).toHaveBeenCalledWith(event.public_id);
       expect(api.submitOfflineBatch).toHaveBeenCalledTimes(1);
       expect(api.getOfflineBatch).not.toHaveBeenCalled();
       await user.click(
@@ -129,6 +132,7 @@ describe("offline workspace after a durable unknown write", () => {
       expect(screen.getByRole("alert")).not.toHaveTextContent(
         "Local storage is unavailable.",
       );
+      expect(api.getEvent).toHaveBeenCalledWith(event.public_id);
       expect(api.submitOfflineBatch).toHaveBeenCalledTimes(1);
       expect(api.getOfflineBatch).not.toHaveBeenCalled();
       expect(
