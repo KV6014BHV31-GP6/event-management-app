@@ -1,4 +1,4 @@
-// Loopback-only development server. No build or npm install is required.
+// Development server with a loopback-only CLI. No build or npm install is required.
 import http from 'node:http';
 import {readFile, realpath, stat} from 'node:fs/promises';
 import {dirname, extname, isAbsolute, resolve, sep} from 'node:path';
@@ -62,7 +62,44 @@ const json = (response, status, detail) => {
   response.end(JSON.stringify({detail}));
 };
 
-export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT, timeout = 15000, uploadRoot = null} = {}) {
+const LOOPBACK_HOST = /^(127\.0\.0\.1|localhost|\[::1\])(:\d+)?$/;
+const DNS_HOSTNAME = /^(?:[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?\.)*[a-z0-9](?:[a-z0-9-]{0,61}[a-z0-9])?$/;
+
+export function createRequestOriginGuard(trustedHttpsOrigin = null) {
+  let trusted = null;
+  if (trustedHttpsOrigin !== null) {
+    const invalid = new Error('trustedHttpsOrigin must be a canonical HTTPS origin for a non-loopback host.');
+    if (typeof trustedHttpsOrigin !== 'string') throw invalid;
+    try { trusted = new URL(trustedHttpsOrigin); }
+    catch { throw invalid; }
+
+    const validHostname = trusted.hostname.startsWith('[')
+      || (trusted.hostname.length <= 253 && DNS_HOSTNAME.test(trusted.hostname));
+    // Reject alternate spellings and URL components discarded by origin serialization.
+    if (trusted.protocol !== 'https:' || !validHostname || LOOPBACK_HOST.test(trusted.host)
+        || trusted.port === '0'
+        || (trustedHttpsOrigin !== trusted.origin && trustedHttpsOrigin !== trusted.origin + '/')) {
+      throw invalid;
+    }
+  }
+
+  return request => {
+    const host = request.headers.host || '';
+    const origin = request.headers.origin;
+    if (host === trusted?.host) {
+      if (request.headersDistinct.host?.length !== 1) return 'Local host required.';
+      if (origin === trusted.origin || (origin === undefined && ['GET', 'HEAD'].includes(request.method))) return null;
+      return 'Same-origin requests required.';
+    }
+    if (!LOOPBACK_HOST.test(host)) return 'Local host required.';
+    if (origin && origin !== 'http://' + host) return 'Same-origin requests required.';
+    return null;
+  };
+}
+
+export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT, timeout = 15000,
+  uploadRoot = null, trustedHttpsOrigin = null} = {}) {
+  const checkRequestOrigin = createRequestOriginGuard(trustedHttpsOrigin);
   const target = new URL(upstream);
   if (target.protocol !== 'http:' || !['127.0.0.1', 'localhost', '[::1]'].includes(target.hostname)
       || target.username || target.password || target.pathname !== '/' || target.search || target.hash) {
@@ -77,10 +114,8 @@ export function createDevServer({upstream = 'http://127.0.0.1:8000', root = ROOT
     response.setHeader('Referrer-Policy', 'no-referrer');
     response.setHeader('Cache-Control', 'no-store');
     try {
-      // Reject cross-site writes to the local proxy. Bind remains loopback-only.
-      const host = request.headers.host || '';
-      if (!/^(127\.0\.0\.1|localhost|\[::1\])(:\d+)?$/.test(host)) return json(response, 403, 'Local host required.');
-      if (request.headers.origin && request.headers.origin !== `http://${host}`) return json(response, 403, 'Same-origin requests required.');
+      const originError = checkRequestOrigin(request);
+      if (originError) return json(response, 403, originError);
       const rawPath = (request.url || '/').split('?')[0];
       const decoded = decodeURIComponent(rawPath);
       if (decoded.split('/').some(p => p === '..' || p.startsWith('.')) || decoded.includes('\\')) return json(response, 403, 'Path not allowed.');

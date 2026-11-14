@@ -34,6 +34,8 @@ describe("central English/Malay resources and controls", () => {
     const keys = [];
     for (const file of [
       "src/App.jsx",
+      "src/ApplicationFields.jsx",
+      "src/ApplicationSuccess.jsx",
       "src/FilePicker.jsx",
       "src/OrganizerWorkspace.jsx",
       "src/EventShare.jsx",

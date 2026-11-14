@@ -35,6 +35,8 @@ const OrganizerAnalytics = React.lazy(() =>
   })),
 );
 import EventShare from "./EventShare.jsx";
+import ApplicationSuccess from "./ApplicationSuccess.jsx";
+import { ApplicationSummary, ParticipantFields } from "./ApplicationFields.jsx";
 const Context = createContext(null);
 const useApp = () => useContext(Context);
 export const hrefFor = (view = "home", params = {}) =>
@@ -1102,8 +1104,7 @@ function EventDetail() {
                     {date(event.start_time)} · {time(event.start_time)}
                     <br />
                     <span className="muted">
-                      {tr("Ends")}
-                      {date(event.end_time)} · {time(event.end_time)}
+                      {tr("Ends")} {date(event.end_time)} · {time(event.end_time)}
                     </span>
                   </dd>
                 </div>
@@ -1116,8 +1117,7 @@ function EventDetail() {
                 </div>
               </dl>
               <p className="timezone-note">
-                {tr("Times use")}
-                {Intl.DateTimeFormat().resolvedOptions().timeZone}.
+                {tr("Times use")} {Intl.DateTimeFormat().resolvedOptions().timeZone}.
               </p>
               <RegistrationWindow event={event}/><EventShare event={event} />
             </div>
@@ -1785,8 +1785,14 @@ function Apply() {
   );
 }
 function Application({ event }) {
-  const { auth, runtime } = useApp();
+  const { auth, runtime, navigate } = useApp();
   const [guest, setGuest] = useState(false);
+  const [applicationModal, setApplicationModal] = useState(false);
+  const receiptHeading = useRef(null);
+  const dismissApplication = () => {
+    setApplicationModal(false);
+    receiptHeading.current?.focus();
+  };
   const [supportingFiles, setSupportingFiles] = useState([]);
   const [documentsBlocked, setDocumentsBlocked] = useState(false);
   const guestStore = runtime.store("guest", {
@@ -1803,13 +1809,15 @@ function Application({ event }) {
     !auth.user && !auth.hasToken && !auth.checking && !auth.identityBlocked;
   const allowed = (guest && anonymous) || auth.user?.role === "user";
   const active = acceptsApplications(event);
-  const submit = (submitEvent) => {
+  const submit = async (submitEvent) => {
     submitEvent.preventDefault();
     if (!allowed || !active || locked(state) || documentsBlocked) return;
     const values = Object.fromEntries(new FormData(submitEvent.currentTarget));
     if (!guest && supportingFiles.length)
       values.file_ids = supportingFiles.map((file) => file.id);
-    controller.submit(values);
+    await controller.submit(values);
+    if (controller.state.status === "success" && controller.state.receipt?.status === "pending")
+      setApplicationModal(true);
   };
   return (
     <div className="editor-layout">
@@ -1912,12 +1920,27 @@ function Application({ event }) {
                   <Icon name="check" size={25} />
                 </span>
                 <p className="eyebrow">{tr("APPLICATION RECEIVED")}</p>
-                <h2>{tr("Your application is pending.")}</h2>
+                <h2 tabIndex={-1} ref={receiptHeading}>{tr("Your application is pending.")}</h2>
                 <p>
                   {tr(
                     "A place is not confirmed. Keep this reference and contact the organiser if you need help.",
                   )}
                 </p>
+                {applicationModal && (
+                  <ApplicationSuccess
+                    eventTitle={event.title}
+                    reference={state.receipt.id}
+                    onDismiss={dismissApplication}
+                    onView={guest ? dismissApplication : () => {
+                      setApplicationModal(false);
+                      navigate("registrations");
+                    }}
+                    onDone={() => {
+                      setApplicationModal(false);
+                      navigate("event", { event: event.public_id });
+                    }}
+                  />
+                )}
                 <RegistrationWindow event={event}/><EventShare event={event} />
                 <dl className="receipt">
                   <dt>{tr("Event")}</dt>
@@ -1954,53 +1977,7 @@ function Application({ event }) {
                   <legend className="form-section-title">
                     {tr("Participant information")}
                   </legend>
-                  <div className="form-grid">
-                    <Field
-                      name="first_name"
-                      required
-                      label={tr("First name")}
-                      maxLength={20}
-                    />
-                    <Field
-                      name="last_name"
-                      required
-                      label={tr("Last name")}
-                      maxLength={20}
-                    />
-                    <Field
-                      name="date_of_birth"
-                      label={tr("Date of birth")}
-                      type="date"
-                      required
-                    />
-                    <Field
-                      name="gender"
-                      label={tr("Gender")}
-                      required
-                      defaultValue=""
-                    >
-                      <option value="" disabled>
-                        {tr("Choose an option")}
-                      </option>
-                      <option value="male">{tr("Male")}</option>
-                      <option value="female">{tr("Female")}</option>
-                    </Field>
-                    <Field
-                      name="phone"
-                      required
-                      label={tr("Phone")}
-                      maxLength={20}
-                    />
-                    <Field
-                      name="national_id"
-                      required
-                      label={tr("National ID")}
-                      maxLength={50}
-                      help={tr(
-                        "Use the same participant details for each event.",
-                      )}
-                    />
-                  </div>
+                  <ParticipantFields />
                   {!guest && (
                     <details className="optional-documents">
                       <summary>
@@ -2022,6 +1999,7 @@ function Application({ event }) {
                       )}
                     </p>
                   )}
+                  <ApplicationSummary files={supportingFiles} />
                   <p className="form-disclaimer">
                     {tr(
                       "Submitting sends an application. A place is not confirmed.",

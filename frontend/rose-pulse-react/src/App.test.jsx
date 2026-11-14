@@ -323,7 +323,7 @@ describe("React application workflows (controlled API fixtures)", () => {
     [undefined, "en"],
     ["user", "ms"],
   ])(
-    "shows public detail sharing before application for role %s in %s",
+    "shows a public preview but blocks sharing the local origin for role %s in %s",
     async (role, language) => {
       await changeLanguage(language);
       const canary = "synthetic-private-must-not-share";
@@ -349,17 +349,14 @@ describe("React application workflows (controlled API fixtures)", () => {
       const copy = vi
         .spyOn(navigator.clipboard, "writeText")
         .mockResolvedValue();
-      const share = await screen.findByRole("link", {
-        name: tr("Share on WhatsApp"),
-      });
-      const publicUrl = `${window.location.origin}/?view=event&event=${event.public_id}`;
-      const destination = new URL(share.href);
-      expect(destination.origin).toBe("https://wa.me");
-      expect([...destination.searchParams.keys()]).toEqual(["text"]);
-      expect(destination.searchParams.get("text")).toBe(
-        `${event.title}\n${publicUrl}`,
-      );
-      expect(share.href).not.toContain(canary);
+      const share = await screen.findByRole("button", { name: tr("Share on WhatsApp") });
+      expect(share).toBeDisabled();
+      expect(screen.getByRole("button", { name: tr("Messages / SMS") })).toBeDisabled();
+      const preview = screen.getByLabelText(tr("Event share message")).value;
+      expect(preview).toContain(event.title);
+      expect(preview).toContain(event.location);
+      expect(preview).not.toContain(canary);
+      expect(preview).not.toContain(window.location.origin);
       expect(copy).not.toHaveBeenCalled();
       expect(api.getEvent).toHaveBeenCalledWith(
         event.public_id,
@@ -370,7 +367,7 @@ describe("React application workflows (controlled API fixtures)", () => {
       await user.click(
         screen.getByRole("button", { name: tr("Copy event link") }),
       );
-      expect(copy).toHaveBeenCalledExactlyOnceWith(publicUrl);
+      expect(copy).not.toHaveBeenCalled();
       expect(registerGuestForEvent).not.toHaveBeenCalled();
       expect(registerForEvent).not.toHaveBeenCalled();
     },
@@ -445,17 +442,17 @@ describe("React application workflows (controlled API fixtures)", () => {
     fireEvent.change(screen.getByLabelText("Date of birth"), {
       target: { value: "1990-01-01" },
     });
-    await user.selectOptions(screen.getByLabelText("Gender"), "female");
+    await user.click(screen.getByRole("radio", { name: "Female" }));
     for (const field of ["Marital status", "Address", "Income band code"])
       expect(screen.queryByLabelText(field)).not.toBeInTheDocument();
     await user.click(
       screen.getByRole("button", { name: /Submit application/ }),
     );
-    expect(
-      await screen.findByRole("heading", {
-        name: "Your application is pending.",
-      }),
-    ).toBeVisible();
+    const dialog = await screen.findByRole("dialog", { name: "Application submitted successfully" });
+    expect(dialog).toHaveTextContent(record.id);
+    expect(dialog).toHaveTextContent("Pending");
+    await user.click(within(dialog).getByRole("button", { name: "Close" }));
+    expect(screen.getByRole("heading", { name: "Your application is pending." })).toHaveFocus();
     expect(registerGuestForEvent).toHaveBeenCalledTimes(1);
     expect(registerGuestForEvent).toHaveBeenCalledWith(
       event.public_id,
@@ -727,4 +724,38 @@ describe("React application workflows (controlled API fixtures)", () => {
 });
 it('shows safe managed workflow state and registration window instead of legacy Active',async()=>{await setup({view:'events',methods:{getEvents:vi.fn(async()=>({data:[{...event,workflow:{state:'postponed',timezone:'Asia/Kuala_Lumpur',registration_opens_at:'2026-11-01T00:00:00Z',registration_closes_at:'2027-03-14T00:00:00Z'}}],page:1,page_size:6,total_count:1,total_pages:1}))}});expect(await screen.findByText('Postponed')).toBeInTheDocument();expect(screen.queryByText('Active')).not.toBeInTheDocument();expect(screen.getByText(/Registration closes/)).toBeInTheDocument();});
 it('home selects upcoming published events and excludes cancelled, completed and postponed records',async()=>{const upcoming={...event,title:'Upcoming published',workflow:{state:'published'}};await setup({methods:{getEvents:vi.fn(async()=>({data:[{...event,title:'Cancelled should not feature',status:'cancelled'}, {...event,title:'Postponed should not feature',workflow:{state:'postponed'}},upcoming],page:1,page_size:24,total_count:3,total_pages:1}))}});expect(await screen.findByText('Upcoming published')).toBeInTheDocument();expect(screen.queryByText('Cancelled should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Postponed should not feature')).not.toBeInTheDocument();});
-it('primary Apply opens the managed Guest form with public context and returns a usable reference',async()=>{const managed={...event,workflow:{state:'published',timezone:'Asia/Kuala_Lumpur',registration_opens_at:'2026-11-01T00:00:00Z',registration_closes_at:'2027-03-14T00:00:00Z'}};const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async(path,options)=>{const body=JSON.parse(options.body);return {ok:true,status:200,json:async()=>({contract_version:body.contract_version,operation_id:body.operation_id,outcome:'applied',effects:{registration_id:'managed-guest-reference',status:'pending'}})};});const {user}=await setup({view:'event',params:'&event='+event.public_id,methods:{getEvent:vi.fn(async()=>managed)}});await user.click(await screen.findByRole('link',{name:'Apply for this event'}));const form=await screen.findByRole('form',{name:'Submit application'});expect(screen.getByText('Guest application — no account will be created.')).toBeInTheDocument();expect(screen.getByText(event.overview)).toBeInTheDocument();for(const [label,value] of [['First name','Siti'],['Last name','Demo'],['Phone','00000001'],['National ID','SIM-0001']])await user.type(within(form).getByLabelText(label),value);fireEvent.change(within(form).getByLabelText('Date of birth'),{target:{value:'1990-01-01'}});await user.click(within(form).getByRole('button',{name:'Submit application'}));expect(await screen.findByText('managed-guest-reference')).toBeInTheDocument();expect(fetch.mock.calls[0][0]).toBe('/api/v2/operations/events/'+event.public_id+'/applications');expect(fetch.mock.calls[0][1].headers['X-Application-Key']).toMatch(/^[A-Za-z0-9_-]{43}$/);expect(screen.getByLabelText('Registration reference')).toHaveValue('managed-guest-reference');});
+it('primary Apply opens the managed Guest form and hands the confirmed reference to Guest booking access', async () => {
+  const managed = {...event, workflow: {state: 'published', timezone: 'Asia/Kuala_Lumpur',
+    registration_opens_at: '2026-11-01T00:00:00Z', registration_closes_at: '2027-03-14T00:00:00Z'}};
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async (_path, options) => {
+    const body = JSON.parse(options.body);
+    return {ok: true, status: 200, json: async () => ({
+      contract_version: body.contract_version, operation_id: body.operation_id, outcome: 'applied',
+      kind: 'application_create', resource_id: ID, effects: {registration_id: ID, status: 'pending'},
+    })};
+  });
+  const {user} = await setup({view: 'event', params: '&event=' + event.public_id, methods: {getEvent: vi.fn(async () => managed)}});
+  await user.click(await screen.findByRole('link', {name: 'Apply for this event'}));
+  const form = await screen.findByRole('form', {name: 'Submit application'});
+  expect(screen.getByText('Guest application — no account will be created.')).toBeInTheDocument();
+  expect(screen.getByText(event.overview)).toBeInTheDocument();
+  for (const [label, value] of [['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '00000001'], ['National ID', 'SIM-0001']])
+    await user.type(within(form).getByLabelText(label), value);
+  fireEvent.change(within(form).getByLabelText('Date of birth'), {target: {value: '1990-01-01'}});
+  expect(within(form).getByRole('radio', {name: 'Female'})).not.toBeChecked();
+  await user.click(within(form).getByRole('radio', {name: 'Female'}));
+  await user.click(within(form).getByText('Review your application'));
+  expect(await within(form).findByText('SIM-0001')).toBeVisible();
+  await user.click(within(form).getByRole('button', {name: 'Edit application details'}));
+  expect(within(form).getByLabelText('First name')).toHaveFocus();
+  await user.click(within(form).getByRole('button', {name: 'Submit application'}));
+  const dialog = await screen.findByRole('dialog', {name: 'Application submitted successfully'});
+  expect(dialog).toHaveTextContent(ID);
+  await user.click(within(dialog).getByRole('button', {name: 'View application'}));
+  expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
+  expect(fetch.mock.calls[0][0]).toBe('/api/v2/operations/events/' + event.public_id + '/applications');
+  expect(fetch.mock.calls[0][1].headers['X-Application-Key']).toMatch(/^[A-Za-z0-9_-]{43}$/);
+  expect(screen.getByLabelText('Registration reference')).toHaveValue(ID);
+  expect(screen.getByText('Guest booking access — DEMO OTP')).toHaveFocus();
+  expect(fetch).toHaveBeenCalledTimes(1);
+});

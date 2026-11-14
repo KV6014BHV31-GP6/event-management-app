@@ -7,3 +7,9 @@ afterEach(async () => { cleanup(); await changeLanguage('en'); localStorage.clea
 window.scrollTo = vi.fn();
 if(!URL.createObjectURL) URL.createObjectURL=vi.fn(()=>`blob:synthetic-test-${crypto.randomUUID()}`);
 if(!URL.revokeObjectURL) URL.revokeObjectURL=vi.fn();
+
+// jsdom has the element but no top-layer implementation. Real browser verifies modality.
+if (!HTMLDialogElement.prototype.showModal) {
+  HTMLDialogElement.prototype.showModal = function () { this.open = true; };
+  HTMLDialogElement.prototype.close = function () { this.open = false; };
+}

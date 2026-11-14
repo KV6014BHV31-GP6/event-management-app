@@ -4,6 +4,8 @@ Status: engineering contract locked for explicit Owner synthetic scope, 2026-11-
 
 ## Common mutation and receipt
 
+W9 clarification (2026-11-09): a signed-in ordinary account submitting a different National ID from its already-linked participant is a terminal input validation refusal, `422 INVALID_INPUT`, with no participant, registration or operation receipt committed. A corrected explicit request uses a new operation ID. This does not permit identity reassignment. `409 IMMUTABLE_CONFLICT` remains reserved in the affected path for the existing operation-ID/fingerprint and other protected conflicts; a missing receipt alone never authorizes blind replay. Previously retained immutable references are not silently cleared by this change.
+
 All POST mutations except OTP challenge/verify use `{contract_version:"rose.demo-journey.v1",operation_id:UUID,expected_version?:integer,data:object}`. Creation omits expected_version; existing resource changes require its fresh integer version. IDs: existing event21-character NanoID, user/registration ULID, canonical lowercase UUID operations.
 
 Return200 `{contract_version,operation_id,kind,resource_id,resource_version,recorded_at:UTC_Z,outcome:"applied",effects:{...}}`. Receipt is immutable. Kind/resource/current actor or scoped guest grant/payload fingerprint are bound. Business effects, outbox effects and receipt commit in one nativeDB transaction. Same exact request/actor returns original receipt; changed payload409 IMMUTABLE_CONFLICT; other actor403. `GET /receipts/{operation_id}` requires fresh bound authorization. Receipt read creates nothing; current resource GET follows historical receipt.
