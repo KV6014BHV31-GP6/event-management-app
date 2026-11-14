@@ -88,6 +88,10 @@ async function main() {
   const button=name=>page.getByRole('button',{name,exact:true});
   // Wrapping select labels contain their option text in this existing markup.
   const select=label=>page.locator('label').filter({hasText:new RegExp('^'+label)}).locator('select');
+  const demoTools=page.locator('details.demo-tools');
+  async function revealDemoControls(){
+    if(!(await demoTools.evaluate(node=>node.open)))await demoTools.locator('summary').click();
+  }
   async function login(username,password) {
     await page.goto(new URL('?view=login',base).href,{waitUntil:'networkidle'});
     await page.getByLabel('Username',{exact:true}).fill(username);
@@ -110,8 +114,7 @@ async function main() {
     await page.reload({waitUntil:'networkidle'});await button('Log out').waitFor();
     assert(responses.some(r=>r.path==='/api/v1/users'&&r.method==='POST'&&r.status===201));
     assert(responses.some(r=>r.path==='/api/v1/users/me'&&r.status===200));
-    const demoTools=page.locator('details.demo-tools');
-    await demoTools.locator('summary').click();
+    await revealDemoControls();
     await demoTools.getByText(sha,{exact:false}).first().waitFor();
     checkpoint(phase,{ui_signup:true,authenticated_reload:true,build_sha_visible:true});
 
@@ -168,6 +171,7 @@ async function main() {
     await button('Download selected event').click();
     await select('Downloaded event').selectOption(fixture.event_public_id);
     const initial=await stored(page);assert.equal(initial.drafts.length,0,'Fresh profile must have no old drafts');
+    await revealDemoControls();
     await button('Simulated Offline').click();const offlineStart=requests.length;
     for(let i=1;i<=3;i++){
       for(const [label,value]of Object.entries({'First name':'CIOffline'+i,'Last name':'Synthetic','Phone':'000000000'+i,'National ID':process.env.NU_SMOKE_USERNAME+'-offline-'+i,'Date of birth':'1990-01-01'}))await page.getByLabel(label,{exact:true}).fill(value);
@@ -197,6 +201,7 @@ async function main() {
       draft_identity_sha256:hash(JSON.stringify(draftIdentity(after.drafts)))};checkpoint(phase);
 
     phase='restore-manual-lost-ack-get';
+    await revealDemoControls();
     const restoreStart=requests.length;await button('Restore Connection').click();await page.waitForLoadState('networkidle');await page.waitForTimeout(750);
     const autoPosts=requests.slice(restoreStart).filter(r=>r.method==='POST');assert.equal(autoPosts.length,0,'Restore automatically POSTed');
     // Fresh server login is required; do not edit storage or inject credentials.
@@ -211,6 +216,7 @@ async function main() {
       const request=route.request();assert.equal(request.method(),'POST');assert(!sentEnvelope,'No second POST is allowed');
       sentEnvelope=request.postDataJSON();json('sent-envelope.json',sentEnvelope,privateDir);await route.continue();
     });
+    await revealDemoControls();
     await button('Lose next sync acknowledgement').click();
     const sendStart=responses.length;await button('Manually sync selected event').click();
     await page.getByText('Saved batch needs reconciliation',{exact:true}).waitFor();
