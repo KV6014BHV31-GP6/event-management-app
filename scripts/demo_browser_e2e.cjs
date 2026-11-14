@@ -110,7 +110,9 @@ async function main() {
     await page.reload({waitUntil:'networkidle'});await button('Log out').waitFor();
     assert(responses.some(r=>r.path==='/api/v1/users'&&r.method==='POST'&&r.status===201));
     assert(responses.some(r=>r.path==='/api/v1/users/me'&&r.status===200));
-    await page.getByText(sha,{exact:false}).first().waitFor();
+    const demoTools=page.locator('details.demo-tools');
+    await demoTools.locator('summary').click();
+    await demoTools.getByText(sha,{exact:false}).first().waitFor();
     checkpoint(phase,{ui_signup:true,authenticated_reload:true,build_sha_visible:true});
 
     phase='new-synthetic-fixtures';

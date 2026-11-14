@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-10T10:07:01.943892+00:00",
-  "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries",
+  "reviewed_at": "2026-11-14T14:27:04.079882+00:00",
+  "reason": "PR65 native-browser selector compatibility: expand the existing collapsed Demo tools before checking the unchanged build SHA; record bounded source and verification scope",
   "document_count": 392,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -302,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 41,
+      "revision": 42,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -555,6 +555,13 @@
           "size_bytes": 29821,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 41,
+          "sha256": "35782133ca73bdf719e5594281272c075ea032537c8c4b809c8af7fb1e144dc0",
+          "size_bytes": 32330,
+          "superseded_at": "2026-11-14T14:27:04.079882+00:00",
+          "reason": "PR65 native-browser selector compatibility: expand the existing collapsed Demo tools before checking the unchanged build SHA; record bounded source and verification scope"
         }
       ],
       "import_lineage": {
@@ -567,8 +574,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "35782133ca73bdf719e5594281272c075ea032537c8c4b809c8af7fb1e144dc0",
-      "size_bytes": 32330,
+      "sha256": "c13978070e6075f12e62797614adaa2a757fcdea01cb3d458e5c605824b42c4a",
+      "size_bytes": 32912,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -7926,7 +7933,7 @@
     {
       "document_id": "DEMO-DOC-580A20D516BCA136",
       "path": "scripts/demo_browser_e2e.cjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7936,13 +7943,20 @@
           "size_bytes": 20802,
           "superseded_at": "2026-11-03T10:04:41.738542+00:00",
           "reason": "R3 CI authentication intent 不保存密碼或登入 body；保留業務原請求及 outcome"
+        },
+        {
+          "revision": 2,
+          "sha256": "37fbae667b3477c90b8f4b59d368f9857e1dac85d8f2c2ca5db1b6c85bb15492",
+          "size_bytes": 20968,
+          "superseded_at": "2026-11-14T14:27:04.079882+00:00",
+          "reason": "PR65 native-browser selector compatibility: expand the existing collapsed Demo tools before checking the unchanged build SHA; record bounded source and verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "37fbae667b3477c90b8f4b59d368f9857e1dac85d8f2c2ca5db1b6c85bb15492",
-      "size_bytes": 20968
+      "sha256": "da96c7a796390ebfb9f72638650ddcb174c5f8556d47f2a04232f28b725de0ca",
+      "size_bytes": 21077
     },
     {
       "document_id": "DEMO-DOC-E37020DE44D2D004",
@@ -8288,7 +8302,7 @@
     {
       "document_id": "W9-DOC-20261109",
       "path": "docs/dev/tasks/W9-CLOSEOUT-20261109.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Integrator",
       "status": "working-baseline",
       "revision_history": [
@@ -8312,13 +8326,20 @@
           "size_bytes": 7449,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 4,
+          "sha256": "5534a11acf9ef3e57b1b10925b6a28f937cdf68c09743745befc897968b24e82",
+          "size_bytes": 12243,
+          "superseded_at": "2026-11-14T14:27:04.079882+00:00",
+          "reason": "PR65 native-browser selector compatibility: expand the existing collapsed Demo tools before checking the unchanged build SHA; record bounded source and verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5534a11acf9ef3e57b1b10925b6a28f937cdf68c09743745befc897968b24e82",
-      "size_bytes": 12243
+      "sha256": "3d6898eaf75ce409c90d9c8f115fd42af2883269e2dd816cad6509fe758d070f",
+      "size_bytes": 13421
     },
     {
       "document_id": "W9-TEST-20261109",
