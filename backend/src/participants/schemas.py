@@ -1,6 +1,6 @@
 from datetime import datetime
 from typing import Optional
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, ConfigDict
 
 
 class ParticipantUpdate(BaseModel):
@@ -19,8 +19,7 @@ class ParticipantResponse(BaseModel):
     updated_at: datetime
     updated_by_user_id: Optional[str]
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class PaginatedParticipantResponse(BaseModel):

@@ -8,20 +8,38 @@ from src.files.router import router as files_router
 from src.registrations.router import router as registration_router
 from src.offline_sync.router import router as offline_sync_router
 
+from contextlib import asynccontextmanager
+
+from src.infrastructure.scheduler import (
+    start_scheduler,
+    shutdown_scheduler
+)
+
+
+# @asynccontextmanager
+# async def lifespan(app: FastAPI):
+
+#     start_scheduler()
+
+#     yield
+
+#     shutdown_scheduler()
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version="1.0.0",
     docs_url=f"{settings.API_V1_STR}/docs" if settings.ENVIRONMENT != "production" else None,
+    # lifespan=lifespan
 )
 
 app.include_router(auth_router, prefix=settings.API_V1_STR)
 app.include_router(users_router, prefix=settings.API_V1_STR)
 app.include_router(events_router, prefix=settings.API_V1_STR)
 app.include_router(participant_router, prefix=settings.API_V1_STR)
-app.include_router(files_router, prefix=settings.API_V1_STR)
 app.include_router(registration_router, prefix=settings.API_V1_STR)
 app.include_router(offline_sync_router, prefix=settings.API_V1_STR)
+app.include_router(files_router, prefix=settings.API_V1_STR)
 
 
 @app.get("/")

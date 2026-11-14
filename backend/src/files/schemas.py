@@ -1,9 +1,13 @@
-from pydantic import BaseModel, Field
+from datetime import datetime
+from pydantic import BaseModel, ConfigDict
 
 
-class FileUploadResponse(BaseModel):
-    filename: str = Field(...,
-                          description="Original name of the uploaded asset")
-    url: str = Field(..., description="The accessible asset path or cloud URL to save to your database entity properties")
-    provider: str = Field(
-        ..., description="The structural target platform engine used (local / gcs)")
+class FileResponse(BaseModel):
+    id: str
+    original_file_name: str
+    mime_type: str
+    file_size: int
+    storage_path: str
+    created_at: datetime
+
+    model_config = ConfigDict(from_attributes=True)

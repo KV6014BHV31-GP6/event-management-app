@@ -18,8 +18,6 @@ def require_organizer(current_user: UserModel = Depends(get_current_user)) -> Us
     Dependency guard to verify the authenticated user is an authorized organizer.
     Adjust the property check below (e.g., current_user.role) to fit your Auth architecture.
     """
-    # Example assumption: Your UserModel has a role attribute or is_organizer boolean flag.
-    # Adjust this line to match your exact user permission properties.
     if getattr(current_user, "role", None) != "organizer" and not getattr(current_user, "is_organizer", False):
         raise HTTPException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -35,7 +33,6 @@ async def get_all_participants_endpoint(
     keyword: str | None = Query(
         default=None, description="Search profile by name or telephone strings"),
     participant_service: ParticipantService = Depends(get_participant_service),
-    # 🔒 Enforces authenticated organizer permission role
     organizer: UserModel = Depends(require_organizer)
 ):
     return await participant_service.get_paginated_participants(page=page, page_size=page_size, keyword=keyword)
@@ -45,7 +42,6 @@ async def get_all_participants_endpoint(
 async def get_participant_by_id_endpoint(
     participant_id: str,
     participant_service: ParticipantService = Depends(get_participant_service),
-    # 🔒 Enforces authenticated organizer permission role
     organizer: UserModel = Depends(require_organizer)
 ):
     if len(participant_id) != 26:
@@ -68,7 +64,6 @@ async def update_participant_endpoint(
     participant_id: str,
     payload: ParticipantUpdate,
     participant_service: ParticipantService = Depends(get_participant_service),
-    # 🔒 Enforces authenticated organizer permission role
     organizer: UserModel = Depends(require_organizer)
 ):
     if len(participant_id) != 26:
