@@ -1,4 +1,10 @@
-# Current successor: Railway synthetic staging adapter, 2026-11-15
+# Current successor: Railway activation and scoped platform-healthcheck fix, 2026-11-15
+
+The Owner explicitly approved NU deployment costs. The previously staged private Railway web/PG17 services and distinct volumes were applied at product baseline 23e327a6 and adapter 830cb3d7; Railway reports SUCCESS and startup logs confirm a new synthetic schema with no accounts/events seeded. No public domain is assigned at this checkpoint, and main/dev/dev_demo branches and prior Docker data are untouched. The initial billing hold in the preceding section is superseded only for this NU staging deployment.
+
+A genuine independent Astra review of 830cb3d7 found one blocker: Railway health probes use Host healthcheck.railway.app, rejected by the generic Host guard. A separate Sol writer supplied a minimal two-file correction: only exact raw /__container_health, GET/HEAD, exactly one platform Host and no Origin may reach the existing DB-backed readiness handler. Other Host/Origin/route controls and upstream 503 handling are unchanged. Sol reported 3/3 targeted Node tests PASS and stopped with WIP; the first duplicate-Host test failure was preserved. Controller integrated the stopped writer's exact diff. New fixed-candidate tests/review and final public HTTPS verification remain pending, not ACCEPTED. See [Railway task](tasks/RAILWAY-STAGING-20261115.md).
+
+## Previous successor: Railway synthetic staging adapter, 2026-11-15
 
 The Owner authorized starting a Railway deployment for ROSE PULSE. The fixed product baseline is `dev_demo@23e327a6ca18ad649db8e5075e0ae14c2286aa45` with previously observed hosted CI five-gate SUCCESS. This bounded successor adds only deployment/runtime adapters under `deploy/railway/`, a root Docker build-context exclude file and associated tests/docs. It neither modifies Frontend/Backend product source nor changes the original local Demo, existing PostgreSQL volumes or target `dev_demo` branch.
 

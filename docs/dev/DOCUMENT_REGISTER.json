@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T03:33:43.047557+00:00",
-  "reason": "Register the owner-authorized Railway staging source, scoped deployment adapters, runtime checks and tests; preserve product baseline",
+  "reviewed_at": "2026-11-15T04:15:12.574579+00:00",
+  "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved",
   "document_count": 404,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -302,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 46,
+      "revision": 47,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -590,6 +590,13 @@
           "size_bytes": 36436,
           "superseded_at": "2026-11-15T03:33:43.047557+00:00",
           "reason": "Register the owner-authorized Railway staging source, scoped deployment adapters, runtime checks and tests; preserve product baseline"
+        },
+        {
+          "revision": 46,
+          "sha256": "13c6cc539d015d7834e56fbf8db638f83dda2014a51c07fb2eee6bb960993125",
+          "size_bytes": 38935,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
         }
       ],
       "import_lineage": {
@@ -602,8 +609,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "13c6cc539d015d7834e56fbf8db638f83dda2014a51c07fb2eee6bb960993125",
-      "size_bytes": 38935,
+      "sha256": "b2f7974c59a37a3b719074102db0ddd0aa795e3c40850ded65c3fda2b8d9e57e",
+      "size_bytes": 40300,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -8717,15 +8724,23 @@
     {
       "document_id": "NU-RAILWAY-HTTPS-GATEWAY-20261115",
       "path": "deploy/railway/gateway.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c14967993f5fbf12d13fa980965607992bc0abad4ba1e0add515477f377e3afa",
+          "size_bytes": 2405,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "c14967993f5fbf12d13fa980965607992bc0abad4ba1e0add515477f377e3afa",
-      "size_bytes": 2405
+      "sha256": "7346430b13768357bb7d75274134bc394a87e15796ca53719472b31a4a4e5ca0",
+      "size_bytes": 2684
     },
     {
       "document_id": "NU-RAILWAY-START-20261115",
@@ -8756,28 +8771,44 @@
     {
       "document_id": "NU-RAILWAY-GATEWAY-TEST-20261115",
       "path": "deploy/railway/tests/gateway.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "632fd37c6cc9aaffc53d29408f3a0c5ed08e662719905a01b645e31b907b7fad",
+          "size_bytes": 3184,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "632fd37c6cc9aaffc53d29408f3a0c5ed08e662719905a01b645e31b907b7fad",
-      "size_bytes": 3184
+      "sha256": "712b67ff3f7b1fb1296b622452e1884c52bf376d4d96cfa765bdb501b3c71e1e",
+      "size_bytes": 5970
     },
     {
       "document_id": "NU-RAILWAY-TASK-20261115",
       "path": "docs/dev/tasks/RAILWAY-STAGING-20261115.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0f7ff4974d7a93bd6c2f2f0e1ecac6c1bb5302b109a2ddf46337ee7165a0e18c",
+          "size_bytes": 6345,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "0f7ff4974d7a93bd6c2f2f0e1ecac6c1bb5302b109a2ddf46337ee7165a0e18c",
-      "size_bytes": 6345
+      "sha256": "5503ab11a37b80b3954cd92a15229e5f0e8e427793341b6e31bb360c8745f3e0",
+      "size_bytes": 7818
     }
   ]
 }

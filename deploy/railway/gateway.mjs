@@ -11,7 +11,12 @@ export function createGateway({origin=process.env.NU_TRUSTED_HTTPS_ORIGIN,
     const fail=(code,detail)=>{res.writeHead(code,{'Content-Type':'application/json',
       'Cache-Control':'no-store','X-Content-Type-Options':'nosniff','X-Robots-Tag':'noindex'});
       res.end(JSON.stringify({detail}));};
-    const denied=guard(req);
+    const railwayHealthcheck=req.url==='/__container_health'
+      && ['GET','HEAD'].includes(req.method)
+      && req.headers.host==='healthcheck.railway.app'
+      && req.headersDistinct.host?.length===1
+      && req.headersDistinct.origin===undefined;
+    const denied=railwayHealthcheck?null:guard(req);
     if(denied)return fail(403,denied);
     let pathname;
     try{pathname=decodeURIComponent((req.url||'/').split('?')[0]);}
