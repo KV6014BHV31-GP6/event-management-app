@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T01:52:33.556490+00:00",
-  "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests",
-  "document_count": 394,
+  "reviewed_at": "2026-11-15T04:15:12.574579+00:00",
+  "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved",
+  "document_count": 404,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -302,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 45,
+      "revision": 47,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -583,6 +583,20 @@
           "size_bytes": 34797,
           "superseded_at": "2026-11-15T01:52:33.556490+00:00",
           "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
+        },
+        {
+          "revision": 45,
+          "sha256": "43edebe86ffd372d514c4537d5a530b23a44fa0783ad5692d31781932d2eb6ed",
+          "size_bytes": 36436,
+          "superseded_at": "2026-11-15T03:33:43.047557+00:00",
+          "reason": "Register the owner-authorized Railway staging source, scoped deployment adapters, runtime checks and tests; preserve product baseline"
+        },
+        {
+          "revision": 46,
+          "sha256": "13c6cc539d015d7834e56fbf8db638f83dda2014a51c07fb2eee6bb960993125",
+          "size_bytes": 38935,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
         }
       ],
       "import_lineage": {
@@ -595,8 +609,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "43edebe86ffd372d514c4537d5a530b23a44fa0783ad5692d31781932d2eb6ed",
-      "size_bytes": 36436,
+      "sha256": "b2f7974c59a37a3b719074102db0ddd0aa795e3c40850ded65c3fda2b8d9e57e",
+      "size_bytes": 40300,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -1237,7 +1251,7 @@
     {
       "document_id": "DOC-19",
       "path": "docs/dev/SOURCE_REGISTER.json",
-      "revision": 16,
+      "revision": 17,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -1322,6 +1336,13 @@
           "size_bytes": 14688,
           "superseded_at": "2026-11-03T01:51:57.521611+00:00",
           "reason": "Resolve isolated dev_demo_ben PR57+PR55 file identity after documented merge"
+        },
+        {
+          "revision": 16,
+          "sha256": "813310516fd4bcc8f1731efc4dad10ff0b9c38ea1950e344f48d1537a508b82f",
+          "size_bytes": 15492,
+          "superseded_at": "2026-11-15T03:33:43.047557+00:00",
+          "reason": "Register the owner-authorized Railway staging source, scoped deployment adapters, runtime checks and tests; preserve product baseline"
         }
       ],
       "import_lineage": {
@@ -1332,8 +1353,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "813310516fd4bcc8f1731efc4dad10ff0b9c38ea1950e344f48d1537a508b82f",
-      "size_bytes": 15492
+      "sha256": "99e9af6fefcf7b0244546efd3b59e1508c73e8664d56f80b9f060da8d209a469",
+      "size_bytes": 16542
     },
     {
       "document_id": "PUB-DOC-SPLIT-008",
@@ -8634,6 +8655,160 @@
       ],
       "sha256": "8e139f39b8aa0fbd47d97e94d17ce7fca918f71fdc51364c4bfa6530b31d4d4b",
       "size_bytes": 1308
+    },
+    {
+      "document_id": "NU-RAILWAY-BUILD-IGNORE-20261115",
+      "path": ".dockerignore",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "6c59363fe4b5ff00d8d1a1d39ef26fef4927df4d9f5c2bac0e9f5c3b64811ce4",
+      "size_bytes": 326
+    },
+    {
+      "document_id": "NU-RAILWAY-DB-INIT-20261115",
+      "path": "deploy/railway/10-init-app.sh",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "d7c1c256f3666bc99c2cc6dd41e4b8a5ddee4187039a988dd13415c7698e018e",
+      "size_bytes": 726
+    },
+    {
+      "document_id": "NU-RAILWAY-APP-DOCKERFILE-20261115",
+      "path": "deploy/railway/Dockerfile",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "b3dc978fa6d1cd1cea892ea319fd3a29a7bb2fc1c53226ac24499e4045a35486",
+      "size_bytes": 1875
+    },
+    {
+      "document_id": "NU-RAILWAY-DB-DOCKERFILE-20261115",
+      "path": "deploy/railway/Dockerfile.postgres",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "f946bc4e761006d7f65363aea65502a53e53eacda7dd325f509b0caa50105772",
+      "size_bytes": 258
+    },
+    {
+      "document_id": "NU-RAILWAY-ENTRYPOINT-20261115",
+      "path": "deploy/railway/entrypoint.py",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "396a165496d85c0a66bcb20d47c11c9a1be3e4d7aeb7b0ca663f0c94d21afbac",
+      "size_bytes": 5343
+    },
+    {
+      "document_id": "NU-RAILWAY-HTTPS-GATEWAY-20261115",
+      "path": "deploy/railway/gateway.mjs",
+      "revision": 2,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c14967993f5fbf12d13fa980965607992bc0abad4ba1e0add515477f377e3afa",
+          "size_bytes": 2405,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        }
+      ],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "7346430b13768357bb7d75274134bc394a87e15796ca53719472b31a4a4e5ca0",
+      "size_bytes": 2684
+    },
+    {
+      "document_id": "NU-RAILWAY-START-20261115",
+      "path": "deploy/railway/start.sh",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "09371d5ba046792a9e0868ff2f928105fb2a8692853da426052b9f51bf81d2da",
+      "size_bytes": 289
+    },
+    {
+      "document_id": "NU-RAILWAY-ENTRY-TEST-20261115",
+      "path": "deploy/railway/tests/entrypoint.test.py",
+      "revision": 1,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "d03ded1f19ab00b7eb6a7d0545eabe9115656db8cdf96ec08ab7fc4b5a914d83",
+      "size_bytes": 2293
+    },
+    {
+      "document_id": "NU-RAILWAY-GATEWAY-TEST-20261115",
+      "path": "deploy/railway/tests/gateway.test.mjs",
+      "revision": 2,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "632fd37c6cc9aaffc53d29408f3a0c5ed08e662719905a01b645e31b907b7fad",
+          "size_bytes": 3184,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        }
+      ],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "712b67ff3f7b1fb1296b622452e1884c52bf376d4d96cfa765bdb501b3c71e1e",
+      "size_bytes": 5970
+    },
+    {
+      "document_id": "NU-RAILWAY-TASK-20261115",
+      "path": "docs/dev/tasks/RAILWAY-STAGING-20261115.md",
+      "revision": 2,
+      "owner": "Benjamin Developer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "0f7ff4974d7a93bd6c2f2f0e1ecac6c1bb5302b109a2ddf46337ee7165a0e18c",
+          "size_bytes": 6345,
+          "superseded_at": "2026-11-15T04:15:12.574579+00:00",
+          "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        }
+      ],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115"
+      ],
+      "sha256": "5503ab11a37b80b3954cd92a15229e5f0e8e427793341b6e31bb360c8745f3e0",
+      "size_bytes": 7818
     }
   ]
 }
