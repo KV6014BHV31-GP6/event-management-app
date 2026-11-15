@@ -1,3 +1,28 @@
+# Current successor: NU product and video V2 polish, 2026-11-16
+
+The delivered PR68 baseline is `b7fc3dda026b2379b6182242fd5f55d2fa1209e1`,
+live at the existing https://rosepulse.up.railway.app/ staging domain. Its six
+source community events, six accounts, persisted transactions, uploads and V1
+420-second MP4 remain preserved. Historical blocked/pending entries below belong
+to their named earlier candidates; they do not supersede the actual PR68 delivery.
+
+This authorized successor is a bounded Frontend presentation change: explicit
+source/exercise metadata, complete matching-page discovery and truthful grouped
+pagination, compact event cards, a visible synthetic/non-medical-booking notice,
+clearer role headings, and accessible disclosures for secondary local-data controls.
+No Backend/API/schema, seed, authentication, CI workflow or dependency changes.
+The server still decides permissions, places and transaction outcomes. Existing
+external notification delivery remains not configured.
+
+Affected frontend tests and synthetic production build are LOCAL_VERIFIED.
+Promotion requires the fixed candidate's independent review, affected native
+Browser evidence, required CI, stable Head/Base and actual target/deployment
+readback. The Owner authorizes that gated PR/merge to dev_demo and update of the
+same Railway web service. Source-bound V2 media, before/after views and release
+receipts are retained in the external `delivery/polish-v2/` directory; the V1 film
+is not overwritten. This does not add physical-device, human-UAT or production
+certification. See [release task](tasks/NU-WEB-RELEASE-20261116.md).
+
 # Current successor: NU Web release native Browser evidence, 2026-11-16
 
 The current native turn verifies on-request approval, auto_review and workspace-write.

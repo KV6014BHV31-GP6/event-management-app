@@ -3063,3 +3063,40 @@ main { padding: 0 28px; min-width: 0; }
   .journey-metrics > div { min-width: 120px; }
   .footer { padding: 20px 16px; flex-wrap: wrap; gap: 12px; }
 }
+
+/* V2 light polish: retain R4 tokens and every existing route/control. */
+.synthetic-disclosure { color: var(--muted); font-size: 13px; line-height: 1.6; margin: 16px 0 20px; max-width: 80ch; }
+.discovery-tabs { display: flex; flex-wrap: wrap; gap: 8px; margin: 0 0 16px; }
+.discovery-tabs a { display: inline-flex; align-items: center; gap: 8px; padding: 10px 14px; border: 1px solid var(--line); border-radius: 24px; font-size: 14px; background: white; }
+.discovery-tabs a[aria-current=page] { background: var(--forest); border-color: var(--forest); color: white; }
+.discovery-tabs span { font-size: 12px; opacity: .85; }
+.card-image-link { height: auto; aspect-ratio: 16 / 9; }
+.card-image { width: 100%; height: 100%; object-fit: cover; }
+.card-body { gap: 12px; padding: 20px; }
+.card-body h3 { font-size: 19px; line-height: 1.4; }
+.card-body .event-meta:first-of-type span { display: flex; flex-wrap: wrap; gap: 0 8px; }
+.card-body .event-meta small { margin: 0; font-size: 13px; }
+.card-registration-details { font-size: 13px; color: var(--muted); }
+.card-registration-details summary { cursor: pointer; min-height: 28px; padding: 3px 0; }
+.card-registration-details[open] .registration-window { margin-top: 8px; }
+.event-placeholder { background: var(--soft); color: var(--forest); }
+.journey-workspace > .page-heading { margin-bottom: 16px; }
+.journey-workspace > .page-heading p { margin-bottom: 8px; }
+.journey-section { margin: 12px 0; padding: 16px 20px; }
+.journey-section > h2 { font-size: 20px; }
+.journey-section summary { font-size: 18px; line-height: 1.5; }
+.journey-section .journey-form { margin: 16px 0; }
+.journey-section .journey-form h3 { margin-bottom: 0; }
+.offline-workspace .page-heading { margin-bottom: 16px; }
+.offline-privacy { font-size: 13px; padding: 16px 20px; }
+.offline-privacy p { margin: 8px 0; }
+.offline-privacy summary, .offline-data-controls > summary { cursor: pointer; font-weight: 600; padding: 8px 0; }
+.offline-data-controls { border-top: 1px solid var(--line); padding-top: 12px; }
+summary:focus-visible { outline: 3px solid #bd8d3c; outline-offset: 4px; }
+@media (max-width: 700px) {
+  .card-body { padding: 18px; }
+  .discovery-tabs { gap: 6px; }
+  .discovery-tabs a { padding: 9px 11px; font-size: 13px; }
+  .journey-section { padding: 16px; }
+  .offline-privacy { padding: 14px 16px; }
+}

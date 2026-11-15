@@ -2,6 +2,12 @@
 
 This additive frontend preserves the Phase 1 layout and legacy frontend/live files. Phase 2 uses the admitted contracts in ../../docs/dev/phase2/ and isolated services. Unit/component results below are controlled synthetic evidence. The controller and independent reviewer record native Browser/API/PostgreSQL acceptance separately.
 
+## V2 light polish (2026-11-16)
+
+Discovery uses explicit source IDs from the release `EVENT_SOURCE_MANIFEST.json` and two explicit exercise IDs in `src/event-discovery.js`; titles never determine classification. All events remains the default and includes unclassified future records. Community events and Demo exercises are optional query views (`group=community` / `group=demo`). Matching API pages are read before source-priority ordering, collection counts and client pagination; keyword filtering remains server-side. A failed page remains a visible read error, with no partial-success fallback. Home features upcoming community/other records ahead of exercises; all records remain reachable through Events. Source API dates, quotas, status and image associations are unchanged. Categories remain absent because there is no category contract field.
+
+Cards keep registration eligibility visible and put the full registration window in an accessible disclosure. Known exercises use a clearly labelled ROSE PULSE graphic placeholder rather than their gray test images; no upload is changed. Public browsing now states that this is synthetic and offers no real medical appointment. Organizer/Leader headings reflect the role, attendance controls are expanded, and device-retention/deletion controls can be expanded in Offline drafts. Privacy, unknown-result reconciliation and manual-sync behavior are preserved. Existing R4 color tokens, routes and APIs are retained. Browser/responsive acceptance is recorded separately by the Integrator.
+
 ## Adopted R4 Web visual increment (2026-11-16)
 
 The operations outbox prefers canonical `delivery_status` over its compatible legacy `state`. Internal `dry_run` / legacy `demo_recorded` means no external delivery; provider `accepted` does not mean `delivered`. An `unknown` result requires reconciliation of the original task. Only an explicitly failed canonical state (or failed legacy state when canonical status is absent) exposes the existing retry action; server authorization and operation handling remain authoritative. Labels are available in EN/MS.

@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T19:07:06.033119+00:00",
-  "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補",
-  "document_count": 431,
+  "reviewed_at": "2026-11-15T20:38:23.487717+00:00",
+  "reason": "V2 product polish and stable grouped pagination; retain contracts and V1",
+  "document_count": 433,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -309,7 +309,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 51,
+      "revision": 53,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -632,6 +632,20 @@
           "size_bytes": 42780,
           "superseded_at": "2026-11-15T19:07:06.033119+00:00",
           "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
+        },
+        {
+          "revision": 51,
+          "sha256": "d262e236980f45dc771f2761e461b9b4244f7aeb156b4c9a9464632e3830b7d3",
+          "size_bytes": 44917,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 52,
+          "sha256": "b36f94ec40c1cda085ff5c3282b976abf3d88d97023db2e8fd3818bfc88f90a0",
+          "size_bytes": 46821,
+          "superseded_at": "2026-11-15T20:38:23.487717+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "import_lineage": {
@@ -644,8 +658,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "d262e236980f45dc771f2761e461b9b4244f7aeb156b4c9a9464632e3830b7d3",
-      "size_bytes": 44917,
+      "sha256": "01a588e0a867b7c412992aa11d9992801652f3ecca6ac9293e35455c43b61f51",
+      "size_bytes": 46541,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -4933,7 +4947,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 13,
+      "revision": 14,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5020,13 +5034,20 @@
           "size_bytes": 47325,
           "superseded_at": "2026-11-15T19:07:06.033119+00:00",
           "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
+        },
+        {
+          "revision": 13,
+          "sha256": "c4c64c0f5b0660041791e2178d061585acc8ace56f0500faf7127c5f4cdab48f",
+          "size_bytes": 47558,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "c4c64c0f5b0660041791e2178d061585acc8ace56f0500faf7127c5f4cdab48f",
-      "size_bytes": 47558
+      "sha256": "c30c2073abe98b916ba43780e21d2a17dd000b434488b65aef7a120a5ec77965",
+      "size_bytes": 49101
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -5107,7 +5128,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 8,
+      "revision": 9,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5159,18 +5180,25 @@
           "size_bytes": 90720,
           "superseded_at": "2026-11-15T17:02:31.271603+00:00",
           "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 8,
+          "sha256": "53d0327a1730d5c108d94ad907a3601190e8babaa4f3c4a9886d7de137a5e282",
+          "size_bytes": 91020,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "53d0327a1730d5c108d94ad907a3601190e8babaa4f3c4a9886d7de137a5e282",
-      "size_bytes": 91020
+      "sha256": "30d6f70557b16d133dcc5438664c0d8819332a86157b703550fd244b3483b8e2",
+      "size_bytes": 92587
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 6,
+      "revision": 7,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5208,13 +5236,20 @@
           "size_bytes": 36157,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 6,
+          "sha256": "dd1173c5a83946011740b677784f26a9a5191c8bd1f1face24a1b66cdcf55743",
+          "size_bytes": 37302,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "dd1173c5a83946011740b677784f26a9a5191c8bd1f1face24a1b66cdcf55743",
-      "size_bytes": 37302
+      "sha256": "8cc5c407ce971b1af59a0a3ec04a26367fc3c700aea9b540a44a052baf05cf49",
+      "size_bytes": 39050
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -5303,7 +5338,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 8,
+      "revision": 9,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5355,13 +5390,20 @@
           "size_bytes": 63994,
           "superseded_at": "2026-11-15T19:07:06.033119+00:00",
           "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
+        },
+        {
+          "revision": 8,
+          "sha256": "7762e0e7feaa832686bad6a8241ff7f5b789a86204322e9856f56fc0f7781641",
+          "size_bytes": 64040,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "7762e0e7feaa832686bad6a8241ff7f5b789a86204322e9856f56fc0f7781641",
-      "size_bytes": 64040
+      "sha256": "43a2e476e2f009cf3049707337bbf02a44be43a2db2dcadf6896c098a138e12e",
+      "size_bytes": 66384
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -6410,7 +6452,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 11,
+      "revision": 12,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6483,13 +6525,20 @@
           "size_bytes": 82901,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 11,
+          "sha256": "e791491cfacb82c735a3994a74fa00f493a134209f57593b64742bf755544305",
+          "size_bytes": 83607,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "e791491cfacb82c735a3994a74fa00f493a134209f57593b64742bf755544305",
-      "size_bytes": 83607
+      "sha256": "b28be356353079e79a79393eabbc4781f8b46beeeb508df3b2b0f7d7e53e9234",
+      "size_bytes": 84193
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6542,7 +6591,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 11,
+      "revision": 12,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6615,13 +6664,20 @@
           "size_bytes": 85897,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 11,
+          "sha256": "1bdc249990379a72af4faa521868056d135a4a6e227c16cf00a17f8421945178",
+          "size_bytes": 86637,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "1bdc249990379a72af4faa521868056d135a4a6e227c16cf00a17f8421945178",
-      "size_bytes": 86637
+      "sha256": "269f853f52b8aaee26371907c9ba495f0f05d6aaecff6ea83524914793e087b7",
+      "size_bytes": 87238
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -6652,7 +6708,7 @@
     {
       "document_id": "ROSE-P2-4d5ba300321d",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6676,13 +6732,20 @@
           "size_bytes": 28595,
           "superseded_at": "2026-11-15T01:52:33.556490+00:00",
           "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
+        },
+        {
+          "revision": 4,
+          "sha256": "41ec0dfd5527e59939c96d8d5da9ad5034e97e1dbe97943b7fd5e97e41f4c5e2",
+          "size_bytes": 28693,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "41ec0dfd5527e59939c96d8d5da9ad5034e97e1dbe97943b7fd5e97e41f4c5e2",
-      "size_bytes": 28693
+      "sha256": "ddba0a40f1b20998e143ac28df9826295b542c9b4aa400382cef244d1a0411dd",
+      "size_bytes": 28780
     },
     {
       "document_id": "ROSE-P2-a74207d91712",
@@ -7615,7 +7678,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 8,
+      "revision": 9,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7667,13 +7730,20 @@
           "size_bytes": 47301,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 8,
+          "sha256": "fa41fc54db530af5f86776c1f367505d94371907c3b79d715cf7f85149cc7285",
+          "size_bytes": 48167,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "fa41fc54db530af5f86776c1f367505d94371907c3b79d715cf7f85149cc7285",
-      "size_bytes": 48167
+      "sha256": "00ddadf1b505764cc06b95e39e2cecd8e9dfcb5b483c32c68779923c516f6c2a",
+      "size_bytes": 48371
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
@@ -9148,7 +9218,7 @@
     {
       "document_id": "PUB-WEB-20261116-1A2B3E481EAA4FAC",
       "path": "docs/dev/tasks/NU-WEB-RELEASE-20261116.md",
-      "revision": 5,
+      "revision": 7,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9179,13 +9249,27 @@
           "size_bytes": 6698,
           "superseded_at": "2026-11-15T19:07:06.033119+00:00",
           "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
+        },
+        {
+          "revision": 5,
+          "sha256": "6c814a4625d2c5cf8d98ed71e8e8e93a17821e0a1c01d7ad4fd582972da88322",
+          "size_bytes": 7567,
+          "superseded_at": "2026-11-15T20:37:33.128842+00:00",
+          "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 6,
+          "sha256": "f293891557f2dca99ec72ca6939a1ba5a8fb8ede5ce8e77adfac073150f50d96",
+          "size_bytes": 9316,
+          "superseded_at": "2026-11-15T20:38:23.487717+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6c814a4625d2c5cf8d98ed71e8e8e93a17821e0a1c01d7ad4fd582972da88322",
-      "size_bytes": 7567
+      "sha256": "038bb4a76ad6fa90fc67751857fc6faf6bf64fd44bb5696184d8913b24b6c37b",
+      "size_bytes": 9173
     },
     {
       "document_id": "PUB-WEB-20261116-3AB849A95516F3AD",
@@ -9481,6 +9565,40 @@
       ],
       "sha256": "aaa7b72031250d6c06015f93fbf47142ea11e37c90a0f6696302a2cf9d7470a0",
       "size_bytes": 12429
+    },
+    {
+      "document_id": "PUB-DOC-V2-EVENT-DISCOVERY",
+      "path": "frontend/rose-pulse-react/src/event-discovery.js",
+      "revision": 1,
+      "owner": "NU Frontend / Sol product V2",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "2f38b325c5b7d98fefe2442cb80f836e3cca5af677f6f57009d16209049cd61e",
+      "size_bytes": 1588
+    },
+    {
+      "document_id": "PUB-DOC-V2-EVENT-DISCOVERY-TEST",
+      "path": "frontend/rose-pulse-react/src/event-discovery.test.js",
+      "revision": 2,
+      "owner": "NU Frontend / Sol product V2",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "6c24f68b7561654bd014958ed40e460717b6e1684e544af9c1adadfdc6e6f8ff",
+          "size_bytes": 2518,
+          "superseded_at": "2026-11-15T20:38:23.487717+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "73b8b7cd86deeda2757f52d9e151e4a850a8a029abe966a92ebb8b7b7826ebb1",
+      "size_bytes": 2492
     }
   ]
 }

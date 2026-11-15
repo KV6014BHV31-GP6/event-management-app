@@ -1005,5 +1005,13 @@
   "Delivery unknown — reconcile the original task": "Penghantaran tidak diketahui — semak tugas asal",
   "Notification cancelled": "Pemberitahuan dibatalkan",
   "Notification expired": "Pemberitahuan tamat tempoh",
-  "Notification status unavailable": "Status pemberitahuan tidak tersedia"
+  "Notification status unavailable": "Status pemberitahuan tidak tersedia",
+  "Demo exercises": "Latihan demo",
+  "Applications open": "Permohonan dibuka",
+  "Registration details": "Butiran pendaftaran",
+  "Synthetic demonstration only. No real medical appointment or service is offered. Event images are AI-generated artwork.": "Demonstrasi sintetik sahaja. Tiada janji temu atau perkhidmatan perubatan sebenar ditawarkan. Imej acara ialah karya seni janaan AI.",
+  "Event collections": "Koleksi acara",
+  "Leader event workspace": "Ruang kerja acara ketua",
+  "Your application": "Permohonan anda",
+  "Device storage and retention": "Storan peranti dan tempoh penyimpanan"
 }

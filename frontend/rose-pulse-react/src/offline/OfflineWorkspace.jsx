@@ -220,18 +220,18 @@ export default function OfflineWorkspace({
           {online ? tr("Connection available") : tr("Offline")}
         </span>
       </div>
-      <div className="notice notice-error">
+      <div className="notice offline-privacy">
         <strong>{tr("SYNTHETIC DATA ONLY")}</strong>
         <p>
           {tr(
             "Do not enter real names, identity numbers, phone numbers, health information or documents. IndexedDB is not encrypted. Anyone with access to this device or browser tools may read local data.",
           )}
         </p>
-        <p>
+        <details><summary>{tr("Device storage and retention")}</summary><p>
           {tr(
             "Browser eviction, private browsing, cleared site data or device failure can erase unsynced drafts. This localhost demonstration does not prove LAN, iPhone or production offline readiness.",
           )}
-        </p>
+        </p></details>
       </div>
       {!actor ? (
         <div className="empty-state">
@@ -656,8 +656,8 @@ export default function OfflineWorkspace({
                 </div>
               ))}
           </section>
-          <section className="offline-data-controls">
-            <h2>{tr("Delete local data")}</h2>
+          <details className="offline-data-controls">
+            <summary>{tr("Delete local data")}</summary>
             <p className="small muted">
               {tr(
                 "Deletes downloaded events, drafts and local receipts for this account on this device. It does not cancel server registrations. Unknown results may still exist on the server.",
@@ -698,7 +698,7 @@ export default function OfflineWorkspace({
                 {tr("Delete all local data for this account")}
               </button>
             )}
-          </section>
+          </details>
         </>
       )}
     </section>
