@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T17:02:31.271603+00:00",
-  "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline",
+  "reviewed_at": "2026-11-15T17:02:59.109088+00:00",
+  "reason": "修正本輪生成 manifest 的 Windows newline；保留 JSON 內容與 seed canonical fingerprint",
   "document_count": 415,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -8925,15 +8925,23 @@
     {
       "document_id": "PUB-WEB-20261116-78E669006797B772",
       "path": "deploy/railway/seed-assets/manifest.json",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1fb580320af90d12a9dc8f9f4eb378fea0208adecd857649d849d27e635df608",
+          "size_bytes": 10753,
+          "superseded_at": "2026-11-15T17:02:59.109088+00:00",
+          "reason": "修正本輪生成 manifest 的 Windows newline；保留 JSON 內容與 seed canonical fingerprint"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1fb580320af90d12a9dc8f9f4eb378fea0208adecd857649d849d27e635df608",
-      "size_bytes": 10753
+      "sha256": "453144d4ded65e696cb1ffe683ccb91cd7e90b6a0d1d7840e5a4497d6489491a",
+      "size_bytes": 10511
     },
     {
       "document_id": "PUB-WEB-20261116-05D98357136A5517",
