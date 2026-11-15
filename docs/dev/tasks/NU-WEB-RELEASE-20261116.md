@@ -63,6 +63,16 @@ unassigned Leader, other Organizer and Attendee management reads return403.
 Source drift regression was RED before the correction, then5 launcher checks
 PASS; existing3 narrow gateway checks PASS;3 manifest/key boundary checks PASS.
 
+Stopped writer commits are integrated with preserved authorship: FE3ac3dead plus
+canonical-delivery display6b887b85; BE1e9a0c23. FE affected129 checks PASS, outbox
+followup55 PASS and synthetic build PASS. The two synthetic sharing assertions
+also fail against unchanged base App and are retained as profile-specific test
+limitations, not hidden product PASS. BE controlled notification/Journey group99
+PASS, native PostgreSQL group17 PASS and final unknown-state guard9 PASS. Initial
+Austin constructor/relation failures, old rollback count mismatch and the native
+migration probe's refusal under wrong environment remain preserved. See
+[notification adoption](../notification-integration.md). No schema/dependency change.
+
 NOT_RUN/PENDING: fixed integrated-candidate browser acceptance, full affected
 regression/hosted CI, independent review, merge/new public deployment and actual
 420-second video. No local test is labeled public deployment acceptance.
