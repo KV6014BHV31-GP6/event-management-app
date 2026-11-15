@@ -33,6 +33,8 @@ from src.journey.models import JourneyState, JourneyOperation
 from src.journey.policy import *
 from src.journey import allocation as alloc
 from src.journey import attribution as attribution_summary
+from src.notifications.repo import compatibility_view, delivery_status
+from src.reminders.service import ReminderService
 
 VERSION='rose.demo-journey.v1'
 router=APIRouter(prefix='/api/v2/operations',tags=['Demo journey'])
@@ -134,6 +136,7 @@ async def new_application(db,event,data,user,source=None,walkin=False):
         await enabled(db,assignment.data['leader_id']);leader=assignment.data['leader_id']
     elif src.get('referral_code') is not None:fail('INVALID_INPUT',422)
     m.data={**m.data,'attributed_leader_id':leader,'source_kind':kind,'source_evidence':{'direct':'explicit_direct','leader_referral':'public_referral','unknown':'unknown'}[kind]}
+    if not walkin:await alloc.message(db,event,reg,'application_received','submitted:'+reg.id,'Your synthetic application was received and is pending review; no place is confirmed.')
     return reg,m
 async def registration_view(db,event,reg,actor):
     m=await alloc.meta(db,reg,False);offer=next((o for o in await alloc.offers(db,event) if o.data['registration_id']==reg.id and o.data['state']=='offered' and dt(o.data['expires_at'])>now()),None)
@@ -231,7 +234,7 @@ async def read(path:str,request:Request,db=Depends(get_async_db),user=Depends(ge
                     try:await reg_access(db,event,reg,user,request,False)
                     except HTTPException:continue
                 else:continue
-                result.append({**row.data,'version':row.version})
+                result.append({**compatibility_view(row),'version':row.version})
             if not user and not request.headers.get('X-Guest-Grant'):fail('AUTH_REQUIRED',401)
             return {'messages':result,'as_of_utc':iso()}
         if head!='events':fail('NOT_FOUND',404)
@@ -389,8 +392,8 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
         await mutable(db,event)
         if head=='outbox':
             expect(resource,env)
-            if suffix!='retry' or resource.data['state']!='failed':fail('INVALID_TRANSITION')
-            resource.data={**resource.data,'state':'demo_recorded','retry_at':iso()};resource.version+=1
+            if suffix!='retry' or delivery_status(resource)!='failed' or resource.data.get('provider_id'):fail('INVALID_TRANSITION')
+            resource.data={**{k:v for k,v in resource.data.items() if k!='state'},'delivery_status':'pending','scheduled_at':resource.data.get('scheduled_at') or iso(),'due_at':iso(),'retry_at':iso()};resource.version+=1
             return await receipt(db,env,actor_id,path,'outbox_retry',identifier,resource,{'outbox_id':identifier,'state':'demo_recorded'},event)
         if head=='offers':
             expect(resource,env)
@@ -400,6 +403,7 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
             if suffix=='accept':
                 resource.data={**resource.data,'state':'accepted'};resource.version+=1;reg.status=Status.approved;m.version+=1
                 await alloc.message(db,event,reg,'confirmation','confirm:'+reg.id,'Your synthetic booking is confirmed.')
+                await ReminderService().create_reminders_for_approved_registration(db,reg.id)
             elif suffix=='decline':
                 resource.data={**resource.data,'state':'declined'};resource.version+=1;await alloc.cancel(db,event,reg,user.id if user else None)
             else:fail('NOT_FOUND',404)
@@ -415,7 +419,9 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
                     if reg.status!=Status.pending or decision not in {'reject','request_correction'}:fail('INVALID_TRANSITION')
                     reason=text(data.get('reason'));m.data={**m.data,'review':'rejected' if decision=='reject' else 'correction_requested','reason':reason,'updated_at':iso()};m.version+=1
                     reg.reviewed_by_user_id=user.id;reg.reviewed_at=now();reg.review_remarks=reason
-                    if decision=='reject':reg.status=Status.rejected
+                    if decision=='reject':
+                        reg.status=Status.rejected
+                        await alloc.message(db,event,reg,'rejection','rejected:'+reg.id,'Your synthetic application was not approved.')
                     else:await alloc.message(db,event,reg,'correction','correction:'+reg.id+':'+str(m.version),'Please review the requested synthetic correction.')
             elif suffix=='correction':
                 if await state(db,'arrival:'+reg.id):fail('INVALID_TRANSITION')
@@ -429,6 +435,7 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
                     if not user and data['file_ids']:fail('FORBIDDEN',403)
                     await assets.validate(db,data['file_ids'],user.id if user else None,'supporting_document');await db.execute(delete(RegistrationDocumentModel).where(RegistrationDocumentModel.registration_id==reg.id));await assets.attach_documents(db,reg.id,data['file_ids'],user.id if user else None)
                 was_occupied=reg.status in {Status.approved,Status.waiting};reg.status=Status.pending
+                await ReminderService().cancel_registration_reminders(db,reg.id)
                 for offer in await alloc.offers(db,event):
                     if offer.data['registration_id']==reg.id and offer.data['state']=='offered':offer.data={**offer.data,'state':'invalidated'};offer.version+=1
                 m.data={**m.data,'review':'awaiting_review','reason':None,'updated_at':iso()};m.version+=1
@@ -535,7 +542,13 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
             ids=[]
             if now()>=dt(event.start_time)-timedelta(hours=work.data['policy']['reminder_hours']) and now()<=dt(event.start_time) and work.data['state']=='published':
                 for r in await alloc.registrations(db,event):
-                    if r.status==Status.approved:out=await alloc.message(db,event,r,'reminder','reminder:'+r.id+':'+iso(dt(event.start_time)),'Synthetic event reminder.',iso(dt(event.start_time)));ids.append(out.data['id'])
+                    if r.status==Status.approved:
+                        # The 24h/168h policy shares the Austin milestone identity.
+                        hours=work.data['policy']['reminder_hours']
+                        milestone={24:'1d',168:'7d'}.get(hours)
+                        key='reminder:'+r.id+':'+iso(dt(event.start_time))
+                        if milestone:key+=':'+milestone
+                        out=await alloc.message(db,event,r,'reminder',key,'Synthetic event reminder.',iso(dt(event.start_time)));ids.append(out.data['id'])
             effects={'outbox_ids':ids}
         elif suffix=='attendance' or suffix=='attendance/intents' or suffix.startswith('attendance/'):
             if work.data['state']!='published':fail('EVENT_CLOSED')
@@ -574,6 +587,9 @@ async def mutate(path:str,request:Request,db=Depends(get_async_db),user=Depends(
             if preview['blockers']:fail(preview['blockers'][0])
             preview={**preview,'state':'finalized','version':work.version+1};await put(db,'closeout:'+identifier,'closeout',preview,event.id);work.data={**work.data,'state':'completed'};event.status=EventStatusEnum.completed;effects=preview
         else:fail('NOT_FOUND',404)
+        if suffix in {'edit','postpone','resume','publish','cancel','closeout'}:
+            for registration in await alloc.registrations(db,event):
+                await ReminderService().create_reminders_for_approved_registration(db,registration.id)
         await bump(db,event)
         if not effects:effects={'event_public_id':identifier,'state':work.data['state']}
         return await receipt(db,env,actor_id,path,suffix.replace('/','_'),resource_id,row,effects,event)

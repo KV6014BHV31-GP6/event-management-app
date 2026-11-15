@@ -347,3 +347,13 @@ This closes a request that authenticated before a credential reset but resumed
 after it. The account migration compares quoted SQL values exactly while
 normalizing PostgreSQL expression formatting; uppercase language literals cannot
 silently satisfy the required lowercase `en`/`ms` constraint.
+
+## Canonical notification worker — 2026-11-16
+
+Managed Journey notifications now use the existing durable Journey outbox through the adapted Austin Reminder/Notification services. The automatic 7-day/1-day milestones share one canonical `delivery_status`; the legacy API `state` is a derived compatibility view. Pending application receipt is separate from approval, and provider accepted is separate from delivered/unknown.
+
+For synthetic staging, keep `NU_DEMO_PROFILE=synthetic` and the default `NU_NOTIFICATION_TRANSPORT=dry_run`. This starts both jobs on FastAPI lifespan with a 60-second interval. `NU_NOTIFICATION_SCHEDULER=off` disables the worker; `NU_NOTIFICATION_INTERVAL_SECONDS` adjusts the interval (minimum 1). No external recipient is contacted in dry-run mode.
+
+Real Twilio transport is optional and requires an installed SDK plus explicit `NU_NOTIFICATION_TRANSPORT=twilio`, `NU_NOTIFICATION_EXTERNAL_SEND=yes`, all original `TWILIO_ACCOUNT_SID`/`TWILIO_AUTH_TOKEN`/`TWILIO_SANDBOX_NUMBER` settings, and one exact approved `NU_NOTIFICATION_TEST_RECIPIENT`. Missing configuration is recorded as `EXTERNAL_DELIVERY_NOT_CONFIGURED`. Never retry an unknown provider result with a new task ID; reconcile its original provider SID/receipt first. No external service or approved test recipient was configured or exercised for this change.
+
+No new table/dependency migration is introduced. Historical synthetic outbox rows remain display-only; existing Journey schema is required. See [notification integration](../docs/dev/notification-integration.md) for fixed Austin provenance, lifecycle/policy mapping, cancellation/crash boundaries, test commands and external-delivery limits.

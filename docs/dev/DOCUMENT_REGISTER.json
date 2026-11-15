@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T04:15:12.574579+00:00",
-  "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved",
-  "document_count": 404,
+  "reviewed_at": "2026-11-15T19:07:06.033119+00:00",
+  "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補",
+  "document_count": 431,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,7 +107,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 8,
+      "revision": 9,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
       "revision_history": [
@@ -159,13 +159,20 @@
           "size_bytes": 30549,
           "superseded_at": "2026-11-08T19:12:46.213071+00:00",
           "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
+        },
+        {
+          "revision": 8,
+          "sha256": "ed647c4e15aad5629daabe642ecb62532cd6d1f4b5db27615c7519c814791a99",
+          "size_bytes": 30919,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ed647c4e15aad5629daabe642ecb62532cd6d1f4b5db27615c7519c814791a99",
-      "size_bytes": 30919
+      "sha256": "9c905d996f4f34fe6a97ef42c54d45f0b148abe467cf3371e84a8a8cb8c3c583",
+      "size_bytes": 32615
     },
     {
       "document_id": "DOC-06",
@@ -302,7 +309,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 47,
+      "revision": 51,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -597,6 +604,34 @@
           "size_bytes": 38935,
           "superseded_at": "2026-11-15T04:15:12.574579+00:00",
           "reason": "Owner approved NU staging fees; integrate independently identified Railway healthcheck Host compatibility with same-origin and DB readiness preserved"
+        },
+        {
+          "revision": 47,
+          "sha256": "b2f7974c59a37a3b719074102db0ddd0aa795e3c40850ded65c3fda2b8d9e57e",
+          "size_bytes": 40300,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 48,
+          "sha256": "5c2dc89f8e9b5ee88fd64409e9f1d6d257457f89d02f79b691fa534bd532ef72",
+          "size_bytes": 41802,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 49,
+          "sha256": "f1f876f482bc190033181fcf99bef47238f2cc1f178300cbb6869e4b76866472",
+          "size_bytes": 42463,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        },
+        {
+          "revision": 50,
+          "sha256": "eb8a438a771cf1f5c1e2d51ed9c7e0cf41ab69bf4b29cc076144a21579a3430b",
+          "size_bytes": 42780,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "import_lineage": {
@@ -609,8 +644,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "b2f7974c59a37a3b719074102db0ddd0aa795e3c40850ded65c3fda2b8d9e57e",
-      "size_bytes": 40300,
+      "sha256": "d262e236980f45dc771f2761e461b9b4244f7aeb156b4c9a9464632e3830b7d3",
+      "size_bytes": 44917,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -770,7 +805,7 @@
     {
       "document_id": "DOC-11",
       "path": "docs/dev/DECISIONS.md",
-      "revision": 4,
+      "revision": 6,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -793,6 +828,20 @@
           "size_bytes": 1543,
           "superseded_at": "2026-10-13T01:37:33.207141+00:00",
           "reason": "DEV-SPLIT-20261013: owner-requested doc-only Frontend/Backend workspaces, merged PR #1 state, API/E2E handoff and control"
+        },
+        {
+          "revision": 4,
+          "sha256": "959fdc42985d58dec3ae96783f777f614334874389d18082951548e1253daf7f",
+          "size_bytes": 2927,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 5,
+          "sha256": "617efb0f386e50e6797e24025071eccdf3c044736cc5205694de20d01c4d88df",
+          "size_bytes": 4100,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "import_lineage": {
@@ -803,8 +852,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "959fdc42985d58dec3ae96783f777f614334874389d18082951548e1253daf7f",
-      "size_bytes": 2927
+      "sha256": "6056361572f123485d5bfe7eff4f858d30d06317ee112c37e930738b67d8ced2",
+      "size_bytes": 4728
     },
     {
       "document_id": "DOC-12",
@@ -2763,7 +2812,7 @@
     {
       "document_id": "FE-LIVE-20261014-019",
       "path": "backend/src/main.py",
-      "revision": 5,
+      "revision": 6,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2794,14 +2843,21 @@
           "size_bytes": 2169,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 5,
+          "sha256": "b625c8333ebe08ab8457dbd7c5dbb2d24ed9df030d7fc30300fc2cc20fe3d3d9",
+          "size_bytes": 2263,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "b625c8333ebe08ab8457dbd7c5dbb2d24ed9df030d7fc30300fc2cc20fe3d3d9",
-      "size_bytes": 2263
+      "sha256": "7e412a8c4aa05492ab43337f630f09bc454c6ceac3f02e21f7b35d5fb94734f8",
+      "size_bytes": 2336
     },
     {
       "document_id": "FE-LIVE-20261014-020",
@@ -4877,7 +4933,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 10,
+      "revision": 13,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4943,13 +4999,34 @@
           "size_bytes": 42299,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 10,
+          "sha256": "920ae59183eaf950697352e82bf8915a10fcba14afea78ea0189b8a6872ce592",
+          "size_bytes": 44732,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 11,
+          "sha256": "097101ec02d928bcd2c480d208eebac2b5ffcbe387de428b095c9cdca88aafeb",
+          "size_bytes": 46814,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 12,
+          "sha256": "a2020e041bd90183100278981a28fd2e87bdcfdd89b87c4ff72ec13b8135551c",
+          "size_bytes": 47325,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "920ae59183eaf950697352e82bf8915a10fcba14afea78ea0189b8a6872ce592",
-      "size_bytes": 44732
+      "sha256": "c4c64c0f5b0660041791e2178d061585acc8ace56f0500faf7127c5f4cdab48f",
+      "size_bytes": 47558
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -5030,7 +5107,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 7,
+      "revision": 8,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5075,13 +5152,20 @@
           "size_bytes": 88191,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 7,
+          "sha256": "fdc21e5871b4a3e559e71e67fb04ea0fcaadb5222f31925c5a223a12997e2232",
+          "size_bytes": 90720,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "fdc21e5871b4a3e559e71e67fb04ea0fcaadb5222f31925c5a223a12997e2232",
-      "size_bytes": 90720
+      "sha256": "53d0327a1730d5c108d94ad907a3601190e8babaa4f3c4a9886d7de137a5e282",
+      "size_bytes": 91020
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
@@ -5219,7 +5303,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 6,
+      "revision": 8,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5257,13 +5341,27 @@
           "size_bytes": 53177,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 6,
+          "sha256": "e468249d009876e6bcfaee5d3b5b6aadedc7a02a3656e55e27c09fc1e8105c02",
+          "size_bytes": 54296,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 7,
+          "sha256": "6c0e2f27c2d2b8dc1c60be965bd383789e76147251154414e9f628f71ae159d0",
+          "size_bytes": 63994,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "e468249d009876e6bcfaee5d3b5b6aadedc7a02a3656e55e27c09fc1e8105c02",
-      "size_bytes": 54296
+      "sha256": "7762e0e7feaa832686bad6a8241ff7f5b789a86204322e9856f56fc0f7781641",
+      "size_bytes": 64040
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -6312,7 +6410,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 9,
+      "revision": 11,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6371,13 +6469,27 @@
           "size_bytes": 80075,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 9,
+          "sha256": "e47a96bb8dbed9447bb5ddada7903e77738d790cc19d36c61ca0a2e033df464f",
+          "size_bytes": 82029,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 10,
+          "sha256": "ff8a08f547397cd3b6a2a74c9f4df14f98391466ad89b7f76ae945ff6c279adc",
+          "size_bytes": 82901,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "e47a96bb8dbed9447bb5ddada7903e77738d790cc19d36c61ca0a2e033df464f",
-      "size_bytes": 82029
+      "sha256": "e791491cfacb82c735a3994a74fa00f493a134209f57593b64742bf755544305",
+      "size_bytes": 83607
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6430,7 +6542,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 9,
+      "revision": 11,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6489,13 +6601,27 @@
           "size_bytes": 82917,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 9,
+          "sha256": "33dda5fa6106b9e4e9783401126c898cb2f464b636e9b334e0d18616712a1f5b",
+          "size_bytes": 85003,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 10,
+          "sha256": "e525403279866c3ab2dce6d00fb0b01d70463c28b6332bf6d534d1b868ae93df",
+          "size_bytes": 85897,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "33dda5fa6106b9e4e9783401126c898cb2f464b636e9b334e0d18616712a1f5b",
-      "size_bytes": 85003
+      "sha256": "1bdc249990379a72af4faa521868056d135a4a6e227c16cf00a17f8421945178",
+      "size_bytes": 86637
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -7109,7 +7235,7 @@
     {
       "document_id": "DEMO-DOC-10AA92E3B765C263",
       "path": "backend/src/journey/allocation.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7119,13 +7245,20 @@
           "size_bytes": 7039,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "57784ea668b48e00c127df534b45ace9fa6dec5764de495c0bb2bda5bc266a8f",
+          "size_bytes": 7726,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "57784ea668b48e00c127df534b45ace9fa6dec5764de495c0bb2bda5bc266a8f",
-      "size_bytes": 7726
+      "sha256": "1b6f71744a3b4f6f7dcb315c8f4a4498a50b1a7388386531fde8aaa4e913a3da",
+      "size_bytes": 8008
     },
     {
       "document_id": "DEMO-DOC-2BBD8023697BCF48",
@@ -7171,7 +7304,7 @@
     {
       "document_id": "DEMO-DOC-6532F7F07E4BB796",
       "path": "backend/src/journey/router.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7188,13 +7321,20 @@
           "size_bytes": 51371,
           "superseded_at": "2026-11-08T19:12:46.213071+00:00",
           "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
+        },
+        {
+          "revision": 3,
+          "sha256": "382e57926ec3c5f07e93ef76c638a3383f5b1269827fb27b1a36230a97f2faad",
+          "size_bytes": 51382,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "382e57926ec3c5f07e93ef76c638a3383f5b1269827fb27b1a36230a97f2faad",
-      "size_bytes": 51382
+      "sha256": "a26f5dad9e79f2b844d712a7cfbf7f22affbeeecf0d44a2d013a520a3c3965cd",
+      "size_bytes": 52774
     },
     {
       "document_id": "DEMO-DOC-807252A5DD52CAE8",
@@ -7225,7 +7365,7 @@
     {
       "document_id": "DEMO-DOC-50208968A1FA7292",
       "path": "backend/tests/test_journey_native.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7235,13 +7375,20 @@
           "size_bytes": 15197,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "4c93eb11c55f1a234b0125c061e3d6ba958320ed0f28a31d5b593af35378cf6b",
+          "size_bytes": 19473,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4c93eb11c55f1a234b0125c061e3d6ba958320ed0f28a31d5b593af35378cf6b",
-      "size_bytes": 19473
+      "sha256": "7905aab5d01a728d54d0143a5aea3779f63a702602ff55ec5286da500d091ce6",
+      "size_bytes": 19949
     },
     {
       "document_id": "DEMO-DOC-1613893D489DFFB1",
@@ -7468,7 +7615,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 7,
+      "revision": 8,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7513,18 +7660,25 @@
           "size_bytes": 45033,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 7,
+          "sha256": "6a783d2b55913e8263733f3caea1eeaaaa2e108ffa742c6039cfd8e339b053ed",
+          "size_bytes": 47301,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6a783d2b55913e8263733f3caea1eeaaaa2e108ffa742c6039cfd8e339b053ed",
-      "size_bytes": 47301
+      "sha256": "fa41fc54db530af5f86776c1f367505d94371907c3b79d715cf7f85149cc7285",
+      "size_bytes": 48167
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 5,
+      "revision": 6,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7555,13 +7709,20 @@
           "size_bytes": 28749,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 5,
+          "sha256": "4dd859120bde542ca099dcd2159735e241cba7d4a62bf5147c4ab18195c992ae",
+          "size_bytes": 30046,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4dd859120bde542ca099dcd2159735e241cba7d4a62bf5147c4ab18195c992ae",
-      "size_bytes": 30046
+      "sha256": "f1eab44f2121c3585ec04951eb6a7c6f78d6b343903c87af4d627e715d1835c5",
+      "size_bytes": 32183
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -8685,15 +8846,23 @@
     {
       "document_id": "NU-RAILWAY-APP-DOCKERFILE-20261115",
       "path": "deploy/railway/Dockerfile",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b3dc978fa6d1cd1cea892ea319fd3a29a7bb2fc1c53226ac24499e4045a35486",
+          "size_bytes": 1875,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "b3dc978fa6d1cd1cea892ea319fd3a29a7bb2fc1c53226ac24499e4045a35486",
-      "size_bytes": 1875
+      "sha256": "142172b8663d9e09c989d6f2830896056d24c62dd9c39acf78ac2b3c8fb7da9b",
+      "size_bytes": 2269
     },
     {
       "document_id": "NU-RAILWAY-DB-DOCKERFILE-20261115",
@@ -8711,15 +8880,30 @@
     {
       "document_id": "NU-RAILWAY-ENTRYPOINT-20261115",
       "path": "deploy/railway/entrypoint.py",
-      "revision": 1,
+      "revision": 3,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "396a165496d85c0a66bcb20d47c11c9a1be3e4d7aeb7b0ca663f0c94d21afbac",
+          "size_bytes": 5343,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 2,
+          "sha256": "c78d1fda4a0085736dc76b24b502339b47fd6e9e409f84ef7234635a15f84bb8",
+          "size_bytes": 6860,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "396a165496d85c0a66bcb20d47c11c9a1be3e4d7aeb7b0ca663f0c94d21afbac",
-      "size_bytes": 5343
+      "sha256": "02e53940475771908c6cf770f472be7d98d87136545245e05016f7e68153a8b2",
+      "size_bytes": 6857
     },
     {
       "document_id": "NU-RAILWAY-HTTPS-GATEWAY-20261115",
@@ -8758,15 +8942,23 @@
     {
       "document_id": "NU-RAILWAY-ENTRY-TEST-20261115",
       "path": "deploy/railway/tests/entrypoint.test.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d03ded1f19ab00b7eb6a7d0545eabe9115656db8cdf96ec08ab7fc4b5a914d83",
+          "size_bytes": 2293,
+          "superseded_at": "2026-11-15T17:02:31.271603+00:00",
+          "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "d03ded1f19ab00b7eb6a7d0545eabe9115656db8cdf96ec08ab7fc4b5a914d83",
-      "size_bytes": 2293
+      "sha256": "3e39341b6d6eccf7e0e5d82b782810a30c8208373d6fce08890932f567aaaa47",
+      "size_bytes": 3088
     },
     {
       "document_id": "NU-RAILWAY-GATEWAY-TEST-20261115",
@@ -8809,6 +9001,486 @@
       ],
       "sha256": "5503ab11a37b80b3954cd92a15229e5f0e8e427793341b6e31bb360c8745f3e0",
       "size_bytes": 7818
+    },
+    {
+      "document_id": "PUB-WEB-20261116-B4F658B16B9271F4",
+      "path": "backend/scripts/staging_content.py",
+      "revision": 2,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ffab7129b911b0827abf98d8f0aafcdfe938a8c0cb9b2315e926dcff79cb77c8",
+          "size_bytes": 12652,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "f742fa8bef376b19e21c1880d8827eaa99e2cd29feaa5e2012b3d85431250e81",
+      "size_bytes": 12650
+    },
+    {
+      "document_id": "PUB-WEB-20261116-17EAF51706194BD8",
+      "path": "backend/tests/test_staging_content.py",
+      "revision": 2,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "070a6b6e35ea9684c314bf5185efd4be55b5ba7c647aeb6b12aa81bc48d05bd3",
+          "size_bytes": 2313,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ec52a5ffaaedf2f79318fef1c9dbd0858c282621e14087dcb2519d2463364556",
+      "size_bytes": 3217
+    },
+    {
+      "document_id": "PUB-WEB-20261116-4D23DD24FFB31466",
+      "path": "deploy/railway/README.md",
+      "revision": 2,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "314b1961257a00cd66cc1daadc3a7209ebf45ac53c3071921be2ee33b7e30c3f",
+          "size_bytes": 3834,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "202e53ea4c7b5e870430e5cf8034b4bb8afd83dc63753b2f2a035ad1c6b82707",
+      "size_bytes": 4161
+    },
+    {
+      "document_id": "PUB-WEB-20261116-78E669006797B772",
+      "path": "deploy/railway/seed-assets/manifest.json",
+      "revision": 3,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1fb580320af90d12a9dc8f9f4eb378fea0208adecd857649d849d27e635df608",
+          "size_bytes": 10753,
+          "superseded_at": "2026-11-15T17:02:59.109088+00:00",
+          "reason": "修正本輪生成 manifest 的 Windows newline；保留 JSON 內容與 seed canonical fingerprint"
+        },
+        {
+          "revision": 2,
+          "sha256": "453144d4ded65e696cb1ffe683ccb91cd7e90b6a0d1d7840e5a4497d6489491a",
+          "size_bytes": 10511,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "b1c54e14771042e7059246b18ba16797aca1f8a5fe2aba46b6222d23f50a344a",
+      "size_bytes": 10839
+    },
+    {
+      "document_id": "PUB-WEB-20261116-05D98357136A5517",
+      "path": "deploy/railway/seed-assets/screening.png",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ea9b55375a55849176f2d319a8302af1af30946b78c29b44d8612b70c63cb5a2",
+      "size_bytes": 1534191
+    },
+    {
+      "document_id": "PUB-WEB-20261116-BE94BA268ECA8F26",
+      "path": "deploy/railway/seed-assets/cooking.png",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "add7c8a69b5d6c0dc4a758ccaecad06b0fe31ea5b896f0c25acd9dbae57dd5ca",
+      "size_bytes": 1762279
+    },
+    {
+      "document_id": "PUB-WEB-20261116-63DAA0E217F178ED",
+      "path": "deploy/railway/seed-assets/wellbeing.png",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a5228e9d7525efe099a8ca6bb84713f1b2fd2b4ef5ccc59021c79ae8cdee318d",
+      "size_bytes": 1759801
+    },
+    {
+      "document_id": "PUB-WEB-20261116-061A70F76161388F",
+      "path": "deploy/railway/seed-assets/mobility.png",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "4ba316aa3ae28551be8d2fe4c9b18bf6d112c2a8c5b64c299e156ad876d0a102",
+      "size_bytes": 1618123
+    },
+    {
+      "document_id": "PUB-WEB-20261116-1A2B3E481EAA4FAC",
+      "path": "docs/dev/tasks/NU-WEB-RELEASE-20261116.md",
+      "revision": 5,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3b9cdc42f2641e9584968de049f34fdee4c02b52f95d301ab5dd4512841fe827",
+          "size_bytes": 4495,
+          "superseded_at": "2026-11-15T17:04:48.072661+00:00",
+          "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 2,
+          "sha256": "00203e8d3dc553a8263e365834b5526847c0b2d2fb480f51bca79b47b4b09f5e",
+          "size_bytes": 5220,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 3,
+          "sha256": "94e921b95eaba390f4fb371dd487bfb468af9aa07d0a966b4d85697f593e8950",
+          "size_bytes": 6376,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        },
+        {
+          "revision": 4,
+          "sha256": "ffef8ea7117e5a5e9399c43fe4c45812e71d63abbb5ba4a1b09cdb232d791ebb",
+          "size_bytes": 6698,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "6c814a4625d2c5cf8d98ed71e8e8e93a17821e0a1c01d7ad4fd582972da88322",
+      "size_bytes": 7567
+    },
+    {
+      "document_id": "PUB-WEB-20261116-3AB849A95516F3AD",
+      "path": "frontend/rose-pulse-react/public/images/r4/rose-mark.svg",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "02d13fae6f32165c4189528298c49d1ef68e2a8a3af1001302952138fd2776f2",
+      "size_bytes": 929
+    },
+    {
+      "document_id": "PUB-WEB-20261116-5EE22F72FAED8EB5",
+      "path": "frontend/rose-pulse-react/public/images/r4/screening.png",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ea9b55375a55849176f2d319a8302af1af30946b78c29b44d8612b70c63cb5a2",
+      "size_bytes": 1534191
+    },
+    {
+      "document_id": "PUB-WEB-20261116-D8458C48D17DE4E8",
+      "path": "backend/src/infrastructure/__init__.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "PUB-WEB-20261116-84F24447090F56E7",
+      "path": "backend/src/infrastructure/scheduler.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "c52ea71e9a52f27a67a563834f15df69de8849fb23989e8d7018b82f8de3175a",
+      "size_bytes": 1791
+    },
+    {
+      "document_id": "PUB-WEB-20261116-F0E6C137697D95C2",
+      "path": "backend/src/notifications/__init__.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "PUB-WEB-20261116-713D2C0366609AF8",
+      "path": "backend/src/notifications/models.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e0198d0f935741029f4a3159a9ca1e0252a48aef784607ba11ce5b11b4b74e08",
+      "size_bytes": 230
+    },
+    {
+      "document_id": "PUB-WEB-20261116-46E8C6BBAA4ED019",
+      "path": "backend/src/notifications/repo.py",
+      "revision": 3,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "578f35404d5db62e258ce11c58ba969ed5a05106e6508861be0e6a2f41d64777",
+          "size_bytes": 4339,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "7458e7beb1e79c64673ab95602009a624a99d996e6724d9aab61ec7baebe2668",
+          "size_bytes": 4974,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "cac8084c2078b90f5ed7aacca637439ca19a395fbe7c865df7cede125f67877d",
+      "size_bytes": 4985
+    },
+    {
+      "document_id": "PUB-WEB-20261116-31B5BB9DBCC29C8F",
+      "path": "backend/src/notifications/schemas.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ba9a412bed3a97705b378830a24fa72c79b99da9afc813b6e2b0e0a6db1d32f7",
+      "size_bytes": 2351
+    },
+    {
+      "document_id": "PUB-WEB-20261116-2CDAC39F364C1632",
+      "path": "backend/src/notifications/service.py",
+      "revision": 2,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c3e7b8ef153988f890687ceb48ce3ef3474e06f3fa32a13c376f2cec791ed417",
+          "size_bytes": 9178,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9eb12509a322be34aab6826b4e9a51755617dd8405085aaaf582e5896e87727e",
+      "size_bytes": 9416
+    },
+    {
+      "document_id": "PUB-WEB-20261116-9205786E47BA456C",
+      "path": "backend/src/notifications/whatsapp_sender.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "6ed47a10ea21d9414d795abe35fff9c1670ae5888cd5561cdc08312e6e10fc18",
+      "size_bytes": 3008
+    },
+    {
+      "document_id": "PUB-WEB-20261116-E83A3E2CA5EE1F9B",
+      "path": "backend/src/reminders/__init__.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "size_bytes": 0
+    },
+    {
+      "document_id": "PUB-WEB-20261116-2F4985AB6444D94B",
+      "path": "backend/src/reminders/models.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9295510edbe8a68f5515cb71affa79d66e59412a96a11514842187b623d91656",
+      "size_bytes": 243
+    },
+    {
+      "document_id": "PUB-WEB-20261116-773B8B682AE62CCD",
+      "path": "backend/src/reminders/repo.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5ecf8ae4b7ffc3ce1a50c9828f7c9eb58255ecabf7f4aa534bdc9ed72b946985",
+      "size_bytes": 1459
+    },
+    {
+      "document_id": "PUB-WEB-20261116-C0DFED829FA39AA8",
+      "path": "backend/src/reminders/schemas.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "a56cb7f8a5ad9ba6c44f986bef8d0a2198724d4a8daf8a53f24a9b6559e1f39f",
+      "size_bytes": 1425
+    },
+    {
+      "document_id": "PUB-WEB-20261116-F3312ECA895B587A",
+      "path": "backend/src/reminders/service.py",
+      "revision": 1,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e03dbd2a6818c947b54770eaa6b1d7dce56faf7653758e5df3e49bcad16b6001",
+      "size_bytes": 3825
+    },
+    {
+      "document_id": "PUB-WEB-20261116-AD70C1F4804FF00B",
+      "path": "backend/tests/test_notifications.py",
+      "revision": 3,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "16402257790968b605ef1c47a3ac6a7ecf04ed53e52286dfe987ebd59069f086",
+          "size_bytes": 8648,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "eddd44639588aa6ce4d2f030492e4b8ab1750cdbafb6658a2202a32557960369",
+          "size_bytes": 12242,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "8b3e53be927fd558865e4b16e81e3efb256067de3d5015607897a3b0ea3913e8",
+      "size_bytes": 12784
+    },
+    {
+      "document_id": "PUB-WEB-20261116-286A7C015ABF52CE",
+      "path": "backend/tests/test_notifications_native.py",
+      "revision": 2,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d3d427c48bee9a0b6a93188563e58b09dff822144b915d9ad00ecb9239a95396",
+          "size_bytes": 5520,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "134552540cd944c5dd5209b361647c2646a8752b9256edad33a96eeb4c845a98",
+      "size_bytes": 6866
+    },
+    {
+      "document_id": "PUB-WEB-20261116-681CB300EA61B38A",
+      "path": "docs/dev/notification-integration.md",
+      "revision": 3,
+      "owner": "NU Web release Astra integration",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "68932bac75182f82dcbb3ef6f31e4ae9dcd2912f3bc50c53eaeac08173c77755",
+          "size_bytes": 10303,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "725976bfe6cafd84fccd4d66a66f2dcda820c8101151a60d4e9fc1f37c296b03",
+          "size_bytes": 11648,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "aaa7b72031250d6c06015f93fbf47142ea11e37c90a0f6696302a2cf9d7470a0",
+      "size_bytes": 12429
     }
   ]
 }

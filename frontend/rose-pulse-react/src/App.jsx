@@ -128,35 +128,11 @@ export function Icon({ name, size = 20, ...rest }) {
 export function Brand({ compact = false }) {
   return (
     <span className={`brand ${compact ? "brand-compact" : ""}`}>
-      <svg
-        className="brand-leaf"
-        width="52"
-        height="54"
-        viewBox="0 0 64 64"
-        aria-hidden="true"
-      >
-        <path
-          d="M31 55C10 47 3 31 8 17 19 12 31 22 32 36 32 17 44 8 57 12c5 18-5 34-26 43Z"
-          fill="#d5b579"
-        />
-        <path d="M31 49C10 44 4 28 9 15 23 11 35 27 31 49Z" fill="#288268" />
-        <path d="M34 50c-2-17 7-26 23-27-1 14-8 23-23 27Z" fill="#17634f" />
-        <path
-          d="M31 57c1-15-3-25-13-33m14 23c4-9 11-14 19-17"
-          fill="none"
-          stroke="#f7f4ed"
-          strokeWidth="2.4"
-          strokeLinecap="round"
-        />
-      </svg>
-      {!compact && (
-        <span>
-          <strong>
-            ROSE<span className="brand-dot">·</span>PULSE
-          </strong>
-          <small>{tr("Community Health \xB7 People \xB7 Opportunity")}</small>
-        </span>
-      )}
+      <img className="brand-leaf" src="/images/r4/rose-mark.svg" width="41.8" height="41.8" alt="" />
+      <span>
+        <strong>ROSE<span className="brand-dot">·</span>PULSE</strong>
+        {!compact && <small>{tr("Community Health \xB7 People \xB7 Opportunity")}</small>}
+      </span>
     </span>
   );
 }
@@ -350,7 +326,7 @@ function Shell({ children }) {
     });
   };
   return (
-    <div className="app-shell">
+    <div className={`app-shell route-${route.view}`}>
       <a href="#main" className="skip-link">
         {tr("Skip to main content")}
       </a>
@@ -434,21 +410,9 @@ function Shell({ children }) {
           <Link view="home" aria-label={tr("ROSE PULSE home")}>
             <Brand />
           </Link>
-          <div className="masthead-message">
-            <strong>
-              {tr("Connected communities.")}
-              <br />
-              {tr("Healthier lives.")}
-            </strong>
-            <small>{tr("Events \xB7 Wellbeing \xB7 Together")}</small>
-          </div>
-          <div className="masthead-detail">
-            <Icon name="leaf" />
-            <span>
-              {tr("Growing together")}
-              <small>{tr("One community at a time")}</small>
-            </span>
-          </div>
+          <p className="masthead-title">{route.view === "home" || route.view === "events"
+            ? tr("Explore community events")
+            : tr(items.find(item => item.view === route.view)?.label || "ROSE · PULSE")}</p>
         </header>
         <div className="toolbar">
           <form className="search" role="search" onSubmit={submitSearch}>
@@ -536,10 +500,10 @@ function Shell({ children }) {
                 </span>
               </Link>
             ) : (
-              <Link view="login" className="button button-small">
-                {tr("Log in")}
-                <Icon name="arrow" size={15} />
-              </Link>
+              <>
+                <Link view="login" className="button button-small">{tr("Log in")}</Link>
+                <Link view="signup" className="button button-small">{tr("Sign up")}</Link>
+              </>
             )}
           </div>
         </div>
@@ -644,6 +608,8 @@ function EventImage({ event, className = "", detail = false, index = 0 }) {
   );
 }
 export function EventCard({ event }) {
+  const capacity = [event.online_quota, event.offline_quota].every(value => Number.isSafeInteger(value) && value >= 0)
+    ? event.online_quota + event.offline_quota : null;
   return (
     <article className="event-card">
       <Link
@@ -686,6 +652,7 @@ export function EventCard({ event }) {
           <span>{event.location}</span>
         </p>
         <RegistrationWindow event={event}/>
+        {capacity !== null && <p className="card-capacity">{tr("{{count}} total places · Application required", { count: capacity })}</p>}
         <Link
           className="button card-button"
           view="event"
@@ -701,7 +668,7 @@ export function EventCard({ event }) {
   );
 }
 function Events({ home = false }) {
-  const { runtime, route, navigate } = useApp();
+  const { runtime, route, navigate, auth } = useApp();
   const [state, setState] = useState({
     status: "loading",
     data: null,
@@ -753,8 +720,19 @@ function Events({ home = false }) {
     });
   const displayedEvents = home ? (state.data?.data||[]).filter(event => ["active","published"].includes(eventDisplayState(event).toLowerCase()) && Date.parse(event.start_time)>=Date.now()).sort((a,b)=>Date.parse(a.start_time)-Date.parse(b.start_time)).slice(0,3) : (state.data?.data||[]);
   return (
-    <div className="browse-page">
-      {home && <Heading eyebrow="ROSE · PULSE" title={tr("Community events")}>{tr("Find an event, check the date and location, then apply. Places are confirmed by the server.")}</Heading>}
+    <div className={`browse-page ${home ? "home-page" : ""}`}>
+      {home && <section className="community-intro" aria-labelledby="intro-title">
+        <div className="community-intro-copy">
+          <p className="eyebrow">{tr("WOMEN’S HEALTH · ROSE PULSE")}</p>
+          <h1 id="intro-title">{tr("Cervical screening, closer to home.")}</h1>
+          <p>{tr("Free screening for women in B40 communities. Apply online or get help from a community leader.")}</p>
+          <div className="intro-actions">
+            <Link view="events" className="button">{tr("Find events")}</Link>
+            <Link view={auth.user ? "registrations" : "operations"} className="button button-quiet">{tr("Check my application")}</Link>
+          </div>
+        </div>
+        <img className="community-intro-photo" src="/images/r4/screening.png" width="360" height="180" alt="" />
+      </section>}
       {!home && (
         <Heading
           eyebrow={tr("FIND YOUR COMMUNITY")}
@@ -766,12 +744,10 @@ function Events({ home = false }) {
       <section className="events-section" aria-labelledby="events-title">
         <div className="section-heading">
           <div>
-            <p className="eyebrow">
-              {home ? tr("COME ALONG") : tr("WHAT\u2019S ON")}
-            </p>
+            {!home && <p className="eyebrow">{tr("WHAT\u2019S ON")}</p>}
             <h2 id="events-title">
               {home
-                ? tr("Upcoming events")
+                ? tr("Upcoming community events")
                 : keyword
                   ? `Results for “${keyword}”`
                   : tr("All community events")}
@@ -796,7 +772,7 @@ function Events({ home = false }) {
           <div className="browse-controls">
             <p className="muted">
               {state.data
-                ? `${state.data.total_count} events`
+                ? tr("{{count}} events", { count: state.data.total_count })
                 : tr("Events from the community")}
               {keyword && (
                 <>
@@ -936,6 +912,7 @@ function Events({ home = false }) {
             </form>
           </div>
         )}
+        {home && <p className="application-confirmation-note">{tr("A place is confirmed once your application is approved.")}</p>}
         <p className="timezone-note">
           <Icon name="clock" size={14} />
           {tr("All times are shown in your browser timezone:")}{" "}

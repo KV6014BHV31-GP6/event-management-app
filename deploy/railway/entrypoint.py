@@ -1,7 +1,8 @@
-"""Railway-only synthetic staging launcher. Never seed accounts, events or participant data."""
+"""Railway synthetic launcher; content installation requires an explicit fixed operation."""
 from __future__ import annotations
 
 import asyncio
+import json
 import os
 import re
 import signal
@@ -12,8 +13,15 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 ROOT = Path("/opt/nu")
-SOURCE_SHA = "23e327a6ca18ad649db8e5075e0ae14c2286aa45"
 DB_NAME = "nu_staging"
+
+
+def read_build_identity():
+    """Read the immutable identity produced in the same Docker stage as the UI."""
+    value = json.loads((ROOT / 'web/nu-source.json').read_text(encoding='utf-8'))['source_sha']
+    if not isinstance(value, str) or not re.fullmatch(r'[0-9a-f]{40}', value) or value == '0' * 40:
+        raise ValueError('INVALID_BUILD_IDENTITY')
+    return value
 
 
 def validate_environment(source=None):
@@ -33,8 +41,11 @@ def validate_environment(source=None):
         raise ValueError("INVALID_JWT_SECRET")
     if env.get("NU_DEMO_PROFILE") != "synthetic":
         raise ValueError("SYNTHETIC_PROFILE_REQUIRED")
-    if env.get("NU_PRODUCT_SOURCE_SHA") != SOURCE_SHA:
+    source_sha = read_build_identity()
+    if env.get("NU_PRODUCT_SOURCE_SHA") != source_sha:
         raise ValueError("PRODUCT_SOURCE_DRIFT")
+    if env.get('RAILWAY_GIT_COMMIT_SHA', source_sha) != source_sha:
+        raise ValueError('PROVIDER_SOURCE_DRIFT')
     port = env.get("PORT", "8080")
     if not port.isdecimal() or not 1 <= int(port) <= 65535:
         raise ValueError("INVALID_PORT")
@@ -125,6 +136,23 @@ def main():
     os.environ.update(env)
     sys.path.insert(0, str(ROOT / "backend"))
     asyncio.run(verify_or_initialize_fresh_db())
+    # This explicit release operation is idempotent and keeps its immutable DB receipt.
+    # The default remains no seed. Credentials never enter Node or request handlers.
+    operation = env.get('NU_STAGING_CONTENT_OPERATION')
+    if operation:
+        sys.path.insert(0, str(ROOT / 'backend'))
+        from scripts.staging_content import OPERATION, run
+        if operation != OPERATION:
+            raise ValueError('UNKNOWN_STAGING_CONTENT_OPERATION')
+        manifest = ROOT / 'deploy/railway/seed-assets/manifest.json'
+        plan = asyncio.run(run(manifest))
+        print('NU staging content dry-run: ' + plan['result'], flush=True)
+        result = asyncio.run(run(manifest, apply=True))
+        print('NU staging content receipt: ' + json.dumps({key: result[key] for key in
+              ('operation_id', 'manifest_sha256', 'result', 'backup_sha256', 'event_public_ids')
+              if key in result}), flush=True)
+    env.pop('NU_STAGING_ACCOUNTS_JSON', None)
+    os.environ.pop('NU_STAGING_ACCOUNTS_JSON', None)
     return serve(env)
 
 

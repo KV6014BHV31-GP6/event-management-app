@@ -13,9 +13,11 @@ from src.offline_sync.router import router as offline_sync_router
 from src.phase2.router import router as phase2_router
 from src.journey.router import router as journey_router
 from src.accounts.router import router as accounts_router
+from src.infrastructure.scheduler import lifespan
 
 
 app = FastAPI(
+    lifespan=lifespan,
     title=settings.PROJECT_NAME,
     version="1.0.0",
     docs_url=f"{settings.API_V1_STR}/docs" if settings.ENVIRONMENT != "production" else None,

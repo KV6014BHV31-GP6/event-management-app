@@ -1,3 +1,51 @@
+# Current successor: NU Web release native Browser evidence, 2026-11-16
+
+The current native turn verifies on-request approval, auto_review and workspace-write.
+The original executor formally allowed the original local proxy operation; its PID,
+loopback port and HTTP response were read back. The older never-mode rejection below
+is retained historical evidence and is superseded for this exact approved operation.
+No alternate executor or Owner manual launch was used.
+
+LOCAL_VERIFIED on product candidate `1170ec773484fc0cf9eb36f4c66155834728a8dc`:
+six R4 source events and exact image hashes; EN/BM switching; four viewport widths;
+six real account logins; Guest pending application; private supporting-document
+upload, authorised preview/download with matching hash; participant reload;
+Organizer approval with server count reconciliation; assigned Leader offline draft,
+reload, zero reconnect POSTs and original lost-acknowledgement receipt recovery;
+same-day synthetic attendance with persisted arrived readback; foreign participant,
+unassigned Leader and other Organizer reads correctly refused. No uncertain mutation
+was replayed. A separate, explicitly labelled attendance exercise preserves all six
+future source dates. Internal outbox tasks are real; external delivery is not configured.
+
+Independent Astra source/visual review accepted the narrow 701–950px footer CSS
+repair and settled R4 directory screenshots. Original source review and hosted CI
+on `bed85772225e18fb6702a929ab398ba624853085` remain recorded separately. Release
+gates additionally require current fixed-Head CI, remaining lifecycle acceptance,
+independent evidence review, stable Base/Head, actual merged target readback, existing
+Railway update and public persistence/permission verification. A narration WAV and
+raw scene clips are not the final 420-second MP4. Current artifacts and actual
+deployment/video decisions are maintained in the repo-external release evidence pack.
+See [release task](tasks/NU-WEB-RELEASE-20261116.md) and
+[deployment runbook](../../deploy/railway/README.md).
+
+The entries below retain their historical scope and versions.
+
+# Current successor: NU Web release Browser gate blocked, 2026-11-16
+
+Owner authorizes a gated release to existing NU Railway staging and the same HTTPS URL, plus a real420-second demo. Base is latest `dev_demo@4018d6507fdaa9ad70d77cb5a396d852971decec`; earlier PR65/66/67 ancestry is retained. Separate Sol-FE/BE isolated writers are implementing current R4 visuals and minimal Austin notification/reminder reuse. Root owns shared integration/seed/deploy documents. See [release task](tasks/NU-WEB-RELEASE-20261116.md).
+
+Observed existing cloud state supersedes older incomplete activation wording below: `rosepulse.up.railway.app` is assigned; web deployment9720fdaa-b11a-40e6-899a-41d4636ff2af is SUCCESS at fixed source5dd6b4ae216749a4e892ef87eae8adab89673442; PostgreSQL/volumes remain intact and there are no staged changes. This is still the prior empty deployment, not this release.
+
+LOCAL_VERIFIED: corrected21-character stable public IDs preserve the existing Web detail/offline contract. A fresh isolated PostgreSQL rehearsal verifies6 current Figma-source events,6 accounts,6 image associations, dry-run/no-write, repeat/no-duplicate,6 real logins and scoped negative permissions. The original short-ID local rehearsal is superseded and preserved. Source-identity guard5/5, gateway3/3 and manifest6/6 PASS. Integrated7b458591 backend165 tests and Docker build PASS; independent review found two notification defects, now fixed by stopped Sol-BE95a40d61 with82 controlled/6 native checks PASS, awaiting successor review.
+
+BROWSER_BLOCKED: original executor denied local proxy startup. Effective session approval=never/sandbox=danger-full-access differs from local on-request/workspace-write defaults; no formal approval entry is available. Owner's correction withdraws the earlier manual-start request and forbids alternate execution of the denied effect. Merge and deployment remain blocked by that required gate. Source/CI/media preparation continue independently; no actual420-second MP4 or new cloud deployment exists. Physical-device/human UAT/production certification remain out of scope.
+
+Independent successor review confirmed both original notification repairs, but
+reproduced the never-sent waitlisted reapproval variant. Stopped Sol-BE28379ab0
+extends the same protected requeue to that kind, with14 focused cases PASS after
+the retained RED. New successor source review and hosted CI remain pending.
+
+The entries below retain historical scope and versions.
 # Current successor: Railway activation and scoped platform-healthcheck fix, 2026-11-15
 
 The Owner explicitly approved NU deployment costs. The previously staged private Railway web/PG17 services and distinct volumes were applied at product baseline 23e327a6 and adapter 830cb3d7; Railway reports SUCCESS and startup logs confirm a new synthetic schema with no accounts/events seeded. No public domain is assigned at this checkpoint, and main/dev/dev_demo branches and prior Docker data are untouched. The initial billing hold in the preceding section is superseded only for this NU staging deployment.
