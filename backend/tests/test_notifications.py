@@ -153,12 +153,16 @@ async def test_unconfigured_sender_and_phone_mask(monkeypatch,client,db_session,
     assert {r.data['kind'] for r in rows}=={'application_received','confirmation'}
 
 @pytest.mark.parametrize('prior', ['never_attempted','unknown','accepted','delivered','dry_run','processing','cancelled_with_attempt'])
-async def test_reapproval_requeues_only_never_attempted_confirmation(client,db_session,managed,prior):
+@pytest.mark.parametrize('kind',['confirmation','waitlisted'])
+async def test_reapproval_requeues_only_never_attempted_lifecycle(client,db_session,managed,prior,kind):
     public,a=managed
     await mutation(client,public,a['org'],'publish',{})
+    if kind=='waitlisted':
+        occupied=await application(client,public,'TEST-REAPPROVAL-OCCUPANT',a['b'])
+        await review(client,occupied,a['org'])
     rid=await application(client,public,'TEST-REAPPROVAL',a['a'])
     await review(client,rid,a['org'])
-    key='outbox:confirm:'+rid
+    key='outbox:'+('confirm' if kind=='confirmation' else 'waitlisted')+':'+rid
     row=await db_session.get(JourneyState,key)
     original_id=row.data['id']
     if prior!='never_attempted':
@@ -167,6 +171,8 @@ async def test_reapproval_requeues_only_never_attempted_confirmation(client,db_s
                   'provider_id':None if prior in {'processing','dry_run'} else 'SM-ORIGINAL'}
         await db_session.commit()
     view=(await client.get(P+'/registrations/'+rid,headers=auth(a['a']))).json()
+    expected_booking='confirmed' if kind=='confirmation' else 'waitlisted'
+    assert view['booking_state']==expected_booking
     response=await client.post(P+'/registrations/'+rid+'/correction',headers=auth(a['a']),
         json=envelope({'note':'Synthetic contact correction'},view['version']))
     assert response.status_code==200,response.text
@@ -176,9 +182,10 @@ async def test_reapproval_requeues_only_never_attempted_confirmation(client,db_s
         assert row.data['delivery_status']=='cancelled'
     before=dict(row.data)
     await review(client,rid,a['org'])
+    assert (await client.get(P+'/registrations/'+rid,headers=auth(a['a']))).json()['booking_state']==expected_booking
     row=await db_session.get(JourneyState,key)
     assert row.data['id']==original_id
-    assert len([r for r in await tasks(db_session) if r.data['kind']=='confirmation'])==1
+    assert len([r for r in await tasks(db_session) if r.data['kind']==kind and r.data['registration_id']==rid])==1
     if prior=='never_attempted':
         assert row.data['delivery_status']=='pending'
         await NotificationService().process_notification(db_session,row,SyntheticSender())
