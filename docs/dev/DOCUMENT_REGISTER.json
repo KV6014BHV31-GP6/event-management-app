@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-14T17:01:07.198594+00:00",
-  "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits",
+  "reviewed_at": "2026-11-15T01:52:33.556490+00:00",
+  "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests",
   "document_count": 394,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -302,7 +302,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 44,
+      "revision": 45,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -576,6 +576,13 @@
           "size_bytes": 33284,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 44,
+          "sha256": "8b3aa424dd202ef48fa05f91220e9c7bef1ca8e2bdd1e3b90ab3e5d47ab58a18",
+          "size_bytes": 34797,
+          "superseded_at": "2026-11-15T01:52:33.556490+00:00",
+          "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
         }
       ],
       "import_lineage": {
@@ -588,8 +595,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "8b3aa424dd202ef48fa05f91220e9c7bef1ca8e2bdd1e3b90ab3e5d47ab58a18",
-      "size_bytes": 34797,
+      "sha256": "43edebe86ffd372d514c4537d5a530b23a44fa0783ad5692d31781932d2eb6ed",
+      "size_bytes": 36436,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -6498,7 +6505,7 @@
     {
       "document_id": "ROSE-P2-4d5ba300321d",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6515,18 +6522,25 @@
           "size_bytes": 26780,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 3,
+          "sha256": "0cb3ec453afb4a64b6cdd0ee1e2dc088b13fb0d287725ab182582e0dc995c6a2",
+          "size_bytes": 28595,
+          "superseded_at": "2026-11-15T01:52:33.556490+00:00",
+          "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "0cb3ec453afb4a64b6cdd0ee1e2dc088b13fb0d287725ab182582e0dc995c6a2",
-      "size_bytes": 28595
+      "sha256": "41ec0dfd5527e59939c96d8d5da9ad5034e97e1dbe97943b7fd5e97e41f4c5e2",
+      "size_bytes": 28693
     },
     {
       "document_id": "ROSE-P2-a74207d91712",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6543,13 +6557,20 @@
           "size_bytes": 6274,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 3,
+          "sha256": "2ada8a50c5f19b33c2fa5acd393c529096c10be5c0a99364a7feee31511085c9",
+          "size_bytes": 6455,
+          "superseded_at": "2026-11-15T01:52:33.556490+00:00",
+          "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "2ada8a50c5f19b33c2fa5acd393c529096c10be5c0a99364a7feee31511085c9",
-      "size_bytes": 6455
+      "sha256": "6df9637ab3e742e96fa8092a5734ea0c7437ad36465e0eaf04c7d8279436c53e",
+      "size_bytes": 9882
     },
     {
       "document_id": "ROSE-P2-7d0ca7caa536",
@@ -8452,7 +8473,7 @@
     {
       "document_id": "W9-DOC-20261109",
       "path": "docs/dev/tasks/W9-CLOSEOUT-20261109.md",
-      "revision": 7,
+      "revision": 8,
       "owner": "Astra Integrator",
       "status": "working-baseline",
       "revision_history": [
@@ -8497,13 +8518,20 @@
           "size_bytes": 14016,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 7,
+          "sha256": "e57fff263672eb30a819347f68b1c1c914fda9b1539aef553a1d6acdc29bcc3b",
+          "size_bytes": 16331,
+          "superseded_at": "2026-11-15T01:52:33.556490+00:00",
+          "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e57fff263672eb30a819347f68b1c1c914fda9b1539aef553a1d6acdc29bcc3b",
-      "size_bytes": 16331
+      "sha256": "bd5e5ffbc4bcff03b26d42b8c83a950390f3eb4a5f6bb7bcb81bf11158aa234f",
+      "size_bytes": 18189
     },
     {
       "document_id": "W9-TEST-20261109",

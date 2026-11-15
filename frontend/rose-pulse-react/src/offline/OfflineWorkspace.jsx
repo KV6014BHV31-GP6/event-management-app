@@ -146,10 +146,12 @@ export default function OfflineWorkspace({
         const event = await runtime.api.getEvent(targetEventId);
         if (event.workflow) {
           const client = createJourneyClient({
-            authorize: (operation) => runtime.withVerifiedAccount((token, verifiedActor) => {
-              if (verifiedActor.id !== actor.id) throw new Error("The selected account or record changed.");
-              return operation(token, verifiedActor);
-            }, { roles: ["leader"] }),
+            authorize: async (operation) => {
+              const verified = await runtime.freshOfflineIdentity(actor);
+              if (verified.actor.id !== actor.id || verified.actor.role !== "leader")
+                throw new Error("The selected account or permissions changed. Local drafts remain locked.");
+              return operation(verified.token, verified.actor);
+            },
           });
           try {
             await client.get(`/events/${targetEventId}`);

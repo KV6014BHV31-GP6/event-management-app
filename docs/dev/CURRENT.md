@@ -1,4 +1,10 @@
-# Current successor: dev_demo unification candidate, 2026-11-15
+# Current successor: dev_demo unified Leader manual-sync repair, 2026-11-15
+
+Independent native Astra Reviewer of fixed candidate `f3f212c051474c967d16c9e8dca4677070b0b6c8` completed a source-based review and reported `BLOCKED` for one scoped P2 regression at `frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx`: a restored Leader with valid bearer/`offlineActor` but missing in-memory `session.user` could not use managed-event manual sync, because newly added assignment preflight called `withVerifiedAccount` before the existing offline-specific `freshOfflineIdentity`. The original reviewer receipt is preserved externally and is not an acceptance record.
+
+A new isolated Frontend fix worktree `E:\NU_Local_Environment_20261014\demo-unified-leader-sync-fix-20261115` changes only the managed Leader assignment read to call `freshOfflineIdentity(actor)`, require the same Leader ID and role, and then use its verified bearer for the same server assignment GET; the existing `manualSync.sync()` independently revalidates identity before the original one-batch POST. No auth weakening, automatic resend, Backend/API/DB, unrelated Frontend UI or deployment change. Added three negative/positive tests for token-restored `session.user:null`, HTTP 403 unassigned event and role drift, retaining no-replay and immutable saved draft assertions. Local OfflineWorkspace 6/6 PASS, full React 357/357 PASS and synthetic production build PASS. New hosted fixed-SHA CI and independent review remain NOT_RUN pending a commit. The original Draft PR #66 and deployed services remain unchanged. See [W9 task](tasks/W9-CLOSEOUT-20261109.md).
+
+## Previous successor: dev_demo unification candidate, 2026-11-15
 
 The Owner requested unifying the verified `dev_demo` baseline (`62018df582202d10311ba05e29c124ce5117605a`) with all nine local Demo V2 Frontend commits ending at `3c87a41e5bdf2bd4f8152b1c5a590741896d0292`, without replacing existing services or data. The integration worktree and branch `integration/dev-demo-unified-20261115` retain both histories. No Backend, database schema, credential, network or live service change is involved.
 
