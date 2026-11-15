@@ -24,5 +24,16 @@ export async function readDiscovery(api, options) {
   }
   const records = [...pages.entries()].sort(([a], [b]) => a - b).flatMap(([, rows]) => rows);
   const unique = [...new Map(records.map(event => [event.public_id, event])).values()];
+  if (unique.length !== first.total_count) {
+    // Unstable server page boundaries can duplicate a row and omit another.
+    // One bounded read can establish completeness; never loop or show partial success.
+    const snapshot = await api.getEvents({...options, page: 1, pageSize: 100});
+    const snapshotRows = [...new Map(snapshot.data.map(event => [event.public_id, event])).values()];
+    if (!Number.isSafeInteger(snapshot.total_count) || snapshot.total_count > 100 ||
+        snapshotRows.length !== snapshot.total_count) {
+      throw new Error("Unable to read the complete event list. Please refresh and try again.");
+    }
+    return {...first, total_count: snapshot.total_count, records: discoveryView(snapshotRows), complete: true};
+  }
   return {...first, records: discoveryView(unique), complete: true};
 }

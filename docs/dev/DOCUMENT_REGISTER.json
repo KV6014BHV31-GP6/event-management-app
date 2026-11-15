@@ -1,7 +1,7 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T20:38:23.487717+00:00",
+  "reviewed_at": "2026-11-15T20:46:53.386937+00:00",
   "reason": "V2 product polish and stable grouped pagination; retain contracts and V1",
   "document_count": 433,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
@@ -9569,20 +9569,28 @@
     {
       "document_id": "PUB-DOC-V2-EVENT-DISCOVERY",
       "path": "frontend/rose-pulse-react/src/event-discovery.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Frontend / Sol product V2",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "2f38b325c5b7d98fefe2442cb80f836e3cca5af677f6f57009d16209049cd61e",
+          "size_bytes": 1588,
+          "superseded_at": "2026-11-15T20:46:53.386937+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "2f38b325c5b7d98fefe2442cb80f836e3cca5af677f6f57009d16209049cd61e",
-      "size_bytes": 1588
+      "sha256": "c5571d2fff5fdb138230cbf4a793d06131c81e52f81714222c7de98b86faf361",
+      "size_bytes": 2339
     },
     {
       "document_id": "PUB-DOC-V2-EVENT-DISCOVERY-TEST",
       "path": "frontend/rose-pulse-react/src/event-discovery.test.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Frontend / Sol product V2",
       "status": "working-baseline",
       "revision_history": [
@@ -9592,13 +9600,20 @@
           "size_bytes": 2518,
           "superseded_at": "2026-11-15T20:38:23.487717+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 2,
+          "sha256": "73b8b7cd86deeda2757f52d9e151e4a850a8a029abe966a92ebb8b7b7826ebb1",
+          "size_bytes": 2492,
+          "superseded_at": "2026-11-15T20:46:53.386937+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "73b8b7cd86deeda2757f52d9e151e4a850a8a029abe966a92ebb8b7b7826ebb1",
-      "size_bytes": 2492
+      "sha256": "685c580d906d0043389826c62f2ff9799df81c83b7a602f5b0477ef91670b267",
+      "size_bytes": 3900
     }
   ]
 }
