@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T20:51:28.224492+00:00",
-  "reason": "V2 product polish and stable grouped pagination; retain contracts and V1",
+  "reviewed_at": "2026-11-15T21:06:10.851724+00:00",
+  "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證",
   "document_count": 433,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -309,7 +309,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 53,
+      "revision": 54,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -646,6 +646,13 @@
           "size_bytes": 46821,
           "superseded_at": "2026-11-15T20:38:23.487717+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 53,
+          "sha256": "01a588e0a867b7c412992aa11d9992801652f3ecca6ac9293e35455c43b61f51",
+          "size_bytes": 46541,
+          "superseded_at": "2026-11-15T21:06:10.851724+00:00",
+          "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
         }
       ],
       "import_lineage": {
@@ -658,8 +665,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "01a588e0a867b7c412992aa11d9992801652f3ecca6ac9293e35455c43b61f51",
-      "size_bytes": 46541,
+      "sha256": "8284aaae701003a04465173d376cd2a484ce02f837f8d072227c9ec11b4dc24c",
+      "size_bytes": 47330,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -6466,7 +6473,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 13,
+      "revision": 14,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6553,13 +6560,20 @@
           "size_bytes": 84193,
           "superseded_at": "2026-11-15T20:51:28.224492+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 13,
+          "sha256": "ec8109c484f1ec7d332665dda70b198c8bbdbd1261a1359d8f0c327771a7d277",
+          "size_bytes": 84249,
+          "superseded_at": "2026-11-15T21:06:10.851724+00:00",
+          "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "ec8109c484f1ec7d332665dda70b198c8bbdbd1261a1359d8f0c327771a7d277",
-      "size_bytes": 84249
+      "sha256": "88ba4b5e25157ce841d6231d34dcbfc8f6612950b2928ac7a8756681b94fbf6f",
+      "size_bytes": 84297
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6612,7 +6626,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 13,
+      "revision": 14,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6699,13 +6713,20 @@
           "size_bytes": 87238,
           "superseded_at": "2026-11-15T20:51:28.224492+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 13,
+          "sha256": "424bb7d4f05710a632fd4cec062b7d4f548b75fed1aa1f4bd76cbe7a752d1cfd",
+          "size_bytes": 87296,
+          "superseded_at": "2026-11-15T21:06:10.851724+00:00",
+          "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "424bb7d4f05710a632fd4cec062b7d4f548b75fed1aa1f4bd76cbe7a752d1cfd",
-      "size_bytes": 87296
+      "sha256": "20dc931f08d2150b70dc4928dfda4dfcc65ccb62e5892570d2551414aa58cf70",
+      "size_bytes": 87341
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -7706,7 +7727,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 10,
+      "revision": 11,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7772,18 +7793,25 @@
           "size_bytes": 48371,
           "superseded_at": "2026-11-15T20:51:28.224492+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 10,
+          "sha256": "5dc70008e3bafa73bef7f4a93b1b0ac84be4a2802af91d966bac0ac8c893a8b0",
+          "size_bytes": 49274,
+          "superseded_at": "2026-11-15T21:06:10.851724+00:00",
+          "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5dc70008e3bafa73bef7f4a93b1b0ac84be4a2802af91d966bac0ac8c893a8b0",
-      "size_bytes": 49274
+      "sha256": "a946609fb10e069cdea6f2aa01ec3a7b38ac50ad11a673c58defa13477db8b6a",
+      "size_bytes": 49262
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 6,
+      "revision": 7,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7821,13 +7849,20 @@
           "size_bytes": 30046,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 6,
+          "sha256": "f1eab44f2121c3585ec04951eb6a7c6f78d6b343903c87af4d627e715d1835c5",
+          "size_bytes": 32183,
+          "superseded_at": "2026-11-15T21:06:10.851724+00:00",
+          "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f1eab44f2121c3585ec04951eb6a7c6f78d6b343903c87af4d627e715d1835c5",
-      "size_bytes": 32183
+      "sha256": "316c1ee65e22970904d8d1ab711565ccc09b66e836f33be0954c3bbd2aef68b1",
+      "size_bytes": 32845
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",

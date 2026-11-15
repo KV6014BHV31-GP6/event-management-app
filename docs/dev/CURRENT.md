@@ -1,3 +1,16 @@
+# Current successor: V2 registration navigation label repair, 2026-11-16
+
+Native Browser CI on `5cd95a1d412d3330e36cc5f3fa262239e7008294` failed at
+document-viewer because the new quick action and the preserved registration
+disclosure shared the same exact text. The shortcut now reads “Review applications”
+in EN/MS; the original “Registration review and booking” summary and all existing
+Browser test expectations remain unchanged. A focused regression verifies the
+unique summary, distinct shortcut, expanded disclosure and keyboard focus.
+
+Affected author unit checks and synthetic build are LOCAL_VERIFIED. This repair
+does not claim the pending native Browser rerun or deployment has passed.
+The original failed receipt remains in the external polish-v2 evidence directory.
+
 # Current successor: NU product and video V2 polish, 2026-11-16
 
 The delivered PR68 baseline is `b7fc3dda026b2379b6182242fd5f55d2fa1209e1`,

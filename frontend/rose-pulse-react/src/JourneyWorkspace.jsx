@@ -309,7 +309,7 @@ function JourneySession({
      section.open = true;
      section.querySelector('summary')?.focus({preventScroll:true});
      section.scrollIntoView?.({block:'start'});
-   }}>{tr('Registration review and booking')}</button>
+   }}>{tr('Review applications')}</button>
    {eventId && <button className="button" aria-controls={receiptId + '-attendance'} onClick={() => {
      attendanceSection.current?.focus({preventScroll:true});
      attendanceSection.current?.scrollIntoView?.({block:'start'});
