@@ -1,3 +1,12 @@
+# Current successor: NU Web release in progress, 2026-11-16
+
+Owner authorizes a gated release to existing NU Railway staging and the same HTTPS URL, plus a real420-second demo. Base is latest `dev_demo@4018d6507fdaa9ad70d77cb5a396d852971decec`; earlier PR65/66/67 ancestry is retained. Separate Sol-FE/BE isolated writers are implementing current R4 visuals and minimal Austin notification/reminder reuse. Root owns shared integration/seed/deploy documents. See [release task](tasks/NU-WEB-RELEASE-20261116.md).
+
+Observed existing cloud state supersedes older incomplete activation wording below: `rosepulse.up.railway.app` is assigned; web deployment9720fdaa-b11a-40e6-899a-41d4636ff2af is SUCCESS at fixed source5dd6b4ae216749a4e892ef87eae8adab89673442; PostgreSQL/volumes remain intact and there are no staged changes. This is still the prior empty deployment, not this release.
+
+LOCAL_VERIFIED new isolated PostgreSQL seed:6 current Figma-source events,6 accounts,6 image associations, dry-run/no-write, repeat/no-duplicate,6 real logins and scoped negative permissions. New source-identity guard5/5, existing gateway3/3 and manifest/key3/3 pass. Status remains IN_PROGRESS; final integrated Browser/CI/review/merge/deploy/video gates are pending. An executor policy rejection blocked local Browser proxy startup; no bypass is attempted. Physical-device/human UAT/production certification are out of this Owner-authorized Web release scope.
+
+The entries below retain historical scope and versions.
 # Current successor: Railway activation and scoped platform-healthcheck fix, 2026-11-15
 
 The Owner explicitly approved NU deployment costs. The previously staged private Railway web/PG17 services and distinct volumes were applied at product baseline 23e327a6 and adapter 830cb3d7; Railway reports SUCCESS and startup logs confirm a new synthetic schema with no accounts/events seeded. No public domain is assigned at this checkpoint, and main/dev/dev_demo branches and prior Docker data are untouched. The initial billing hold in the preceding section is superseded only for this NU staging deployment.

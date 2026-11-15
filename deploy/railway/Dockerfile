@@ -6,13 +6,18 @@ COPY frontend/rose-pulse-react/package.json frontend/rose-pulse-react/package-lo
 RUN npm ci --no-audit --no-fund
 COPY frontend/rose-pulse-react/ ./
 COPY frontend/live /build/frontend/live
-ARG NU_PRODUCT_SHA=23e327a6ca18ad649db8e5075e0ae14c2286aa45
-ENV VITE_DEMO_BUILD_SHA=${NU_PRODUCT_SHA}
-RUN npm run build
+ARG RAILWAY_GIT_COMMIT_SHA
+ARG NU_PRODUCT_SHA
+RUN source_sha="${RAILWAY_GIT_COMMIT_SHA:-${NU_PRODUCT_SHA}}" \
+    && printf '%s' "$source_sha" | grep -Eq '^[0-9a-f]{40}$' \
+    && test "$source_sha" != 0000000000000000000000000000000000000000 \
+    && VITE_DEMO_PROFILE=synthetic VITE_DEMO_BUILD_SHA="$source_sha" npm run build \
+    && printf '{"source_sha":"%s","profile":"synthetic-staging"}\n' "$source_sha" > dist/nu-source.json
 
 FROM python:3.14.8-slim-bookworm AS runtime
-ARG NU_PRODUCT_SHA=23e327a6ca18ad649db8e5075e0ae14c2286aa45
-LABEL org.opencontainers.image.revision="${NU_PRODUCT_SHA}" nu.demo.profile="synthetic-staging"
+ARG RAILWAY_GIT_COMMIT_SHA
+ARG NU_PRODUCT_SHA
+LABEL org.opencontainers.image.revision="${RAILWAY_GIT_COMMIT_SHA:-${NU_PRODUCT_SHA}}" nu.demo.profile="synthetic-staging"
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_DISABLE_PIP_VERSION_CHECK=1
 RUN apt-get update && apt-get install -y --no-install-recommends gosu libstdc++6 ca-certificates \
     && rm -rf /var/lib/apt/lists/* \
@@ -23,6 +28,7 @@ COPY backend/requirements.txt /opt/nu/backend/requirements.txt
 RUN python -m pip install --no-cache-dir -r /opt/nu/backend/requirements.txt
 COPY backend/src /opt/nu/backend/src
 COPY backend/scripts /opt/nu/backend/scripts
+COPY deploy/railway/seed-assets /opt/nu/deploy/railway/seed-assets
 COPY frontend/dev-server.mjs /opt/nu/frontend/dev-server.mjs
 COPY --from=web_build /build/frontend/rose-pulse-react/dist /opt/nu/web
 COPY deploy/railway/entrypoint.py /opt/nu/deploy/railway/entrypoint.py

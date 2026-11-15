@@ -2,6 +2,9 @@
 import importlib.util
 from pathlib import Path
 import unittest
+from unittest.mock import patch
+
+TEST_SHA = 'a' * 40
 
 path = Path(__file__).resolve().parents[1] / "entrypoint.py"
 spec = importlib.util.spec_from_file_location("nu_railway_entry", path)
@@ -15,12 +18,29 @@ def valid_env():
         "DATABASE_URL": "postgresql://nu_app:synthetic-only@postgres17.railway.internal:5432/nu_staging",
         "JWT_SECRET_KEY": "synthetic-only-" + "x" * 48,
         "NU_DEMO_PROFILE": "synthetic",
-        "NU_PRODUCT_SOURCE_SHA": entry.SOURCE_SHA,
+        "NU_PRODUCT_SOURCE_SHA": TEST_SHA,
         "PORT": "8080",
     }
 
 
 class RailwayEntrypointTest(unittest.TestCase):
+    def setUp(self):
+        self.build = patch.object(entry, 'read_build_identity', return_value=TEST_SHA)
+        self.build.start()
+        self.addCleanup(self.build.stop)
+
+    def test_refuses_provider_or_built_source_drift(self):
+        data = valid_env()
+        data['RAILWAY_GIT_COMMIT_SHA'] = 'b' * 40
+        with self.assertRaises(ValueError):
+            entry.validate_environment(data)
+        data['RAILWAY_GIT_COMMIT_SHA'] = TEST_SHA
+        self.assertEqual(entry.validate_environment(data)['NU_PRODUCT_SOURCE_SHA'], TEST_SHA)
+        self.build.stop()
+        with patch.object(entry, 'read_build_identity', return_value='b' * 40):
+            with self.assertRaises(ValueError):
+                entry.validate_environment(data)
+
     def test_valid_synthetic_staging(self):
         env = entry.validate_environment(valid_env())
         self.assertEqual(env["ENVIRONMENT"], "production")

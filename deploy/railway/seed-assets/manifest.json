@@ -1,0 +1,242 @@
+{
+  "operation_id": "nu-web-release-20261116-v1",
+  "synthetic_only": true,
+  "source_file_key": "AwavHQahqm3zB2q2k5cWG0",
+  "source_directory_node": "1:412",
+  "observed_at": "2026-11-16T00:57:00+08:00",
+  "assumptions": [
+    "Figma source dates are retained without shifting. Times interpreted in Asia/Kuala_Lumpur from Malaysia venue and EN/BM context; directory itself omits timezone.",
+    "Synthetic pool split:5 offline reserved places and remaining capacity online; total equals Figma source.",
+    "Existing locked synthetic Demo policy:separate_pools_offer,30minute offer,24hour reminder,0.5 low-demand ratio. Registration opens2026-11-16 and closes at event start. Check-in opens1hour before event and closes at end. These are transparent synthetic fixture settings, not medical eligibility rules."
+  ],
+  "events": [
+    {
+      "public_id": "nu26_screening",
+      "source_key": "figma-r4:4102:1952",
+      "source_node": "4102:1952",
+      "source_date": "2027-03-15T10:00:00+08:00",
+      "title": "Women's Cervical Screening",
+      "overview": "A welcoming community session introducing cervical screening, the application process and the support available on the day. Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.",
+      "category": "Health",
+      "location": "NU Community Centre",
+      "start_time": "2027-03-15T10:00:00+08:00",
+      "end_time": "2027-03-15T12:00:00+08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "registration_opens_at": "2026-11-16T00:00:00+08:00",
+      "registration_closes_at": "2027-03-15T10:00:00+08:00",
+      "online_quota": 25,
+      "offline_quota": 5,
+      "organizer": "organizer1",
+      "assigned_leader": "leader1",
+      "intended_public": true,
+      "display_state": "published",
+      "images": [
+        {
+          "file": "screening.png",
+          "sha256": "ea9b55375a55849176f2d319a8302af1af30946b78c29b44d8612b70c63cb5a2",
+          "source": "Current Figma R4 asset exported by Sol-FE; adopted file AwavHQahqm3zB2q2k5cWG0",
+          "synthetic_image": true
+        }
+      ],
+      "policy": {
+        "allocation_mode": "separate_pools_offer",
+        "offer_minutes": 30,
+        "walkin_pool": "offline",
+        "checkin_opens_at": "2027-03-15T09:00:00+08:00",
+        "checkin_closes_at": "2027-03-15T12:00:00+08:00",
+        "reminder_hours": 24,
+        "low_demand_ratio": 0.5
+      }
+    },
+    {
+      "public_id": "nu26_cooking",
+      "source_key": "figma-r4:4102:1963",
+      "source_node": "4102:1963",
+      "source_date": "2027-03-20T14:00:00+08:00",
+      "title": "Healthy Cooking for Families",
+      "overview": "Explore practical family meal ideas and balanced everyday cooking in a friendly community workshop. Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.",
+      "category": "Cooking",
+      "location": "Rose Community Hall",
+      "start_time": "2027-03-20T14:00:00+08:00",
+      "end_time": "2027-03-20T16:00:00+08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "registration_opens_at": "2026-11-16T00:00:00+08:00",
+      "registration_closes_at": "2027-03-20T14:00:00+08:00",
+      "online_quota": 35,
+      "offline_quota": 5,
+      "organizer": "organizer1",
+      "assigned_leader": "leader1",
+      "intended_public": true,
+      "display_state": "published",
+      "images": [
+        {
+          "file": "cooking.png",
+          "sha256": "add7c8a69b5d6c0dc4a758ccaecad06b0fe31ea5b896f0c25acd9dbae57dd5ca",
+          "source": "Current Figma R4 asset exported by Sol-FE; adopted file AwavHQahqm3zB2q2k5cWG0",
+          "synthetic_image": true
+        }
+      ],
+      "policy": {
+        "allocation_mode": "separate_pools_offer",
+        "offer_minutes": 30,
+        "walkin_pool": "offline",
+        "checkin_opens_at": "2027-03-20T13:00:00+08:00",
+        "checkin_closes_at": "2027-03-20T16:00:00+08:00",
+        "reminder_hours": 24,
+        "low_demand_ratio": 0.5
+      }
+    },
+    {
+      "public_id": "nu26_wellness",
+      "source_key": "figma-r4:4102:1974",
+      "source_node": "4102:1974",
+      "source_date": "2027-03-25T10:00:00+08:00",
+      "title": "Mental Wellness Talk",
+      "overview": "A community conversation about everyday mental wellbeing, mutual support and local resources. Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.",
+      "category": "Wellbeing",
+      "location": "NU Library",
+      "start_time": "2027-03-25T10:00:00+08:00",
+      "end_time": "2027-03-25T11:30:00+08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "registration_opens_at": "2026-11-16T00:00:00+08:00",
+      "registration_closes_at": "2027-03-25T10:00:00+08:00",
+      "online_quota": 65,
+      "offline_quota": 5,
+      "organizer": "organizer1",
+      "assigned_leader": "leader1",
+      "intended_public": true,
+      "display_state": "published",
+      "images": [
+        {
+          "file": "wellbeing.png",
+          "sha256": "a5228e9d7525efe099a8ca6bb84713f1b2fd2b4ef5ccc59021c79ae8cdee318d",
+          "source": "Current Figma R4 asset exported by Sol-FE; adopted file AwavHQahqm3zB2q2k5cWG0",
+          "synthetic_image": true
+        }
+      ],
+      "policy": {
+        "allocation_mode": "separate_pools_offer",
+        "offer_minutes": 30,
+        "walkin_pool": "offline",
+        "checkin_opens_at": "2027-03-25T09:00:00+08:00",
+        "checkin_closes_at": "2027-03-25T11:30:00+08:00",
+        "reminder_hours": 24,
+        "low_demand_ratio": 0.5
+      }
+    },
+    {
+      "public_id": "nu26_cervical",
+      "source_key": "figma-r4:4102:1986",
+      "source_node": "4102:1986",
+      "source_date": "2027-03-28T09:30:00+08:00",
+      "title": "Women's Cervical Health Check",
+      "overview": "An accessible community health session where participants can learn about cervical health checks and ask the event team about the process. Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.",
+      "category": "Health",
+      "location": "ROSE Clinic Petaling Jaya",
+      "start_time": "2027-03-28T09:30:00+08:00",
+      "end_time": "2027-03-28T12:30:00+08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "registration_opens_at": "2026-11-16T00:00:00+08:00",
+      "registration_closes_at": "2027-03-28T09:30:00+08:00",
+      "online_quota": 35,
+      "offline_quota": 5,
+      "organizer": "organizer2",
+      "assigned_leader": null,
+      "intended_public": true,
+      "display_state": "published",
+      "images": [
+        {
+          "file": "screening.png",
+          "sha256": "ea9b55375a55849176f2d319a8302af1af30946b78c29b44d8612b70c63cb5a2",
+          "source": "Current Figma R4 asset exported by Sol-FE; adopted file AwavHQahqm3zB2q2k5cWG0",
+          "synthetic_image": true
+        }
+      ],
+      "policy": {
+        "allocation_mode": "separate_pools_offer",
+        "offer_minutes": 30,
+        "walkin_pool": "offline",
+        "checkin_opens_at": "2027-03-28T08:30:00+08:00",
+        "checkin_closes_at": "2027-03-28T12:30:00+08:00",
+        "reminder_hours": 24,
+        "low_demand_ratio": 0.5
+      }
+    },
+    {
+      "public_id": "nu26_mobility",
+      "source_key": "figma-r4:4102:1997",
+      "source_node": "4102:1997",
+      "source_date": "2027-04-02T10:00:00+08:00",
+      "title": "Senior Mobility & Balance Session",
+      "overview": "A guided community session about everyday movement, balance and staying active together. Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.",
+      "category": "Health",
+      "location": "Sentul Community Hall",
+      "start_time": "2027-04-02T10:00:00+08:00",
+      "end_time": "2027-04-02T11:30:00+08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "registration_opens_at": "2026-11-16T00:00:00+08:00",
+      "registration_closes_at": "2027-04-02T10:00:00+08:00",
+      "online_quota": 30,
+      "offline_quota": 5,
+      "organizer": "organizer2",
+      "assigned_leader": null,
+      "intended_public": true,
+      "display_state": "published",
+      "images": [
+        {
+          "file": "mobility.png",
+          "sha256": "4ba316aa3ae28551be8d2fe4c9b18bf6d112c2a8c5b64c299e156ad876d0a102",
+          "source": "Current Figma R4 asset exported by Sol-FE; adopted file AwavHQahqm3zB2q2k5cWG0",
+          "synthetic_image": true
+        }
+      ],
+      "policy": {
+        "allocation_mode": "separate_pools_offer",
+        "offer_minutes": 30,
+        "walkin_pool": "offline",
+        "checkin_opens_at": "2027-04-02T09:00:00+08:00",
+        "checkin_closes_at": "2027-04-02T11:30:00+08:00",
+        "reminder_hours": 24,
+        "low_demand_ratio": 0.5
+      }
+    },
+    {
+      "public_id": "nu26_heart",
+      "source_key": "figma-r4:4102:2008",
+      "source_node": "4102:2008",
+      "source_date": "2027-04-08T14:00:00+08:00",
+      "title": "Diabetes & Heart Health Talk",
+      "overview": "Learn about everyday habits that support heart health and diabetes awareness in a community discussion. Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.",
+      "category": "Health",
+      "location": "NU Community Centre",
+      "start_time": "2027-04-08T14:00:00+08:00",
+      "end_time": "2027-04-08T16:00:00+08:00",
+      "timezone": "Asia/Kuala_Lumpur",
+      "registration_opens_at": "2026-11-16T00:00:00+08:00",
+      "registration_closes_at": "2027-04-08T14:00:00+08:00",
+      "online_quota": 55,
+      "offline_quota": 5,
+      "organizer": "organizer2",
+      "assigned_leader": null,
+      "intended_public": true,
+      "display_state": "published",
+      "images": [
+        {
+          "file": "wellbeing.png",
+          "sha256": "a5228e9d7525efe099a8ca6bb84713f1b2fd2b4ef5ccc59021c79ae8cdee318d",
+          "source": "Current Figma R4 asset exported by Sol-FE; adopted file AwavHQahqm3zB2q2k5cWG0",
+          "synthetic_image": true
+        }
+      ],
+      "policy": {
+        "allocation_mode": "separate_pools_offer",
+        "offer_minutes": 30,
+        "walkin_pool": "offline",
+        "checkin_opens_at": "2027-04-08T13:00:00+08:00",
+        "checkin_closes_at": "2027-04-08T16:00:00+08:00",
+        "reminder_hours": 24,
+        "low_demand_ratio": 0.5
+      }
+    }
+  ]
+}

@@ -25,3 +25,22 @@
 | STRUCT-003 | LOCAL_CONTROL | Register all new Markdown files and changed revisions; historical task and source registers remain unchanged. | Approved public scope or document-control policy change |
 
 No merge, deployment, source-code move, backend takeover or role sign-off is authorized by this documentation PR.
+
+## NU Web release successor, 2026-11-16
+
+- `WEB-20261116-01 / OWNER_AUTHORIZED`: the present release task permits gated
+  merge to `dev_demo` and update of the existing NU staging service/domain. Older
+  documentation-only permission boundaries above remain historical.
+- `WEB-20261116-02 / WORKING_BASELINE`: preserve six current R4 event source dates,
+  exact images and source IDs; interpret Malaysia local times as Kuala Lumpur.
+  Use the existing synthetic policy/pools with explicitly recorded fixture
+  windows and capacity split. No new medical qualification or auto-no-show rule.
+- `WEB-20261116-03 / LOCAL_VERIFIED`: fixed-key staging data installation,
+  pre-write private snapshot and immutable operation receipt. Never reset an
+  existing account or replay an uncertain write under another key.
+- `WEB-20261116-04 / REQUIRED`: source-bound image/UI identity, independent
+  reviewer, scoped Browser/API/DB/permission/recovery gates and hosted checks
+  precede release. Physical-device and human UAT are outside this authorized
+  Web scope; none are claimed as performed.
+
+Current evidence and remaining gates: [release task](tasks/NU-WEB-RELEASE-20261116.md).
