@@ -1,4 +1,15 @@
-# Current successor: dev_demo unified Leader manual-sync repair, 2026-11-15
+# Current successor: Railway synthetic staging adapter, 2026-11-15
+
+The Owner authorized starting a Railway deployment for ROSE PULSE. The fixed product baseline is `dev_demo@23e327a6ca18ad649db8e5075e0ae14c2286aa45` with previously observed hosted CI five-gate SUCCESS. This bounded successor adds only deployment/runtime adapters under `deploy/railway/`, a root Docker build-context exclude file and associated tests/docs. It neither modifies Frontend/Backend product source nor changes the original local Demo, existing PostgreSQL volumes or target `dev_demo` branch.
+
+The private Railway Project `NU ROSE PULSE Demo` has a `staging` environment with staged-create `rose-pulse-web`, staged-create `postgres17` (PostgreSQL 17.11), and separate 256 MB database / 128 MB uploads volumes. The GitHub source is staged pinned to the exact product baseline; these changes are **not applied or public**. The proposed free Railway-hosted domain `rosepulse.up.railway.app` is a target name only, NOT_ASSIGNED. The Railway subscription/account remaining credits and hard spending cap are QUOTA_UNVERIFIED, so no recurring billable service or public domain has been launched.
+
+Local independent Docker preflight used fresh isolated `nu-railway-lab-20261115` resources, synthetic-only secrets in restricted repo-external files, a non-superuser database role, and an explicit empty-schema initialization (no accounts/events seeded). Both pinned images built PASS; local app health, homepage and Events API returned HTTP 200 and an unexpected Host returned 403 on loopback-only port 5299. Original absent Frontend sibling imports caused a first candidate Docker Build FAIL; corrected by preserving the real `frontend/live` relative source layout. New Node gateway tests and Python staging config tests pass. This is **LOCAL_VERIFIED only**; final candidate Docker label / any changes after that preflight still require targeted recheck. No Railway service deploy, real HTTPS browser, external recipient test, full AC40, human UAT, production security acceptance or independent PR review has occurred.
+
+Proceed only after the next deploy candidate's source/register checks, the GitHub build/ref is fixed to its exact commit, Railway billing risk is explicitly authorized, DB and app variables can be set securely, and the chosen railway.app domain is actually assigned and observed over HTTPS. For current scoped facts, rollback and limitations see [Railway staging task](tasks/RAILWAY-STAGING-20261115.md).
+
+## Previous successor: dev_demo unified Leader manual-sync repair, 2026-11-15
+
 
 Independent native Astra Reviewer of fixed candidate `f3f212c051474c967d16c9e8dca4677070b0b6c8` completed a source-based review and reported `BLOCKED` for one scoped P2 regression at `frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx`: a restored Leader with valid bearer/`offlineActor` but missing in-memory `session.user` could not use managed-event manual sync, because newly added assignment preflight called `withVerifiedAccount` before the existing offline-specific `freshOfflineIdentity`. The original reviewer receipt is preserved externally and is not an acceptance record.
 

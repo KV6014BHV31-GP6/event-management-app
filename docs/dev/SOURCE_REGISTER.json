@@ -2,7 +2,7 @@
   "schema": "nu-public-source-register/1",
   "package_version": "repo-docs/0.1.0",
   "recorded_at_utc": "2026-10-12T16:15:43.702002+00:00",
-  "source_count": 32,
+  "source_count": 33,
   "sources": [
     {
       "source_id": "SP-OVERVIEW-20261012",
@@ -380,6 +380,29 @@
       "raw_in_repository": false,
       "content_status": "task_authorized_not_team_acceptance",
       "locator": "Owner Phase2 request 2026-11-02; synthetic Offline, English/Malay, selective W8 and independent evaluation"
+    },
+    {
+      "source_id": "USER-RAILWAY-DEPLOY-20261115",
+      "title": "Owner request to start Railway deployment for ROSE PULSE using rosepulse.up.railway.app as desired domain",
+      "classification": "current_task_authorization",
+      "raw_in_repository": false,
+      "content_status": "Bounded staging deployment requested; billing balance and public-domain allocation unverified; no real participant data",
+      "locator": "Current NU conversation, 2026-11-15, owner messages choosing a Railway hostname then requesting ????",
+      "permissions": [
+        "independent Railway staging project",
+        "reversible infrastructure staging",
+        "scoped synthetic deployment code",
+        "local tests",
+        "candidate Git branch and Draft PR"
+      ],
+      "not_authorized": [
+        "purchase or plan upgrade",
+        "payment method changes",
+        "real participant/medical data",
+        "overwrite existing Docker/DB volumes",
+        "force push or protected branch write",
+        "team UAT acceptance"
+      ]
     }
   ]
 }
