@@ -2847,3 +2847,60 @@ legend {
     gap: 8px;
   }
 }
+
+.document-cards-compact {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 112px), 1fr));
+  gap: 8px;
+}
+.document-cards-compact .document-card {
+  padding: 8px;
+}
+.document-cards-compact .document-card > img {
+  height: 76px;
+}
+
+.document-preview-trigger {
+  display: grid;
+  width: 100%;
+  gap: 8px;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--forest);
+  text-align: left;
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+.document-preview-trigger > strong {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.document-preview-trigger > img {
+  width: 100%;
+  height: 150px;
+  object-fit: contain;
+  background: #f7f5ef;
+}
+
+.whatsapp-demo-dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  width: min(calc(100% - 24px), 30rem);
+  border: 1px solid var(--line);
+}
+.whatsapp-demo-dialog::backdrop {
+  background: #102c26cc;
+}
+.whatsapp-demo-message {
+  display: block;
+  width: 100%;
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px solid #b8d7ac;
+  border-radius: 12px 12px 12px 3px;
+  background: #e1f3d7;
+  color: #173425;
+  font: inherit;
+  resize: vertical;
+}

@@ -4,7 +4,7 @@ Task `DEMO-FULL-JOURNEY-20261103`. This workflow is a new, read-only-token succe
 
 ## Immutable inputs and job order
 
-`.github/workflows/demo-journey.yml` runs for PRs targeting `dev_demo_ben`, pushes to `integration/ben-demo-release-*`, pushes to `dev_demo_ben`, and manual dispatch on those authorized branches. Every checkout explicitly uses the trigger's full `github.sha`, with persisted credentials disabled. For a PR, that SHA is GitHub's candidate merge commit; it is not silently replaced by the PR head. A changed candidate/base requires new evidence. The merged target push gets its own run.
+`.github/workflows/demo-journey.yml` runs for PRs targeting `dev_demo_ben` or `dev_demo`, pushes to either named branch or to `integration/ben-demo-release-*`, and manual dispatch on those authorized branches. Every checkout explicitly uses the trigger's full `github.sha`, with persisted credentials disabled. For a PR, that SHA is GitHub's candidate merge commit; it is not silently replaced by the PR head. A changed candidate/base requires new evidence. The merged target push gets its own run.
 
 1. `source`: document register/link/privacy checks, document-control regression tests, pinned-action checks, contract/migration identities and all 40 amended AC IDs. This job runs before any product dependency installation. Runtime setup failure records `CI_BLOCKED` where the checkout is available. It never refreshes the register to hide a mismatch.
 

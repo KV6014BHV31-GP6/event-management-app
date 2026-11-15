@@ -6,6 +6,7 @@ import sys
 import tempfile
 import time
 import unittest
+from unittest.mock import patch
 import copy
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,6 +30,29 @@ class ProcessBoundaryTests(unittest.TestCase):
 
     def tearDown(self):
         self.temp.cleanup()
+
+    def test_dev_demo_ci_accepts_only_exact_authorized_branch(self):
+        sha = 'a' * 40
+        def fake_git(*args):
+            if args == ('rev-parse', 'HEAD'):
+                return sha
+            if args == ('status', '--porcelain', '--untracked-files=no'):
+                return ''
+            raise AssertionError(args)
+        env = {'GITHUB_ACTIONS': 'true', 'GITHUB_REPOSITORY': ci.REPO,
+               'GITHUB_SHA': sha, 'GITHUB_EVENT_NAME': 'pull_request',
+               'GITHUB_BASE_REF': 'dev_demo', 'GITHUB_REF': 'refs/pull/8/merge'}
+        with patch.object(ci, 'git', side_effect=fake_git), patch.dict(os.environ, env):
+            self.assertEqual(ci.source_identity(), sha)
+            os.environ['GITHUB_BASE_REF'] = 'dev_demo-unreviewed'
+            with self.assertRaisesRegex(RuntimeError, 'Unexpected PR target'):
+                ci.source_identity()
+            os.environ['GITHUB_EVENT_NAME'] = 'push'
+            os.environ['GITHUB_REF'] = 'refs/heads/dev_demo'
+            self.assertEqual(ci.source_identity(), sha)
+            os.environ['GITHUB_REF'] = 'refs/heads/dev_demo-unreviewed'
+            with self.assertRaisesRegex(RuntimeError, 'Unexpected trigger/ref'):
+                ci.source_identity()
 
     def test_daemon_descendant_cannot_hold_parent_capture_open(self):
         # This is the Windows pg_ctl failure shape: the launcher exits while its

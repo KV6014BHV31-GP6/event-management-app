@@ -6,6 +6,7 @@ import OfflineWorkspace from "./OfflineWorkspace.jsx";
 import { createOfflineStore, LocalStoreError } from "./queue.js";
 import { createManualSync } from "./sync.js";
 import { ApiError } from "../../../live/api.mjs";
+import { demoTransport } from "../demo-transport.js";
 
 const actor = { id: "01K00000000000000000000001", role: "leader" };
 const event = {
@@ -17,7 +18,7 @@ const event = {
 };
 const unknown =
   "The connection result is unknown. Reconcile saved references before another send.";
-async function setup({ failReadback = false } = {}) {
+async function setup({ failReadback = false, managed = false, restored = false } = {}) {
   const store = createOfflineStore({
     name: `workspace-recovery-${crypto.randomUUID()}`,
   });
@@ -40,6 +41,7 @@ async function setup({ failReadback = false } = {}) {
   let lost = false;
   let committed;
   const api = {
+    getEvent: vi.fn(async () => managed ? { ...event, workflow: { contract_version: "rose.demo-journey.v1" } } : event),
     submitOfflineBatch: vi.fn(async (_, request) => {
       committed = structuredClone(request);
       lost = true;
@@ -64,6 +66,9 @@ async function setup({ failReadback = false } = {}) {
     token: "synthetic-token",
   }));
   const runtime = {
+    api,
+    freshOfflineIdentity: verifyIdentity,
+    withVerifiedAccount: vi.fn(() => { throw new Error("The online session has not restored yet."); }),
     offline: { ...store, drafts: readDrafts },
     manualSync: createManualSync({ store, api, verifyIdentity }),
     getSnapshot: () => ({ offlineActor: actor }),
@@ -71,7 +76,7 @@ async function setup({ failReadback = false } = {}) {
   render(
     <OfflineWorkspace
       runtime={runtime}
-      auth={{ offlineActor: actor, user: actor, hasToken: true }}
+      auth={{ offlineActor: actor, user: restored ? null : actor, hasToken: true }}
       initialEvent={event.public_id}
       navigate={vi.fn()}
     />,
@@ -79,7 +84,7 @@ async function setup({ failReadback = false } = {}) {
   await waitFor(() =>
     expect(screen.getAllByText("Pending sync")).toHaveLength(3),
   );
-  return { store, api, readDrafts, user: userEvent.setup(), verifyIdentity };
+  return { store, api, runtime, readDrafts, user: userEvent.setup(), verifyIdentity };
 }
 describe("offline workspace after a durable unknown write", () => {
   it("rereads needs_review after the coordinator throws, exposes reconciliation and disables another sync", async () => {
@@ -101,6 +106,7 @@ describe("offline workspace after a durable unknown write", () => {
         screen.getByRole("button", { name: "Manually sync selected event" }),
       ).toBeDisabled();
       expect(screen.getAllByText("Needs review / reconcile")).toHaveLength(3);
+      expect(api.getEvent).toHaveBeenCalledWith(event.public_id);
       expect(api.submitOfflineBatch).toHaveBeenCalledTimes(1);
       expect(api.getOfflineBatch).not.toHaveBeenCalled();
       await user.click(
@@ -129,6 +135,7 @@ describe("offline workspace after a durable unknown write", () => {
       expect(screen.getByRole("alert")).not.toHaveTextContent(
         "Local storage is unavailable.",
       );
+      expect(api.getEvent).toHaveBeenCalledWith(event.public_id);
       expect(api.submitOfflineBatch).toHaveBeenCalledTimes(1);
       expect(api.getOfflineBatch).not.toHaveBeenCalled();
       expect(
@@ -141,4 +148,64 @@ describe("offline workspace after a durable unknown write", () => {
     }
   });
 });
+
+describe("managed Leader manual sync after restoring a saved token", () => {
+  it("uses the fresh offline identity for assignment read and the original manual batch", async () => {
+    const read = vi.spyOn(demoTransport, "fetch").mockResolvedValue({
+      ok: true, status: 200, json: async () => ({ data: { assigned: true } }),
+    });
+    const { store, api, runtime, user, verifyIdentity } = await setup({ managed: true, restored: true });
+    try {
+      await user.click(screen.getByRole("button", { name: "Manually sync selected event" }));
+      expect(await screen.findByRole("alert")).toHaveTextContent(unknown);
+      expect(read).toHaveBeenCalledTimes(1);
+      expect(read.mock.calls[0][0]).toBe("/api/v2/operations/events/" + event.public_id);
+      expect(read.mock.calls[0][1].headers.Authorization).toBe("Bearer synthetic-token");
+      expect(runtime.withVerifiedAccount).not.toHaveBeenCalled();
+      expect(verifyIdentity).toHaveBeenCalledTimes(2);
+      expect(api.submitOfflineBatch).toHaveBeenCalledTimes(1);
+      expect(api.getOfflineBatch).not.toHaveBeenCalled();
+      expect((await store.drafts(actor)).every((row) => row.state === "needs_review")).toBe(true);
+    } finally {
+      read.mockRestore();
+      await store.close();
+    }
+  });
+
+  it("refuses an unassigned managed event before any batch POST", async () => {
+    const read = vi.spyOn(demoTransport, "fetch").mockResolvedValue({
+      ok: false, status: 403, json: async () => ({ detail: { message: "Not assigned" } }),
+    });
+    const { store, api, user, verifyIdentity } = await setup({ managed: true, restored: true });
+    try {
+      await user.click(screen.getAllByRole("button", { name: "Sync this event" })[0]);
+      expect(await screen.findByRole("alert")).toHaveTextContent("Your Leader account is not assigned");
+      expect(read).toHaveBeenCalledTimes(1);
+      expect(verifyIdentity).toHaveBeenCalledTimes(1);
+      expect(api.submitOfflineBatch).not.toHaveBeenCalled();
+      expect(api.getOfflineBatch).not.toHaveBeenCalled();
+      expect((await store.drafts(actor)).every((row) => row.state === "pending_sync")).toBe(true);
+    } finally {
+      read.mockRestore();
+      await store.close();
+    }
+  });
+
+  it("rejects a changed Leader role without reading the assignment or sending a batch", async () => {
+    const read = vi.spyOn(demoTransport, "fetch");
+    const { store, api, user, verifyIdentity } = await setup({ managed: true, restored: true });
+    verifyIdentity.mockResolvedValue({ actor: { ...actor, role: "organizer" }, token: "synthetic-token" });
+    try {
+      await user.click(screen.getByRole("button", { name: "Manually sync selected event" }));
+      expect(await screen.findByRole("alert")).toHaveTextContent("The selected account or permissions changed");
+      expect(read).not.toHaveBeenCalled();
+      expect(api.submitOfflineBatch).not.toHaveBeenCalled();
+      expect((await store.drafts(actor)).every((row) => row.state === "pending_sync")).toBe(true);
+    } finally {
+      read.mockRestore();
+      await store.close();
+    }
+  });
+});
+
 it('loads named online event choices only on request and downloads the selected event explicitly',async()=>{const store=createOfflineStore({name:'named-choice-'+crypto.randomUUID()});const api={getEvents:vi.fn(async()=>({data:[event]})),getEvent:vi.fn(async()=>event)};const runtime={offline:store,api,freshOfflineIdentity:vi.fn(async()=>({actor,token:'synthetic'})),getSnapshot:()=>({offlineActor:actor})};render(<OfflineWorkspace runtime={runtime} auth={{offlineActor:actor,user:actor,hasToken:true}} navigate={()=>{}}/>);expect(api.getEvents).not.toHaveBeenCalled();const user=userEvent.setup();await user.click(screen.getByRole('button',{name:'Load available events'}));await screen.findByRole('option',{name:event.title});await waitFor(()=>expect(screen.getByLabelText('Online event')).toBeEnabled());await user.selectOptions(screen.getByLabelText('Online event'),event.public_id);expect(api.getEvent).not.toHaveBeenCalled();await user.click(screen.getByRole('button',{name:'Download selected event'}));await waitFor(async()=>expect(await store.events(actor)).toHaveLength(1));expect(api.getEvent).toHaveBeenCalledWith(event.public_id);await store.close();});

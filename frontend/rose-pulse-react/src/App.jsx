@@ -1,6 +1,6 @@
 import JourneyWorkspace from "./JourneyWorkspace.jsx";
 import { AccountProfile, RecoveryWorkspace } from "./AccountWorkspace.jsx";
-import { DemoImage, DemoControls } from "./DemoControls.jsx";
+import { DemoImage, DemoControls, DemoToolsProvider } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
 import {
   i18n,
@@ -36,6 +36,7 @@ const OrganizerAnalytics = React.lazy(() =>
 );
 import EventShare from "./EventShare.jsx";
 import ApplicationSuccess from "./ApplicationSuccess.jsx";
+import { minimumRegistrationPayload } from "./minimum-registration.js";
 import { ApplicationSummary, ParticipantFields } from "./ApplicationFields.jsx";
 const Context = createContext(null);
 const useApp = () => useContext(Context);
@@ -48,12 +49,15 @@ export const hrefFor = (view = "home", params = {}) =>
       ),
     ),
   })}`;
+const validRegistrationId = (value) => /^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(value);
 const readLocation = () => {
   const params = new URLSearchParams(window.location.search);
+  const registration = params.get("registration") || "";
   return {
     view: params.get("view") || "home",
     event: params.get("event") || "",
     ref: params.get("ref") || "",
+    registration: validRegistrationId(registration) ? registration : "",
     keyword: params.get("keyword") || "",
     page: Math.max(1, Number(params.get("page")) || 1),
     pageSize: [3, 6, 12, 24].includes(Number(params.get("pageSize")))
@@ -1795,6 +1799,9 @@ function Application({ event }) {
   };
   const [supportingFiles, setSupportingFiles] = useState([]);
   const [documentsBlocked, setDocumentsBlocked] = useState(false);
+  const [preparingDocuments, setPreparingDocuments] = useState(false);
+  const documentPicker = useRef(null);
+  const submission = useRef(false);
   const guestStore = runtime.store("guest", {
       event,
     }),
@@ -1811,13 +1818,37 @@ function Application({ event }) {
   const active = acceptsApplications(event);
   const submit = async (submitEvent) => {
     submitEvent.preventDefault();
-    if (!allowed || !active || locked(state) || documentsBlocked) return;
-    const values = Object.fromEntries(new FormData(submitEvent.currentTarget));
-    if (!guest && supportingFiles.length)
-      values.file_ids = supportingFiles.map((file) => file.id);
-    await controller.submit(values);
-    if (controller.state.status === "success" && controller.state.receipt?.status === "pending")
-      setApplicationModal(true);
+    if (!allowed || !active || locked(state) || documentsBlocked || submission.current) return;
+    const form = submitEvent.currentTarget;
+    const picker = documentPicker.current;
+    if (picker?.hasDemoUpload && !form.reportValidity()) return;
+    const values = Object.fromEntries(new FormData(form));
+    const identity = runtime.getSnapshot();
+    submission.current = true;
+    try {
+      if (!guest && picker) {
+        if (picker.hasDemoUpload) {
+          try {
+            minimumRegistrationPayload(values);
+          } catch {
+            await controller.submit(values);
+            return;
+          }
+          setPreparingDocuments(true);
+        }
+        const refs = await picker.prepareSubmission();
+        const current = runtime.getSnapshot();
+        if (!refs || !form.isConnected || current.revision !== identity.revision ||
+            current.user?.id !== identity.user?.id) return;
+        if (refs.length) values.file_ids = refs.map((file) => file.id);
+      }
+      await controller.submit(values);
+      if (controller.state.status === "success" && controller.state.receipt?.status === "pending")
+        setApplicationModal(true);
+    } finally {
+      submission.current = false;
+      setPreparingDocuments(false);
+    }
   };
   return (
     <div className="editor-layout">
@@ -1930,6 +1961,8 @@ function Application({ event }) {
                   <ApplicationSuccess
                     eventTitle={event.title}
                     reference={state.receipt.id}
+                    runtime={guest ? undefined : runtime}
+                    files={guest ? [] : state.receipt.supporting_documents}
                     onDismiss={dismissApplication}
                     onView={guest ? dismissApplication : () => {
                       setApplicationModal(false);
@@ -1952,7 +1985,7 @@ function Application({ event }) {
                     <Status value={state.receipt.status} />
                   </dd>
                 </dl>
-                {!guest && (
+                {!guest && !applicationModal && (
                   <PrivateDocuments
                     runtime={runtime}
                     files={state.receipt.supporting_documents || []}
@@ -1973,11 +2006,11 @@ function Application({ event }) {
               </div>
             ) : (
               <form method="dialog" autoComplete="off" onSubmit={submit}>
-                <fieldset disabled={!allowed || !active || locked(state)}>
+                <fieldset disabled={!allowed || !active || locked(state) || preparingDocuments}>
                   <legend className="form-section-title">
                     {tr("Participant information")}
                   </legend>
-                  <ParticipantFields />
+                  <ParticipantFields preserveNationalId={!guest} account={auth.user} />
                   {!guest && (
                     <details className="optional-documents">
                       <summary>
@@ -1986,6 +2019,8 @@ function Application({ event }) {
                       <FilePicker
                         runtime={runtime}
                         purpose="supporting_document"
+                        ref={documentPicker}
+                        allowDemoSample
                         onChange={setSupportingFiles}
                         onBlocked={setDocumentsBlocked}
                         disabled={!allowed || !active || locked(state)}
@@ -1999,7 +2034,7 @@ function Application({ event }) {
                       )}
                     </p>
                   )}
-                  <ApplicationSummary files={supportingFiles} />
+                  <ApplicationSummary runtime={guest ? undefined : runtime} files={supportingFiles} />
                   <p className="form-disclaimer">
                     {tr(
                       "Submitting sends an application. A place is not confirmed.",
@@ -2209,6 +2244,12 @@ function RegistrationList({ organizer }) {
                   >
                     {tr("View")}
                   </button>
+                  {record.status === "pending" && validRegistrationId(record.id) && (
+                    <Link view="operations" params={{ registration: record.id }}
+                      className="button button-quiet button-small">
+                      {tr("Review application")}
+                    </Link>
+                  )}
                   {record.status === "pending" && (
                     <button
                       className="button button-small"
@@ -2320,6 +2361,12 @@ function RegistrationList({ organizer }) {
                 <dt>{tr("Channel")}</dt>
                 <dd>{titleCase(state.detail.channel)}</dd>
               </dl>
+              {state.detail.status === "pending" && validRegistrationId(state.detail.id) && (
+                <Link view="operations" params={{ registration: state.detail.id }}
+                  className="button button-quiet button-small">
+                  {tr("Review application")}
+                </Link>
+              )}
               <PrivateDocuments
                 runtime={runtime}
                 recordId={state.detail.id}
@@ -2536,9 +2583,15 @@ export default function App({ runtime }) {
   }, [route.view, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
-    case "operations":
-      content = <JourneyWorkspace key={`${auth.user?.id}:${auth.revision}:${route.event}`} runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/>;
+    case "operations": {
+      const workspace = <JourneyWorkspace runtime={runtime} auth={auth}
+        initialEvent={route.registration ? "" : route.event}
+        initialRef={route.registration ? "" : route.ref}
+        initialRegistration={route.registration}
+        navigate={navigate} />;
+      content = route.registration ? <RoleGate role="organizer">{workspace}</RoleGate> : workspace;
       break;
+    }
     case "home":
       content = auth.user?.role === "organizer" ? <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate}/> : auth.user?.role === "leader" ? <OfflineWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Events home />;
       break;
@@ -2622,6 +2675,7 @@ export default function App({ runtime }) {
         reportLoginFailure,
       }}
     >
+      <DemoToolsProvider>
       <Shell>
         <DemoControls navigate={navigate}/>
         <div
@@ -2639,6 +2693,7 @@ export default function App({ runtime }) {
           </React.Suspense>
         </div>
       </Shell>
+      </DemoToolsProvider>
     </Context.Provider>
   );
 }
