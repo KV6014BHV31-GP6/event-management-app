@@ -542,3 +542,15 @@ it.each([
   expect(screen.getByText(zero)).toBeInTheDocument();
   expect(screen.getByRole('list',{name:listName})).toHaveTextContent(fallback);
 },20000);
+
+
+it('keeps the registration disclosure uniquely named and the quick action distinct', async () => {
+  const actor = {id:'synthetic-label-owner',role:'organizer'};
+  render(<JourneyWorkspace runtime={{withVerifiedAccount:fn=>fn('synthetic-token',actor)}} auth={{user:actor,revision:1}} navigate={()=>{}} />);
+  const summary = screen.getByText(tr('Registration review and booking'),{exact:true});
+  expect(summary.tagName).toBe('SUMMARY');
+  const shortcut = screen.getByRole('button',{name:tr('Review applications')});
+  await userEvent.setup().click(shortcut);
+  expect(summary.closest('details')).toHaveAttribute('open');
+  expect(summary).toHaveFocus();
+});

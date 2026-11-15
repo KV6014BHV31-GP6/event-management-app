@@ -1,6 +1,32 @@
 # NU Web release — 2026-11-16
 
-Status: working-baseline / LOCAL_BROWSER_EVIDENCE; release gates evaluated at promotion.
+Status: working-baseline / V2_PRESENTATION_POLISH; fixed candidate gates evaluated at promotion.
+
+## V2 product and media successor
+
+PR68 was merged and delivered at b7fc3dda on the original Railway domain, with
+real synthetic Browser transactions and a preserved 420-second V1 film. The
+current Owner authorizes one small Frontend polish PR, necessary gates, merge
+to dev_demo and the existing Railway update. One native Sol product writer owns
+Frontend; an independent media writer only prepares repo-external V2 audio and
+subtitles. Root integrates, records and deploys; a non-author Astra reviews the
+fixed result. Current native approval is on-request / auto_review / workspace-write.
+
+Visible goals are source-community priority with reachable exercise records,
+truthful search/count/pagination, compact cards, role-oriented controls, and
+fewer repeated engineering notices while retaining synthetic/privacy/unknown
+result warnings. Backend contracts, all records, six accounts and passwords,
+uploads, volumes, domain, Austin and other branches remain untouched. Targeted
+checks cover the changed surfaces; mandatory CI stays unchanged.
+
+V2 uses the same newly released source for real Browser footage, a shorter
+opening, action-aligned document/check-in shots and a subtitle-safe frame. Original
+sentence audio is reused where applicable; revised sentences use the existing
+Zira voice. No speed changes or frozen padding manufacture 420 seconds. Capture
+motion rate and container fps are reported separately. Final source, independent
+review, playback evidence, short handoff and rollback live in the preserved
+external delivery/polish-v2 package. V1 and its raw evidence are immutable.
+
 
 ## Native resume evidence
 

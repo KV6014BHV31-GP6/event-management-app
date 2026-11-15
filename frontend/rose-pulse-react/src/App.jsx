@@ -1,4 +1,5 @@
 import JourneyWorkspace from "./JourneyWorkspace.jsx";
+import { eventGroup, discoveryView, readDiscovery } from "./event-discovery.js";
 import { AccountProfile, RecoveryWorkspace } from "./AccountWorkspace.jsx";
 import { DemoImage, DemoControls, DemoToolsProvider } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
@@ -59,6 +60,7 @@ const readLocation = () => {
     ref: params.get("ref") || "",
     registration: validRegistrationId(registration) ? registration : "",
     keyword: params.get("keyword") || "",
+    group: ["community", "demo"].includes(params.get("group")) ? params.get("group") : "all",
     page: Math.max(1, Number(params.get("page")) || 1),
     pageSize: [3, 6, 12, 24].includes(Number(params.get("pageSize")))
       ? Number(params.get("pageSize"))
@@ -253,7 +255,7 @@ function Shell({ children }) {
     setMenuOpen(false);
   }, [route.view, route.keyword]);
   const nav = [
-    {view:"operations",icon:"users",label:"Event operations"},
+    {view:"operations",icon:"users",label:"Applications & check-in"},
     {
       view: "home",
       icon: "home",
@@ -590,7 +592,7 @@ function EventImage({ event, className = "", detail = false, index = 0 }) {
     : safeImagePath(event.image_path);
   const [failed, setFailed] = useState(false);
   useEffect(() => setFailed(false), [source]);
-  return source && !failed ? (
+  return source && !failed && eventGroup(event) !== "demo" ? (
     <DemoImage
       className={className}
       src={source}
@@ -603,7 +605,7 @@ function EventImage({ event, className = "", detail = false, index = 0 }) {
     <div className={`event-placeholder ${className}`}>
       <Icon name="leaf" size={detail ? 70 : 45} />
       <span>ROSE · PULSE</span>
-      <small>{tr("Community events")}</small>
+      <small>{tr(eventGroup(event) === "demo" ? "Demo exercises" : "Community events")}</small>
     </div>
   );
 }
@@ -651,7 +653,7 @@ export function EventCard({ event }) {
           <Icon name="location" size={15} />
           <span>{event.location}</span>
         </p>
-        <RegistrationWindow event={event}/>
+        <details className="card-registration-details"><summary>{tr(acceptsApplications(event) ? "Applications open" : "Registration details")}</summary><RegistrationWindow event={event}/></details>
         {capacity !== null && <p className="card-capacity">{tr("{{count}} total places · Application required", { count: capacity })}</p>}
         <Link
           className="button card-button"
@@ -675,6 +677,7 @@ function Events({ home = false }) {
     error: "",
   });
   const [reload, setReload] = useState(0);
+  const group = home ? "all" : route.group;
   const [jump, setJump] = useState(String(route.page));
   const page = home ? 1 : route.page,
     pageSize = home ? 24 : route.pageSize,
@@ -686,8 +689,7 @@ function Events({ home = false }) {
       data: null,
       error: "",
     });
-    runtime.api
-      .getEvents({
+    readDiscovery(runtime.api, {
         page,
         pageSize,
         keyword,
@@ -717,8 +719,11 @@ function Events({ home = false }) {
       page: next,
       pageSize,
       keyword,
+      group,
     });
-  const displayedEvents = home ? (state.data?.data||[]).filter(event => ["active","published"].includes(eventDisplayState(event).toLowerCase()) && Date.parse(event.start_time)>=Date.now()).sort((a,b)=>Date.parse(a.start_time)-Date.parse(b.start_time)).slice(0,3) : (state.data?.data||[]);
+  const filteredEvents = discoveryView(state.data?.records || [], group);
+  const directory = state.data && { ...state.data, total_count: filteredEvents.length, total_pages: Math.ceil(filteredEvents.length / pageSize) };
+  const displayedEvents = home ? (state.data?.records||[]).filter(event => eventGroup(event) !== "demo" && ["active","published"].includes(eventDisplayState(event).toLowerCase()) && Date.parse(event.start_time)>=Date.now()).sort((a,b)=>(eventGroup(a) === "community" ? 0 : 1) - (eventGroup(b) === "community" ? 0 : 1) || Date.parse(a.start_time)-Date.parse(b.start_time)).slice(0,3) : state.data?.total_pages <= 1 && group === "all" ? filteredEvents : filteredEvents.slice((page - 1) * pageSize, page * pageSize);
   return (
     <div className={`browse-page ${home ? "home-page" : ""}`}>
       {home && <section className="community-intro" aria-labelledby="intro-title">
@@ -741,6 +746,7 @@ function Events({ home = false }) {
           {tr("Find activities, meet people and make time for your wellbeing.")}
         </Heading>
       )}
+      <p className="synthetic-disclosure">{tr("Synthetic demonstration only. No real medical appointment or service is offered. Event images are AI-generated artwork.")}</p>
       <section className="events-section" aria-labelledby="events-title">
         <div className="section-heading">
           <div>
@@ -768,11 +774,14 @@ function Events({ home = false }) {
             </button>
           )}
         </div>
+        {!home && <nav className="discovery-tabs" aria-label={tr("Event collections")}>
+          {[["all", "All events"], ["community", "Community events"], ["demo", "Demo exercises"]].map(([value, label]) => <Link key={value} view="events" params={{group: value, keyword, page: 1, pageSize}} aria-current={group === value ? "page" : undefined}>{tr(label)}{state.data && <span>{discoveryView(state.data.records, value).length}</span>}</Link>)}
+        </nav>}
         {!home && (
           <div className="browse-controls">
             <p className="muted">
               {state.data
-                ? tr("{{count}} events", { count: state.data.total_count })
+                ? tr("{{count}} events", { count: directory.total_count })
                 : tr("Events from the community")}
               {keyword && (
                 <>
@@ -790,6 +799,7 @@ function Events({ home = false }) {
                     page: 1,
                     pageSize: event.target.value,
                     keyword,
+                    group,
                   })
                 }
               >
@@ -846,11 +856,11 @@ function Events({ home = false }) {
               )}
             </div>
           ))}
-        {!home && state.data && state.data.total_pages > 0 && (
+        {!home && state.data && directory.total_pages > 0 && (
           <div className="pagination" aria-label={tr("Event pages")}>
             <span>
               {tr("Page")}
-              {state.data.page} {tr("of")} {state.data.total_pages}
+              {state.data.page} {tr("of")} {directory.total_pages}
             </span>
             <div>
               <button
@@ -872,7 +882,7 @@ function Events({ home = false }) {
               <button
                 className="icon-button"
                 aria-label={tr("Next page")}
-                disabled={page >= state.data.total_pages}
+                disabled={page >= directory.total_pages}
                 onClick={() => goPage(page + 1)}
               >
                 ›
@@ -880,8 +890,8 @@ function Events({ home = false }) {
               <button
                 className="icon-button"
                 aria-label={tr("Last page")}
-                disabled={page >= state.data.total_pages}
-                onClick={() => goPage(state.data.total_pages)}
+                disabled={page >= directory.total_pages}
+                onClick={() => goPage(directory.total_pages)}
               >
                 »
               </button>
@@ -893,7 +903,7 @@ function Events({ home = false }) {
                 if (
                   Number.isSafeInteger(next) &&
                   next > 0 &&
-                  next <= state.data.total_pages
+                  next <= directory.total_pages
                 )
                   goPage(next);
               }}
@@ -903,7 +913,7 @@ function Events({ home = false }) {
                 id="page-jump"
                 type="number"
                 min="1"
-                max={state.data.total_pages}
+                max={directory.total_pages}
                 required
                 value={jump}
                 onChange={(event) => setJump(event.target.value)}

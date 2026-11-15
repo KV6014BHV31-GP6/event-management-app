@@ -759,3 +759,26 @@ it('primary Apply opens the managed Guest form and hands the confirmed reference
   expect(screen.getByText('Guest booking access — DEMO OTP')).toHaveFocus();
   expect(fetch).toHaveBeenCalledTimes(1);
 });
+
+
+it('keeps six source events and both exercises reachable with truthful collection counts and pagination', async () => {
+  const ids = ['nu26_9e2df27817a19d6a','nu26_f8eddfff6a6f9f0c','nu26_a3be1706dde219c3','nu26_5f4182417579f5e0','nu26_d45df20b703e6a31','nu26_2e5bc6a07cdb4f66'];
+  const source = ids.map((public_id,index) => ({...event,public_id,title:`Source activity ${index}`}));
+  const exercise = ['-AmZswKlKz_Z5Qrzir9US','G-jh8E9o09Kb6IeT_rBK8'].map((public_id,index) => ({...event,public_id,title:`Exercise activity ${index}`}));
+  const rows = [...exercise,...source];
+  const getEvents = vi.fn(async ({page,pageSize}) => ({data:rows.slice((page-1)*pageSize,page*pageSize),page,page_size:pageSize,total_count:8,total_pages:Math.ceil(8/pageSize)}));
+  const {user} = await setup({view:'events', methods:{getEvents}});
+  await screen.findByRole('heading',{name:'Source activity 5'});
+  expect(screen.queryByRole('heading',{name:'Exercise activity 0'})).not.toBeInTheDocument();
+  expect(screen.getByText('8 events')).toBeInTheDocument();
+  await user.click(screen.getByRole('button',{name:'Next page'}));
+  await screen.findByRole('heading',{name:'Exercise activity 1'});
+  await user.click(screen.getByRole('link',{name:'Demo exercises 2'}));
+  await screen.findByRole('heading',{name:'Exercise activity 0'});
+  expect(screen.getByText('2 events')).toBeInTheDocument();
+  expect(screen.queryByRole('heading',{name:'Source activity 0'})).not.toBeInTheDocument();
+  await user.click(screen.getByRole('link',{name:'Community events 6'}));
+  await screen.findByRole('heading',{name:'Source activity 5'});
+  expect(screen.getByText('6 events')).toBeInTheDocument();
+  expect(screen.getByRole('button',{name:'Next page'})).toBeDisabled();
+});

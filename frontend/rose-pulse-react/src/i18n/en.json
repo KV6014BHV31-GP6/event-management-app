@@ -1005,5 +1005,15 @@
   "Delivery unknown — reconcile the original task": "Delivery unknown — reconcile the original task",
   "Notification cancelled": "Notification cancelled",
   "Notification expired": "Notification expired",
-  "Notification status unavailable": "Notification status unavailable"
+  "Notification status unavailable": "Notification status unavailable",
+  "Demo exercises": "Demo exercises",
+  "Applications open": "Applications open",
+  "Registration details": "Registration details",
+  "Synthetic demonstration only. No real medical appointment or service is offered. Event images are AI-generated artwork.": "Synthetic demonstration only. No real medical appointment or service is offered. Event images are AI-generated artwork.",
+  "Event collections": "Event collections",
+  "Leader event workspace": "Leader event workspace",
+  "Your application": "Your application",
+  "Device storage and retention": "Device storage and retention",
+  "Applications & check-in": "Applications & check-in",
+  "Review applications": "Review applications"
 }
