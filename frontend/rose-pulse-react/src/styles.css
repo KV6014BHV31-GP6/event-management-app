@@ -3011,6 +3011,7 @@ main { padding: 0 28px; min-width: 0; }
   .detail-layout { grid-template-columns: minmax(0, 1fr) 280px; }
 }
 @media (min-width: 701px) and (max-width: 950px) {
+  .sidebar-bottom .nav-item { font-size: 0; }
   :root { --sidebar: 74px; }
   .sidebar { padding: 20px 10px; }
   .sidebar-mark { padding: 0; }
