@@ -11,6 +11,8 @@ from src.journey.models import JourneyState
 from src.journey.policy import put
 from tests.test_journey import managed, mutation, application, review
 from tests.test_demo_readiness import actors
+from tests.test_demo_readiness import auth
+from tests.test_journey import P, envelope
 
 T = datetime(2030, 1, 1, 12, tzinfo=timezone.utc)
 
@@ -149,3 +151,68 @@ async def test_unconfigured_sender_and_phone_mask(monkeypatch,client,db_session,
     rows=await tasks(db_session)
     assert all(row.data['recipient_hint'].startswith('***') for row in rows)
     assert {r.data['kind'] for r in rows}=={'application_received','confirmation'}
+
+@pytest.mark.parametrize('prior', ['never_attempted','unknown','accepted','delivered','dry_run','processing','cancelled_with_attempt'])
+async def test_reapproval_requeues_only_never_attempted_confirmation(client,db_session,managed,prior):
+    public,a=managed
+    await mutation(client,public,a['org'],'publish',{})
+    rid=await application(client,public,'TEST-REAPPROVAL',a['a'])
+    await review(client,rid,a['org'])
+    key='outbox:confirm:'+rid
+    row=await db_session.get(JourneyState,key)
+    original_id=row.data['id']
+    if prior!='never_attempted':
+        status='cancelled' if prior=='cancelled_with_attempt' else prior
+        row.data={**row.data,'delivery_status':status,'claimed_at':'2030-01-01T00:00:00Z',
+                  'provider_id':None if prior in {'processing','dry_run'} else 'SM-ORIGINAL'}
+        await db_session.commit()
+    view=(await client.get(P+'/registrations/'+rid,headers=auth(a['a']))).json()
+    response=await client.post(P+'/registrations/'+rid+'/correction',headers=auth(a['a']),
+        json=envelope({'note':'Synthetic contact correction'},view['version']))
+    assert response.status_code==200,response.text
+    row=await db_session.get(JourneyState,key)
+    if prior=='never_attempted':
+        await NotificationService().process_notification(db_session,row,SyntheticSender())
+        assert row.data['delivery_status']=='cancelled'
+    before=dict(row.data)
+    await review(client,rid,a['org'])
+    row=await db_session.get(JourneyState,key)
+    assert row.data['id']==original_id
+    assert len([r for r in await tasks(db_session) if r.data['kind']=='confirmation'])==1
+    if prior=='never_attempted':
+        assert row.data['delivery_status']=='pending'
+        await NotificationService().process_notification(db_session,row,SyntheticSender())
+        assert row.data['delivery_status']=='dry_run'
+    else:
+        assert row.data==before
+
+@pytest.mark.parametrize('outcome',['unknown','accepted','delivered'])
+async def test_stale_worker_preserves_refreshed_provider_outcome(client,db_session,managed,outcome):
+    from tests.conftest import TestingSessionLocal
+    public,a=managed
+    await mutation(client,public,a['org'],'publish',{})
+    rid=await application(client,public,'TEST-STALE-PROVIDER',a['a'])
+    await review(client,rid,a['org'])
+    key='outbox:confirm:'+rid
+    class Sender:
+        calls=0
+        async def send(self,**kwargs):
+            self.calls+=1
+            return DeliveryResult(outcome,'SM-ORIGINAL')
+    sender=Sender()
+    async with TestingSessionLocal() as stale_db:
+        stale_row=await stale_db.get(JourneyState,key)
+        assert stale_row.data['delivery_status']=='pending'
+        current=await db_session.get(JourneyState,key)
+        await NotificationService().process_notification(db_session,current,sender)
+        assert sender.calls==1
+        before=dict(current.data)
+        view=(await client.get(P+'/registrations/'+rid,headers=auth(a['a']))).json()
+        response=await client.post(P+'/registrations/'+rid+'/correction',headers=auth(a['a']),
+            json=envelope({'note':'Synthetic correction'},view['version']))
+        assert response.status_code==200,response.text
+        await NotificationService().process_notification(stale_db,stale_row,sender)
+        assert stale_row.data==before
+        assert sender.calls==1
+        await NotificationService().record_provider_receipt(stale_db,key,'SM-ORIGINAL','delivered')
+        assert stale_row.data['delivery_status']=='delivered'

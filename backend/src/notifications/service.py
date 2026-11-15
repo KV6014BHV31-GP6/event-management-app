@@ -39,6 +39,9 @@ class NotificationService:
     async def _eligible(self,db,row):
         event=await db.scalar(select(EventModel).where(EventModel.id==row.event_id).with_for_update().execution_options(populate_existing=True))
         await db.refresh(row)
+        # A stale pending snapshot may now be an unresolved/completed provider
+        # attempt. Recheck after the lock/refresh before eligibility mutates it.
+        if delivery_status(row) not in {'pending','processing'}: return False
         if not event: return False
         if row.data.get('cancel_requested'):
             await self.repo.mark(db,row,'cancelled');return False

@@ -107,3 +107,30 @@ async def test_native_crashed_claim_cancel_remains_unknown(notification_native):
         await NotificationService(clock=lambda:T+timedelta(minutes=11)).recover_stale_claims(db)
         await db.refresh(row)
         assert row.data['delivery_status']=='unknown'
+
+@pytest.mark.parametrize('outcome',['unknown','accepted'])
+async def test_native_stale_claim_snapshot_preserves_provider_result(notification_native,outcome):
+    sessions,event,reg=notification_native
+    key='outbox:reminder:'+reg.id+':'+iso(event.start_time)+':7d'
+    worker=NotificationService(clock=lambda:T+timedelta(days=3))
+    class Sender:
+        calls=0
+        async def send(self,**kwargs):
+            self.calls+=1
+            return DeliveryResult(outcome,'SM-ORIGINAL')
+    sender=Sender()
+    async with sessions() as stale_db:
+        stale=await stale_db.get(JourneyState,key)
+        assert stale.data['delivery_status']=='pending'
+        async with sessions() as db:
+            current=await db.get(JourneyState,key)
+            await worker.process_notification(db,current,sender)
+            before=dict(current.data)
+            await db.scalar(select(EventModel).where(EventModel.id==event.id).with_for_update())
+            registration=await db.get(RegistrationModel,reg.id)
+            registration.status=Status.pending
+            await db.commit()
+        await worker.process_notification(stale_db,stale,sender)
+        assert stale.data==before and sender.calls==1
+        await worker.record_provider_receipt(stale_db,key,'SM-ORIGINAL','delivered')
+        assert stale.data['delivery_status']=='delivered'

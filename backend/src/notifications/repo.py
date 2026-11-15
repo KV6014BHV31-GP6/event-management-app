@@ -23,7 +23,13 @@ class NotificationRepository:
     @staticmethod
     async def create(db, *, event, reg, kind, key, message, scheduled_at=None, **extra):
         existing = await state(db, 'outbox:'+key)
-        if existing: return existing
+        if existing:
+            # The caller holds the event lock. Reapproval may reuse a confirmation
+            # cancelled before any claim, but must never replay a provider attempt.
+            if kind=='confirmation' and existing.data.get('kind')=='confirmation' and delivery_status(existing)=='cancelled' and not existing.data.get('external_delivery') and all(existing.data.get(field) is None for field in ('claimed_at','processed_at','provider_id')):
+                await NotificationRepository.mark(db,existing,'pending',cancel_requested=False,
+                    due_at=iso(),requeued_at=iso(),recipient_hint='***'+reg.phone[-2:])
+            return existing
         current = datetime.now(timezone.utc)
         data = {'id':str(uuid4()), 'event_public_id':event.public_id,
                 'registration_id':reg.id if reg else None, 'kind':kind,
