@@ -8,6 +8,11 @@ LOCAL_VERIFIED: corrected21-character stable public IDs preserve the existing We
 
 BROWSER_BLOCKED: original executor denied local proxy startup. Effective session approval=never/sandbox=danger-full-access differs from local on-request/workspace-write defaults; no formal approval entry is available. Owner's correction withdraws the earlier manual-start request and forbids alternate execution of the denied effect. Merge and deployment remain blocked by that required gate. Source/CI/media preparation continue independently; no actual420-second MP4 or new cloud deployment exists. Physical-device/human UAT/production certification remain out of scope.
 
+Independent successor review confirmed both original notification repairs, but
+reproduced the never-sent waitlisted reapproval variant. Stopped Sol-BE28379ab0
+extends the same protected requeue to that kind, with14 focused cases PASS after
+the retained RED. New successor source review and hosted CI remain pending.
+
 The entries below retain historical scope and versions.
 # Current successor: Railway activation and scoped platform-healthcheck fix, 2026-11-15
 

@@ -84,6 +84,10 @@ build succeeded. Independent Astra review then found a stale worker overwriting
 unknown provider state (P1) and lost confirmation after correction/reapproval (P2).
 Sol-BE95a40d61 fixes both with82 controlled/6 native checks PASS; the successor
 requires independent exact-source review. Original failures remain retained.
+The independent successor confirmed both fixes, then reproduced the same never-sent
+reapproval problem for waitlisted notices. Sol-BE28379ab0 extends the identical
+protected same-kind requeue to waitlisted;14 focused lifecycle/state cases PASS
+after the preserved1-case RED. The new fixed successor requires delta review.
 
 BLOCKED: integrated-candidate Browser acceptance and dependent merge/deployment.
 The original executor rejected local proxy startup as blocked by policy. Actual

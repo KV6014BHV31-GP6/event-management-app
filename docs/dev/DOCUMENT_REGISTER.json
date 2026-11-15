@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T17:13:26.640466+00:00",
-  "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線",
+  "reviewed_at": "2026-11-15T17:17:15.706370+00:00",
+  "reason": "記錄 waitlisted 審查修復及固定候選證據",
   "document_count": 431,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -309,7 +309,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 49,
+      "revision": 50,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -618,6 +618,13 @@
           "size_bytes": 41802,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 49,
+          "sha256": "f1f876f482bc190033181fcf99bef47238f2cc1f178300cbb6869e4b76866472",
+          "size_bytes": 42463,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
         }
       ],
       "import_lineage": {
@@ -630,8 +637,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "f1f876f482bc190033181fcf99bef47238f2cc1f178300cbb6869e4b76866472",
-      "size_bytes": 42463,
+      "sha256": "eb8a438a771cf1f5c1e2d51ed9c7e0cf41ab69bf4b29cc076144a21579a3430b",
+      "size_bytes": 42780,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -9113,7 +9120,7 @@
     {
       "document_id": "PUB-WEB-20261116-1A2B3E481EAA4FAC",
       "path": "docs/dev/tasks/NU-WEB-RELEASE-20261116.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9130,13 +9137,20 @@
           "size_bytes": 5220,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 3,
+          "sha256": "94e921b95eaba390f4fb371dd487bfb468af9aa07d0a966b4d85697f593e8950",
+          "size_bytes": 6376,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "94e921b95eaba390f4fb371dd487bfb468af9aa07d0a966b4d85697f593e8950",
-      "size_bytes": 6376
+      "sha256": "ffef8ea7117e5a5e9399c43fe4c45812e71d63abbb5ba4a1b09cdb232d791ebb",
+      "size_bytes": 6698
     },
     {
       "document_id": "PUB-WEB-20261116-3AB849A95516F3AD",
@@ -9219,7 +9233,7 @@
     {
       "document_id": "PUB-WEB-20261116-46E8C6BBAA4ED019",
       "path": "backend/src/notifications/repo.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9229,13 +9243,20 @@
           "size_bytes": 4339,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "7458e7beb1e79c64673ab95602009a624a99d996e6724d9aab61ec7baebe2668",
+          "size_bytes": 4974,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "7458e7beb1e79c64673ab95602009a624a99d996e6724d9aab61ec7baebe2668",
-      "size_bytes": 4974
+      "sha256": "cac8084c2078b90f5ed7aacca637439ca19a395fbe7c865df7cede125f67877d",
+      "size_bytes": 4985
     },
     {
       "document_id": "PUB-WEB-20261116-31B5BB9DBCC29C8F",
@@ -9352,7 +9373,7 @@
     {
       "document_id": "PUB-WEB-20261116-AD70C1F4804FF00B",
       "path": "backend/tests/test_notifications.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9362,13 +9383,20 @@
           "size_bytes": 8648,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "eddd44639588aa6ce4d2f030492e4b8ab1750cdbafb6658a2202a32557960369",
+          "size_bytes": 12242,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "eddd44639588aa6ce4d2f030492e4b8ab1750cdbafb6658a2202a32557960369",
-      "size_bytes": 12242
+      "sha256": "8b3e53be927fd558865e4b16e81e3efb256067de3d5015607897a3b0ea3913e8",
+      "size_bytes": 12784
     },
     {
       "document_id": "PUB-WEB-20261116-286A7C015ABF52CE",
@@ -9394,7 +9422,7 @@
     {
       "document_id": "PUB-WEB-20261116-681CB300EA61B38A",
       "path": "docs/dev/notification-integration.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9404,13 +9432,20 @@
           "size_bytes": 10303,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "725976bfe6cafd84fccd4d66a66f2dcda820c8101151a60d4e9fc1f37c296b03",
+          "size_bytes": 11648,
+          "superseded_at": "2026-11-15T17:17:15.706370+00:00",
+          "reason": "記錄 waitlisted 審查修復及固定候選證據"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "725976bfe6cafd84fccd4d66a66f2dcda820c8101151a60d4e9fc1f37c296b03",
-      "size_bytes": 11648
+      "sha256": "aaa7b72031250d6c06015f93fbf47142ea11e37c90a0f6696302a2cf9d7470a0",
+      "size_bytes": 12429
     }
   ]
 }
