@@ -35,9 +35,11 @@ async def available(db,event,p,reg=None):
             available-=max(0,a.data['reserved_quota']-occupied)
     return max(0,available)
 async def message(db,event,reg,kind,key,text,scheduled=None):
-    existing=await state(db,'outbox:'+key)
-    if existing:return existing
-    return await put(db,'outbox:'+key,'outbox',{'id':str(uuid4()),'event_public_id':event.public_id,'registration_id':reg.id if reg else None,'kind':kind,'recipient_binding':'registration','recipient_hint':'***'+reg.phone[-2:] if reg else 'Organizer','provider':'DEMO_OUTBOX','state':'failed' if kind in __import__('os').getenv('NU_DEMO_OUTBOX_FAIL_KINDS','').split(',') else 'demo_recorded','created_at':iso(),'scheduled_at':scheduled,'message':text,'external_delivery':False},event.id)
+    from src.notifications.repo import NotificationRepository
+    return await NotificationRepository.create(db,event=event,reg=reg,kind=kind,key=key,message=text,
+        scheduled_at=scheduled if kind=='reminder' else None,
+        due_at=iso(), expires_at=scheduled if kind in {'waitlist_offer','reminder'} else None,
+        delivery_status='failed' if kind in __import__('os').getenv('NU_DEMO_OUTBOX_FAIL_KINDS','').split(',') else 'pending')
 async def allocate(db,event,reg,actor_id):
     work=await admission(db,event)
     await reconcile(db,event)
@@ -49,6 +51,9 @@ async def allocate(db,event,reg,actor_id):
     if reg.status==Status.waiting:reg.waitlisted_at=now()
     m.data={**m.data,'review':'eligible','reason':None,'updated_at':iso()};m.version+=1
     if reg.status==Status.approved:await message(db,event,reg,'confirmation','confirm:'+reg.id,'Your synthetic booking is confirmed.')
+    else:await message(db,event,reg,'waitlisted','waitlisted:'+reg.id,'Your synthetic application is waitlisted; no place is confirmed.')
+    from src.reminders.service import ReminderService
+    await ReminderService().create_reminders_for_approved_registration(db,reg.id)
     await db.flush()
 async def candidate_enabled(db,event,reg):
     # Participant identity and entry operator are independent account bindings.
@@ -92,6 +97,8 @@ async def cancel(db,event,reg,actor_id):
     if reg.status==Status.cancelled:return
     if reg.status==Status.rejected:fail('INVALID_TRANSITION')
     reg.status=Status.cancelled;reg.cancelled_at=now();reg.cancelled_by_user_id=actor_id
+    from src.reminders.service import ReminderService
+    await ReminderService().cancel_registration_reminders(db,reg.id)
     m=await meta(db,reg);m.version+=1
     for offer in await offers(db,event):
         if offer.data['registration_id']==reg.id and offer.data['state']=='offered':offer.data={**offer.data,'state':'invalidated'};offer.version+=1

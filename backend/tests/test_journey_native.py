@@ -145,6 +145,10 @@ async def test_native_migration_explicit_ack_and_idempotent(journey_native):
 
 async def test_native_operation_fault_rolls_back_domain_outbox_receipt(journey_native,monkeypatch):
     sessions,a,event,regs=journey_native;operation=str(uuid4());body=json.dumps(envelope({'decision':'approve','reason':''},1,operation)).encode()
+    async with sessions() as db:
+        rows=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outbox').order_by(JourneyState.key))).all()
+        assert len(rows)==3 and all(row.data['kind']=='application_received' for row in rows)
+        before=[(row.key,row.version,json.dumps(row.data,sort_keys=True)) for row in rows]
     async def receive():return {'type':'http.request','body':body,'more_body':False}
     request=Request({'type':'http','method':'POST','path':'/api/v2/operations/registrations/'+regs[0].id+'/review','headers':[]},receive)
     async with sessions() as db:
@@ -154,7 +158,8 @@ async def test_native_operation_fault_rolls_back_domain_outbox_receipt(journey_n
     async with sessions() as db:
         assert (await db.get(RegistrationModel,regs[0].id)).status==Status.pending
         assert await db.get(JourneyOperation,operation) is None
-        assert await db.scalar(select(func.count()).select_from(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outbox'))==0
+        rows=(await db.scalars(select(JourneyState).where(JourneyState.event_id==event.id,JourneyState.kind=='outbox').order_by(JourneyState.key))).all()
+        assert [(row.key,row.version,json.dumps(row.data,sort_keys=True)) for row in rows]==before
     applied=await invoke(sessions,'registrations/'+regs[0].id+'/review',a[2],{'decision':'approve','reason':''},1,operation);assert 'error' not in applied
 async def test_native_offline_offer_hold_blocks_walkin_last_place(journey_native):
     sessions,a,event,regs=journey_native
