@@ -1,7 +1,7 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T20:46:53.386937+00:00",
+  "reviewed_at": "2026-11-15T20:51:28.224492+00:00",
   "reason": "V2 product polish and stable grouped pagination; retain contracts and V1",
   "document_count": 433,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
@@ -4947,7 +4947,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 14,
+      "revision": 15,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5041,13 +5041,20 @@
           "size_bytes": 47558,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 14,
+          "sha256": "c30c2073abe98b916ba43780e21d2a17dd000b434488b65aef7a120a5ec77965",
+          "size_bytes": 49101,
+          "superseded_at": "2026-11-15T20:51:28.224492+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "c30c2073abe98b916ba43780e21d2a17dd000b434488b65aef7a120a5ec77965",
-      "size_bytes": 49101
+      "sha256": "ae8bc5915389fe5ef5af87def4e946752e918ec4aa8782f15fc101614c23221b",
+      "size_bytes": 49267
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -5128,7 +5135,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 9,
+      "revision": 10,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5187,13 +5194,20 @@
           "size_bytes": 91020,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 9,
+          "sha256": "30d6f70557b16d133dcc5438664c0d8819332a86157b703550fd244b3483b8e2",
+          "size_bytes": 92587,
+          "superseded_at": "2026-11-15T20:51:28.224492+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "30d6f70557b16d133dcc5438664c0d8819332a86157b703550fd244b3483b8e2",
-      "size_bytes": 92587
+      "sha256": "ae21387bdeb3db863f8fd342515108acf56e63113486d694036620444eb609ac",
+      "size_bytes": 92594
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
@@ -6452,7 +6466,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 12,
+      "revision": 13,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6532,13 +6546,20 @@
           "size_bytes": 83607,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 12,
+          "sha256": "b28be356353079e79a79393eabbc4781f8b46beeeb508df3b2b0f7d7e53e9234",
+          "size_bytes": 84193,
+          "superseded_at": "2026-11-15T20:51:28.224492+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "b28be356353079e79a79393eabbc4781f8b46beeeb508df3b2b0f7d7e53e9234",
-      "size_bytes": 84193
+      "sha256": "ec8109c484f1ec7d332665dda70b198c8bbdbd1261a1359d8f0c327771a7d277",
+      "size_bytes": 84249
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6591,7 +6612,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 12,
+      "revision": 13,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6671,13 +6692,20 @@
           "size_bytes": 86637,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 12,
+          "sha256": "269f853f52b8aaee26371907c9ba495f0f05d6aaecff6ea83524914793e087b7",
+          "size_bytes": 87238,
+          "superseded_at": "2026-11-15T20:51:28.224492+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "269f853f52b8aaee26371907c9ba495f0f05d6aaecff6ea83524914793e087b7",
-      "size_bytes": 87238
+      "sha256": "424bb7d4f05710a632fd4cec062b7d4f548b75fed1aa1f4bd76cbe7a752d1cfd",
+      "size_bytes": 87296
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -7678,7 +7706,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 9,
+      "revision": 10,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7737,13 +7765,20 @@
           "size_bytes": 48167,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 9,
+          "sha256": "00ddadf1b505764cc06b95e39e2cecd8e9dfcb5b483c32c68779923c516f6c2a",
+          "size_bytes": 48371,
+          "superseded_at": "2026-11-15T20:51:28.224492+00:00",
+          "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "00ddadf1b505764cc06b95e39e2cecd8e9dfcb5b483c32c68779923c516f6c2a",
-      "size_bytes": 48371
+      "sha256": "5dc70008e3bafa73bef7f4a93b1b0ac84be4a2802af91d966bac0ac8c893a8b0",
+      "size_bytes": 49274
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",

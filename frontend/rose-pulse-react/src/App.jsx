@@ -255,7 +255,7 @@ function Shell({ children }) {
     setMenuOpen(false);
   }, [route.view, route.keyword]);
   const nav = [
-    {view:"operations",icon:"users",label:"Event operations"},
+    {view:"operations",icon:"users",label:"Applications & check-in"},
     {
       view: "home",
       icon: "home",

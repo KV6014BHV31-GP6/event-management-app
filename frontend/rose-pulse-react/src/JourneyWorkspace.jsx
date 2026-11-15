@@ -86,6 +86,7 @@ function JourneySession({
   const [applicationModal, setApplicationModal] = useState(false);
   const [applicationForm, setApplicationForm] = useState(0);
   const registrationDetails = useRef(null);
+  const attendanceSection = useRef(null);
   const applicationPicker = useRef(null);
   const guestAccess = useRef(null);
   const receiptRef = useRef(null);
@@ -255,7 +256,7 @@ function JourneySession({
    </section>
  );
   const registrationReview = (
-    <details className="journey-section" ref={registrationDetails} open={initialRegistration ? true : undefined}><summary>{tr('Registration review and booking')}</summary>{!initialRegistration && (auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
+    <details className="journey-section" id={receiptId + "-review"} ref={registrationDetails} open={initialRegistration ? true : undefined}><summary>{tr('Registration review and booking')}</summary>{!initialRegistration && (auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
           const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
           if (active.current) setLoaded(old => ({
             ...old,
@@ -301,6 +302,19 @@ function JourneySession({
     );
   }
   return <div className="journey-workspace"><div className="page-heading"><div><p className="eyebrow">ROSE · PULSE</p><h1>{tr(owner?'Manage registrations':staff?'Leader event workspace':'Apply and manage booking')}</h1><p>{tr('Synthetic local journey. The server confirms permissions, places and every final result.')}</p></div><button className="button button-quiet" onClick={() => navigate('events')}>{tr('Browse events')}</button></div>
+ {staff && <nav className="form-actions journey-task-actions" aria-label={tr('Applications & check-in')}>
+   <button className="button button-quiet" aria-controls={receiptId + '-review'} onClick={() => {
+     const section = registrationDetails.current;
+     if (!section) return;
+     section.open = true;
+     section.querySelector('summary')?.focus({preventScroll:true});
+     section.scrollIntoView?.({block:'start'});
+   }}>{tr('Registration review and booking')}</button>
+   {eventId && <button className="button" aria-controls={receiptId + '-attendance'} onClick={() => {
+     attendanceSection.current?.focus({preventScroll:true});
+     attendanceSection.current?.scrollIntoView?.({block:'start'});
+   }}>{tr('Offline attendance')}</button>}
+ </nav>}
  <div aria-live="polite">
    {message && <p className="notice">{message}</p>}
    {loaded.applicationReceipt && <section className="notice" ref={receiptRef} tabIndex={-1}
@@ -353,6 +367,7 @@ function JourneySession({
         }}><option value="">{tr('Select event')}</option>{eventId && !loaded.eventOptions?.some(e => e.public_id === eventId) && <option value={eventId}>{current?.event.title || loaded.publicEvent?.title || tr('Selected event')}</option>}{loaded.eventOptions?.map(e => <option value={e.public_id} key={e.public_id}>{e.title}</option>)}</select></label></>}{staff && <button className="button" disabled={busy || !eventId} onClick={loadEvent}>{tr('Read current event')}</button>}{current && <><h3>{current.event.title}</h3><p>{tr('Workflow')}: {tr(current.workflow.state)}</p><p>{current.event.location} · {new Intl.DateTimeFormat(locale(), {dateStyle:'medium',timeStyle:'short',timeZone:current.workflow.timezone || 'Asia/Kuala_Lumpur'}).format(new Date(current.event.start_time))}</p><button className="text-button" onClick={() => navigate('event', {
           event: eventId
         })}>{tr('View public event')}</button></>}</section>
+ {staff&&eventId&&<div ref={attendanceSection} tabIndex={-1} id={receiptId + "-attendance"}><AttendanceWorkspace key={staffActor.id+eventId} runtime={runtime} client={client} actor={staffActor} eventId={eventId} onError={setError} onQueueState={setAttendanceBlocked}/></div>}
  {owner && <details className="journey-section"><summary>{tr('Create managed event')}</summary><ActionForm title="Create draft" busy={busy || filesBlocked} fields={[field('title', 'Event title'), field('overview', 'Overview', 'textarea'), field('location', 'Location'), field('start_time', 'Start', 'datetime-local'), field('end_time', 'End', 'datetime-local'), field('online_quota', 'Online quota', 'number', {
         value: 10,
         min: 0
@@ -516,8 +531,7 @@ function JourneySession({
           setMessage(tr('Scoped guest access granted for this registration only.'));
         })} /></>}</details>}
  {owner && current && <details className="journey-section"><summary>{tr('Offers, reminders and Demo outbox')}</summary><div className="form-actions">{[['offers/reconcile', 'Reconcile offers'], ['reminders', 'Process due reminders']].map(([path, label]) => <button key={path} className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/' + path, {}, eventVersion)}>{tr(label)}</button>)}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outbox', '/outbox?event_public_id=' + encodeURIComponent(eventId)))}>{tr('Read Demo outbox')}</button></div><p>{tr('DEMO_OUTBOX — no external delivery.')}</p>{loaded.outbox?.messages.map(m => <article className="journey-message" key={m.id}><h3>{tr(m.kind)} · {notificationStatus(m)}</h3><p>{m.recipient_hint} · {m.message}</p><small>{m.scheduled_at || m.created_at}</small>{notificationState(m) === 'failed' && <button className="button button-small" disabled={busy} onClick={() => mutate('/outbox/' + m.id + '/retry', {}, m.version)}>{tr('Retry failed Demo message')}</button>}</article>)}</details>}
- {staff&&eventId&&<AttendanceWorkspace key={staffActor.id+eventId} runtime={runtime} client={client} actor={staffActor} eventId={eventId} onError={setError} onQueueState={setAttendanceBlocked}/>}
- {staff && current && <details className="journey-section" open><summary>{tr('Attendance and closeout')}</summary>{owner && <><ActionForm title="Register eligible walk-in" busy={busy} fields={[...applicationFields, field('eligibility_note', 'Synthetic eligibility review note', 'textarea')]} submit={v => mutate(root + '/walkins', () => ({
+ {staff && current && <details className="journey-section"><summary>{tr('Attendance and closeout')}</summary>{owner && <><ActionForm title="Register eligible walk-in" busy={busy} fields={[...applicationFields, field('eligibility_note', 'Synthetic eligibility review note', 'textarea')]} submit={v => mutate(root + '/walkins', () => ({
           application: appCopy(v),
           eligibility_confirmed: true,
           eligibility_note: v.eligibility_note
