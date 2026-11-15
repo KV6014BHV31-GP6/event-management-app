@@ -40,6 +40,10 @@ After public readback, remove the two seed variables. Keep `NU_INIT_EMPTY_DB=no`
 
 Manifest dates retain Figma's March/April 2027 dates. Timezone and synthetic
 pool/window assumptions are disclosed in the manifest; they are not medical rules.
+Event public IDs remain exactly21 characters, as required by the existing Web and
+offline client contracts. They are deterministic hashes of the Figma source key.
+The first local-only short-ID rehearsal is superseded; its original receipt must
+refuse this changed manifest. Validate this revision in a fresh isolated database.
 The two Organizers own distinct events. Leader1 is assigned the first three events;
 Leader2 is intentionally unassigned there. Attendees retain the existing `user`
 server enum. Guest needs no account. Normal password hashing/validation remain.

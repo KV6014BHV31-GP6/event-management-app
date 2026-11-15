@@ -7,11 +7,12 @@
   "assumptions": [
     "Figma source dates are retained without shifting. Times interpreted in Asia/Kuala_Lumpur from Malaysia venue and EN/BM context; directory itself omits timezone.",
     "Synthetic pool split:5 offline reserved places and remaining capacity online; total equals Figma source.",
-    "Existing locked synthetic Demo policy:separate_pools_offer,30minute offer,24hour reminder,0.5 low-demand ratio. Registration opens2026-11-16 and closes at event start. Check-in opens1hour before event and closes at end. These are transparent synthetic fixture settings, not medical eligibility rules."
+    "Existing locked synthetic Demo policy:separate_pools_offer,30minute offer,24hour reminder,0.5 low-demand ratio. Registration opens2026-11-16 and closes at event start. Check-in opens1hour before event and closes at end. These are transparent synthetic fixture settings, not medical eligibility rules.",
+    "Public IDs are stable 21-character source-key hashes to preserve the existing Web/Offline API contract. The superseded short-ID manifest was tested only in an isolated local database and was never deployed; its receipt must not be replayed with this different manifest."
   ],
   "events": [
     {
-      "public_id": "nu26_screening",
+      "public_id": "nu26_9e2df27817a19d6a",
       "source_key": "figma-r4:4102:1952",
       "source_node": "4102:1952",
       "source_date": "2027-03-15T10:00:00+08:00",
@@ -49,7 +50,7 @@
       }
     },
     {
-      "public_id": "nu26_cooking",
+      "public_id": "nu26_f8eddfff6a6f9f0c",
       "source_key": "figma-r4:4102:1963",
       "source_node": "4102:1963",
       "source_date": "2027-03-20T14:00:00+08:00",
@@ -87,7 +88,7 @@
       }
     },
     {
-      "public_id": "nu26_wellness",
+      "public_id": "nu26_a3be1706dde219c3",
       "source_key": "figma-r4:4102:1974",
       "source_node": "4102:1974",
       "source_date": "2027-03-25T10:00:00+08:00",
@@ -125,7 +126,7 @@
       }
     },
     {
-      "public_id": "nu26_cervical",
+      "public_id": "nu26_5f4182417579f5e0",
       "source_key": "figma-r4:4102:1986",
       "source_node": "4102:1986",
       "source_date": "2027-03-28T09:30:00+08:00",
@@ -163,7 +164,7 @@
       }
     },
     {
-      "public_id": "nu26_mobility",
+      "public_id": "nu26_d45df20b703e6a31",
       "source_key": "figma-r4:4102:1997",
       "source_node": "4102:1997",
       "source_date": "2027-04-02T10:00:00+08:00",
@@ -201,7 +202,7 @@
       }
     },
     {
-      "public_id": "nu26_heart",
+      "public_id": "nu26_2e5bc6a07cdb4f66",
       "source_key": "figma-r4:4102:2008",
       "source_node": "4102:2008",
       "source_date": "2027-04-08T14:00:00+08:00",

@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T17:04:48.072661+00:00",
-  "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted",
+  "reviewed_at": "2026-11-15T17:13:26.640466+00:00",
+  "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線",
   "document_count": 431,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -309,7 +309,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 48,
+      "revision": 49,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -611,6 +611,13 @@
           "size_bytes": 40300,
           "superseded_at": "2026-11-15T17:02:31.271603+00:00",
           "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 48,
+          "sha256": "5c2dc89f8e9b5ee88fd64409e9f1d6d257457f89d02f79b691fa534bd532ef72",
+          "size_bytes": 41802,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
         }
       ],
       "import_lineage": {
@@ -623,8 +630,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "5c2dc89f8e9b5ee88fd64409e9f1d6d257457f89d02f79b691fa534bd532ef72",
-      "size_bytes": 41802,
+      "sha256": "f1f876f482bc190033181fcf99bef47238f2cc1f178300cbb6869e4b76866472",
+      "size_bytes": 42463,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -8838,7 +8845,7 @@
     {
       "document_id": "NU-RAILWAY-ENTRYPOINT-20261115",
       "path": "deploy/railway/entrypoint.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -8848,13 +8855,20 @@
           "size_bytes": 5343,
           "superseded_at": "2026-11-15T17:02:31.271603+00:00",
           "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 2,
+          "sha256": "c78d1fda4a0085736dc76b24b502339b47fd6e9e409f84ef7234635a15f84bb8",
+          "size_bytes": 6860,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
         }
       ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "c78d1fda4a0085736dc76b24b502339b47fd6e9e409f84ef7234635a15f84bb8",
-      "size_bytes": 6860
+      "sha256": "02e53940475771908c6cf770f472be7d98d87136545245e05016f7e68153a8b2",
+      "size_bytes": 6857
     },
     {
       "document_id": "NU-RAILWAY-HTTPS-GATEWAY-20261115",
@@ -8956,46 +8970,70 @@
     {
       "document_id": "PUB-WEB-20261116-B4F658B16B9271F4",
       "path": "backend/scripts/staging_content.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "ffab7129b911b0827abf98d8f0aafcdfe938a8c0cb9b2315e926dcff79cb77c8",
+          "size_bytes": 12652,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ffab7129b911b0827abf98d8f0aafcdfe938a8c0cb9b2315e926dcff79cb77c8",
-      "size_bytes": 12652
+      "sha256": "f742fa8bef376b19e21c1880d8827eaa99e2cd29feaa5e2012b3d85431250e81",
+      "size_bytes": 12650
     },
     {
       "document_id": "PUB-WEB-20261116-17EAF51706194BD8",
       "path": "backend/tests/test_staging_content.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "070a6b6e35ea9684c314bf5185efd4be55b5ba7c647aeb6b12aa81bc48d05bd3",
+          "size_bytes": 2313,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "070a6b6e35ea9684c314bf5185efd4be55b5ba7c647aeb6b12aa81bc48d05bd3",
-      "size_bytes": 2313
+      "sha256": "ec52a5ffaaedf2f79318fef1c9dbd0858c282621e14087dcb2519d2463364556",
+      "size_bytes": 3217
     },
     {
       "document_id": "PUB-WEB-20261116-4D23DD24FFB31466",
       "path": "deploy/railway/README.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "314b1961257a00cd66cc1daadc3a7209ebf45ac53c3071921be2ee33b7e30c3f",
+          "size_bytes": 3834,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "314b1961257a00cd66cc1daadc3a7209ebf45ac53c3071921be2ee33b7e30c3f",
-      "size_bytes": 3834
+      "sha256": "202e53ea4c7b5e870430e5cf8034b4bb8afd83dc63753b2f2a035ad1c6b82707",
+      "size_bytes": 4161
     },
     {
       "document_id": "PUB-WEB-20261116-78E669006797B772",
       "path": "deploy/railway/seed-assets/manifest.json",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9005,13 +9043,20 @@
           "size_bytes": 10753,
           "superseded_at": "2026-11-15T17:02:59.109088+00:00",
           "reason": "修正本輪生成 manifest 的 Windows newline；保留 JSON 內容與 seed canonical fingerprint"
+        },
+        {
+          "revision": 2,
+          "sha256": "453144d4ded65e696cb1ffe683ccb91cd7e90b6a0d1d7840e5a4497d6489491a",
+          "size_bytes": 10511,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "453144d4ded65e696cb1ffe683ccb91cd7e90b6a0d1d7840e5a4497d6489491a",
-      "size_bytes": 10511
+      "sha256": "b1c54e14771042e7059246b18ba16797aca1f8a5fe2aba46b6222d23f50a344a",
+      "size_bytes": 10839
     },
     {
       "document_id": "PUB-WEB-20261116-05D98357136A5517",
@@ -9068,7 +9113,7 @@
     {
       "document_id": "PUB-WEB-20261116-1A2B3E481EAA4FAC",
       "path": "docs/dev/tasks/NU-WEB-RELEASE-20261116.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9078,13 +9123,20 @@
           "size_bytes": 4495,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 2,
+          "sha256": "00203e8d3dc553a8263e365834b5526847c0b2d2fb480f51bca79b47b4b09f5e",
+          "size_bytes": 5220,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "00203e8d3dc553a8263e365834b5526847c0b2d2fb480f51bca79b47b4b09f5e",
-      "size_bytes": 5220
+      "sha256": "94e921b95eaba390f4fb371dd487bfb468af9aa07d0a966b4d85697f593e8950",
+      "size_bytes": 6376
     },
     {
       "document_id": "PUB-WEB-20261116-3AB849A95516F3AD",
@@ -9167,15 +9219,23 @@
     {
       "document_id": "PUB-WEB-20261116-46E8C6BBAA4ED019",
       "path": "backend/src/notifications/repo.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "578f35404d5db62e258ce11c58ba969ed5a05106e6508861be0e6a2f41d64777",
+          "size_bytes": 4339,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "578f35404d5db62e258ce11c58ba969ed5a05106e6508861be0e6a2f41d64777",
-      "size_bytes": 4339
+      "sha256": "7458e7beb1e79c64673ab95602009a624a99d996e6724d9aab61ec7baebe2668",
+      "size_bytes": 4974
     },
     {
       "document_id": "PUB-WEB-20261116-31B5BB9DBCC29C8F",
@@ -9193,15 +9253,23 @@
     {
       "document_id": "PUB-WEB-20261116-2CDAC39F364C1632",
       "path": "backend/src/notifications/service.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c3e7b8ef153988f890687ceb48ce3ef3474e06f3fa32a13c376f2cec791ed417",
+          "size_bytes": 9178,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "c3e7b8ef153988f890687ceb48ce3ef3474e06f3fa32a13c376f2cec791ed417",
-      "size_bytes": 9178
+      "sha256": "9eb12509a322be34aab6826b4e9a51755617dd8405085aaaf582e5896e87727e",
+      "size_bytes": 9416
     },
     {
       "document_id": "PUB-WEB-20261116-9205786E47BA456C",
@@ -9284,41 +9352,65 @@
     {
       "document_id": "PUB-WEB-20261116-AD70C1F4804FF00B",
       "path": "backend/tests/test_notifications.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "16402257790968b605ef1c47a3ac6a7ecf04ed53e52286dfe987ebd59069f086",
+          "size_bytes": 8648,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "16402257790968b605ef1c47a3ac6a7ecf04ed53e52286dfe987ebd59069f086",
-      "size_bytes": 8648
+      "sha256": "eddd44639588aa6ce4d2f030492e4b8ab1750cdbafb6658a2202a32557960369",
+      "size_bytes": 12242
     },
     {
       "document_id": "PUB-WEB-20261116-286A7C015ABF52CE",
       "path": "backend/tests/test_notifications_native.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d3d427c48bee9a0b6a93188563e58b09dff822144b915d9ad00ecb9239a95396",
+          "size_bytes": 5520,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d3d427c48bee9a0b6a93188563e58b09dff822144b915d9ad00ecb9239a95396",
-      "size_bytes": 5520
+      "sha256": "134552540cd944c5dd5209b361647c2646a8752b9256edad33a96eeb4c845a98",
+      "size_bytes": 6866
     },
     {
       "document_id": "PUB-WEB-20261116-681CB300EA61B38A",
       "path": "docs/dev/notification-integration.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "68932bac75182f82dcbb3ef6f31e4ae9dcd2912f3bc50c53eaeac08173c77755",
+          "size_bytes": 10303,
+          "superseded_at": "2026-11-15T17:13:26.640466+00:00",
+          "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "68932bac75182f82dcbb3ef6f31e4ae9dcd2912f3bc50c53eaeac08173c77755",
-      "size_bytes": 10303
+      "sha256": "725976bfe6cafd84fccd4d66a66f2dcda820c8101151a60d4e9fc1f37c296b03",
+      "size_bytes": 11648
     }
   ]
 }

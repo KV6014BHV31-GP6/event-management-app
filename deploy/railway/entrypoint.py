@@ -1,4 +1,4 @@
-"""Railway-only synthetic staging launcher. Never seed accounts, events or participant data."""
+"""Railway synthetic launcher; content installation requires an explicit fixed operation."""
 from __future__ import annotations
 
 import asyncio

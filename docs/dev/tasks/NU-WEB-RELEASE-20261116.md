@@ -1,6 +1,7 @@
 # NU Web release — 2026-11-16
 
-Status: working-baseline / IN_PROGRESS. This task is synthetic staging only.
+Status: working-baseline / BROWSER_BLOCKED; independent source work continues.
+Merge and deployment cannot proceed while the required Browser gate is blocked.
 
 ## Authority and source
 
@@ -61,7 +62,12 @@ no rows; first apply creates6 accounts/6 events/6 public image associations;
 same operation readback leaves counts unchanged. All6 accounts authenticate;
 unassigned Leader, other Organizer and Attendee management reads return403.
 Source drift regression was RED before the correction, then5 launcher checks
-PASS; existing3 narrow gateway checks PASS;3 manifest/key boundary checks PASS.
+PASS; existing3 narrow gateway checks PASS. Seed ID review exposed a mismatch with
+the existing21-character Web detail/offline contract. The corrected manifest uses
+stable source-key hashes;6 manifest checks PASS after2 genuine RED cases. A fresh
+isolated PostgreSQL rehearsal again verifies6 events/accounts/images,6 logins,
+3 management permission negatives and idempotent repeat. The original short-ID
+rehearsal remains preserved and is superseded, never replayed or deployed.
 
 Stopped writer commits are integrated with preserved authorship: FE3ac3dead plus
 canonical-delivery display6b887b85; BE1e9a0c23. FE affected129 checks PASS, outbox
@@ -73,12 +79,21 @@ Austin constructor/relation failures, old rollback count mismatch and the native
 migration probe's refusal under wrong environment remain preserved. See
 [notification adoption](../notification-integration.md). No schema/dependency change.
 
-NOT_RUN/PENDING: fixed integrated-candidate browser acceptance, full affected
-regression/hosted CI, independent review, merge/new public deployment and actual
-420-second video. No local test is labeled public deployment acceptance.
-An executor-policy rejection prevented the local Browser proxy startup; root
-preserved the exact rejection outside the repo and requested native approval or
-manual user start. No alternate execution path is used to bypass it.
+The integrated7b458591 controlled backend suite passed165 tests and its Docker
+build succeeded. Independent Astra review then found a stale worker overwriting
+unknown provider state (P1) and lost confirmation after correction/reapproval (P2).
+Sol-BE95a40d61 fixes both with82 controlled/6 native checks PASS; the successor
+requires independent exact-source review. Original failures remain retained.
+
+BLOCKED: integrated-candidate Browser acceptance and dependent merge/deployment.
+The original executor rejected local proxy startup as blocked by policy. Actual
+session approval=never and sandbox=danger-full-access override local config defaults
+on-request/workspace-write. No formal executor approval entry is available here;
+the selecting actor/cause of that session override is UNVERIFIED. The earlier
+manual-start request was withdrawn following Owner correction. No renamed action,
+alternate tool/host or user manual execution may reproduce the denied effect.
+Source checks, existing CI evidence and media preproduction may continue but cannot
+clear that gate. Actual420-second recording and public acceptance remain NOT_RUN.
 
 The external task CHECKPOINT contains scheduling/operator details. `CURRENT.md`
 remains the only repository functional status. Evidence-specific acceptance

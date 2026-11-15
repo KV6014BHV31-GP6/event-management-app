@@ -54,7 +54,7 @@ def load_manifest(path):
     if not rows or len({row['public_id'] for row in rows}) != len(rows):
         raise ValueError('Empty or duplicate event inventory')
     for row in rows:
-        if not re.fullmatch(r'[A-Za-z0-9_-]{1,21}', row['public_id']):
+        if not re.fullmatch(r'[A-Za-z0-9_-]{21}', row['public_id']):
             raise ValueError('Invalid stable event ID')
         if row['organizer'] not in {'organizer1','organizer2'} or row.get('intended_public') is not True:
             raise ValueError('Unsupported event owner or publication intent')
