@@ -38,6 +38,22 @@ const applicationFields = [field('first_name', 'First name'), field('last_name',
   options: ['male', 'female']
 }), field('date_of_birth', 'Date of birth', 'date'), field('phone', 'Phone'), field('national_id', 'National ID')];
 const appCopy = v => minimumRegistrationPayload(v);
+const notificationState = message => message.delivery_status || message.state;
+function notificationStatus(message) {
+  switch (notificationState(message)) {
+    case 'dry_run':
+    case 'demo_recorded': return tr('Internal simulation — no external delivery');
+    case 'pending': return tr('Notification scheduled');
+    case 'processing': return tr('Notification processing');
+    case 'accepted': return tr('Provider accepted — delivery not confirmed');
+    case 'delivered': return tr('Delivery confirmed by provider');
+    case 'failed': return tr('Notification failed');
+    case 'unknown': return tr('Delivery unknown — reconcile the original task');
+    case 'cancelled': return tr('Notification cancelled');
+    case 'expired': return tr('Notification expired');
+    default: return tr('Notification status unavailable');
+  }
+}
 export default function JourneyWorkspace(props) {
   return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}:${props.initialRef}:${props.initialRegistration}`} {...props} />;
 }
@@ -499,7 +515,7 @@ function JourneySession({
           form.reset();
           setMessage(tr('Scoped guest access granted for this registration only.'));
         })} /></>}</details>}
- {owner && current && <details className="journey-section"><summary>{tr('Offers, reminders and Demo outbox')}</summary><div className="form-actions">{[['offers/reconcile', 'Reconcile offers'], ['reminders', 'Process due reminders']].map(([path, label]) => <button key={path} className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/' + path, {}, eventVersion)}>{tr(label)}</button>)}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outbox', '/outbox?event_public_id=' + encodeURIComponent(eventId)))}>{tr('Read Demo outbox')}</button></div><p>{tr('DEMO_OUTBOX — no external delivery.')}</p>{loaded.outbox?.messages.map(m => <article className="journey-message" key={m.id}><h3>{tr(m.kind)} · {tr(m.state)}</h3><p>{m.recipient_hint} · {m.message}</p><small>{m.scheduled_at || m.created_at}</small>{m.state === 'failed' && <button className="button button-small" disabled={busy} onClick={() => mutate('/outbox/' + m.id + '/retry', {}, m.version)}>{tr('Retry failed Demo message')}</button>}</article>)}</details>}
+ {owner && current && <details className="journey-section"><summary>{tr('Offers, reminders and Demo outbox')}</summary><div className="form-actions">{[['offers/reconcile', 'Reconcile offers'], ['reminders', 'Process due reminders']].map(([path, label]) => <button key={path} className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/' + path, {}, eventVersion)}>{tr(label)}</button>)}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outbox', '/outbox?event_public_id=' + encodeURIComponent(eventId)))}>{tr('Read Demo outbox')}</button></div><p>{tr('DEMO_OUTBOX — no external delivery.')}</p>{loaded.outbox?.messages.map(m => <article className="journey-message" key={m.id}><h3>{tr(m.kind)} · {notificationStatus(m)}</h3><p>{m.recipient_hint} · {m.message}</p><small>{m.scheduled_at || m.created_at}</small>{notificationState(m) === 'failed' && <button className="button button-small" disabled={busy} onClick={() => mutate('/outbox/' + m.id + '/retry', {}, m.version)}>{tr('Retry failed Demo message')}</button>}</article>)}</details>}
  {staff&&eventId&&<AttendanceWorkspace key={staffActor.id+eventId} runtime={runtime} client={client} actor={staffActor} eventId={eventId} onError={setError} onQueueState={setAttendanceBlocked}/>}
  {staff && current && <details className="journey-section"><summary>{tr('Attendance and closeout')}</summary>{owner && <><ActionForm title="Register eligible walk-in" busy={busy} fields={[...applicationFields, field('eligibility_note', 'Synthetic eligibility review note', 'textarea')]} submit={v => mutate(root + '/walkins', () => ({
           application: appCopy(v),

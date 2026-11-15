@@ -995,5 +995,15 @@
   "{{count}} events": "{{count}} events",
   "A place is confirmed once your application is approved.": "A place is confirmed once your application is approved.",
   "ROSE · PULSE": "ROSE · PULSE",
-  "Sign up": "Sign up"
+  "Sign up": "Sign up",
+  "Internal simulation — no external delivery": "Internal simulation — no external delivery",
+  "Notification scheduled": "Notification scheduled",
+  "Notification processing": "Notification processing",
+  "Provider accepted — delivery not confirmed": "Provider accepted — delivery not confirmed",
+  "Delivery confirmed by provider": "Delivery confirmed by provider",
+  "Notification failed": "Notification failed",
+  "Delivery unknown — reconcile the original task": "Delivery unknown — reconcile the original task",
+  "Notification cancelled": "Notification cancelled",
+  "Notification expired": "Notification expired",
+  "Notification status unavailable": "Notification status unavailable"
 }

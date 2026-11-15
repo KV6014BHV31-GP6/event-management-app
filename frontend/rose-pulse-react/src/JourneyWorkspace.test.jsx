@@ -449,6 +449,33 @@ const attributionCurrentEvent = () => ({
     start_time:'2026-11-03T08:00:00Z',end_time:'2026-11-03T10:00:00Z',online_quota:10,offline_quota:5,image_files:[]},
   workflow:{state:'completed',version:4,timezone:'Asia/Kuala_Lumpur',registration_opens_at:'2026-11-01T08:00:00Z',registration_closes_at:'2026-11-02T10:00:00Z'},
 });
+it.each(['en', 'ms'])('outbox uses canonical delivery truth and only offers failed retries in %s', async language => {
+  await changeLanguage(language);
+  const statuses = ['dry_run', 'accepted', 'delivered', 'unknown', 'cancelled', 'expired', 'processing', 'failed'];
+  const messages = statuses.map((delivery_status, index) => ({
+    id: `notification-${index}`, kind: 'reminder', state: 'failed', delivery_status,
+    recipient_hint: 'Synthetic recipient', message: `Synthetic notification ${index}`, version: 1,
+  }));
+  messages.push({id: 'legacy', kind: 'reminder', state: 'demo_recorded', message: 'Legacy internal notification'});
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation(async path =>
+    response(path.includes('/outbox?') ? {messages} : attributionCurrentEvent()));
+  render(<JourneyWorkspace runtime={attributionRuntime()} auth={{user: attributionActor, revision: 1}}
+    initialEvent={attributionEvent} navigate={() => {}} />);
+  const user = userEvent.setup();
+  await user.click(screen.getByRole('button', {name: tr('Read current event')}));
+  await screen.findByRole('heading', {name: 'Synthetic attribution event'});
+  await user.click(screen.getByText(tr('Offers, reminders and Demo outbox')));
+  await user.click(screen.getByRole('button', {name: tr('Read Demo outbox')}));
+  await screen.findByText(/Legacy internal notification/);
+  expect(screen.getAllByText(new RegExp(tr('Internal simulation — no external delivery')))).toHaveLength(2);
+  expect(screen.getByRole('heading', {name: new RegExp(tr('Provider accepted — delivery not confirmed'))})).toBeInTheDocument();
+  const unknown = screen.getByRole('heading', {name: new RegExp(tr('Delivery unknown — reconcile the original task'))}).closest('article');
+  expect(within(unknown).queryByRole('button')).not.toBeInTheDocument();
+  const retries = screen.getAllByRole('button', {name: tr('Retry failed Demo message')});
+  expect(retries).toHaveLength(1);
+  expect(retries[0].closest('article')).toHaveTextContent('Synthetic notification 7');
+  expect(fetch.mock.calls.every(([, options]) => options.method === 'GET')).toBe(true);
+});
 it.each(['preview','finalized','legacy'])('leader attribution: renders Owner %s closeout without recomputing history',async state=>{
   const stats=attributionStats();
   const closeout={version:4,state:state==='legacy'?'finalized':state,as_of_utc:'2026-11-03T10:01:00Z',

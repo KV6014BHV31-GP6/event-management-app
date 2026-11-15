@@ -995,5 +995,15 @@
   "{{count}} events": "{{count}} acara",
   "A place is confirmed once your application is approved.": "Tempat disahkan setelah permohonan anda diluluskan.",
   "ROSE · PULSE": "ROSE · PULSE",
-  "Sign up": "Daftar"
+  "Sign up": "Daftar",
+  "Internal simulation — no external delivery": "Simulasi dalaman — tiada penghantaran luaran",
+  "Notification scheduled": "Pemberitahuan dijadualkan",
+  "Notification processing": "Pemberitahuan sedang diproses",
+  "Provider accepted — delivery not confirmed": "Diterima penyedia — penghantaran belum disahkan",
+  "Delivery confirmed by provider": "Penghantaran disahkan oleh penyedia",
+  "Notification failed": "Pemberitahuan gagal",
+  "Delivery unknown — reconcile the original task": "Penghantaran tidak diketahui — semak tugas asal",
+  "Notification cancelled": "Pemberitahuan dibatalkan",
+  "Notification expired": "Pemberitahuan tamat tempoh",
+  "Notification status unavailable": "Status pemberitahuan tidak tersedia"
 }
