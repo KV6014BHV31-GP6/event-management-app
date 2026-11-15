@@ -2,6 +2,14 @@
 
 This additive frontend preserves the Phase 1 layout and legacy frontend/live files. Phase 2 uses the admitted contracts in ../../docs/dev/phase2/ and isolated services. Unit/component results below are controlled synthetic evidence. The controller and independent reviewer record native Browser/API/PostgreSQL acceptance separately.
 
+## Adopted R4 Web visual increment (2026-11-16)
+
+The shared shell, Home introduction, event cards, forms, account access and role workspace surfaces use the adopted Figma file `AwavHQahqm3zB2q2k5cWG0`: Home `1:2`, mobile Home `4106:1876`, directory `1:412`, event detail `1:633`, application `1:956`, sign-in `1:2829`, Organizer `1:6602` and Leader capture `1:4551`. Shared CSS adapts these layouts to existing React components and keeps current routes and controls. Inter is preferred with local Segoe UI/Arial fallbacks; no remote font request or new dependency is required.
+
+The bundled Home photograph and brand mark in `public/images/r4/` are exact downloaded Figma assets. Event cards, event details and application context continue to read each event's API `image_files` / `image_path`; no event row, title, date, count or category is hard-coded. Card capacity means configured total places, not currently available places. Search and pagination use the existing API contract. The source design's categories are not displayed because the event contract has no category field. The Home actions open Events and, for signed-in participants, My registrations. Guest application lookup opens the existing operations workspace containing Guest booking access. Application approval, private documents, manual sync, immutable IDs and unknown-outcome reconciliation retain their existing behavior.
+
+Author checks: default affected component suite **129/129 PASS**; synthetic Demo controls/offline workspace/attendance/i18n **28/28 PASS**; synthetic production build PASS with the retained large-chunk advisory. An earlier synthetic affected-suite run had a missing new Sign up translation (fixed) and two sharing assertions expecting the default-profile button on a synthetic loopback origin. Both sharing failures reproduce with the unchanged baseline App source; the default affected suite passes. Real Browser/API/DB and paired responsive visual acceptance remain separate integration gates. The initial no-backend Home error screenshot is diagnostic only, not visual acceptance.
+
 ## Start the production AppShell
 
 Use Node 24. Run `npm ci`, `npm run build`, then `npm run preview` here. Open **http://127.0.0.1:5205**. The dedicated route is **5205 → proxy5206 → Backend8028**. Development and preview bind only loopback, with strict ports. Start the repository proxy separately with PORT=5206, BACKEND_URL=http://127.0.0.1:8028 and its dedicated absolute legacy UPLOAD_DIR. New v2 files remain in the Backend's private asset directory and are served through authorized API routes; never map that directory as public files.

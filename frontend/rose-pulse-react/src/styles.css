@@ -1,15 +1,16 @@
 :root {
-  font-family: Arial, Helvetica, sans-serif;
-  color: #22352f;
-  background: #f5f3ed;
+  font-family: Inter, "Segoe UI", Arial, sans-serif;
+  color: #243730;
+  background: #fcfaf7;
   font-synthesis: none;
   font-weight: 400;
-  --forest: #123f35;
-  --green: #17684f;
-  --gold: #dfbf85;
-  --cream: #f7f5ef;
-  --muted: #69736d;
-  --line: #e7e7df;
+  --forest: #153b30;
+  --green: #347b62;
+  --gold: #edd8b2;
+  --cream: #fcfaf7;
+  --muted: #56685e;
+  --line: #dedace;
+  --soft: #e7f2eb;
   --sidebar: 220px;
 }
 * {
@@ -2903,4 +2904,161 @@ legend {
   color: #173425;
   font: inherit;
   resize: vertical;
+}
+
+/* Adopted Figma R4: shared RoleShell, Button, FormField and EventCard. */
+:root { --sidebar: 220px; }
+h1 { font-size: 28px; line-height: 36px; letter-spacing: 0; }
+h2 { font-size: 20px; line-height: 28px; letter-spacing: 0; }
+p { line-height: 1.5; }
+.sidebar { background: #3d7a66; padding: 20px 16px; }
+.sidebar-mark { padding: 0 4px; margin-bottom: 26px; }
+.sidebar .brand { gap: 10px; }
+.brand-leaf { width: 41.8px; height: 41.8px; padding: 0; flex-shrink: 0; }
+.brand strong { font-size: 15px; letter-spacing: 0; }
+.brand small { display: none; }
+.sidebar .brand strong { color: #f3f5ee; }
+.sidebar .brand-dot { color: inherit; }
+.nav-item { min-height: 40px; padding: 10px 16px; font-size: 14px; line-height: 20px; }
+.sidebar nav { gap: 8px; }
+.sidebar-note { color: #d1e0d4; border-top: 1px solid #2f6655; padding-top: 16px; margin: 24px 8px 12px; line-height: 1.5; }
+.sidebar-bottom .nav-item { font-size: 12.5px; }
+.workspace { max-width: none; min-width: 0; }
+.masthead { height: 60px; padding: 0 28px; border: 0; background: var(--cream); }
+.masthead > a { display: none; }
+.masthead-title { font-size: 24px; line-height: 32px; font-weight: 700; color: var(--forest); margin: 0; }
+.toolbar { min-height: 56px; height: auto; padding: 8px 28px; background: var(--cream); border: 0; position: relative; z-index: 25; }
+.toolbar-account { gap: 8px; margin-left: auto; }
+.toolbar-divider { display: none; }
+.toolbar-account > .button { border-radius: 24px; min-height: 36px; padding: 8px 20px; font-size: 12px; }
+.toolbar-account > .button:first-of-type { color: var(--forest); background: white; }
+.language-button { min-height: 36px; border: 1px solid var(--green); border-radius: 24px; padding: 8px 12px; font-size: 12px; }
+.search { border-color: #dce7df; border-radius: 8px; background: #f7faf8; box-shadow: none; }
+.search input { font-size: 14px; }
+.route-home .search { display: none; }
+main { padding: 0 28px; min-width: 0; }
+.browse-page { padding-top: 8px; }
+.community-intro { display: flex; gap: 16px; align-items: center; background: #e8f0ea; border-radius: 16px; padding: 24px 28px; color: var(--forest); }
+.community-intro-copy { flex: 1; min-width: 0; display: grid; gap: 12px; }
+.community-intro .eyebrow { color: var(--forest); font-size: 14px; font-weight: 600; line-height: 20px; letter-spacing: 0; margin: 0; }
+.community-intro h1 { margin: 0; }
+.community-intro p { font-size: 16px; line-height: 24px; margin: 0; }
+.community-intro-photo { width: 360px; height: 180px; object-fit: cover; border-radius: 12px; flex-shrink: 0; }
+.intro-actions { display: flex; gap: 16px; }
+.intro-actions .button { flex: 1; }
+.intro-actions .button-quiet { background: var(--soft); border-color: transparent; }
+.home-page .events-section { margin-top: 20px; }
+.section-heading { margin-bottom: 20px; flex-wrap: wrap; }
+.section-heading h2 { font-size: 20px; line-height: 28px; }
+.event-grid { gap: 24px; align-items: stretch; }
+.event-card { display: flex; flex-direction: column; border-color: var(--line); border-radius: 12px; box-shadow: none; }
+.event-card:hover { transform: none; box-shadow: 0 4px 14px #153b3010; }
+.card-image-link { height: 148px; flex-shrink: 0; }
+.event-card:hover .card-image { transform: none; }
+.card-body { padding: 24px; display: flex; flex-direction: column; gap: 16px; flex: 1; min-width: 0; }
+.card-body h3 { font-size: 20px; line-height: 28px; min-height: 0; margin: 0; overflow-wrap: anywhere; }
+.event-meta { font-size: 14px; line-height: 20px; margin: 0; }
+.event-meta small { font-size: 14px; line-height: 20px; color: var(--muted); display: block; margin: 2px 0 0; white-space: normal; }
+.card-capacity { font-size: 14px; line-height: 20px; color: var(--green); margin: 0; }
+.card-body .registration-window { font-size: 12px; }
+.card-body .registration-window p { margin-bottom: 4px; }
+.card-button { margin-top: auto; min-height: 48px; font-size: 14px; padding: 12px 20px; }
+.button { min-height: 48px; font-size: 14px; line-height: 20px; }
+.button-small { min-height: 40px; font-size: 13px; }
+.button-quiet { background: var(--soft); border-color: transparent; color: var(--forest); }
+.button-quiet:hover:not(:disabled) { background: #d9eadd; }
+.button:hover:not(:disabled) { transform: none; }
+.text-link, .text-button, .back-link { font-size: 14px; }
+.page-heading { padding-top: 20px; margin-bottom: 24px; }
+.page-heading .eyebrow { font-size: 12px; letter-spacing: .6px; }
+.page-heading .muted { font-size: 14px; line-height: 22px; }
+.form-surface, .detail-action, .account-section, .account-recovery { border-color: var(--line); border-radius: 16px; box-shadow: none; }
+.form-surface { padding: 24px; }
+.field > span, .field label, .image-upload > label { font-size: 14px; line-height: 20px; }
+.field input, .field select, .field textarea { background: #f7faf8; border-color: #dce7df; border-radius: 8px; min-height: 48px; font-size: 16px; line-height: 24px; padding: 11px 14px; }
+.field small, .small { font-size: 13px; line-height: 20px; }
+.detail-photo { height: 260px; border-radius: 12px; }
+.detail-layout { gap: 24px; padding: 24px 0; grid-template-columns: minmax(0, 1fr) 340px; }
+.detail-layout h1 { font-size: 28px; line-height: 36px; }
+.detail-action { background: white; border: 1px solid var(--line); padding: 24px; }
+.detail-overview { font-size: 16px; line-height: 24px; color: var(--muted); }
+.event-facts > div { font-size: 14px; }
+.quota-summary > div, .quota-summary > small, .detail-action > .small { font-size: 13px; line-height: 20px; }
+.auth-layout { display: block; border-color: var(--line); max-width: 620px; margin: 24px auto; min-height: 0; }
+.auth-story { display: none; }
+.auth-panel { padding: 32px; }
+.auth-panel > .muted, .auth-switch { font-size: 14px; }
+.record-card { border-color: var(--line); box-shadow: none; }
+.record-main { min-width: 0; overflow-wrap: anywhere; }
+.record-actions { flex-wrap: wrap; }
+.journey-section { background: white; border: 1px solid var(--line); border-radius: 12px; padding: 16px 24px; margin: 16px 0; min-width: 0; }
+.journey-section summary { font-size: 20px; line-height: 28px; }
+.journey-form { border-radius: 12px; background: #f7faf8; padding: 20px; max-width: 100%; }
+.journey-form input, .journey-form select, .journey-form textarea { font-size: 16px; background: white; border-color: #dce7df; border-radius: 8px; min-height: 48px; }
+.journey-form input[type=checkbox], .journey-form input[type=radio] { min-height: auto; }
+.journey-metrics { gap: 12px; }
+.journey-metrics > div { padding: 16px; border: 1px solid var(--line); border-radius: 12px; flex: 1; }
+.journey-section > .button, .journey-section > .text-button { margin: 6px 8px 6px 0; }
+.footer { font-size: 12px; padding: 24px 28px; }
+@media (min-width: 951px) {
+  .sidebar .nav-item > svg { display: none; }
+}
+@media (min-width: 701px) and (max-width: 1100px) {
+  .community-intro-photo { width: 28%; height: 180px; }
+  .community-intro { padding: 24px; }
+  .event-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .sidebar .brand > span { display: none; }
+  .detail-layout { grid-template-columns: minmax(0, 1fr) 280px; }
+}
+@media (min-width: 701px) and (max-width: 950px) {
+  :root { --sidebar: 74px; }
+  .sidebar { padding: 20px 10px; }
+  .sidebar-mark { padding: 0; }
+  .sidebar .brand { justify-content: center; }
+  .sidebar .brand-leaf { width: 41.8px; }
+  .community-intro-photo { display: none; }
+}
+@media (max-width: 700px) {
+  :root { --sidebar: 0px; }
+  .sidebar { width: 250px; padding: 20px 16px; }
+  .sidebar .brand > span { display: block; }
+  .sidebar nav .nav-item { font-size: 14px; min-height: 44px; }
+  .sidebar-bottom .nav-item { font-size: 13px; }
+  .masthead { height: 56px; padding: 0 16px; gap: 12px; background: #3d7a66; }
+  .masthead > a { display: block; }
+  .masthead-title { display: none; }
+  .masthead .brand-leaf { display: none; }
+  .masthead .brand strong { color: #f3f5ee; font-size: 14px; }
+  .masthead .brand-dot { color: inherit; }
+  .mobile-menu { color: #f3f5ee; background: transparent; min-width: 40px; min-height: 40px; }
+  .toolbar { min-height: 64px; padding: 8px 16px; flex-wrap: wrap; gap: 8px; }
+  .toolbar-account { gap: 8px; }
+  .toolbar-account > .button { font-size: 12px; padding: 8px 16px; min-height: 36px; }
+  .language-button { min-height: 36px; font-size: 12px; }
+  .toolbar .search { flex-basis: 100%; order: 2; }
+  .route-home .toolbar { justify-content: flex-end; }
+  main { padding: 0 16px; }
+  .browse-page { padding-top: 8px; }
+  .community-intro { padding: 20px 16px; flex-direction: column; align-items: stretch; }
+  .community-intro-photo { display: none; }
+  .community-intro h1 { font-size: 28px; line-height: 36px; }
+  .intro-actions { flex-direction: column; gap: 16px; }
+  .event-grid { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .card-image-link { height: 168px; }
+  .card-body { padding: 24px; }
+  .card-body h3 { font-size: 20px; line-height: 28px; }
+  .event-meta, .event-meta small { font-size: 14px; }
+  .section-heading h2 { font-size: 20px; }
+  .section-heading { gap: 10px; }
+  .detail-layout { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .detail-photo { height: 200px; }
+  .detail-layout h1, .page-heading h1 { font-size: 28px; line-height: 36px; }
+  .form-surface, .account-section, .account-recovery { padding: 20px 16px; }
+  .field input, .field select, .field textarea { font-size: 16px; }
+  .form-grid { column-gap: 12px; }
+  .journey-section { padding: 16px; }
+  .journey-section summary { font-size: 18px; }
+  .journey-form { padding: 16px; }
+  .journey-metrics > div { min-width: 120px; }
+  .footer { padding: 20px 16px; flex-wrap: wrap; gap: 12px; }
 }
