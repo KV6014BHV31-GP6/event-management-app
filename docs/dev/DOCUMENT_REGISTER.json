@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T17:17:15.706370+00:00",
-  "reason": "記錄 waitlisted 審查修復及固定候選證據",
+  "reviewed_at": "2026-11-15T19:07:06.033119+00:00",
+  "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補",
   "document_count": 431,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -309,7 +309,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 50,
+      "revision": 51,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -625,6 +625,13 @@
           "size_bytes": 42463,
           "superseded_at": "2026-11-15T17:17:15.706370+00:00",
           "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        },
+        {
+          "revision": 50,
+          "sha256": "eb8a438a771cf1f5c1e2d51ed9c7e0cf41ab69bf4b29cc076144a21579a3430b",
+          "size_bytes": 42780,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "import_lineage": {
@@ -637,8 +644,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "eb8a438a771cf1f5c1e2d51ed9c7e0cf41ab69bf4b29cc076144a21579a3430b",
-      "size_bytes": 42780,
+      "sha256": "d262e236980f45dc771f2761e461b9b4244f7aeb156b4c9a9464632e3830b7d3",
+      "size_bytes": 44917,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -798,7 +805,7 @@
     {
       "document_id": "DOC-11",
       "path": "docs/dev/DECISIONS.md",
-      "revision": 5,
+      "revision": 6,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -828,6 +835,13 @@
           "size_bytes": 2927,
           "superseded_at": "2026-11-15T17:02:31.271603+00:00",
           "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 5,
+          "sha256": "617efb0f386e50e6797e24025071eccdf3c044736cc5205694de20d01c4d88df",
+          "size_bytes": 4100,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "import_lineage": {
@@ -838,8 +852,8 @@
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "617efb0f386e50e6797e24025071eccdf3c044736cc5205694de20d01c4d88df",
-      "size_bytes": 4100
+      "sha256": "6056361572f123485d5bfe7eff4f858d30d06317ee112c37e930738b67d8ced2",
+      "size_bytes": 4728
     },
     {
       "document_id": "DOC-12",
@@ -4919,7 +4933,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 12,
+      "revision": 13,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -4999,13 +5013,20 @@
           "size_bytes": 46814,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 12,
+          "sha256": "a2020e041bd90183100278981a28fd2e87bdcfdd89b87c4ff72ec13b8135551c",
+          "size_bytes": 47325,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "a2020e041bd90183100278981a28fd2e87bdcfdd89b87c4ff72ec13b8135551c",
-      "size_bytes": 47325
+      "sha256": "c4c64c0f5b0660041791e2178d061585acc8ace56f0500faf7127c5f4cdab48f",
+      "size_bytes": 47558
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -5282,7 +5303,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 7,
+      "revision": 8,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5327,13 +5348,20 @@
           "size_bytes": 54296,
           "superseded_at": "2026-11-15T17:02:31.271603+00:00",
           "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 7,
+          "sha256": "6c0e2f27c2d2b8dc1c60be965bd383789e76147251154414e9f628f71ae159d0",
+          "size_bytes": 63994,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "6c0e2f27c2d2b8dc1c60be965bd383789e76147251154414e9f628f71ae159d0",
-      "size_bytes": 63994
+      "sha256": "7762e0e7feaa832686bad6a8241ff7f5b789a86204322e9856f56fc0f7781641",
+      "size_bytes": 64040
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -9120,7 +9148,7 @@
     {
       "document_id": "PUB-WEB-20261116-1A2B3E481EAA4FAC",
       "path": "docs/dev/tasks/NU-WEB-RELEASE-20261116.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9144,13 +9172,20 @@
           "size_bytes": 6376,
           "superseded_at": "2026-11-15T17:17:15.706370+00:00",
           "reason": "記錄 waitlisted 審查修復及固定候選證據"
+        },
+        {
+          "revision": 4,
+          "sha256": "ffef8ea7117e5a5e9399c43fe4c45812e71d63abbb5ba4a1b09cdb232d791ebb",
+          "size_bytes": 6698,
+          "superseded_at": "2026-11-15T19:07:06.033119+00:00",
+          "reason": "記錄原生正式 approval 恢復、本輪 Browser 回條及 compact sidebar 視覺修補"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "ffef8ea7117e5a5e9399c43fe4c45812e71d63abbb5ba4a1b09cdb232d791ebb",
-      "size_bytes": 6698
+      "sha256": "6c814a4625d2c5cf8d98ed71e8e8e93a17821e0a1c01d7ad4fd582972da88322",
+      "size_bytes": 7567
     },
     {
       "document_id": "PUB-WEB-20261116-3AB849A95516F3AD",

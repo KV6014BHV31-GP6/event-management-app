@@ -1,7 +1,20 @@
 # NU Web release — 2026-11-16
 
-Status: working-baseline / BROWSER_BLOCKED; independent source work continues.
-Merge and deployment cannot proceed while the required Browser gate is blocked.
+Status: working-baseline / LOCAL_BROWSER_EVIDENCE; release gates evaluated at promotion.
+
+## Native resume evidence
+
+The 2026-11-16 native turn verifies on-request / auto_review / workspace-write and
+allows the original executor's original proxy operation. PID/port/HTTP readback is
+retained externally alongside the original refusal. Core candidate Browser flows
+now have real application/approval, private-document hash, offline lost-ACK recovery,
+same-day attendance, six-role login and scoped negative permission evidence. Earlier
+blocked wording in this task is historical, not an instruction to stop permanently.
+The only observed product increment is the compact sidebar footer rule plus README;
+independent visual review closes that P2 at 768px and confirms settled directory
+captures at 1440/390/768/1920. No backend/API/route/seed contract changes were needed.
+Remaining release decisions use current fixed source, CI and lifecycle evidence;
+cloud deployment and final video must be verified as separate deliverables.
 
 ## Authority and source
 

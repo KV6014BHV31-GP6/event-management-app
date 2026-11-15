@@ -44,3 +44,12 @@ No merge, deployment, source-code move, backend takeover or role sign-off is aut
   Web scope; none are claimed as performed.
 
 Current evidence and remaining gates: [release task](tasks/NU-WEB-RELEASE-20261116.md).
+
+- `WEB-20261116-05 / OBSERVED`: native session permissions are per-turn evidence.
+  The formally allowed original proxy supersedes its old refusal only for that
+  exact operation; no global configuration change or alternate-executor bypass.
+- `WEB-20261116-06 / LOCAL_VERIFIED`: preserve successful original transaction
+  receipts after a capture-only stop and continue from the unperformed phase.
+  Hidden empty synthetic-account fields do not contain credentials; recording
+  still refuses visible or populated password fields. Never repeat business writes
+  merely to repair a capture, selector or response-shape assertion.
