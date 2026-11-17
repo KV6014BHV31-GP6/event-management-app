@@ -96,3 +96,18 @@ No raw credentials or real participant data committed.
 Real local browser/narrow-mobile visual evidence and hosted fixed-Head CI: NOT_RUN
 at candidate freeze. Formal nonempty approved taxonomy activation: BLOCKED. No full
 AC40, teacher signoff, human UAT, physical device or production certification claimed.
+
+
+### Bounded native Browser verification successor
+
+After initial candidate 805420b2a8c5e5c5a6b7fdfcaef52a30e97477e1, Controller
+requires actual dropdown EN/BM and empty-data evidence in the required native job.
+`registration_groups_browser.cjs` opens real React/proxy/API against the still-empty
+disposable browser DB before any classification fixture. It checks EN/BM labels,
+no DOB, required Age / optional Income, invalid form and zero registration POSTs
+at 1280px and 390px. Then the existing isolated test reference fixture is explicitly
+seeded and the same script verifies DOM options equal real API codes/names, selecting
+Age plus optional Income/blank and form validity. The main document/offline E2E and
+all original receipt/DB checks still run. No route interception, mock API, runtime
+policy seed or AC40 expansion. Script syntax and CI process regressions pass;
+actual Browser execution remains pending the fixed-Head native job.

@@ -448,7 +448,6 @@ def native_browser(build_input: Path) -> None:
         for module in ['migrate_phase2', 'migrate_demo_journey', 'migrate_accounts', 'migrate_registration_groups']:
             for attempt in ['first', 'repeat']:
                 run([sys.executable, '-B', '-m', 'scripts.' + module, '--acknowledge-development', '--database', browser_database], 'browser-' + module + '-' + attempt, cwd=ROOT / 'backend', env=env)
-        run([sys.executable, '-B', '-c', 'import asyncio; from src.core.database import AsyncSessionLocal; from tests.group_fixtures import seed_group_options; exec("async def fixture():\n async with AsyncSessionLocal() as db:\n  await seed_group_options(db)\n  await db.commit()"); asyncio.run(fixture())'], 'isolated-browser-classification-fixture', cwd=ROOT / 'backend', env=env)
         dist = build_input.resolve()
         if not (dist / "index.html").is_file() or not (dist / "sw.js").is_file():
             raise RuntimeError("Actual production build input missing")
@@ -476,6 +475,9 @@ def native_browser(build_input: Path) -> None:
                    NU_SMOKE_USERNAME=username, NU_SMOKE_PASSWORD=smoke_password, NU_CI_OUTPUT=str(OUT),
                    NU_BROWSER_PRIVATE=str(work / 'browser-private'), NU_BROWSER_SOURCE_SHA=REPORT['source_sha'],
                    NU_BROWSER_EXECUTION_MODE='GITHUB_HOSTED')
+        run(["node", ROOT / "scripts/registration_groups_browser.cjs", "--empty"], "classification-empty-browser", env=env, timeout=180)
+        run([sys.executable, '-B', '-c', 'import asyncio; from src.core.database import AsyncSessionLocal; from tests.group_fixtures import seed_group_options; exec("async def fixture():\n async with AsyncSessionLocal() as db:\n  await seed_group_options(db)\n  await db.commit()"); asyncio.run(fixture())'], 'isolated-browser-classification-fixture', cwd=ROOT / 'backend', env=env)
+        run(["node", ROOT / "scripts/registration_groups_browser.cjs"], "classification-configured-browser", env=env, timeout=180)
         run(["node", ROOT / 'scripts/demo_browser_e2e.cjs'], "browser-e2e", env=env, timeout=300)
         REPORT["database"] = asyncio.run(browser_readback(env['DATABASE_URL'], browser_database, 'nu_ci_app', work / 'browser-private'))
         write_json(OUT / 'browser-native-readback.json', REPORT['database'])
