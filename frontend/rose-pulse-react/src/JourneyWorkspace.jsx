@@ -1,5 +1,5 @@
 import { RegistrationGroups } from './RegistrationGroups.jsx';
-import {downloadApprovedFlyer} from "./flyer.js";
+import {downloadApprovedFlyer, flyerSchedule} from "./flyer.js";
 import AttendanceWorkspace from "./AttendanceWorkspace.jsx";
 import {createAttendanceStore} from "./offline/attendance.js";
 import React, { useMemo, useState, useRef, useCallback, useEffect, useId } from 'react';
@@ -8,6 +8,7 @@ import { createJourneyClient } from './journey-api.js';
 import { minimumRegistrationPayload } from './minimum-registration.js';
 import { FilePicker, PrivateDocuments } from './FilePicker.jsx';
 import ApplicationSuccess from './ApplicationSuccess.jsx';
+import { eventPresentation, publicDiscovery, readDiscovery } from './event-discovery.js';
 import { ApplicationOptions, ApplicationSummary, ParticipantFields, applicationSources } from './ApplicationFields.jsx';
 const utc = value => value ? new Date(value).toISOString() : value;
 const localInput=value=>{const d=new Date(value);return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,16);};
@@ -56,7 +57,7 @@ function notificationStatus(message) {
   }
 }
 export default function JourneyWorkspace(props) {
-  return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}:${props.initialRef}:${props.initialRegistration}`} {...props} />;
+  return <JourneySession key={`${props.auth.user?.id || props.auth.offlineActor?.id || 'guest'}:${props.auth.revision}:${props.initialEvent}:${props.initialRef}:${props.initialRegistration}:${props.initialGuestLookup}`} {...props} />;
 }
 function JourneySession({
   runtime,
@@ -65,6 +66,8 @@ function JourneySession({
   initialRef = '',
   initialRegistration = '',
   initialPublicEvent = null,
+  initialGuestLookup = false,
+  openEventWorkspace = false,
   navigate
 }) {
   const [eventId, setEventId] = useState(initialEvent),
@@ -88,6 +91,7 @@ function JourneySession({
   const [applicationForm, setApplicationForm] = useState(0);
   const registrationDetails = useRef(null);
   const attendanceSection = useRef(null);
+  const outreachDetails = useRef(null);
   const applicationPicker = useRef(null);
   const guestAccess = useRef(null);
   const receiptRef = useRef(null);
@@ -118,7 +122,7 @@ function JourneySession({
     staff = owner || staffActor?.role === 'leader';
   const root = `/events/${eventId}`;
   const eventVersion = loaded.event?.workflow?.version;
-  useEffect(()=>{if(staff||!eventId||!runtime.api?.getEvent)return;let current=true;runtime.api.getEvent(eventId).then(value=>{if(current&&active.current)setLoaded(old=>({...old,publicEvent:value}));}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[runtime,staff,eventId]);
+  useEffect(()=>{if(staff||!eventId||!runtime.api?.getEvent)return;let current=true;runtime.api.getEvent(eventId).then(value=>{if(current&&active.current)setLoaded(old=>({...old,publicEvent:eventPresentation(value)}));}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[runtime,staff,eventId]);
   useEffect(()=>{if(!initialRef)return;let current=true;client.publicGet('/referrals/'+encodeURIComponent(initialRef)).then(value=>{if(current&&active.current){if(!value.active||value.event_public_id!==eventId)throw new Error('This referral is inactive or does not match this event.');setLoaded(old=>({...old,referral:value}));}}).catch(e=>{if(current&&active.current)setError(e.message);});return()=>{current=false;};},[client,initialRef,eventId]);
   const run = async (fn, {focusApplicationResult = false} = {}) => {
     const operationEpoch=recordEpoch.current;
@@ -147,6 +151,8 @@ function JourneySession({
     if(!active.current||epoch!==recordEpoch.current)throw new Error("The selected account or record changed.");
     const data = await client.get(path);
     if (!active.current || epoch !== recordEpoch.current) throw new Error('The selected account or record changed.');
+    if (key === 'event' && (!data.event || !data.workflow))
+      throw new Error('The event details could not be verified.');
     if (initialRegistration && key === 'registration' && data.registration?.id !== initialRegistration)
       throw new Error('The registration details could not be verified.');
     setLoaded(old => ({
@@ -173,15 +179,39 @@ function JourneySession({
       }
       setMessage(tr('Saved by server. Current information has been read again.'));
       if (eventId && staff) await read('event', root, mutationEpoch);
+      if (eventId && owner && (path.startsWith('/registrations/') || path.startsWith('/offers/') || path.includes('/offers/')))
+        await read('stats', root + '/stats', mutationEpoch);
       if (path.includes('/promotion')) await read('promotion', root + '/promotion', mutationEpoch);
       if (path.startsWith('/registrations/') || path.startsWith('/offers/')) await read('registration', '/registrations/' + targetRegistration, mutationEpoch);
       if (path.startsWith('/accounts')) await read('accounts', '/accounts', mutationEpoch);
     }, {focusApplicationResult: isApplication});
   };
-  const loadEvent = () => run(async () => {
-    setLoaded(old=>({referral:old.referral,eventOptions:old.eventOptions}));
+  async function loadRegistrationOptions() {
+    const data = await runtime.withVerifiedAccount(token =>
+      owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
+    if (active.current) setLoaded(previous => ({...previous, registrationOptions: data}));
+  }
+  const loadEvent = () => run(() => read('event', root));
+  const openSelectedEvent = () => run(async () => {
     await read('event', root);
+    if (owner) await Promise.all([read('stats', root + '/stats'), loadRegistrationOptions()]);
+    else {
+      await read('leaders', root + '/leaders');
+      await Promise.all([read('promotion', root + '/promotion'), read('outreach', root + '/outreach')]);
+    }
   });
+  const loadEventOptions = () => run(async () => {
+    const options = {page: 1, pageSize: 24};
+    const events = owner
+      ? (await runtime.withVerifiedAccount((token, actor) => runtime.api.getOrganizerEvents(token, options, actor))).data
+      : publicDiscovery((await readDiscovery(runtime.api, options)).records);
+    if (active.current) setLoaded(old => ({...old, eventOptions: events}));
+  });
+  useEffect(() => {
+    if (!openEventWorkspace || !auth.user || !staff || initialRegistration) return;
+    if (eventId) openSelectedEvent();
+    else if (!owner) loadEventOptions();
+  }, [eventId, initialRegistration, auth.user?.id, openEventWorkspace]);
   const refreshRegistration = () => run(() => read('registration', `/registrations/${registrationId}`));
   useEffect(() => {
     if (initialRegistration && auth.user?.role === 'organizer') refreshRegistration();
@@ -257,13 +287,7 @@ function JourneySession({
    </section>
  );
   const registrationReview = (
-    <details className="journey-section" id={receiptId + "-review"} ref={registrationDetails} open={initialRegistration ? true : undefined}><summary>{tr('Registration review and booking')}</summary>{!initialRegistration && (auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
-          const data = await runtime.withVerifiedAccount(token => owner ? runtime.api.getOrganizerRegistrations(token) : runtime.api.getMyRegistrations(token));
-          if (active.current) setLoaded(old => ({
-            ...old,
-            registrationOptions: data
-          }));
-        })}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} disabled={busy} onChange={e => {
+    <details className="journey-section" id={receiptId + "-review"} ref={registrationDetails} open={initialRegistration || grant ? true : undefined}><summary>{tr('Registration review and booking')}</summary>{!initialRegistration && (auth.user ? <><button className="button button-quiet" disabled={busy} onClick={() => run(loadRegistrationOptions)}>{tr('Choose a registration')}</button><label>{tr('Participant')}<select value={registrationId} disabled={busy} onChange={e => {
             recordEpoch.current++;
             setError('');setMessage('');
             setCorrectionFiles([]);
@@ -273,7 +297,7 @@ function JourneySession({
               ...old,
               registration: null
             }));
-          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || !registrationId} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: {tr(registration.booking_state)}</p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
+          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || !registrationId} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: <strong>{tr(registration.booking_state)}</strong></p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
           options: ['approve', 'reject', 'request_correction'].filter(a => registration.allowed_actions.includes(a))
         }), field('reason', 'Review reason', 'textarea', {
           required: false
@@ -302,19 +326,78 @@ function JourneySession({
       </div>
     );
   }
-  return <div className="journey-workspace"><div className="page-heading"><div><p className="eyebrow">ROSE · PULSE</p><h1>{tr(owner?'Manage registrations':staff?'Leader event workspace':'Apply and manage booking')}</h1><p>{tr('Synthetic local journey. The server confirms permissions, places and every final result.')}</p></div><button className="button button-quiet" onClick={() => navigate('events')}>{tr('Browse events')}</button></div>
+  const outreachPanel = <details className="journey-section" ref={outreachDetails} open={owner ? undefined : true}><summary>{tr('Promotion and outreach')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(async()=>{await read('promotion',root+'/promotion');if(auth.user?.role==='leader')await read('leaders',root+'/leaders');})}>{tr('Read promotion')}</button><p>{tr('DEMO_TEMPLATE — editable text requires Organizer approval. WhatsApp sharing is manual.')}</p>{promotion && <><p>{tr('Status')}: {tr(promotion.state)} · {tr(promotion.paused?'Promotion paused':'Promotion active')}</p>{owner&&<button className="button button-quiet" disabled={busy} onClick={()=>mutate(root+'/promotion/pause',{paused:!promotion.paused},promotion.version)}>{tr(promotion.paused?'Resume promotion':'Pause promotion')}</button>}{owner && <button className="button" disabled={busy || promotion.state === 'approved'} onClick={() => mutate(root + '/promotion/approve', {}, promotion.version)}>{tr('Approve exact promotion text')}</button>}{promotion.state === 'approved' && !promotion.paused && !!promotion.public_url && <article className="approved-flyer">{location.protocol !== 'https:' && <p>{tr('This local link works on this device only.')}</p>}<h2>{promotion.flyer_data?.title}</h2><p>{promotion.approved_text}</p><p>{promotion.flyer_data?.location} · {flyerSchedule(promotion.flyer_data)}</p><a href={promotion.public_url}>{tr('Public event link')}</a><div className="form-actions"><button className="button" onClick={()=>run(async()=>downloadApprovedFlyer(promotion))}>{tr('Download flyer')}</button><button className="button button-quiet" onClick={() => window.print()}>{tr('Print flyer')}</button><a className="button" target="_blank" rel="noopener noreferrer" href={`https://wa.me/?text=${encodeURIComponent(promotion.approved_text + '\n' + promotion.public_url)}`}>{tr('Share on WhatsApp')}</a><button className="text-button" onClick={() => run(async () => {
+              await navigator.clipboard.writeText(promotion.approved_text + '\n' + promotion.public_url);
+              setMessage(tr('Approved text copied.'));
+            })}>{tr('Copy approved text')}</button></div></article>}</>}<details><summary>{tr('Edit promotion draft')}</summary><ActionForm key={promotion?.version} title="Save promotion draft" busy={busy} fields={[field('text', 'Promotion text', 'textarea', {
+        value: promotion?.text || ''
+      })]} submit={v => mutate(root + '/promotion', v, promotion?.version ?? 0)} /></details>{auth.user?.role === 'leader' && <ActionForm title="Report outreach" busy={busy} fields={[field('channel', 'Channel', 'text', {
+        options: ['flyer', 'whatsapp_manual', 'community_visit']
+      }), field('reported_at', 'Reported at', 'datetime-local'), field('quantity', 'Self-reported quantity', 'number', {
+        min: 0
+      }), field('notes', 'Notes', 'textarea')]} submit={v => mutate(root + '/outreach', {
+        ...v,
+        reported_at: utc(v.reported_at),
+        quantity: +v.quantity
+      })} />}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outreach', root + '/outreach'))}>{tr('Read outreach reports')}</button>{loaded.outreach?.reports.length === 0 && <p>{tr('No outreach reports yet.')}</p>}{loaded.outreach?.reports.map(report => <article className="journey-message" key={report.id}><p>{tr(report.channel)} · {report.quantity} · {report.reported_at}</p><p>{report.notes}</p></article>)}</details>;
+  const guestLookup = <details className="journey-section" ref={guestAccess} open={initialGuestLookup || undefined}><summary>{tr('Guest booking access — DEMO OTP')}</summary><p>{tr('Simulated local delivery. This does not verify real phone ownership. Codes and grants stay in page memory.')}</p><ActionForm key={loaded.applicationReceipt?.registration_id || ""} title="Request Demo OTP" busy={busy} fields={[field('registration_id', 'Registration reference', 'text', {
+        value: registrationId
+      }), field('phone', 'Phone')]} submit={v => run(async () => {
+        setGrant(null);
+        setDemoCode('');
+        const value = await client.publicPost('/guest-access/challenges', {
+          ...v,
+          purpose: 'manage_booking'
+        });
+        setChallenge(value);
+        setRegistrationId(v.registration_id);
+        setMessage(tr('Demo challenge created.'));
+      })} />{challenge && <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
+          const v = await client.publicGet('/guest-access/challenges/' + challenge.challenge_id + '/demo-message', {
+            headers: {
+              'X-Demo-Challenge': challenge.demo_access_token
+            }
+          });
+          setDemoCode(v.code);
+        })}>{tr('Show simulated message')}</button>{demoCode && <p role="status">{tr("Verification code")}: {demoCode}</p>}<ActionForm title="Verify Demo OTP" busy={busy} fields={[field('code', 'Demo OTP')]} submit={(v, form) => run(async () => {
+          const value = await client.publicPost('/guest-access/challenges/' + challenge.challenge_id + '/verify', v, {
+            'X-Demo-Challenge': challenge.demo_access_token
+          });
+          setGrant(value);
+          setChallenge(null);
+          setDemoCode('');
+          form.reset();
+          setMessage(tr('Scoped guest access granted for this registration only.'));
+        })} /></>}</details>;
+  if (initialGuestLookup && guestAllowed) {
+    return <div className="journey-workspace">
+      <h1>{tr('Check my application')}</h1>
+      {message && <p className="notice" role="status">{message}</p>}
+      {error && <p className="notice notice-error" role="alert">{tr(error)}</p>}
+      {guestLookup}
+      {grant && registrationReview}
+      {pendingOperations}
+    </div>;
+  }
+  return <div className="journey-workspace"><div className="page-heading"><div><p className="eyebrow">ROSE · PULSE</p><h1>{tr(owner?'Manage registrations':staff?'Leader event workspace':'Apply for this event')}</h1>{staff && <p>{tr(owner ? 'Review applications and see the places held for this event.' : 'Choose an assigned event to share approved materials and report outreach.')}</p>}</div><button className="button button-quiet" onClick={() => navigate('events')}>{tr('Browse events')}</button></div>
  {staff && <nav className="form-actions journey-task-actions" aria-label={tr('Applications & check-in')}>
-   <button className="button button-quiet" aria-controls={receiptId + '-review'} onClick={() => {
+   {owner && <button className="button button-quiet" aria-controls={receiptId + '-review'} onClick={() => {
      const section = registrationDetails.current;
      if (!section) return;
      section.open = true;
      section.querySelector('summary')?.focus({preventScroll:true});
      section.scrollIntoView?.({block:'start'});
-   }}>{tr('Review applications')}</button>
-   {eventId && <button className="button" aria-controls={receiptId + '-attendance'} onClick={() => {
+   }}>{tr('Review applications')}</button>}
+   {!owner && eventId && <button className="button" onClick={() => {
+     if (!outreachDetails.current) return;
+     outreachDetails.current.open = true;
+     outreachDetails.current.querySelector('summary')?.focus();
+   }}>{tr('Open outreach materials')}</button>}
+   {!owner && <button className="button button-quiet" onClick={() => navigate('offline', {event: eventId})}>{tr('Offline drafts')}</button>}
+   {current && <button className="button button-quiet" aria-controls={receiptId + '-attendance'} onClick={() => {
      attendanceSection.current?.focus({preventScroll:true});
      attendanceSection.current?.scrollIntoView?.({block:'start'});
-   }}>{tr('Offline attendance')}</button>}
+   }}>{tr('Check in')}</button>}
  </nav>}
  <div aria-live="polite">
    {message && <p className="notice">{message}</p>}
@@ -335,6 +418,7 @@ function JourneySession({
      eventTitle={applicationEvent.title}
      reference={loaded.applicationReceipt.registration_id}
      runtime={auth.user ? runtime : undefined}
+     nextLabel={guestAllowed ? "Check my application" : auth.user?.role === "user" ? "My registrations" : "View application"}
      files={loaded.applicationReceipt.files}
      onDismiss={dismissApplication}
      onView={viewApplication}
@@ -342,21 +426,9 @@ function JourneySession({
    />
  )}
  {pendingOperations}
- <section className="journey-section"><h2>{tr('Selected event')}</h2>{!staff&&loaded.publicEvent&&<PublicEventContext event={loaded.publicEvent}/>} {(staff||!eventId)&&<><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
-        const data = owner ? await runtime.withVerifiedAccount((token, actor) => runtime.api.getOrganizerEvents(token, {
-          page: 1,
-          pageSize: 24
-        }, actor)) : await runtime.api.getEvents({
-          page: 1,
-          pageSize: 24
-        });
-        if (active.current) setLoaded(old => ({
-          ...old,
-          eventOptions: data.data
-        }));
-      })}>{tr('Choose an event')}</button><label>{tr('Event')}<select value={eventId} disabled={busy} onChange={e => {
+ <section className="journey-section">{(staff || !loaded.publicEvent) && <h2>{tr('Selected event')}</h2>}{!staff && loaded.publicEvent && <PublicEventContext event={loaded.publicEvent}/>} {(staff||!eventId)&&<><button className="button button-quiet" disabled={busy} onClick={loadEventOptions}>{tr('Choose an event')}</button><label>{tr('Event')}<select value={eventId} disabled={busy} onChange={e => {
           recordEpoch.current++;
-          navigate('operations',{event:e.target.value});
+          navigate(owner ? 'operations' : 'leader', {event:e.target.value});
           setEventId(e.target.value);
           setApplicationFiles([]);setCorrectionFiles([]);
           setLoaded(old => ({
@@ -365,10 +437,27 @@ function JourneySession({
           setGrant(null);
           setChallenge(null);
           setDemoCode('');
-        }}><option value="">{tr('Select event')}</option>{eventId && !loaded.eventOptions?.some(e => e.public_id === eventId) && <option value={eventId}>{current?.event.title || loaded.publicEvent?.title || tr('Selected event')}</option>}{loaded.eventOptions?.map(e => <option value={e.public_id} key={e.public_id}>{e.title}</option>)}</select></label></>}{staff && <button className="button" disabled={busy || !eventId} onClick={loadEvent}>{tr('Read current event')}</button>}{current && <><h3>{current.event.title}</h3><p>{tr('Workflow')}: {tr(current.workflow.state)}</p><p>{current.event.location} · {new Intl.DateTimeFormat(locale(), {dateStyle:'medium',timeStyle:'short',timeZone:current.workflow.timezone || 'Asia/Kuala_Lumpur'}).format(new Date(current.event.start_time))}</p><button className="text-button" onClick={() => navigate('event', {
+        }}><option value="">{tr('Select event')}</option>{eventId && !loaded.eventOptions?.some(e => e.public_id === eventId) && <option value={eventId}>{current?.event.title || loaded.publicEvent?.title || tr('Selected event')}</option>}{loaded.eventOptions?.map(e => <option value={e.public_id} key={e.public_id}>{e.title}</option>)}</select></label></>}{staff && <button className="button" disabled={busy || !eventId} onClick={openEventWorkspace ? openSelectedEvent : loadEvent}>{tr('Read current event')}</button>}{current && <><h3>{current.event.title}</h3><p>{tr('Workflow')}: {tr(current.workflow.state)}</p><p>{current.event.location} · {new Intl.DateTimeFormat(locale(), {dateStyle:'medium',timeStyle:'short',timeZone:current.workflow.timezone || 'Asia/Kuala_Lumpur'}).format(new Date(current.event.start_time))}</p><button className="text-button" onClick={() => navigate('event', {
           event: eventId
         })}>{tr('View public event')}</button></>}</section>
- {staff&&eventId&&<div ref={attendanceSection} tabIndex={-1} id={receiptId + "-attendance"}><AttendanceWorkspace key={staffActor.id+eventId} runtime={runtime} client={client} actor={staffActor} eventId={eventId} onError={setError} onQueueState={setAttendanceBlocked}/></div>}
+ {!owner && staff && current && outreachPanel}
+ {!owner && staff && !eventId && <p>{tr('Choose an event assigned to you to open outreach and check-in.')}</p>}
+ {owner && eventId && openEventWorkspace && <>
+   <section className="journey-section">
+     <h2>{tr('Applications and places')}</h2>
+     {loaded.stats ? <dl className="capacity-overview">
+       {[
+         ['Pending', loaded.stats.counts.pending],
+         ['Approved', loaded.stats.counts.approved],
+         ['Waiting', loaded.stats.counts.waiting],
+         ['Offer holds', loaded.stats.counts.offer_holds],
+         ['Available', loaded.stats.quota.online.available + loaded.stats.quota.offline.available],
+       ].map(([label, count]) => <div key={label}><dt>{tr(label)}</dt><dd>{count}</dd></div>)}
+     </dl> : <p role="status">{tr(busy ? 'Reading event capacity…' : 'Current availability is unavailable.')}</p>}
+   </section>
+   {registrationReview}
+ </>}
+ {staff&&eventId&&current&&<div ref={attendanceSection} tabIndex={-1} id={receiptId + "-attendance"}><AttendanceWorkspace key={staffActor.id+eventId} runtime={runtime} client={client} actor={staffActor} eventId={eventId} onError={setError} onQueueState={setAttendanceBlocked}/></div>}
  {owner && <details className="journey-section"><summary>{tr('Create managed event')}</summary><ActionForm title="Create draft" busy={busy || filesBlocked} fields={[field('title', 'Event title'), field('overview', 'Overview', 'textarea'), field('location', 'Location'), field('start_time', 'Start', 'datetime-local'), field('end_time', 'End', 'datetime-local'), field('online_quota', 'Online quota', 'number', {
         value: 10,
         min: 0
@@ -432,20 +521,7 @@ function JourneySession({
       }, eventVersion)}><button type="button" className="text-button" disabled={busy} onClick={() => run(() => read('accounts', '/accounts?scope=assignable_leaders'))}>{tr('Load leader accounts')}</button><label>{tr('Leader')}<select name="leader_id" required>{loaded.accounts?.accounts.filter(a => a.role === 'leader' && a.enabled).map(a => <option key={a.id} value={a.id}>{a.username}</option>)}</select></label></ActionForm>} {owner && loaded.leaders?.leaders.map(leader => <div key={leader.leader_id}><p>{loaded.accounts?.accounts.find(a => a.id === leader.leader_id)?.username || tr('Assigned leader')} · {tr('Reserved quota')}: {leader.reserved_quota}</p><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/leaders/' + leader.leader_id, {
           active: !leader.active
         }, leader.version)}>{tr(leader.active ? 'Revoke assignment' : 'Activate assignment')}</button></div>)}</details>}
- {staff && eventId && <details className="journey-section"><summary>{tr('Promotion and outreach')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(async()=>{await read('promotion',root+'/promotion');if(auth.user?.role==='leader')await read('leaders',root+'/leaders');})}>{tr('Read promotion')}</button><p>{tr('DEMO_TEMPLATE — editable text requires Organizer approval. WhatsApp sharing is manual.')}</p><ActionForm key={promotion?.version} title="Save promotion draft" busy={busy} fields={[field('text', 'Promotion text', 'textarea', {
-        value: promotion?.text || ''
-      })]} submit={v => mutate(root + '/promotion', v, promotion?.version ?? 0)} />{promotion && <><p>{tr('Status')}: {promotion.state} · {tr(promotion.paused?'Promotion paused':'Promotion active')}</p>{owner&&<button className="button button-quiet" disabled={busy} onClick={()=>mutate(root+'/promotion/pause',{paused:!promotion.paused},promotion.version)}>{tr(promotion.paused?'Resume promotion':'Pause promotion')}</button>}{owner && <button className="button" disabled={busy || promotion.state === 'approved'} onClick={() => mutate(root + '/promotion/approve', {}, promotion.version)}>{tr('Approve exact promotion text')}</button>}{promotion.state === 'approved' && !promotion.paused && !!promotion.public_url && <article className="approved-flyer"><p>{tr('Localhost demo links work only on this computer. No external delivery is claimed.')}</p><h2>{promotion.flyer_data?.title}</h2><p>{promotion.approved_text}</p><p>{promotion.flyer_data?.location} · {promotion.flyer_data?.start_time}</p><a href={promotion.public_url}>{tr('Public event link')}</a><div className="form-actions"><button className="button" onClick={()=>run(async()=>downloadApprovedFlyer(promotion))}>{tr('Download flyer')}</button><button className="button button-quiet" onClick={() => window.print()}>{tr('Print flyer')}</button><a className="button" target="_blank" rel="noopener noreferrer" href={`https://wa.me/?text=${encodeURIComponent(promotion.approved_text + '\n' + promotion.public_url)}`}>{tr('Share on WhatsApp')}</a><button className="text-button" onClick={() => run(async () => {
-              await navigator.clipboard.writeText(promotion.approved_text + '\n' + promotion.public_url);
-              setMessage(tr('Approved text copied.'));
-            })}>{tr('Copy approved text')}</button></div></article>}</>}{auth.user?.role === 'leader' && <ActionForm title="Report outreach" busy={busy} fields={[field('channel', 'Channel', 'text', {
-        options: ['flyer', 'whatsapp_manual', 'community_visit']
-      }), field('reported_at', 'Reported at', 'datetime-local'), field('quantity', 'Self-reported quantity', 'number', {
-        min: 0
-      }), field('notes', 'Notes', 'textarea')]} submit={v => mutate(root + '/outreach', {
-        ...v,
-        reported_at: utc(v.reported_at),
-        quantity: +v.quantity
-      })} />}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outreach', root + '/outreach'))}>{tr('Read outreach reports')}</button>{loaded.outreach?.reports.map(report => <article className="journey-message" key={report.id}><p>{tr(report.channel)} · {report.quantity} · {report.reported_at}</p><p>{report.notes}</p></article>)}</details>}
+ {owner && current && outreachPanel}
  {staff && eventId && <details className="journey-section"><summary>{tr('Demand, quota and instructions')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('stats', root + '/stats'))}>{tr('Read current statistics')}</button>{loaded.stats && <Statistics data={loaded.stats} actor={staffActor} />} {owner && current && <><ActionForm title="Save leader instruction" busy={busy} fields={[field('text', 'Instruction', 'textarea', {
           value: loaded.stats?.instruction?.text
         })]} submit={v => mutate(root + '/instruction', v, eventVersion)} /><button className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/alerts', {}, eventVersion)}>{tr('Process demand alerts')}</button></>}</details>}
@@ -501,36 +577,8 @@ function JourneySession({
      </ActionForm>
    )}
  </details>
- {registrationReview}
- {guestAllowed && <details className="journey-section" ref={guestAccess}><summary>{tr('Guest booking access — DEMO OTP')}</summary><p>{tr('Simulated local delivery. This does not verify real phone ownership. Codes and grants stay in page memory.')}</p><ActionForm key={loaded.applicationReceipt?.registration_id || ""} title="Request Demo OTP" busy={busy} fields={[field('registration_id', 'Registration reference', 'text', {
-        value: registrationId
-      }), field('phone', 'Phone')]} submit={v => run(async () => {
-        setGrant(null);
-        setDemoCode('');
-        const value = await client.publicPost('/guest-access/challenges', {
-          ...v,
-          purpose: 'manage_booking'
-        });
-        setChallenge(value);
-        setRegistrationId(v.registration_id);
-        setMessage(tr('Demo challenge created.'));
-      })} />{challenge && <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
-          const v = await client.publicGet('/guest-access/challenges/' + challenge.challenge_id + '/demo-message', {
-            headers: {
-              'X-Demo-Challenge': challenge.demo_access_token
-            }
-          });
-          setDemoCode(v.code);
-        })}>{tr('Show simulated message')}</button>{demoCode && <p role="status">DEMO OTP: {demoCode}</p>}<ActionForm title="Verify Demo OTP" busy={busy} fields={[field('code', 'Demo OTP')]} submit={(v, form) => run(async () => {
-          const value = await client.publicPost('/guest-access/challenges/' + challenge.challenge_id + '/verify', v, {
-            'X-Demo-Challenge': challenge.demo_access_token
-          });
-          setGrant(value);
-          setChallenge(null);
-          setDemoCode('');
-          form.reset();
-          setMessage(tr('Scoped guest access granted for this registration only.'));
-        })} /></>}</details>}
+ {(!owner || !eventId || !openEventWorkspace) && registrationReview}
+ {guestAllowed && guestLookup}
  {owner && current && <details className="journey-section"><summary>{tr('Offers, reminders and Demo outbox')}</summary><div className="form-actions">{[['offers/reconcile', 'Reconcile offers'], ['reminders', 'Process due reminders']].map(([path, label]) => <button key={path} className="button button-quiet" disabled={busy} onClick={() => mutate(root + '/' + path, {}, eventVersion)}>{tr(label)}</button>)}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outbox', '/outbox?event_public_id=' + encodeURIComponent(eventId)))}>{tr('Read Demo outbox')}</button></div><p>{tr('DEMO_OUTBOX — no external delivery.')}</p>{loaded.outbox?.messages.map(m => <article className="journey-message" key={m.id}><h3>{tr(m.kind)} · {notificationStatus(m)}</h3><p>{m.recipient_hint} · {m.message}</p><small>{m.scheduled_at || m.created_at}</small>{notificationState(m) === 'failed' && <button className="button button-small" disabled={busy} onClick={() => mutate('/outbox/' + m.id + '/retry', {}, m.version)}>{tr('Retry failed Demo message')}</button>}</article>)}</details>}
  {staff && current && <details className="journey-section"><summary>{tr('Attendance and closeout')}</summary>{owner && <><ActionForm title="Register eligible walk-in" busy={busy} fields={[...applicationFields, field('eligibility_note', 'Synthetic eligibility review note', 'textarea')]} submit={v => mutate(root + '/walkins', () => ({
           application: appCopy(v),
@@ -614,7 +662,26 @@ function LeaderBreakdown({data, actor, total}) {
   </section>;
 }
 
-function PublicEventContext({event}){
- const zone=event.workflow?.timezone;const format=value=>{try{return new Intl.DateTimeFormat(locale(),{dateStyle:'medium',timeStyle:'short',...(zone?{timeZone:zone}:{})}).format(new Date(value));}catch{return '—';}};
- return <article><h2>{event.title}</h2><p>{event.overview}</p><p>{event.location} · {format(event.start_time)} — {format(event.end_time)} {zone}</p><p>{tr('Status')}: {tr(event.workflow?.state||event.status)}</p>{event.workflow?.registration_opens_at&&<p>{tr('Registration opens')}: {format(event.workflow.registration_opens_at)}</p>}{event.workflow?.registration_closes_at&&<p>{tr('Registration closes')}: {format(event.workflow.registration_closes_at)}</p>}<p>{tr('Eligibility and places require Organizer review. A pending application is not a confirmed booking.')}</p></article>;
+function PublicEventContext({event}) {
+  const zone = event.workflow?.timezone;
+  const format = value => {
+    try {
+      return new Intl.DateTimeFormat(locale(), {dateStyle:'medium', timeStyle:'short', timeZone:zone})
+        .format(new Date(value));
+    } catch {
+      return '—';
+    }
+  };
+  return <article className="application-event-context">
+    <h2>{event.title}</h2>
+    <p>{event.overview}</p>
+    <p>{event.location} · {format(event.start_time)} {zone}</p>
+    <details>
+      <summary>{tr('Registration details')}</summary>
+      <p>{tr('Ends')}: {format(event.end_time)}</p>
+      <p>{tr('Status')}: {tr(event.workflow?.state || event.status)}</p>
+      {event.workflow?.registration_opens_at && <p>{tr('Registration opens')}: {format(event.workflow.registration_opens_at)}</p>}
+      {event.workflow?.registration_closes_at && <p>{tr('Registration closes')}: {format(event.workflow.registration_closes_at)}</p>}
+    </details>
+  </article>;
 }

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 import { tr } from './i18n/index.js';
 const noop = () => () => {};
 const empty = () => null;
+const shownName = file => file.name === 'synthetic-demo-supporting-document.pdf' ? 'sample-supporting-document.pdf' : file.name;
 export function PrivateDocuments({
   runtime,
   files = [],
@@ -90,21 +91,21 @@ function DocumentCard({
     if (!original.url) return;
     const link = document.createElement('a');
     link.href = original.url;
-    link.download = file.name;
+    link.download = shownName(file);
     link.click();
     const timer = setTimeout(() => setDownload(false), 0);
     return () => clearTimeout(timer);
   }, [original.url]);
   const label = <>
     {image && state.url && !failed
-      ? <img src={state.url} alt={`${tr('Document thumbnail')}: ${file.name}`} onError={() => setFailed(true)} />
+      ? <img src={state.url} alt={`${tr('Document thumbnail')}: ${shownName(file)}`} onError={() => setFailed(true)} />
       : <span className="document-symbol">{image ? tr('Image') : tr('PDF document')}</span>}
-    <strong>{file.name}</strong>
+    <strong>{shownName(file)}</strong>
   </>;
   return <article className="document-card">
  {thumbnailOnly ? label : (
    <button type="button" className="document-preview-trigger"
-     aria-label={tr('Preview') + ' ' + file.name} onClick={event => onPreview(event.currentTarget)}>
+     aria-label={tr('Preview') + ' ' + shownName(file)} onClick={event => onPreview(event.currentTarget)}>
      {label}
    </button>
  )}
@@ -112,7 +113,7 @@ function DocumentCard({
  <span role="status" className="small">{tr(state.loading ? 'Loading private document…' : state.error || failed ? 'Preview unavailable' : 'Private document')}</span>
  {state.error && <p role="alert">{tr(state.error)}</p>}
  {!thumbnailOnly && <div className="form-actions">
- <button type="button" className="text-button" disabled={original.loading && download} onClick={() => setDownload(true)}>{tr('Download')} {file.name}</button></div>}
+ <button type="button" className="text-button" disabled={original.loading && download} onClick={() => setDownload(true)}>{tr('Download')} {shownName(file)}</button></div>}
  {original.error && <p role="alert">{tr(original.error)}</p>}
  </article>;
 }
@@ -153,8 +154,8 @@ function DocumentViewer({
       }
     }
   };
-  return <div className="document-backdrop"><section ref={panel} className="document-viewer" role="dialog" aria-modal="true" aria-label={file.name} onKeyDown={keyboard}>
- <h2>{file.name}</h2>
+  return <div className="document-backdrop"><section ref={panel} className="document-viewer" role="dialog" aria-modal="true" aria-label={shownName(file)} onKeyDown={keyboard}>
+ <h2>{shownName(file)}</h2>
  <div className="document-toolbar">
    <button className="button" onClick={onClose}>{tr('Close')}</button>
    {image && <>
@@ -165,12 +166,12 @@ function DocumentViewer({
    </>}
    {state.url && <>
      <a className="button" href={state.url} target="_blank" rel="noopener noreferrer">{tr('Open original')}</a>
-     <a className="button button-quiet" href={state.url} download={file.name}>{tr('Download')}</a>
+     <a className="button button-quiet" href={state.url} download={shownName(file)}>{tr('Download')}</a>
    </>}
  </div>
  {state.loading && <p role="status">{tr('Loading private document…')}</p>}{state.error && <p role="alert">{tr(state.error)}</p>}
  <div className="document-stage">{state.url && (image && !failed ? <img src={state.url} style={{
           width: `${zoom * 100}%`
-        }} alt={file.name} onError={() => setFailed(true)} /> : <p>{tr(file.mime_type === 'application/pdf' ? 'Open the PDF in a new tab or download the original.' : 'Preview unavailable. Download the original document to inspect it in a trusted viewer.')}</p>)}</div>
+        }} alt={shownName(file)} onError={() => setFailed(true)} /> : <p>{tr(file.mime_type === 'application/pdf' ? 'Open the PDF in a new tab or download the original.' : 'Preview unavailable. Download the original document to inspect it in a trusted viewer.')}</p>)}</div>
  </section></div>;
 }

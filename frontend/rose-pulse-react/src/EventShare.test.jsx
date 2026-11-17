@@ -4,7 +4,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import EventShare, { publicShare } from "./EventShare.jsx";
 
-vi.mock("./demo-transport.js", () => ({ DEMO_PROFILE: true }));
+vi.mock("./demo-transport.js", () => ({ PRESENTER_TOOLS: true }));
 
 const origin = "https://demo.example.com";
 const event = {
@@ -22,6 +22,12 @@ const url = origin + "/?view=event&event=" + event.public_id;
 const locationAt = (value) => vi.stubGlobal("location", new URL(value));
 
 describe("user-triggered public sharing", () => {
+  it("retains only a single valid referral in the shared URL", () => {
+    const code = "abcdefghijklmnopqrstuvwx";
+    expect(publicShare(event, origin, code).url).toBe(url + "&ref=" + code);
+    expect(publicShare(event, origin, code + "&other=1").url).toBe(url);
+  });
+
   it("builds a canonical URL and includes actual event time and location", () => {
     const share = publicShare(event, origin);
     expect(share.url).toBe(url);

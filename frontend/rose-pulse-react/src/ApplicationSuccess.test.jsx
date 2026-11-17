@@ -14,23 +14,17 @@ const props = () => ({
 beforeEach(() => vi.useFakeTimers());
 afterEach(() => vi.useRealTimers());
 
-it("returns once at five seconds using the latest handler without restarting on rerender", () => {
-  const initial = props();
-  const current = vi.fn();
-  const view = render(<ApplicationSuccess {...initial} />);
+it("keeps the pending reference available until the user chooses what to do", () => {
+  const callbacks = props();
+  render(<ApplicationSuccess {...callbacks} />);
   const dialog = screen.getByRole("dialog", { name: "Application submitted successfully" });
-  expect(dialog).toHaveAccessibleDescription(/Returning to the event in 5 seconds/);
-  expect(dialog).toHaveTextContent(initial.reference);
-  act(() => vi.advanceTimersByTime(3000));
-  view.rerender(<ApplicationSuccess {...initial} onDone={current} />);
-  act(() => vi.advanceTimersByTime(1999));
-  expect(initial.onDone).not.toHaveBeenCalled();
-  expect(current).not.toHaveBeenCalled();
-  act(() => vi.advanceTimersByTime(1));
-  expect(current).toHaveBeenCalledTimes(1);
-  expect(dialog).not.toHaveAttribute("open");
-  act(() => vi.advanceTimersByTime(5000));
-  expect(current).toHaveBeenCalledTimes(1);
+  act(() => vi.advanceTimersByTime(60000));
+  expect(dialog).toHaveAttribute("open");
+  expect(dialog).toHaveTextContent(callbacks.reference);
+  expect(dialog).toHaveTextContent("Pending");
+  expect(dialog).toHaveAccessibleDescription(/Awaiting organiser review/);
+  expect(within(dialog).getByRole("button", { name: "Copy reference" })).toBeEnabled();
+  expect(callbacks.onDone).not.toHaveBeenCalled();
 });
 
 it.each([
@@ -39,7 +33,7 @@ it.each([
   ["Back to event", "onDone"],
   ["Escape", "onDismiss"],
   ["unmount", null],
-])("cancels the automatic return on %s", (action, expected) => {
+])("runs only the chosen receipt action on %s", (action, expected) => {
   const callbacks = props();
   const view = render(<ApplicationSuccess {...callbacks} />);
   const dialog = screen.getByRole("dialog");

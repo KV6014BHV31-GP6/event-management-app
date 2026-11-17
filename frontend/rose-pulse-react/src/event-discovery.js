@@ -12,6 +12,24 @@ export function discoveryView(records, group = 'all') {
   return records.filter(event => group === 'all' || eventGroup(event) === group)
     .sort((a, b) => priority[eventGroup(a)] - priority[eventGroup(b)]);
 }
+export const publicDiscovery = records =>
+  discoveryView(records).filter(event => !EXERCISE_EVENT_IDS.has(event.public_id));
+
+const bootstrapVenue = {
+  dev_synthetic_event_1: 'Community hall 1',
+  dev_synthetic_event_2: 'Community hall 2',
+  dev_synthetic_event_3: 'Community hall 3',
+};
+const fixtureNotice = " Synthetic demonstration event; no real appointment or medical service is offered. Images are AI-generated demonstration artwork.";
+export function eventPresentation(event) {
+  if (COMMUNITY_EVENT_IDS.has(event.public_id) && event.overview?.endsWith(fixtureNotice))
+    return { ...event, overview: event.overview.slice(0, -fixtureNotice.length) };
+  const venue = Object.hasOwn(bootstrapVenue, event.public_id) && bootstrapVenue[event.public_id];
+  if (venue && event.location === 'Demo ' + venue.toLowerCase())
+    return { ...event, location: venue };
+  return event;
+}
+
 // Read every matching server page before grouping; a failed page fails the whole read.
 export async function readDiscovery(api, options) {
   const first = await api.getEvents(options);

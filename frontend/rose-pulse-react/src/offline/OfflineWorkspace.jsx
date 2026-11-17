@@ -1,4 +1,4 @@
-import { demoTransport, DEMO_PROFILE } from "../demo-transport.js";
+import { demoTransport, DEMO_PROFILE, PRESENTER_TOOLS } from "../demo-transport.js";
 import { tr } from "../i18n/index.js";
 import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
 import { RegistrationGroups } from "../RegistrationGroups.jsx";
@@ -436,7 +436,9 @@ export default function OfflineWorkspace({
                       checked={consent}
                       onChange={(event) => setConsent(event.target.checked)}
                     />
-                    {tr("I confirm every value is synthetic test data.")}
+                    {tr(PRESENTER_TOOLS
+                      ? "I confirm every value is synthetic test data."
+                      : "I confirm that all participant details are fictional.")}
                   </label>
                   <button
                     className="button"

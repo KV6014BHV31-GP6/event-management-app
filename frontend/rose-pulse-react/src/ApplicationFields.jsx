@@ -1,6 +1,6 @@
 import React, { useEffect, useId, useRef, useState } from "react";
 import { useDemoTool } from "./DemoControls.jsx";
-import { DEMO_PROFILE } from "./demo-transport.js";
+import { PRESENTER_TOOLS } from "./demo-transport.js";
 import { PrivateDocuments } from "./PrivateDocuments.jsx";
 import { RegistrationGroups } from "./RegistrationGroups.jsx";
 import { tr } from "./i18n/index.js";
@@ -38,7 +38,7 @@ export function ApplicationOptions({ label, name, choices, defaultValue }) {
 }
 
 export function DemoFormTemplate({ preserveNationalId = false, account, disabled = false }) {
-  const localFixture = DEMO_PROFILE && preserveNationalId &&
+  const localFixture = PRESENTER_TOOLS && preserveNationalId &&
     ["localhost", "127.0.0.1", "[::1]"].includes(globalThis.location.hostname) &&
     account?.role === "user" && account.username === "ac40s1_px";
   const control = useRef(null);
@@ -70,7 +70,7 @@ export function DemoFormTemplate({ preserveNationalId = false, account, disabled
   };
 
   useDemoTool("Fill synthetic demo details", fill, !disabled);
-  if (!DEMO_PROFILE) return null;
+  if (!PRESENTER_TOOLS) return null;
 
   return (
     <div>

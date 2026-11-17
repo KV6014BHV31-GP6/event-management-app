@@ -59,3 +59,11 @@ it.each([
   await expect(readDiscovery(api,{page:1,pageSize:1})).rejects.toThrow('complete');
   expect(api.getEvents).toHaveBeenCalledTimes(3);
 });
+
+it('keeps known exercises out of public results while retaining every unknown event', async () => {
+  const { publicDiscovery } = await import('./event-discovery.js');
+  const newEvent = {public_id:'new-id', title:'New community workshop'};
+  expect(publicDiscovery([...exercises, ...community, newEvent])).toEqual([...community, newEvent]);
+  expect(publicDiscovery(exercises)).toEqual([]);
+  expect(discoveryView(exercises, 'demo')).toEqual(exercises);
+});

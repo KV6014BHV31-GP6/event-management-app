@@ -1,8 +1,9 @@
 import JourneyWorkspace from "./JourneyWorkspace.jsx";
-import { eventGroup, discoveryView, readDiscovery } from "./event-discovery.js";
+import { eventGroup, discoveryView, eventPresentation, publicDiscovery, readDiscovery } from "./event-discovery.js";
 import { AccountProfile, RecoveryWorkspace } from "./AccountWorkspace.jsx";
 import { DemoImage, DemoControls, DemoToolsProvider } from "./DemoControls.jsx";
 import { tr } from "./i18n/index.js";
+import { PRESENTER_TOOLS } from "./demo-transport.js";
 import {
   i18n,
   locale,
@@ -54,14 +55,16 @@ const validRegistrationId = (value) => /^[0-7][0-9A-HJKMNP-TV-Z]{25}$/.test(valu
 const readLocation = () => {
   const params = new URLSearchParams(window.location.search);
   const registration = params.get("registration") || "";
+  const page = Number(params.get("page"));
   return {
     view: params.get("view") || "home",
     event: params.get("event") || "",
     ref: params.get("ref") || "",
+    guestLookup: params.get("booking") === "1",
     registration: validRegistrationId(registration) ? registration : "",
     keyword: params.get("keyword") || "",
     group: ["community", "demo"].includes(params.get("group")) ? params.get("group") : "all",
-    page: Math.max(1, Number(params.get("page")) || 1),
+    page: Number.isSafeInteger(page) && page > 0 ? page : 1,
     pageSize: [3, 6, 12, 24].includes(Number(params.get("pageSize")))
       ? Number(params.get("pageSize"))
       : 6,
@@ -524,7 +527,7 @@ function Shell({ children }) {
         </main>
         <footer className="footer">
           <span>ROSE · PULSE</span>
-          <span>{tr("Community Health \xB7 People \xB7 Opportunity")}</span>
+          <span>{tr("Independent educational project. All activities are fictional. No medical appointments are booked.")}</span>
           <Link view="help">
             {tr("Help & information")}
             <Icon name="arrow" size={14} />
@@ -544,14 +547,15 @@ function Shell({ children }) {
           <span>{tr("Events")}</span>
         </Link>
         <Link
-          view={auth.user?.role === "organizer" ? "manage" : "registrations"}
+          view={auth.user?.role === "organizer" ? "manage" : auth.user?.role === "leader" ? "leader" : auth.user ? "registrations" : "operations"}
+          params={auth.user ? undefined : {booking: "1"}}
           className={
-            ["manage", "registrations"].includes(route.view) ? "is-active" : ""
+            (["manage", "registrations", "leader"].includes(route.view) || route.guestLookup) ? "is-active" : ""
           }
         >
           <Icon name={auth.user?.role === "organizer" ? "users" : "ticket"} />
           <span>
-            {auth.user?.role === "organizer" ? tr("Manage") : tr("My bookings")}
+            {auth.user?.role === "organizer" ? tr("Manage") : auth.user?.role === "leader" ? tr("Leader workspace") : tr("My bookings")}
           </span>
         </Link>
         <Link
@@ -605,7 +609,7 @@ function EventImage({ event, className = "", detail = false, index = 0 }) {
     <div className={`event-placeholder ${className}`}>
       <Icon name="leaf" size={detail ? 70 : 45} />
       <span>ROSE · PULSE</span>
-      <small>{tr(eventGroup(event) === "demo" ? "Demo exercises" : "Community events")}</small>
+      <small>{tr(eventGroup(event) === "demo" ? "Practice activities" : "Community events")}</small>
     </div>
   );
 }
@@ -677,7 +681,7 @@ function Events({ home = false }) {
     error: "",
   });
   const [reload, setReload] = useState(0);
-  const group = home ? "all" : route.group;
+  const group = home || (!PRESENTER_TOOLS && route.group === "demo") ? "all" : route.group;
   const [jump, setJump] = useState(String(route.page));
   const page = home ? 1 : route.page,
     pageSize = home ? 24 : route.pageSize,
@@ -721,9 +725,20 @@ function Events({ home = false }) {
       keyword,
       group,
     });
-  const filteredEvents = discoveryView(state.data?.records || [], group);
-  const directory = state.data && { ...state.data, total_count: filteredEvents.length, total_pages: Math.ceil(filteredEvents.length / pageSize) };
-  const displayedEvents = home ? (state.data?.records||[]).filter(event => eventGroup(event) !== "demo" && ["active","published"].includes(eventDisplayState(event).toLowerCase()) && Date.parse(event.start_time)>=Date.now()).sort((a,b)=>(eventGroup(a) === "community" ? 0 : 1) - (eventGroup(b) === "community" ? 0 : 1) || Date.parse(a.start_time)-Date.parse(b.start_time)).slice(0,3) : state.data?.total_pages <= 1 && group === "all" ? filteredEvents : filteredEvents.slice((page - 1) * pageSize, page * pageSize);
+  const catalogue = home || !PRESENTER_TOOLS
+    ? publicDiscovery(state.data?.records || [])
+    : state.data?.records || [];
+  const filteredEvents = discoveryView(catalogue, group);
+  const totalPages = Math.ceil(filteredEvents.length / pageSize);
+  const currentPage = Math.min(page, Math.max(1, totalPages));
+  const displayedEvents = (home
+    ? catalogue.filter(event =>
+        ["active", "published"].includes(eventDisplayState(event).toLowerCase()) &&
+        Date.parse(event.start_time) >= Date.now())
+      .sort((a, b) => Number(eventGroup(b) === "community") - Number(eventGroup(a) === "community") ||
+        Date.parse(a.start_time) - Date.parse(b.start_time)).slice(0, 3)
+    : filteredEvents.slice((currentPage - 1) * pageSize, currentPage * pageSize))
+    .map(eventPresentation);
   return (
     <div className={`browse-page ${home ? "home-page" : ""}`}>
       {home && <section className="community-intro" aria-labelledby="intro-title">
@@ -733,7 +748,7 @@ function Events({ home = false }) {
           <p>{tr("Free screening for women in B40 communities. Apply online or get help from a community leader.")}</p>
           <div className="intro-actions">
             <Link view="events" className="button">{tr("Find events")}</Link>
-            <Link view={auth.user ? "registrations" : "operations"} className="button button-quiet">{tr("Check my application")}</Link>
+            <Link view={auth.user ? "registrations" : "operations"} params={auth.user ? undefined : {booking: "1"}} className="button button-quiet">{tr("Check my application")}</Link>
           </div>
         </div>
         <img className="community-intro-photo" src="/images/r4/screening.png" width="360" height="180" alt="" />
@@ -746,7 +761,7 @@ function Events({ home = false }) {
           {tr("Find activities, meet people and make time for your wellbeing.")}
         </Heading>
       )}
-      <p className="synthetic-disclosure">{tr("Synthetic demonstration only. No real medical appointment or service is offered. Event images are AI-generated artwork.")}</p>
+      <p className="synthetic-disclosure">{tr("Event imagery is AI-generated.")}</p>
       <section className="events-section" aria-labelledby="events-title">
         <div className="section-heading">
           <div>
@@ -755,7 +770,7 @@ function Events({ home = false }) {
               {home
                 ? tr("Upcoming community events")
                 : keyword
-                  ? `Results for “${keyword}”`
+                  ? tr("Results for {{keyword}}", {keyword})
                   : tr("All community events")}
             </h2>
           </div>
@@ -775,13 +790,13 @@ function Events({ home = false }) {
           )}
         </div>
         {!home && <nav className="discovery-tabs" aria-label={tr("Event collections")}>
-          {[["all", "All events"], ["community", "Community events"], ["demo", "Demo exercises"]].map(([value, label]) => <Link key={value} view="events" params={{group: value, keyword, page: 1, pageSize}} aria-current={group === value ? "page" : undefined}>{tr(label)}{state.data && <span>{discoveryView(state.data.records, value).length}</span>}</Link>)}
+          {[["all", "All events"], ["community", "Community events"], ...(PRESENTER_TOOLS ? [["demo", "Practice activities"]] : [])].map(([value, label]) => <Link key={value} view="events" params={{group: value, keyword, page: 1, pageSize}} aria-current={group === value ? "page" : undefined}>{tr(label)}{state.data && <span>{discoveryView(catalogue, value).length}</span>}</Link>)}
         </nav>}
         {!home && (
           <div className="browse-controls">
             <p className="muted">
               {state.data
-                ? tr("{{count}} events", { count: directory.total_count })
+                ? tr("{{count}} events", { count: filteredEvents.length })
                 : tr("Events from the community")}
               {keyword && (
                 <>
@@ -856,17 +871,17 @@ function Events({ home = false }) {
               )}
             </div>
           ))}
-        {!home && state.data && directory.total_pages > 0 && (
+        {!home && state.data && totalPages > 0 && (
           <div className="pagination" aria-label={tr("Event pages")}>
             <span>
               {tr("Page")}
-              {state.data.page} {tr("of")} {directory.total_pages}
+              {currentPage} {tr("of")} {totalPages}
             </span>
             <div>
               <button
                 className="icon-button"
                 aria-label={tr("First page")}
-                disabled={page === 1}
+                disabled={currentPage === 1}
                 onClick={() => goPage(1)}
               >
                 «
@@ -874,24 +889,24 @@ function Events({ home = false }) {
               <button
                 className="icon-button"
                 aria-label={tr("Previous page")}
-                disabled={page === 1}
-                onClick={() => goPage(page - 1)}
+                disabled={currentPage === 1}
+                onClick={() => goPage(currentPage - 1)}
               >
                 ‹
               </button>
               <button
                 className="icon-button"
                 aria-label={tr("Next page")}
-                disabled={page >= directory.total_pages}
-                onClick={() => goPage(page + 1)}
+                disabled={currentPage >= totalPages}
+                onClick={() => goPage(currentPage + 1)}
               >
                 ›
               </button>
               <button
                 className="icon-button"
                 aria-label={tr("Last page")}
-                disabled={page >= directory.total_pages}
-                onClick={() => goPage(directory.total_pages)}
+                disabled={currentPage >= totalPages}
+                onClick={() => goPage(totalPages)}
               >
                 »
               </button>
@@ -903,7 +918,7 @@ function Events({ home = false }) {
                 if (
                   Number.isSafeInteger(next) &&
                   next > 0 &&
-                  next <= directory.total_pages
+                  next <= totalPages
                 )
                   goPage(next);
               }}
@@ -913,7 +928,7 @@ function Events({ home = false }) {
                 id="page-jump"
                 type="number"
                 min="1"
-                max={directory.total_pages}
+                max={totalPages}
                 required
                 value={jump}
                 onChange={(event) => setJump(event.target.value)}
@@ -1028,7 +1043,7 @@ function EventDetail() {
   const { route, auth } = useApp();
   const [imageIndex, setImageIndex] = useState(0);
   const [state, reload] = useEvent(route.event);
-  const event = state.event;
+  const event = state.event && eventPresentation(state.event);
   return (
     <>
       <Back />
@@ -1110,11 +1125,10 @@ function EventDetail() {
               <p className="timezone-note">
                 {tr("Times use")} {Intl.DateTimeFormat().resolvedOptions().timeZone}.
               </p>
-              <RegistrationWindow event={event}/><EventShare event={event} />
+              <RegistrationWindow event={event} />
             </div>
             <aside className="detail-action">
               <Quota event={event} />
-              <Link view="operations" params={{event:event.public_id}} className="button button-quiet">{tr("Booking and event operations")}</Link>
               {acceptsApplications(event) ? (
                 <Link
                   view="apply"
@@ -1134,6 +1148,15 @@ function EventDetail() {
               <p className="muted small">
                 {tr("An application does not confirm a place.")}
               </p>
+              {auth.user?.role === "organizer" || auth.user?.role === "leader" ? (
+                <Link view="operations" params={{event: event.public_id}} className="button button-quiet">
+                  {tr("Event operations")}
+                </Link>
+              ) : !auth.user && event.workflow && (
+                <Link view="operations" params={{booking: "1", event: event.public_id}} className="text-link">
+                  {tr("Check my application")}
+                </Link>
+              )}
               {auth.user?.role === "organizer" &&
                 auth.user.id === event.organizer_id && (
                   <Link
@@ -1149,6 +1172,7 @@ function EventDetail() {
                 )}
             </aside>
           </div>
+          <EventShare event={event} referralCode={route.ref} />
         </article>
       )}
     </>
@@ -1751,7 +1775,7 @@ function EventEditorForm({ edit, onAnother }) {
 function Apply() {
   const { route,runtime,auth,navigate } = useApp();
   const [state, reload] = useEvent(route.event);
-  if(state.event?.workflow)return <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} initialPublicEvent={state.event} navigate={navigate}/>;
+  if(state.event?.workflow)return <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} initialPublicEvent={eventPresentation(state.event)} navigate={navigate}/>;
   return (
     <>
       <Back event={route.event} />
@@ -1951,6 +1975,7 @@ function Application({ event }) {
                     runtime={guest ? undefined : runtime}
                     files={guest ? [] : state.receipt.supporting_documents}
                     onDismiss={dismissApplication}
+                    nextLabel={guest ? "Keep my reference" : "My registrations"}
                     onView={guest ? dismissApplication : () => {
                       setApplicationModal(false);
                       navigate("registrations");
@@ -2469,9 +2494,10 @@ function Help({ leader = false }) {
             <h2>{tr("Checking an application")}</h2>
             <p>
               {tr(
-                "Signed-in participants can read and cancel eligible applications in My registrations. Guest applications cannot be retrieved here after leaving the receipt page; keep your application reference and contact the organiser.",
+                "Signed-in participants can read and cancel eligible applications in My registrations. For managed events, use Check my application with the reference and phone number you used. For older events, keep the reference and contact the organiser.",
               )}
             </p>
+            <Link view="operations" params={{booking: "1"}} className="text-link">{tr("Check my application")}</Link>
             <h2>{tr("If a result is unknown")}</h2>
             <p>
               {tr(
@@ -2561,26 +2587,29 @@ export default function App({ runtime }) {
         manage: "Manage registrations",
         profile: "Profile",
         help: "Help",
-        leader: "Offline drafts",
+        leader: "Leader workspace",
+        operations: route.guestLookup ? "Check my application" : "Event operations",
         offline: "Offline drafts",
         "organizer-events": "Your events",
         analytics: "Registration overview",
       }[route.view] || "Page not found",
     )} | ROSE · PULSE`;
-  }, [route.view, i18n.resolvedLanguage]);
+  }, [route.view, route.guestLookup, i18n.resolvedLanguage]);
   let content;
   switch (route.view) {
     case "operations": {
       const workspace = <JourneyWorkspace runtime={runtime} auth={auth}
         initialEvent={route.registration ? "" : route.event}
-        initialRef={route.registration ? "" : route.ref}
+        initialRef={route.registration || route.guestLookup ? "" : route.ref}
+        initialGuestLookup={route.guestLookup}
+        openEventWorkspace
         initialRegistration={route.registration}
         navigate={navigate} />;
       content = route.registration ? <RoleGate role="organizer">{workspace}</RoleGate> : workspace;
       break;
     }
     case "home":
-      content = auth.user?.role === "organizer" ? <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate}/> : auth.user?.role === "leader" ? <OfflineWorkspace runtime={runtime} auth={auth} initialEvent={route.event} initialRef={route.ref} navigate={navigate}/> : <Events home />;
+      content = auth.user?.role === "organizer" ? <OrganizerEvents runtime={runtime} auth={auth} navigate={navigate}/> : auth.user?.role === "leader" ? <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} navigate={navigate} openEventWorkspace/> : <Events home />;
       break;
     case "events":
       content = <Events />;
@@ -2629,6 +2658,10 @@ export default function App({ runtime }) {
       content = <Help />;
       break;
     case "leader":
+      content = <RoleGate role="leader">
+        <JourneyWorkspace runtime={runtime} auth={auth} initialEvent={route.event} navigate={navigate} openEventWorkspace />
+      </RoleGate>;
+      break;
     case "offline":
       content = (
         <OfflineWorkspace
@@ -2672,7 +2705,7 @@ export default function App({ runtime }) {
           <React.Suspense
             fallback={
               <div className="loading-state" role="status">
-                {"Loading current workspace…"}
+                {tr("Loading current workspace…")}
               </div>
             }
           >

@@ -32,3 +32,17 @@ it.each(['en','ms'])('shows unset options truthfully and blocks new applications
   expect(container.querySelector('select[name=age_group_code]').options).toHaveLength(1);
   expect(container.querySelector('select[name=income_band_code]').required).toBe(false);
 });
+
+it('localizes only the exact staging fixture label and submits its existing code', async () => {
+  await changeLanguage('ms');
+  vi.spyOn(demoTransport, 'fetch').mockResolvedValue({ok:true,json:async()=>({
+    age_groups:[{code:'18_29',name:'Demo only: 18-29 years'},{code:'0_17',name:'Unmodified API label'}],
+    income_bands:[{code:'demo_income_a',name:'Demo income category A (illustrative)'}],
+  })});
+  const {container} = render(<form><RegistrationGroups /></form>);
+  await screen.findByRole('option',{name:'18–29 tahun'});
+  expect(screen.getByRole('option',{name:'Unmodified API label'})).toBeInTheDocument();
+  expect(screen.getByRole('option',{name:'Kumpulan pendapatan contoh A'})).toBeInTheDocument();
+  fireEvent.change(container.querySelector('[name=age_group_code]'),{target:{value:'18_29'}});
+  expect(Object.fromEntries(new FormData(container.querySelector('form')))).toEqual({age_group_code:'18_29',income_band_code:''});
+});
