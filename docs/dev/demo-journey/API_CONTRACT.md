@@ -2,6 +2,20 @@
 
 Status: engineering contract locked for explicit Owner synthetic scope, 2026-11-03. API prefix `/api/v2/operations`. Existing `rose.offline-sync.v2` and v1/v2 wire enums remain. Original-source coverage remains separately recorded. This file is owned only by Astra. A necessary change requires a versioned coordinated amendment, never silent FE/BE drift.
 
+## Coordinated Owner successor, 2026-11-17
+
+Controller delegates this bounded amendment to the sole integration writer for
+independent Astra review. NEW application payloads (guest/member/assisted/walk-in)
+replace `date_of_birth` with required `age_group_code` from the DB age lookup.
+`income_band_code` remains optional/null; supplied codes must match an active DB
+income band. `/api/v1/registration-options` returns ordered code/name arrays with
+no invented defaults or runtime seed. Empty age options mean activation BLOCKED,
+with an explicit EN/BM unset state; empty Income options do not make Income required.
+This Owner change does not approve NGO/teacher classification or income policy.
+Historical DOB/IDs/income strings and all envelope versions, immutable operation
+fingerprints, receipt readbacks, capacity, authority and no-blind-replay rules below
+remain. Original committed operation receipts are reconciled before new-form parsing.
+
 ## Common mutation and receipt
 
 W9 clarification (2026-11-09): a signed-in ordinary account submitting a different National ID from its already-linked participant is a terminal input validation refusal, `422 INVALID_INPUT`, with no participant, registration or operation receipt committed. A corrected explicit request uses a new operation ID. This does not permit identity reassignment. `409 IMMUTABLE_CONFLICT` remains reserved in the affected path for the existing operation-ID/fingerprint and other protected conflicts; a missing receipt alone never authorizes blind replay. Previously retained immutable references are not silently cleared by this change.

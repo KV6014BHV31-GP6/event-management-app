@@ -37,6 +37,10 @@ async def setup_native():
     async with engine.begin() as conn:
         assert not await conn.scalar(text('SELECT rolsuper FROM pg_roles WHERE rolname=current_user'))
         await conn.run_sync(Base.metadata.create_all)
+    async with async_sessionmaker(engine, expire_on_commit=False)() as fixture_db:
+        from tests.group_fixtures import seed_group_options
+        await seed_group_options(fixture_db)
+        await fixture_db.commit()
     sessions=async_sessionmaker(engine,expire_on_commit=False,autoflush=False)
     stamp=str(ulid.ULID());actors=[];events=[]
     async with sessions() as db:
@@ -51,7 +55,7 @@ async def setup_native():
     try:yield sessions,actors,events,stamp
     finally:await engine.dispose()
 
-def form(identity):return {'first_name':'Native','last_name':'Synthetic','gender':'female','date_of_birth':'1990-01-01','phone':'TEST','national_id':identity}
+def form(identity):return {'first_name':'Native','last_name':'Synthetic','gender':'female','age_group_code':'18_29','phone':'TEST','national_id':identity}
 def payload(identity,batch_id=None,submission_id=None):
     return SyncBatch(contract_version='rose.offline-sync.v2',batch_id=batch_id or str(uuid.uuid4()),items=[{'client_submission_id':submission_id or str(uuid.uuid4()),'application':form(identity)}])
 async def send(sessions,event,actor,p):

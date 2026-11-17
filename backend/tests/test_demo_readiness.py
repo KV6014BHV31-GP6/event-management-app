@@ -13,7 +13,7 @@ from src.participants.models import ParticipantModel
 from src.registrations.models import RegistrationModel
 
 PUBLIC = 'E' * 20 + '1'
-FORM = dict(first_name='Synthetic', last_name='Person', gender='female', date_of_birth='1990-01-01',
+FORM = dict(first_name='Synthetic', last_name='Person', gender='female', age_group_code='18_29',
             phone='TEST-000', address='Synthetic test only', national_id='TEST-IDENTITY-A',
             income_band_code='SYNTHETIC', marriage_status='single', medical_record=None)
 

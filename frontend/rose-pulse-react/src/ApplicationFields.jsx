@@ -2,12 +2,12 @@ import React, { useEffect, useId, useRef, useState } from "react";
 import { useDemoTool } from "./DemoControls.jsx";
 import { DEMO_PROFILE } from "./demo-transport.js";
 import { PrivateDocuments } from "./PrivateDocuments.jsx";
+import { RegistrationGroups } from "./RegistrationGroups.jsx";
 import { tr } from "./i18n/index.js";
 
 const participantFields = [
   { name: "first_name", label: "First name", maxLength: 20, autoComplete: "given-name" },
   { name: "last_name", label: "Last name", maxLength: 20, autoComplete: "family-name" },
-  { name: "date_of_birth", label: "Date of birth", type: "date" },
   { name: "phone", label: "Phone", type: "tel", maxLength: 20, autoComplete: "tel" },
   { name: "national_id", label: "National ID", maxLength: 50 },
 ];
@@ -54,7 +54,6 @@ export function DemoFormTemplate({ preserveNationalId = false, account, disabled
     const values = {
       first_name: "Demo",
       last_name: `Sample ${id.slice(0, 8)}`,
-      date_of_birth: `${1985 + random % 20}-06-15`,
       phone: `0000${String(random % 100000000).padStart(8, "0")}`,
       gender: random % 2 ? "female" : "male",
       ...(localFixture
@@ -109,6 +108,7 @@ export function ParticipantFields({ preserveNationalId = false, account }) {
             </div>
           );
         })}
+        <RegistrationGroups />
         <ApplicationOptions label="Gender" name="gender" choices={genderChoices} />
       </div>
     </>
@@ -148,6 +148,8 @@ export function ApplicationSummary({ files = [], runtime, source }) {
               <dt>{tr(label)}</dt><dd>{review[name] || "—"}</dd>
             </React.Fragment>
           ))}
+          <dt>{tr("Age group")}</dt><dd>{review.age_group_code || "—"}</dd>
+          <dt>{tr("Income group (optional)")}</dt><dd>{review.income_band_code || tr("Not provided")}</dd>
           <dt>{tr("Gender")}</dt><dd>{gender ? tr(gender[1]) : "—"}</dd>
           {(source || attribution) && <><dt>{tr("Source")}</dt><dd>{source || tr(attribution[1])}</dd></>}
           <dt>{tr("Supporting documents")}</dt>

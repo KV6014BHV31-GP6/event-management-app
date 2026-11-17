@@ -100,7 +100,7 @@ The retained Offline service accepts new unclaimed identities with actual channe
 
 Phase2 preserves `/api/v1` routes and flat response fields while adding `/api/v2` below. It does not merge the W8 module branches wholesale. Image limit3 is the owner-authorized gallery bound; supporting-document limit3 follows the W8 source. These engineering bounds do not establish eligibility, attendance, NGO field policy or mixed-pool acceptance.
 
-The default registration form can omit `address`, `income_band_code`, `marriage_status` and `medical_record`; omitted values persist as actual NULL. Address is nullable in both participant and registration. Existing supplied values remain. Six provisional fields remain: first/last name, gender, date of birth, phone and national ID. This reduces the previous nine visible React inputs to six (33.3%); DOB/eligibility policy remains pending. No hidden mandatory defaults are fabricated.
+The default registration form can omit `address`, `income_band_code`, `marriage_status` and `medical_record`; omitted values persist as actual NULL. Address is nullable in both participant and registration. Existing supplied values remain. Historical provisional baseline: first/last name, gender, date of birth, phone and national ID. The 2026-11-17 Owner successor below replaces DOB with required Age Group; Income Group stays optional. This reduces the previous nine visible React inputs to six (33.3%); DOB/eligibility policy remains pending. No hidden mandatory defaults are fabricated.
 
 For a signed-in account reusing its participant, omitted address leaves an existing participant address intact while the new registration snapshot is NULL. An explicitly supplied address (including explicit null) remains an authorized profile update. V2 offline reuse remains stricter: its complete identity snapshot must match exactly.
 
@@ -357,3 +357,42 @@ For synthetic staging, keep `NU_DEMO_PROFILE=synthetic` and the default `NU_NOTI
 Real Twilio transport is optional and requires an installed SDK plus explicit `NU_NOTIFICATION_TRANSPORT=twilio`, `NU_NOTIFICATION_EXTERNAL_SEND=yes`, all original `TWILIO_ACCOUNT_SID`/`TWILIO_AUTH_TOKEN`/`TWILIO_SANDBOX_NUMBER` settings, and one exact approved `NU_NOTIFICATION_TEST_RECIPIENT`. Missing configuration is recorded as `EXTERNAL_DELIVERY_NOT_CONFIGURED`. Never retry an unknown provider result with a new task ID; reconcile its original provider SID/receipt first. No external service or approved test recipient was configured or exercised for this change.
 
 No new table/dependency migration is introduced. Historical synthetic outbox rows remain display-only; existing Journey schema is required. See [notification integration](../docs/dev/notification-integration.md) for fixed Austin provenance, lifecycle/policy mapping, cancellation/crash boundaries, test commands and external-delivery limits.
+
+## Owner registration classification successor, 2026-11-17
+
+NEW `RegistrationCreate` inputs use required `age_group_code` instead of DOB.
+`income_band_code` remains optional (omitted/null persist actual NULL); if supplied,
+it must name an active database `income_bands` row. `GET /api/v1/registration-options`
+returns `{age_groups:[{code,name}],income_bands:[{code,name}]}`, ordered by age
+minimum/code and income display order/code. Empty tables return empty arrays and
+never bootstrap arbitrary policy. This environment cannot enable new applications
+until its age classification data is approved/configured. No runtime seed is added.
+Austin's model and code/name shape reuse is pinned in the task; fixture values are
+synthetic tests only, not approved income/age policy.
+
+Guest, member, managed journey, walk-in and both offline entry paths share DB code
+validation. V1 offline retains `incomeLevel`/`income_level` aliases and accepts canonical
+`income_band_code` (also `incomeBandCode`); age accepts `age_group_code`, `ageGroupCode`
+and Austin's `AgeGroupCode`. New DOB fields are refused. Existing stored batch and
+submission receipts are checked before interpreting a new application, so original
+IDs/fingerprints/unknown-ACK reconciliation remain unchanged; do not rewrite saved
+legacy requests. A legacy draft without an existing receipt needs explicit review,
+not an automatically selected group or automatic resend.
+
+Existing development schemas need an explicit reviewed migration; `create_all` does
+not alter columns. Snapshot the exact dedicated DB first:
+
+```powershell
+python -B -m scripts.migrate_registration_groups --acknowledge-development --database EXACT_DEDICATED_DATABASE_NAME
+```
+
+The migration verifies development/native PG/exact DB/non-superuser, uses advisory
+and table locks with a 5-second timeout, creates empty lookup tables, adds nullable
+`registrations.age_group_code` with FK, and drops DOB NOT NULL in BOTH participants
+and registrations. It never rewrites identities, dates, old income strings or group
+values, and never runs at startup. Income has a view-only lookup relationship plus
+new-write validation, preserving historical unconstrained strings. `--reverse` only
+restores DOB NOT NULL if every historic DOB exists and no age selections/new no-DOB
+applications exist; it keeps additive lookup/column provenance. Otherwise it refuses;
+restore a reviewed pre-migration snapshot rather than inventing DOB or deleting rows.
+See [task](../docs/dev/tasks/REGISTRATION-GROUPS-20261117.md) for gates and evidence.

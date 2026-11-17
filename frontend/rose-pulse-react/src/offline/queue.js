@@ -17,7 +17,8 @@ const allowedFields = [
   "first_name",
   "last_name",
   "gender",
-  "date_of_birth",
+  "age_group_code",
+  "date_of_birth", // Preserve existing immutable draft/batch fingerprints; never transform legacy requests.
   "phone",
   "address",
   "national_id",

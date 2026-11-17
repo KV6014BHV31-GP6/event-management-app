@@ -439,8 +439,8 @@ describe("React application workflows (controlled API fixtures)", () => {
     await user.type(screen.getByLabelText("Last name"), "Example");
     await user.type(screen.getByLabelText("Phone"), "TEST");
     await user.type(screen.getByLabelText("National ID"), "SYNTHETIC-ONLY-001");
-    fireEvent.change(screen.getByLabelText("Date of birth"), {
-      target: { value: "1990-01-01" },
+    fireEvent.change(screen.getByLabelText("Age group"), {
+      target: { value: "18_29" },
     });
     await user.click(screen.getByRole("radio", { name: "Female" }));
     for (const field of ["Marital status", "Address", "Income band code"])
@@ -741,7 +741,7 @@ it('primary Apply opens the managed Guest form and hands the confirmed reference
   expect(screen.getByText(event.overview)).toBeInTheDocument();
   for (const [label, value] of [['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '00000001'], ['National ID', 'SIM-0001']])
     await user.type(within(form).getByLabelText(label), value);
-  fireEvent.change(within(form).getByLabelText('Date of birth'), {target: {value: '1990-01-01'}});
+  fireEvent.change(within(form).getByLabelText('Age group'), {target: {value: '18_29'}});
   expect(within(form).getByRole('radio', {name: 'Female'})).not.toBeChecked();
   await user.click(within(form).getByRole('radio', {name: 'Female'}));
   await user.click(within(form).getByText('Review your application'));

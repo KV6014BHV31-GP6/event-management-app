@@ -19,21 +19,16 @@ export function minimumRegistrationPayload(values) {
       "validation",
       "Choose a gender from the available options.",
     );
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(values.date_of_birth ?? ""))
-    throw new ApiError("validation", "Enter a valid date of birth.");
-  const date = new Date(`${values.date_of_birth}T00:00:00Z`);
-  if (
-    !Number.isFinite(date.valueOf()) ||
-    date.toISOString().slice(0, 10) !== values.date_of_birth
-  )
-    throw new ApiError("validation", "Enter a valid date of birth.");
-  Object.assign(payload, {
-    gender: values.gender,
-    date_of_birth: values.date_of_birth,
-  });
+  if (typeof values.age_group_code !== "string" || !values.age_group_code.trim() || values.age_group_code.length > 20)
+    throw new ApiError("validation", "Choose an available age group.");
+  Object.assign(payload, { gender: values.gender, age_group_code: values.age_group_code });
+  if (values.income_band_code != null && values.income_band_code !== "") {
+    if (typeof values.income_band_code !== "string" || values.income_band_code.length > 20)
+      throw new ApiError("validation", "Choose an available income group.");
+    payload.income_band_code = values.income_band_code;
+  } else if (values.income_band_code === null) payload.income_band_code = null;
   for (const key of [
     "address",
-    "income_band_code",
     "marriage_status",
     "medical_record",
     "file_ids",

@@ -20,7 +20,7 @@ const signupTimestamp = value => {
   const day = new Date(`${value.slice(0, 10)}T00:00:00Z`);
   return Number.isFinite(day.valueOf()) && day.toISOString().slice(0, 10) === value.slice(0, 10);
 };
-const registrationFields = ['first_name', 'last_name', 'gender', 'date_of_birth', 'phone', 'address', 'national_id', 'income_band_code', 'marriage_status', 'medical_record'];
+const registrationFields = ['first_name', 'last_name', 'gender', 'age_group_code', 'phone', 'address', 'national_id', 'income_band_code', 'marriage_status', 'medical_record'];
 const registrationStates = new Set(['pending', 'approved', 'waiting', 'rejected', 'cancelled']);
 
 export function validatedQuota(value) {

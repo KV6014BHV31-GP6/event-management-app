@@ -26,6 +26,7 @@ from src.events.schemas import EventCreate, EventUpdate
 from src.events.service import EventService
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum as Status, RegistrationChannelEnum as Channel, UserGenderEnum, MarriageStatusTypeEnum
 from src.registrations.schemas import RegistrationCreate
+from src.registrations.options import validate_groups
 from src.participants.models import ParticipantModel
 from src.phase2 import assets
 from src.phase2.models import RegistrationDocumentModel
@@ -113,6 +114,7 @@ async def receipt(db,env,actor,path,kind,resource_id,row,effects,event=None):
     await db.commit();return value
 async def new_application(db,event,data,user,source=None,walkin=False):
     form=RegistrationCreate.model_validate(data)
+    await validate_groups(db,form.age_group_code,form.income_band_code)
     await assets.validate(db,form.file_ids,user.id if user else None,'supporting_document')
     # Operator is independent from participant ownership and referral attribution.
     own_user=user.id if user and user.role.value=='user' else None
@@ -124,8 +126,8 @@ async def new_application(db,event,data,user,source=None,walkin=False):
         if not own_user or person.user_id!=own_user:fail('IMMUTABLE_CONFLICT')
         if await db.scalar(select(RegistrationModel.id).where(RegistrationModel.event_id==event.id,RegistrationModel.participant_id==person.id)):fail('IMMUTABLE_CONFLICT')
     else:
-        person=ParticipantModel(id=str(ulid.ULID()),user_id=own_user,**{k:getattr(form,k) for k in ('first_name','last_name','date_of_birth','phone','address','national_id')},gender=UserGenderEnum(form.gender.value));db.add(person);await db.flush()
-    reg=RegistrationModel(id=str(ulid.ULID()),event_id=event.id,participant_id=person.id,created_by_user_id=user.id if user else None,channel=Channel.walkin if walkin else Channel.offline if user and user.role.value in {'leader','organizer'} else Channel.online,status=Status.approved if walkin else Status.pending,**{k:getattr(form,k) for k in ('first_name','last_name','date_of_birth','phone','address','national_id','income_band_code','medical_record')},gender=UserGenderEnum(form.gender.value),marriage_status=MarriageStatusTypeEnum(form.marriage_status.value) if form.marriage_status else None)
+        person=ParticipantModel(id=str(ulid.ULID()),user_id=own_user,**{k:getattr(form,k) for k in ('first_name','last_name','phone','address','national_id')},gender=UserGenderEnum(form.gender.value));db.add(person);await db.flush()
+    reg=RegistrationModel(id=str(ulid.ULID()),event_id=event.id,participant_id=person.id,created_by_user_id=user.id if user else None,channel=Channel.walkin if walkin else Channel.offline if user and user.role.value in {'leader','organizer'} else Channel.online,status=Status.approved if walkin else Status.pending,**{k:getattr(form,k) for k in ('first_name','last_name','phone','address','national_id','age_group_code','income_band_code','medical_record')},gender=UserGenderEnum(form.gender.value),marriage_status=MarriageStatusTypeEnum(form.marriage_status.value) if form.marriage_status else None)
     db.add(reg);await db.flush();await assets.attach_documents(db,reg.id,form.file_ids,user.id if user else None)
     m=await alloc.meta(db,reg);src=source or {'kind':'unknown','referral_code':None};kind=src.get('kind');leader=None
     if kind not in {'direct','leader_referral','unknown'}:fail('INVALID_INPUT',422)

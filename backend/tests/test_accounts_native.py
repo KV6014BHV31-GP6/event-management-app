@@ -50,6 +50,10 @@ async def native_accounts(monkeypatch):
         identity=(await conn.execute(text("SELECT current_database(),current_setting('server_version_num'),inet_server_port(),rolsuper FROM pg_roles WHERE rolname=current_user"))).one()
         assert identity[0]==DATABASE and identity[1]=='170011' and identity[2]==PORT and not identity[3]
         await conn.run_sync(Base.metadata.create_all)
+    async with async_sessionmaker(engine, expire_on_commit=False)() as fixture_db:
+        from tests.group_fixtures import seed_group_options
+        await seed_group_options(fixture_db)
+        await fixture_db.commit()
     sessions=async_sessionmaker(engine,expire_on_commit=False,autoflush=False)
     stamp=str(ulid.ULID())[-10:].lower();prefix='ar'+stamp
     digest=hash_password('test-only-password');actors={}

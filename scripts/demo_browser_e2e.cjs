@@ -132,7 +132,7 @@ async function main() {
       policy:{allocation_mode:'separate_pools_offer',offer_minutes:10,walkin_pool:'offline',checkin_opens_at:iso(3000000),checkin_closes_at:iso(7500000),reminder_hours:1,low_demand_ratio:0.5}})});
     fixture={event_public_id:created.resource_id,document_id:document.id,document_sha256:hash(bytes),username:process.env.NU_SMOKE_USERNAME};json('fixture.json',fixture,privateDir);
     await api(`/api/v2/operations/events/${fixture.event_public_id}/publish`,{method:'POST',token:owner.access_token,data:envelope({},created.resource_version)});
-    const registration=await api(`/api/v1/events/${fixture.event_public_id}/registrations`,{method:'POST',token:participant.access_token,expected:201,data:{first_name:'CIOnline',last_name:'Synthetic',gender:'female',date_of_birth:'1990-01-01',phone:'0000000000',national_id:process.env.NU_SMOKE_USERNAME+'-online',file_ids:[document.id]}});
+    const registration=await api(`/api/v1/events/${fixture.event_public_id}/registrations`,{method:'POST',token:participant.access_token,expected:201,data:{first_name:'CIOnline',last_name:'Synthetic',gender:'female',age_group_code:'18_29',phone:'0000000000',national_id:process.env.NU_SMOKE_USERNAME+'-online',file_ids:[document.id]}});
     fixture.registration_id=registration.id;json('fixture.json',fixture,privateDir);checkpoint(phase,{private_fixture_ledger:true});
 
     phase='document-viewer';
@@ -174,8 +174,9 @@ async function main() {
     await revealDemoControls();
     await button('Simulated Offline').click();const offlineStart=requests.length;
     for(let i=1;i<=3;i++){
-      for(const [label,value]of Object.entries({'First name':'CIOffline'+i,'Last name':'Synthetic','Phone':'000000000'+i,'National ID':process.env.NU_SMOKE_USERNAME+'-offline-'+i,'Date of birth':'1990-01-01'}))await page.getByLabel(label,{exact:true}).fill(value);
+      for(const [label,value]of Object.entries({'First name':'CIOffline'+i,'Last name':'Synthetic','Phone':'000000000'+i,'National ID':process.env.NU_SMOKE_USERNAME+'-offline-'+i}))await page.getByLabel(label,{exact:true}).fill(value);
       await select('Gender').selectOption('female');
+      await select('Age group').selectOption('18_29');
       await page.getByLabel('I confirm every value is synthetic test data.',{exact:true}).check();
       json(`local-save-intent-${i}.json`,{ordinal:i,event_public_id:fixture.event_public_id},privateDir);
       await button('Save draft on this device').click();

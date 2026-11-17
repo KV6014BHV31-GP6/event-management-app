@@ -1,7 +1,7 @@
 {
   "contract_version": "rose.offline-sync.v2",
   "state": "CONTROLLER_ADMITTED_ENGINEERING_CONTRACT",
-  "legacy": "POST /api/v1/events/{public_id}/offline-registrations remains unchanged",
+  "legacy": "Existing v1 offline route retained; NEW input follows Owner successor while legacy committed receipts remain unchanged",
   "submit": {
     "method": "POST",
     "path": "/api/v2/events/{public_id}/offline-batches",
@@ -16,14 +16,14 @@
             "first_name": "Synthetic",
             "last_name": "Person",
             "gender": "female",
-            "date_of_birth": "1990-01-01",
             "phone": "TEST",
             "address": "Synthetic only",
             "national_id": "synthetic-identity",
             "income_band_code": null,
             "marriage_status": null,
             "medical_record": null,
-            "file_ids": []
+            "file_ids": [],
+            "age_group_code": "DB_CONFIGURED_CODE_REQUIRED"
           }
         }
       ]
@@ -186,5 +186,12 @@
     "entry": "backend/scripts/migrate_phase2.py",
     "boundary": "Explicit database acknowledgement, advisory lock and migration ledger; additive phase2 tables and nullable address/income/marriage. Dedicated legacy-shape synthetic migration only, not an original Demo/production database upgrade."
   },
-  "validation_state": "Implementation contract; fixed-source independent acceptance recorded separately. No NGO policy sign-off."
+  "validation_state": "Implementation contract; fixed-source independent acceptance recorded separately. No NGO policy sign-off.",
+  "owner_successor_20261117": {
+    "authority": "Explicit Owner engineering change; not teacher/NGO classification or income-policy approval",
+    "new_application": "Required age_group_code replaces DOB; income_band_code remains optional/null; provided income must be active DB lookup code",
+    "options": "GET /api/v1/registration-options returns age_groups/income_bands code/name arrays; no runtime seed or invented defaults; empty age options block activation",
+    "history": "Historical DOB/IDs/free-text income and committed receipt fingerprints remain unchanged; receipt lookup precedes new schema validation; legacy drafts never auto-converted",
+    "legacy_offline": "Canonical income_band_code with incomeBandCode/incomeLevel/income_level aliases; canonical age_group_code with ageGroupCode/AgeGroupCode aliases"
+  }
 }

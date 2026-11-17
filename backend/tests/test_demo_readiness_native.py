@@ -30,6 +30,10 @@ async def native():
     async with engine.begin() as conn:
         assert await conn.scalar(text("SELECT rolsuper FROM pg_roles WHERE rolname=current_user")) is False
         await conn.run_sync(Base.metadata.create_all)
+    async with async_sessionmaker(engine, expire_on_commit=False)() as fixture_db:
+        from tests.group_fixtures import seed_group_options
+        await seed_group_options(fixture_db)
+        await fixture_db.commit()
     sessions=async_sessionmaker(engine,expire_on_commit=False,autoflush=False)
     stamp=str(ulid.ULID())
     async with sessions() as db:
@@ -44,7 +48,7 @@ async def native():
     registrations=[]
     for user in users[:2]:
         async with sessions() as db:
-            form=RegistrationCreate(first_name='Native',last_name='Synthetic',gender='female',date_of_birth='1990-01-01',phone='TEST',address='Test only',
+            form=RegistrationCreate(first_name='Native',last_name='Synthetic',gender='female',age_group_code='18_29',phone='TEST',address='Test only',
                 national_id='NATIVE-'+user.id,income_band_code='SYNTHETIC',marriage_status='single')
             registrations.append(await RegistrationService.create_online_registration(db,event.public_id,form,user.id))
     try:

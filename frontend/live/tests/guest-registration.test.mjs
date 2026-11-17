@@ -15,7 +15,7 @@ const event = {
   online_quota: 3, offline_quota: 0, created_at: '2026-10-20T00:00:00Z', updated_at: '2026-10-20T00:00:00Z',
 };
 const values = {
-  first_name: 'SYNTHETIC', last_name: 'Guest Unit', gender: 'female', date_of_birth: '1990-01-01',
+  first_name: 'SYNTHETIC', last_name: 'Guest Unit', gender: 'female', age_group_code: '18_29',
   phone: 'SYNTH-NO-PHONE', address: 'SYNTHETIC UNIT ADDRESS', national_id: 'SYNTH-GUEST-UNIT',
   income_band_code: 'SYNTH_TEST_ONLY', marriage_status: 'single',
 };
@@ -201,7 +201,7 @@ test('Guest controller validates the shared participant form and active event be
   let posts = 0;
   const controller = createGuestRegistrationController({ session: anonymous(), event,
     api: { registerGuestForEvent: async () => { posts++; return receipt; } } });
-  await controller.submit({ ...values, date_of_birth: '1990-02-30' });
+  await controller.submit({ ...values, age_group_code: '' });
   assert.equal(posts, 0); assert.equal(controller.state.status, 'error');
   await controller.submit(values);
   assert.equal(posts, 1); assert.equal(controller.state.status, 'success');
@@ -408,6 +408,7 @@ class FixtureNode {
   constructor() { this.handlers = {}; this.children = []; this.disabled = false; this.hidden = false; this.textContent = ''; this.resets = 0; }
   addEventListener(type, handler) { this.handlers[type] = handler; }
   append(...children) { this.children.push(...children); }
+  add(child) { this.children.push(child); }
   replaceChildren() { this.children = []; }
   setAttribute(key, value) { this[key] = value; }
   reportValidity() { return true; }
@@ -419,12 +420,18 @@ async function withRegistrationDOM(callback, overrides = {}) {
   const html = await readFile(new URL('../registration.html', import.meta.url), 'utf8');
   const nodes = Object.fromEntries([...html.matchAll(/\bid="([^"]+)"/g)].map(match => [`#${match[1]}`, new FixtureNode()]));
   nodes['#registration-fields'].disabled = true;
+  nodes['#registration-form'].elements = {namedItem: name => nodes['#'+name]};
   nodes['#continue-as-guest'].disabled = true;
   const globals = {
     document: { querySelector: selector => nodes[selector], createElement: () => new FixtureNode() },
     location: { search: `?event=${publicId}` }, addEventListener() {},
     sessionStorage: { getItem: () => null, removeItem() {}, setItem() { assert.fail('Guest must not store personal data or a receipt'); } },
     FormData: class { constructor() { return Object.entries(values); } }, ...overrides,
+    Option: class { constructor(name, code) { this.textContent=name; this.value=code; } },
+    // Isolated reference-data fixture; count the original business calls separately.
+    fetch: (url, options) => url === '/api/v1/registration-options'
+      ? Promise.resolve(json({age_groups:[{code:'18_29',name:'Synthetic age fixture'}],income_bands:[]},200))
+      : overrides.fetch(url, options),
   };
   const originals = Object.fromEntries(Object.keys(globals).map(key => [key, Object.getOwnPropertyDescriptor(globalThis, key)]));
   try {
