@@ -554,3 +554,172 @@ it('keeps the registration disclosure uniquely named and the quick action distin
   expect(summary.closest('details')).toHaveAttribute('open');
   expect(summary).toHaveFocus();
 });
+
+
+function booking(ref, first_name) {
+  return {registration:{id:ref,first_name,last_name:'Guest',supporting_documents:[]},
+    booking_state:'confirmed',review:{state:'eligible'},version:3,allowed_actions:['cancel']};
+}
+
+it.each(['success','failed verification','delayed previous read','mismatched read'])('R1 isolates successive guest lookups under %s', async scenario => {
+  const [a,b]=[applicationReference,'01K00000000000000000000002'];
+  let resolveA;
+  let firstA=true;
+  const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async (path,request) => {
+    if(path.endsWith('/guest-access/challenges')) {
+      const ref=JSON.parse(request.body).registration_id;
+      return response({challenge_id:ref,demo_access_token:'synthetic-challenge'});
+    }
+    if(path.endsWith('/verify')) {
+      const ref=path.split('/').at(-2);
+      if(ref===b && scenario==='failed verification')
+        return {ok:false,status:403,json:async()=>({detail:{message:'Verification refused'}})};
+      return response({registration_id:ref,grant_token:'scoped-'+ref});
+    }
+    if(path.endsWith('/registrations/'+a)) {
+      expect(request.headers['X-Guest-Grant']).toBe('scoped-'+a);
+      if(!firstA && scenario==='delayed previous read')
+        return new Promise(resolve=>{resolveA=resolve;});
+      firstA=false;
+      return response(booking(a,'First'));
+    }
+    if(path.endsWith('/registrations/'+b)) {
+      expect(request.headers['X-Guest-Grant']).toBe('scoped-'+b);
+      return response(scenario==='mismatched read'?booking(a,'First'):booking(b,'Second'));
+    }
+    throw new Error('Unexpected request: '+path);
+  });
+  render(<JourneyWorkspace runtime={{}} auth={{user:null,revision:1}} initialGuestLookup navigate={vi.fn()} />);
+  const user=userEvent.setup();
+  const begin=async ref=>{
+    await user.clear(screen.getByLabelText('Registration reference'));
+    await user.type(screen.getByLabelText('Registration reference'),ref);
+    await user.clear(screen.getByLabelText('Phone'));
+    await user.type(screen.getByLabelText('Phone'),'0000000001');
+    await user.click(screen.getByRole('button',{name:'Request verification code'}));
+    await screen.findByRole('form',{name:'Verify code'});
+    expect(screen.queryByText('First Guest')).not.toBeInTheDocument();
+    expect(screen.queryByRole('form',{name:'Cancel booking'})).not.toBeInTheDocument();
+  };
+  const verify=async()=>{
+    await user.clear(screen.getByLabelText('Verification code'));
+    await user.type(screen.getByLabelText('Verification code'),'123456');
+    await user.click(screen.getByRole('button',{name:'Verify code'}));
+  };
+  const read=()=>user.click(screen.getByRole('button',{name:'Read registration'}));
+  await begin(a);
+  await verify();
+  await read();
+  await screen.findByText('First Guest');
+  expect(screen.getByRole('form',{name:'Cancel booking'})).toBeVisible();
+  if(scenario==='delayed previous read') {
+    await read();
+    expect(resolveA).toBeTypeOf('function');
+  }
+  await begin(b);
+  await verify();
+  expect(screen.queryByText('First Guest')).not.toBeInTheDocument();
+  expect(screen.queryByRole('form',{name:'Cancel booking'})).not.toBeInTheDocument();
+  if(scenario==='failed verification') {
+    await screen.findByText('Verification refused');
+    expect(screen.queryByRole('button',{name:'Read registration'})).not.toBeInTheDocument();
+  } else {
+    await read();
+    if(scenario==='mismatched read') await screen.findByText('The registration details could not be verified.');
+    else await screen.findByText('Second Guest');
+    if(resolveA) await act(async()=>resolveA(response(booking(a,'Late first'))));
+    expect(screen.queryByText('First Guest')).not.toBeInTheDocument();
+    expect(screen.queryByText('Late first Guest')).not.toBeInTheDocument();
+    if(scenario==='mismatched read') expect(screen.queryByRole('form',{name:'Cancel booking'})).not.toBeInTheDocument();
+    else expect(screen.getByRole('form',{name:'Cancel booking'})).toBeVisible();
+  }
+  expect(fetch.mock.calls.filter(([,req])=>req.method==='POST').map(([path])=>path.split('/').at(-1)))
+    .toEqual(['challenges','verify','challenges','verify']);
+});
+
+const outreachEventId='ABCDEFGHIJKLMNOPQRSTU';
+const secondOutreachEventId='BCDEFGHIJKLMNOPQRSTUV';
+const referralUrl='/?view=event&event='+outreachEventId+'&ref=approved-leader';
+function outreachFixture(mode) {
+  const actor={id:'outreach-leader',role:'leader'};
+  const event=public_id=>({event:{...publicEvent,public_id,location:'Community hall'},workflow:{version:1,state:'published'}});
+  const reports=[{id:'report-1',channel:'flyer',quantity:2,reported_at:'2026-11-18T01:00:00Z',notes:'Saved outreach note'}];
+  let reads=0, resolveLate;
+  const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async (path,request)=>{
+    const match=path.match(/\/events\/([^/]+)(.*)/);
+    if(!match) throw new Error('Unexpected request');
+    const [,id,suffix]=match;
+    if(suffix==='') return response(event(id));
+    if(suffix==='/leaders') return response({leaders:[{active:true,leader_id:actor.id,public_url:referralUrl}]});
+    if(suffix==='/promotion') return response({
+      state:mode==='draft'?'draft':'approved',approved_text:'Meet at the hall.',paused:false,
+      flyer_data:{title:'Community workshop',location:'Community hall',start_time:publicEvent.start_time,
+        end_time:publicEvent.end_time,timezone:'Asia/Kuala_Lumpur'},
+    });
+    if(suffix==='/outreach' && request.method==='POST') {
+      const body=JSON.parse(request.body);
+      return response({...body,contract_version:body.contract_version,kind:'outreach',outcome:'applied',
+        resource_id:reports[0].id,effects:{report_id:reports[0].id}});
+    }
+    if(suffix==='/outreach') {
+      if(id===secondOutreachEventId) return response({reports:[{...reports[0],notes:'Next event only'}]});
+      reads++;
+      if(reads===1) return response({reports:[]});
+      if(reads===2 && mode==='failure') return {ok:false,status:503,json:async()=>({})};
+      if(reads===2 && mode==='late') return new Promise(resolve=>{resolveLate=resolve;});
+      return response({reports});
+    }
+    throw new Error('Unexpected suffix: '+suffix);
+  });
+  const runtime={withVerifiedAccount:fn=>fn('synthetic-account',actor)};
+  const props={runtime,auth:{user:actor,revision:1},initialEvent:outreachEventId,openEventWorkspace:true,navigate:vi.fn()};
+  return {fetch,props,resolveRead:()=>resolveLate?.(response({reports}))};
+}
+
+it('R4 includes the exact approved referral in the actual flyer print text', async()=>{
+  const {props}=outreachFixture('print');
+  const view=render(<JourneyWorkspace {...props}/>);
+  const link=await screen.findByRole('link',{name:'Public event link'});
+  expect(new URL(link.href).searchParams.get('event')).toBe(outreachEventId);
+  expect(new URL(link.href).searchParams.get('ref')).toBe('approved-leader');
+  expect(view.container.querySelector('.flyer-print-url')).toHaveTextContent(link.href);
+  expect(screen.getByRole('button',{name:'Print flyer'})).toBeInTheDocument();
+});
+
+it('R4 keeps the print address out of unapproved material', async()=>{
+  const {props}=outreachFixture('draft');
+  const view=render(<JourneyWorkspace {...props}/>);
+  await screen.findByText('No outreach reports yet.');
+  expect(view.container.querySelector('.flyer-print-url')).toBeNull();
+  expect(screen.queryByRole('button',{name:'Print flyer'})).not.toBeInTheDocument();
+});
+
+it.each(['success','failure','late'])('R5 refreshes the scoped list after a confirmed save with %s', async mode=>{
+  const {fetch,props,resolveRead}=outreachFixture(mode);
+  const view=render(<JourneyWorkspace {...props}/>);
+  await screen.findByText('No outreach reports yet.');
+  const form=screen.getByRole('form',{name:'Report outreach'});
+  fireEvent.change(within(form).getByLabelText('Reported at'),{target:{value:'2026-11-18T01:00'}});
+  fireEvent.change(within(form).getByLabelText('Self-reported quantity'),{target:{value:'2'}});
+  fireEvent.change(within(form).getByLabelText('Notes'),{target:{value:'Saved outreach note'}});
+  fireEvent.submit(form);
+  await screen.findByText('Outreach report saved.');
+  if(mode==='failure') {
+    await screen.findByText('The outreach list could not be refreshed. Use Read outreach reports to try again.');
+    expect(screen.getByText('Outreach report saved.')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button',{name:'Read outreach reports'}));
+  }
+  if(mode==='late') {
+    await waitFor(()=>expect(fetch.mock.calls.filter(([p,r])=>p.endsWith('/outreach') && r.method==='GET')).toHaveLength(2));
+    view.rerender(<JourneyWorkspace {...props} initialEvent={secondOutreachEventId}/>);
+    await screen.findByText('Next event only');
+    await act(async()=>resolveRead());
+    expect(screen.queryByText('Saved outreach note')).not.toBeInTheDocument();
+    expect(screen.queryByText('Outreach report saved.')).not.toBeInTheDocument();
+  } else {
+    await screen.findByText('Saved outreach note');
+    expect(screen.queryByText('No outreach reports yet.')).not.toBeInTheDocument();
+  }
+  const methods=fetch.mock.calls.filter(([p])=>p.endsWith('/events/'+outreachEventId+'/outreach')).map(([,r])=>r.method);
+  expect(methods).toEqual(mode==='failure'?['GET','POST','GET','GET']:['GET','POST','GET']);
+});

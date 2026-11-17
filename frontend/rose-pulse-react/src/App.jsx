@@ -321,7 +321,11 @@ function Shell({ children }) {
       !item.role ||
       item.role === auth.user?.role ||
       (item.view === "registrations" && !auth.user),
-  );
+  ).map(item => item.view === "registrations" && !auth.user
+    ? {...item, view: "operations", params: {booking: "1"}}
+    : item);
+  const currentItem = item => route.view === item.view &&
+    (item.view !== "operations" || route.guestLookup === Boolean(item.params?.booking));
   const submitSearch = (event) => {
     event.preventDefault();
     navigate("events", {
@@ -350,11 +354,12 @@ function Shell({ children }) {
         <nav aria-label={tr("Main navigation")}>
           {items.map((item) => (
             <Link
-              key={item.view}
+              key={item.label}
               view={item.view}
-              className={`nav-item ${route.view === item.view ? "is-active" : ""}`}
+              params={item.params}
+              className={`nav-item ${currentItem(item) ? "is-active" : ""}`}
               aria-label={tr(item.label)}
-              aria-current={route.view === item.view ? "page" : undefined}
+              aria-current={currentItem(item) ? "page" : undefined}
             >
               <Icon name={item.icon} />
               <span>{tr(item.label)}</span>

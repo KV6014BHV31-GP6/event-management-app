@@ -3139,3 +3139,12 @@ summary:focus-visible { outline: 3px solid #bd8d3c; outline-offset: 4px; }
   .journey-workspace .page-heading { flex-wrap: wrap; }
   .application-primary > form { padding: 12px; }
 }
+
+.approved-flyer .flyer-print-url { display: none; overflow-wrap: anywhere; }
+.approved-flyer .flyer-share { overflow-wrap: normal; white-space: normal; }
+@media (max-width: 480px) {
+  .approved-flyer .flyer-share { flex: 1 0 100%; text-align: center; }
+}
+@media print {
+  .approved-flyer .flyer-print-url { display: block; }
+}

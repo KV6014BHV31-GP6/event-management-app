@@ -80,6 +80,7 @@ function JourneySession({
   const [grant, setGrant] = useState(null),
     [challenge, setChallenge] = useState(null),
     [demoCode, setDemoCode] = useState(''),
+    [readingGuest, setReadingGuest] = useState(false),
     [files, setFiles] = useState([]),
     [filesBlocked, setFilesBlocked] = useState(false),
     [applicationFiles, setApplicationFiles] = useState([]),
@@ -113,10 +114,19 @@ function JourneySession({
   const guestAllowed=!auth.user&&!auth.hasToken&&!auth.identityBlocked&&!auth.checking;
   const client = useMemo(() => createJourneyClient({
     authorize: fn => (auth.user||auth.offlineActor) ? runtime.withVerifiedAccount((token,actor)=>{if(actor?.id!==(auth.user?.id||auth.offlineActor?.id))throw new Error('The selected account or record changed.');return fn(token,actor);}) : guestAllowed ? fn(null, {id:'guest'}) : Promise.reject(new Error('Verify your account or explicitly log out before Guest access.')),
-    guestHeaders: () => grant ? {
+    guestHeaders: path => grant && !path.startsWith('/guest-access/') ? {
       'X-Guest-Grant': grant.grant_token
     } : {}
   }), [runtime, auth.user?.id, auth.offlineActor?.id, auth.revision, guestAllowed, grant]);
+  const guestReference = guestAllowed && grant?.registration_id === registrationId ? registrationId : null;
+  const registration = (!guestAllowed || guestReference) && loaded.registration?.registration?.id === registrationId
+    ? loaded.registration : null;
+  const guestOperationAllowed = path => {
+    if (!guestAllowed) return true;
+    if (path.startsWith('/registrations/')) return !!guestReference && path.startsWith('/registrations/' + guestReference + '/');
+    if (path.startsWith('/offers/')) return !!registration?.offer?.id && path.startsWith('/offers/' + registration.offer.id + '/');
+    return true;
+  };
   const staffActor=auth.user||auth.offlineActor;
   const owner = staffActor?.role === 'organizer',
     staff = owner || staffActor?.role === 'leader';
@@ -153,7 +163,8 @@ function JourneySession({
     if (!active.current || epoch !== recordEpoch.current) throw new Error('The selected account or record changed.');
     if (key === 'event' && (!data.event || !data.workflow))
       throw new Error('The event details could not be verified.');
-    if (initialRegistration && key === 'registration' && data.registration?.id !== initialRegistration)
+    if (key === 'registration' && (path !== '/registrations/' + registrationId ||
+        data?.registration?.id !== registrationId || (guestAllowed && guestReference !== registrationId)))
       throw new Error('The registration details could not be verified.');
     setLoaded(old => ({
       ...old,
@@ -163,6 +174,7 @@ function JourneySession({
   };
   const mutate = (path, data, version) => {
     const isApplication = path.endsWith('/applications');
+    if (!guestOperationAllowed(path)) return;
     return run(async () => {
       const mutationEpoch=recordEpoch.current;
       const targetRegistration=registrationId;
@@ -176,6 +188,16 @@ function JourneySession({
         setRegistrationId(receipt.effects.registration_id);
         setLoaded(old => ({...old, applicationReceipt: {...receipt.effects, files: prepared.files}}));
         setApplicationModal(true);
+      }
+      if (path === root + '/outreach') {
+        setMessage(tr('Outreach report saved.'));
+        try {
+          await read('outreach', path, mutationEpoch);
+        } catch {
+          if (active.current && mutationEpoch === recordEpoch.current)
+            setError('The outreach list could not be refreshed. Use Read outreach reports to try again.');
+        }
+        return;
       }
       setMessage(tr('Saved by server. Current information has been read again.'));
       if (eventId && staff) await read('event', root, mutationEpoch);
@@ -212,12 +234,25 @@ function JourneySession({
     if (eventId) openSelectedEvent();
     else if (!owner) loadEventOptions();
   }, [eventId, initialRegistration, auth.user?.id, openEventWorkspace]);
-  const refreshRegistration = () => run(() => read('registration', `/registrations/${registrationId}`));
+  const refreshRegistration = async () => {
+    const path = '/registrations/' + registrationId;
+    if (!guestAllowed) return run(() => read('registration', path));
+    if (!guestReference || readingGuest || lock.current) return;
+    const epoch = recordEpoch.current;
+    setReadingGuest(true);
+    setError('');
+    try {
+      await read('registration', path, epoch);
+    } catch (error) {
+      if (active.current && epoch === recordEpoch.current) setError(error.message);
+    } finally {
+      if (active.current && epoch === recordEpoch.current) setReadingGuest(false);
+    }
+  };
   useEffect(() => {
     if (initialRegistration && auth.user?.role === 'organizer') refreshRegistration();
   }, [initialRegistration]);
 
-  const registration = loaded.registration;
   const current = loaded.event;
   const applicationEvent = loaded.publicEvent || current?.event ||
     loaded.eventOptions?.find(event => event.public_id === eventId);
@@ -237,7 +272,7 @@ function JourneySession({
       details.querySelector('summary')?.focus();
     }
   };
-  const recoverOperation = (row, replay = false) => run(async () => {
+  const recoverOperation = (row, replay = false) => guestOperationAllowed(row.path) && run(async () => {
     const epoch = recordEpoch.current;
     const operationId = row.body.operation_id;
     const recovered = await (replay ? client.replayExact(operationId) : client.reconcile(operationId));
@@ -264,8 +299,8 @@ function JourneySession({
     attachmentChanged = useCallback(setAttachmentBlocked, []);
   const pending = (() => {
     try {
-      return client.pending(actorId).filter(row =>
-        !initialRegistration || row.path.startsWith(`/registrations/${initialRegistration}/`));
+      return client.pending(actorId).filter(row => guestOperationAllowed(row.path) &&
+        (!initialRegistration || row.path.startsWith(`/registrations/${initialRegistration}/`)));
     } catch {
       return [];
     }
@@ -297,7 +332,7 @@ function JourneySession({
               ...old,
               registration: null
             }));
-          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || !registrationId} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: <strong>{tr(registration.booking_state)}</strong></p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
+          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || readingGuest || !registrationId || (guestAllowed && !guestReference)} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: <strong>{tr(registration.booking_state)}</strong></p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
           options: ['approve', 'reject', 'request_correction'].filter(a => registration.allowed_actions.includes(a))
         }), field('reason', 'Review reason', 'textarea', {
           required: false
@@ -326,7 +361,7 @@ function JourneySession({
       </div>
     );
   }
-  const outreachPanel = <details className="journey-section" ref={outreachDetails} open={owner ? undefined : true}><summary>{tr('Promotion and outreach')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(async()=>{await read('promotion',root+'/promotion');if(auth.user?.role==='leader')await read('leaders',root+'/leaders');})}>{tr('Read promotion')}</button><p>{tr('DEMO_TEMPLATE — editable text requires Organizer approval. WhatsApp sharing is manual.')}</p>{promotion && <><p>{tr('Status')}: {tr(promotion.state)} · {tr(promotion.paused?'Promotion paused':'Promotion active')}</p>{owner&&<button className="button button-quiet" disabled={busy} onClick={()=>mutate(root+'/promotion/pause',{paused:!promotion.paused},promotion.version)}>{tr(promotion.paused?'Resume promotion':'Pause promotion')}</button>}{owner && <button className="button" disabled={busy || promotion.state === 'approved'} onClick={() => mutate(root + '/promotion/approve', {}, promotion.version)}>{tr('Approve exact promotion text')}</button>}{promotion.state === 'approved' && !promotion.paused && !!promotion.public_url && <article className="approved-flyer">{location.protocol !== 'https:' && <p>{tr('This local link works on this device only.')}</p>}<h2>{promotion.flyer_data?.title}</h2><p>{promotion.approved_text}</p><p>{promotion.flyer_data?.location} · {flyerSchedule(promotion.flyer_data)}</p><a href={promotion.public_url}>{tr('Public event link')}</a><div className="form-actions"><button className="button" onClick={()=>run(async()=>downloadApprovedFlyer(promotion))}>{tr('Download flyer')}</button><button className="button button-quiet" onClick={() => window.print()}>{tr('Print flyer')}</button><a className="button" target="_blank" rel="noopener noreferrer" href={`https://wa.me/?text=${encodeURIComponent(promotion.approved_text + '\n' + promotion.public_url)}`}>{tr('Share on WhatsApp')}</a><button className="text-button" onClick={() => run(async () => {
+  const outreachPanel = <details className="journey-section" ref={outreachDetails} open={owner ? undefined : true}><summary>{tr('Promotion and outreach')}</summary><button className="button button-quiet" disabled={busy} onClick={() => run(async()=>{await read('promotion',root+'/promotion');if(auth.user?.role==='leader')await read('leaders',root+'/leaders');})}>{tr('Read promotion')}</button><p>{tr('DEMO_TEMPLATE — editable text requires Organizer approval. WhatsApp sharing is manual.')}</p>{promotion && <><p>{tr('Status')}: {tr(promotion.state)} · {tr(promotion.paused?'Promotion paused':'Promotion active')}</p>{owner&&<button className="button button-quiet" disabled={busy} onClick={()=>mutate(root+'/promotion/pause',{paused:!promotion.paused},promotion.version)}>{tr(promotion.paused?'Resume promotion':'Pause promotion')}</button>}{owner && <button className="button" disabled={busy || promotion.state === 'approved'} onClick={() => mutate(root + '/promotion/approve', {}, promotion.version)}>{tr('Approve exact promotion text')}</button>}{promotion.state === 'approved' && !promotion.paused && !!promotion.public_url && <article className="approved-flyer">{location.protocol !== 'https:' && <p>{tr('This local link works on this device only.')}</p>}<h2>{promotion.flyer_data?.title}</h2><p>{promotion.approved_text}</p><p>{promotion.flyer_data?.location} · {flyerSchedule(promotion.flyer_data)}</p><a href={promotion.public_url}>{tr('Public event link')}</a><p className="flyer-print-url">{promotion.public_url}</p><div className="form-actions"><button className="button" onClick={()=>run(async()=>downloadApprovedFlyer(promotion))}>{tr('Download flyer')}</button><button className="button button-quiet" onClick={() => window.print()}>{tr('Print flyer')}</button><a className="button flyer-share" target="_blank" rel="noopener noreferrer" href={`https://wa.me/?text=${encodeURIComponent(promotion.approved_text + '\n' + promotion.public_url)}`}>{tr('Share on WhatsApp')}</a><button className="text-button" onClick={() => run(async () => {
               await navigator.clipboard.writeText(promotion.approved_text + '\n' + promotion.public_url);
               setMessage(tr('Approved text copied.'));
             })}>{tr('Copy approved text')}</button></div></article>}</>}<details><summary>{tr('Edit promotion draft')}</summary><ActionForm key={promotion?.version} title="Save promotion draft" busy={busy} fields={[field('text', 'Promotion text', 'textarea', {
@@ -342,17 +377,24 @@ function JourneySession({
       })} />}<button className="button button-quiet" disabled={busy} onClick={() => run(() => read('outreach', root + '/outreach'))}>{tr('Read outreach reports')}</button>{loaded.outreach?.reports.length === 0 && <p>{tr('No outreach reports yet.')}</p>}{loaded.outreach?.reports.map(report => <article className="journey-message" key={report.id}><p>{tr(report.channel)} · {report.quantity} · {report.reported_at}</p><p>{report.notes}</p></article>)}</details>;
   const guestLookup = <details className="journey-section" ref={guestAccess} open={initialGuestLookup || undefined}><summary>{tr('Guest booking access — DEMO OTP')}</summary><p>{tr('Simulated local delivery. This does not verify real phone ownership. Codes and grants stay in page memory.')}</p><ActionForm key={loaded.applicationReceipt?.registration_id || ""} title="Request Demo OTP" busy={busy} fields={[field('registration_id', 'Registration reference', 'text', {
         value: registrationId
-      }), field('phone', 'Phone')]} submit={v => run(async () => {
+      }), field('phone', 'Phone')]} submit={v => {
+        if (lock.current) return;
+        const epoch = ++recordEpoch.current;
         setGrant(null);
+        setChallenge(null);
         setDemoCode('');
-        const value = await client.publicPost('/guest-access/challenges', {
-          ...v,
-          purpose: 'manage_booking'
-        });
-        setChallenge(value);
+        setReadingGuest(false);
+        setCorrectionFiles([]);
+        setCorrectionBlocked(false);
+        setLoaded(old => ({...old, registration: null}));
         setRegistrationId(v.registration_id);
-        setMessage(tr('Demo challenge created.'));
-      })} />{challenge && <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
+        return run(async () => {
+          const value = await client.publicPost('/guest-access/challenges', {...v, purpose: 'manage_booking'});
+          if (!active.current || epoch !== recordEpoch.current) return;
+          setChallenge({...value, reference: v.registration_id});
+          setMessage(tr('Demo challenge created.'));
+        });
+      }} />{challenge && <><button className="button button-quiet" disabled={busy} onClick={() => run(async () => {
           const v = await client.publicGet('/guest-access/challenges/' + challenge.challenge_id + '/demo-message', {
             headers: {
               'X-Demo-Challenge': challenge.demo_access_token
@@ -360,9 +402,13 @@ function JourneySession({
           });
           setDemoCode(v.code);
         })}>{tr('Show simulated message')}</button>{demoCode && <p role="status">{tr("Verification code")}: {demoCode}</p>}<ActionForm title="Verify Demo OTP" busy={busy} fields={[field('code', 'Demo OTP')]} submit={(v, form) => run(async () => {
+          const epoch = recordEpoch.current;
           const value = await client.publicPost('/guest-access/challenges/' + challenge.challenge_id + '/verify', v, {
             'X-Demo-Challenge': challenge.demo_access_token
           });
+          if (!active.current || epoch !== recordEpoch.current) return;
+          if (value.registration_id !== challenge.reference || value.registration_id !== registrationId ||
+              !value.grant_token) throw new Error('The registration details could not be verified.');
           setGrant(value);
           setChallenge(null);
           setDemoCode('');
@@ -375,7 +421,7 @@ function JourneySession({
       {message && <p className="notice" role="status">{message}</p>}
       {error && <p className="notice notice-error" role="alert">{tr(error)}</p>}
       {guestLookup}
-      {grant && registrationReview}
+      {guestReference && registrationReview}
       {pendingOperations}
     </div>;
   }
@@ -427,9 +473,14 @@ function JourneySession({
  )}
  {pendingOperations}
  <section className="journey-section">{(staff || !loaded.publicEvent) && <h2>{tr('Selected event')}</h2>}{!staff && loaded.publicEvent && <PublicEventContext event={loaded.publicEvent}/>} {(staff||!eventId)&&<><button className="button button-quiet" disabled={busy} onClick={loadEventOptions}>{tr('Choose an event')}</button><label>{tr('Event')}<select value={eventId} disabled={busy} onChange={e => {
+          const selectedEvent = e.target.value;
           recordEpoch.current++;
-          navigate(owner ? 'operations' : 'leader', {event:e.target.value});
-          setEventId(e.target.value);
+          if (selectedEvent) {
+            const destination = auth.user?.role === 'organizer' ? 'operations'
+              : auth.user?.role === 'leader' ? 'leader' : 'apply';
+            navigate(destination, {event: selectedEvent});
+          }
+          setEventId(selectedEvent);
           setApplicationFiles([]);setCorrectionFiles([]);
           setLoaded(old => ({
             eventOptions: old.eventOptions

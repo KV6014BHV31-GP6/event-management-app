@@ -33,16 +33,16 @@ export function eventPresentation(event) {
 // Read every matching server page before grouping; a failed page fails the whole read.
 export async function readDiscovery(api, options) {
   const first = await api.getEvents(options);
-  if (first.total_pages <= 1) return {...first, records: discoveryView(first.data), complete: true};
-  const pages = new Map([[first.page, first.data]]);
+  const pages = new Map();
+  if (first.page >= 1 && first.page <= first.total_pages) pages.set(first.page, first.data);
   for (let page = 1; page <= first.total_pages; page++) {
-    if (page === first.page) continue;
+    if (pages.has(page)) continue;
     const next = await api.getEvents({...options, page});
     pages.set(page, next.data);
   }
   const records = [...pages.entries()].sort(([a], [b]) => a - b).flatMap(([, rows]) => rows);
   const unique = [...new Map(records.map(event => [event.public_id, event])).values()];
-  if (unique.length !== first.total_count) {
+  if (unique.length !== first.total_count || (first.total_count === 0 && first.data.length !== 0)) {
     // Unstable server page boundaries can duplicate a row and omit another.
     // One bounded read can establish completeness; never loop or show partial success.
     const snapshot = await api.getEvents({...options, page: 1, pageSize: 100});

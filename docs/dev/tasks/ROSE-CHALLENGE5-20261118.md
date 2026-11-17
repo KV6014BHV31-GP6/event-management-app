@@ -50,3 +50,18 @@ controller's separate stage. The candidate changes frontend presentation and
 the one build flag. A pre-promotion rollback is the prior frontend revision.
 Any later web image rollback must keep aligned host/image/source identity
 and respect the retained PR71 schema and existing age-only writes.
+
+## Draft PR 72 review follow-up
+
+The local additive revision addresses findings R1–R5 against
+`34a70bd8e3f720bb7e8bcfd865e968e7545444c9`. A new guest challenge
+invalidates the previous detail and requires a matching grant and read.
+Guest and member event selection opens the application, and the guest
+sidebar opens accountless lookup. Catalogue assembly reads the surviving
+page for a stale bookmark. Printed approved flyers include the exact
+referral URL. Confirmed outreach saves refresh the scoped list, and a
+failed refresh can be retried by reading the list.
+
+The external review-fixes handoff records the preserved failing checks,
+controlled Chromium and connected local evidence. The existing API and
+database contracts continue to govern access and writes.

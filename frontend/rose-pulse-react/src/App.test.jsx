@@ -723,7 +723,7 @@ describe("React application workflows (controlled API fixtures)", () => {
   });
 });
 it('shows safe managed workflow state and registration window instead of legacy Active',async()=>{await setup({view:'events',methods:{getEvents:vi.fn(async()=>({data:[{...event,workflow:{state:'postponed',timezone:'Asia/Kuala_Lumpur',registration_opens_at:'2026-11-01T00:00:00Z',registration_closes_at:'2027-03-14T00:00:00Z'}}],page:1,page_size:6,total_count:1,total_pages:1}))}});expect(await screen.findByText('Postponed')).toBeInTheDocument();expect(screen.queryByText('Active')).not.toBeInTheDocument();expect(screen.getByText(/Registration closes/)).toBeInTheDocument();});
-it('home selects upcoming published events and excludes cancelled, completed and postponed records',async()=>{const upcoming={...event,title:'Upcoming published',workflow:{state:'published'}};await setup({methods:{getEvents:vi.fn(async()=>({data:[{...event,title:'Cancelled should not feature',status:'cancelled'}, {...event,title:'Postponed should not feature',workflow:{state:'postponed'}},upcoming],page:1,page_size:24,total_count:3,total_pages:1}))}});expect(await screen.findByText('Upcoming published')).toBeInTheDocument();expect(screen.queryByText('Cancelled should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Postponed should not feature')).not.toBeInTheDocument();});
+it('home selects upcoming published events and excludes cancelled, completed and postponed records',async()=>{const upcoming={...event,title:'Upcoming published',workflow:{state:'published'}};await setup({methods:{getEvents:vi.fn(async()=>({data:[{...event,public_id:'BCDEFGHIJKLMNOPQRSTUV',title:'Cancelled should not feature',status:'cancelled'}, {...event,public_id:'CDEFGHIJKLMNOPQRSTUVW',title:'Postponed should not feature',workflow:{state:'postponed'}}, {...event,public_id:'DEFGHIJKLMNOPQRSTUVWX',title:'Completed should not feature',status:'completed'},upcoming],page:1,page_size:24,total_count:4,total_pages:1}))}});expect(await screen.findByText('Upcoming published')).toBeInTheDocument();expect(screen.queryByText('Cancelled should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Postponed should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Completed should not feature')).not.toBeInTheDocument();});
 it('primary Apply opens the managed Guest form and hands the confirmed reference to Guest booking access', async () => {
   const managed = {...event, workflow: {state: 'published', timezone: 'Asia/Kuala_Lumpur',
     registration_opens_at: '2026-11-01T00:00:00Z', registration_closes_at: '2027-03-14T00:00:00Z'}};
@@ -781,4 +781,45 @@ it('keeps all six source events and an unknown listing, with correct public page
   await screen.findByRole('heading',{name:'Source activity 5'});
   expect(screen.getByText('6 events')).toBeInTheDocument();
   expect(screen.getByRole('button',{name:'Next page'})).toBeDisabled();
+});
+
+
+it.each([
+  [undefined,'apply'], ['user','apply'], ['leader','leader'], ['organizer','operations'],
+])('R2 routes a %s event selection to %s with the same event', async (role,destination) => {
+  const catalogue={page:1,page_size:24,total_pages:1,total_count:1,data:[event]};
+  const pool={available:1,approved:0,capacity:1,offer_holds:0};
+  vi.spyOn(globalThis,'fetch').mockImplementation(async path => ({
+    ok:true, status:200, json:async()=>path.endsWith('/stats') ? {
+      counts:{pending:0,approved:0,waiting:0,offer_holds:0,applications:0},
+      quota:{online:pool,offline:pool},attribution:{direct:0,leader_referral:0,unknown:0},
+      alert:{state:'normal'},instruction:{text:''},
+    } : {
+      event, workflow:{state:'published',version:1,registration_opens_at:event.created_at,registration_closes_at:event.start_time},
+      leaders:[], reports:[],
+    },
+  }));
+  const {user}=await setup({view:'operations',role,methods:{
+    getOrganizerEvents:vi.fn(async()=>catalogue),
+    getOrganizerRegistrations:vi.fn(async()=>[]),
+  }});
+  if(role!=='leader') await user.click(screen.getByRole('button',{name:'Choose an event'}));
+  await screen.findByRole('option',{name:event.title});
+  await user.selectOptions(screen.getByRole('combobox',{name:'Event'}),event.public_id);
+  const query=new URLSearchParams(window.location.search);
+  expect(query.get('view')).toBe(destination);
+  expect(query.get('event')).toBe(event.public_id);
+  if(destination==='apply') {
+    expect(await screen.findByRole('heading',{name:'Join this event'})).toBeVisible();
+    expect(screen.queryByRole('heading',{name:'Log in to continue'})).not.toBeInTheDocument();
+  }
+});
+
+it('R2 opens the existing accountless lookup from the desktop guest sidebar', async()=>{
+  const {user}=await setup();
+  const sidebar=screen.getByRole('navigation',{name:'Main navigation'});
+  await user.click(within(sidebar).getByRole('link',{name:'My registrations'}));
+  expect(new URLSearchParams(window.location.search).get('booking')).toBe('1');
+  expect(screen.getByRole('heading',{name:'Check my application'})).toBeVisible();
+  expect(screen.getByRole('form',{name:'Request verification code'})).toBeVisible();
 });

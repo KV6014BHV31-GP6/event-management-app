@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-17T21:48:33.093849+00:00",
-  "reason": "Preserve the existing isolated presenter confirmation selector while localizing public drafts",
+  "reviewed_at": "2026-11-17T22:28:34.941036+00:00",
+  "reason": "Correct the five independent Draft PR 72 review findings and record verification scope",
   "document_count": 448,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -316,7 +316,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 57,
+      "revision": 58,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -681,6 +681,13 @@
           "size_bytes": 50460,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 57,
+          "sha256": "1e8823f1953549e3057bf5e956a14a7c9aadedd318acbd899c749ff059573a88",
+          "size_bytes": 51335,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "import_lineage": {
@@ -693,8 +700,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "1e8823f1953549e3057bf5e956a14a7c9aadedd318acbd899c749ff059573a88",
-      "size_bytes": 51335,
+      "sha256": "d2c1c46e87480ee50893114937ad05c102e4258404920fb960aa80396f211488",
+      "size_bytes": 51717,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -5286,7 +5293,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 12,
+      "revision": 13,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5366,18 +5373,25 @@
           "size_bytes": 94182,
           "superseded_at": "2026-11-17T21:47:00.965236+00:00",
           "reason": "ROSE Challenge 5 connected mobile refinement and final wording"
+        },
+        {
+          "revision": 12,
+          "sha256": "7d2c6470d8d4ceaf5e6745d2ba35e10896a25ab8fc54d51568cc57cb7a367144",
+          "size_bytes": 94194,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "7d2c6470d8d4ceaf5e6745d2ba35e10896a25ab8fc54d51568cc57cb7a367144",
-      "size_bytes": 94194
+      "sha256": "5b7af6b1294a18564c17be545b1cf2be6a01574afe433ff57d894786c34f1061",
+      "size_bytes": 94491
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 9,
+      "revision": 10,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5436,13 +5450,20 @@
           "size_bytes": 39032,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 9,
+          "sha256": "a07f3d4245d51b19e5e0607e71f5081217ede98eaf3b58578427905d3d1e3166",
+          "size_bytes": 39282,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "a07f3d4245d51b19e5e0607e71f5081217ede98eaf3b58578427905d3d1e3166",
-      "size_bytes": 39282
+      "sha256": "f71e3fdb57373b5d35f1815d943e63f93360354f01340ddef35ab1b048cc4bba",
+      "size_bytes": 41725
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -5538,7 +5559,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 10,
+      "revision": 11,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5604,13 +5625,20 @@
           "size_bytes": 66384,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 10,
+          "sha256": "bc3b0af666641e8cab2555e47efbce8f9389c4e3d174b87915da3ad9161711ac",
+          "size_bytes": 67320,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "bc3b0af666641e8cab2555e47efbce8f9389c4e3d174b87915da3ad9161711ac",
-      "size_bytes": 67320
+      "sha256": "5e215e3b8e86931083c69c67d1caf253ab2f8b875ee4b01293ecc687e2f9d7f8",
+      "size_bytes": 67648
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -6724,7 +6752,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 17,
+      "revision": 18,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6839,13 +6867,20 @@
           "size_bytes": 88067,
           "superseded_at": "2026-11-17T21:48:33.093849+00:00",
           "reason": "Preserve the existing isolated presenter confirmation selector while localizing public drafts"
+        },
+        {
+          "revision": 17,
+          "sha256": "6e6c6e64936b993424fc775943176207d645bee560cdab3dbeb88e35247aae2d",
+          "size_bytes": 88175,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "6e6c6e64936b993424fc775943176207d645bee560cdab3dbeb88e35247aae2d",
-      "size_bytes": 88175
+      "sha256": "fa372b6a3e01758abed13f741c10326e3f1ab63072df8653434d0c44cd420976",
+      "size_bytes": 88401
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6898,7 +6933,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 17,
+      "revision": 18,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -7013,13 +7048,20 @@
           "size_bytes": 91107,
           "superseded_at": "2026-11-17T21:48:33.093849+00:00",
           "reason": "Preserve the existing isolated presenter confirmation selector while localizing public drafts"
+        },
+        {
+          "revision": 17,
+          "sha256": "5a6bfde1a7640b8b380f358b3c3ef3c7b087d1fa2352f5840d9831cc2f8599dc",
+          "size_bytes": 91231,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "5a6bfde1a7640b8b380f358b3c3ef3c7b087d1fa2352f5840d9831cc2f8599dc",
-      "size_bytes": 91231
+      "sha256": "ca19952c7538b01ab8974a4f431aed870d85e91793c395f91e73297e3c549764",
+      "size_bytes": 91470
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -8123,7 +8165,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 13,
+      "revision": 14,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8210,18 +8252,25 @@
           "size_bytes": 49298,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 13,
+          "sha256": "64d61259279d8ecf0581cd1b63c31798b6c1d82e7efc5e0a84974ea0baed4792",
+          "size_bytes": 52961,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "64d61259279d8ecf0581cd1b63c31798b6c1d82e7efc5e0a84974ea0baed4792",
-      "size_bytes": 52961
+      "sha256": "2e7f615bf06c331d60220c3b0e3ed88eed29bfe28ff7725701c83b642ad480f5",
+      "size_bytes": 55761
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 9,
+      "revision": 10,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8280,13 +8329,20 @@
           "size_bytes": 32814,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 9,
+          "sha256": "4407b5c8b1213eeda678ebbbdcc62e4d396268ac0949aa3c29f0215e48ea2468",
+          "size_bytes": 32823,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4407b5c8b1213eeda678ebbbdcc62e4d396268ac0949aa3c29f0215e48ea2468",
-      "size_bytes": 32823
+      "sha256": "4de51173763c1a4547f8cd2b66345eaaefa68f8d32a7d6d16e06bfd59b009df3",
+      "size_bytes": 42108
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -8424,7 +8480,7 @@
     {
       "document_id": "DEMO-DOC-5A1D8022DD23E165",
       "path": "frontend/rose-pulse-react/src/journey-api.js",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8441,13 +8497,20 @@
           "size_bytes": 6178,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 3,
+          "sha256": "a2937d7139f86a2045f0daeac928f9bc57b1c8431be5e482e6ce37d6bbc34aae",
+          "size_bytes": 6697,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a2937d7139f86a2045f0daeac928f9bc57b1c8431be5e482e6ce37d6bbc34aae",
-      "size_bytes": 6697
+      "sha256": "941f67e3d244b493bf6165722e317255f924267a18493ecded75dd3fdb393801",
+      "size_bytes": 6701
     },
     {
       "document_id": "DEMO-DOC-055E7FEBAF328681",
@@ -10238,7 +10301,7 @@
     {
       "document_id": "PUB-DOC-V2-EVENT-DISCOVERY",
       "path": "frontend/rose-pulse-react/src/event-discovery.js",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU Frontend / Sol product V2",
       "status": "working-baseline",
       "revision_history": [
@@ -10255,18 +10318,25 @@
           "size_bytes": 2339,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 3,
+          "sha256": "1f0eeb84cc441792b7494c9b7907d60a8fb19a05fd5deec9ed35dd68bed446a8",
+          "size_bytes": 3226,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "1f0eeb84cc441792b7494c9b7907d60a8fb19a05fd5deec9ed35dd68bed446a8",
-      "size_bytes": 3226
+      "sha256": "f0d2eecd62d4282548dce00fd610f492589c09a69d29e5c1ccb15333ccee3ae3",
+      "size_bytes": 3244
     },
     {
       "document_id": "PUB-DOC-V2-EVENT-DISCOVERY-TEST",
       "path": "frontend/rose-pulse-react/src/event-discovery.test.js",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU Frontend / Sol product V2",
       "status": "working-baseline",
       "revision_history": [
@@ -10290,13 +10360,20 @@
           "size_bytes": 3900,
           "superseded_at": "2026-11-17T21:45:28.214042+00:00",
           "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 4,
+          "sha256": "299b99387f93430009ed21b5bdb2e95b4c9bd203d7e8d873f29fb460aa77fd86",
+          "size_bytes": 4360,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "299b99387f93430009ed21b5bdb2e95b4c9bd203d7e8d873f29fb460aa77fd86",
-      "size_bytes": 4360
+      "sha256": "e2cab635d9483e6ab10ce6f68e7d3738d2f9db07eb87199f3ae2134e28657a9a",
+      "size_bytes": 5665
     },
     {
       "document_id": "PUB-GROUPS-20261117-8ED9482E90AB2469",
@@ -10523,7 +10600,7 @@
     {
       "document_id": "ROSE-CHALLENGE5-20261118",
       "path": "docs/dev/tasks/ROSE-CHALLENGE5-20261118.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "Sol / NU frontend author",
       "status": "working-baseline",
       "revision_history": [
@@ -10533,14 +10610,21 @@
           "size_bytes": 3002,
           "superseded_at": "2026-11-17T21:47:00.965236+00:00",
           "reason": "ROSE Challenge 5 connected mobile refinement and final wording"
+        },
+        {
+          "revision": 2,
+          "sha256": "e85fcf09b313689a5809087bc1f3219b549ff52b25835e78f83e0f01e687e21a",
+          "size_bytes": 3007,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "SP-OVERVIEW-20261012",
         "SP-FEATURES-20261012"
       ],
-      "sha256": "e85fcf09b313689a5809087bc1f3219b549ff52b25835e78f83e0f01e687e21a",
-      "size_bytes": 3007
+      "sha256": "1a39cce25e06f86512373f600aabb06fd13e7c996b95b422db4b8f9cd2a54036",
+      "size_bytes": 3776
     },
     {
       "document_id": "ROSE-EVENT-CALENDAR",
