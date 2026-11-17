@@ -27,11 +27,11 @@
           <div class="field"><label for="first_name">First name</label><input id="first_name" name="first_name" type="text" aria-describedby="name-limit"><small id="name-limit">Up to 20 characters per name.</small></div>
           <div class="field"><label for="last_name">Last name</label><input id="last_name" name="last_name" type="text" aria-describedby="name-limit"></div>
           <div class="field"><label for="gender">Gender</label><select id="gender" name="gender" required><option value="">Choose an option</option><option value="male">Male</option><option value="female">Female</option></select></div>
-          <div class="field"><label for="date_of_birth">Date of birth</label><input id="date_of_birth" name="date_of_birth" type="date" required></div>
+          <div class="field"><label for="age_group_code">Age group</label><select id="age_group_code" name="age_group_code" required><option value="">Choose an option</option></select></div>
           <div class="field"><label for="phone">Phone</label><input id="phone" name="phone" type="text"><small>Up to 20 characters.</small></div>
           <div class="field"><label for="national_id">National ID</label><input id="national_id" name="national_id" type="text"><small>Up to 50 characters. Use the same participant details for each event.</small></div>
           <div class="field application-wide"><label for="address">Address</label><textarea id="address" name="address" rows="2"></textarea></div>
-          <div class="field"><label for="income_band_code">Income band code</label><input id="income_band_code" name="income_band_code" type="text"><small>Enter the code supplied for your application, up to 20 characters.</small></div>
+          <div class="field"><label for="income_band_code">Income group (optional)</label><select id="income_band_code" name="income_band_code"><option value="">Not provided</option></select></div>
           <div class="field"><label for="marriage_status">Marital status</label><select id="marriage_status" name="marriage_status" required><option value="">Choose an option</option><option value="single">Single</option><option value="married">Married</option><option value="divorced">Divorced</option><option value="widowed">Widowed</option></select></div>
         </div>
         <p class="muted">Submitting sends an application. A place is not confirmed.</p>

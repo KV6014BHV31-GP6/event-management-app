@@ -29,7 +29,7 @@ afterEach(() => {
 function fillApplication(form) {
   for (const [label, value] of [
     ['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '00000001'],
-    ['National ID', 'SIM-0001'], ['Date of birth', '1990-01-01'],
+    ['National ID', 'SIM-0001'], ['Age group', '18_29'],
   ]) fireEvent.change(within(form).getByLabelText(label), {target: {value}});
   fireEvent.click(within(form).getByRole('radio', {name: 'Male'}));
 }
@@ -54,7 +54,7 @@ it('catches invalid application phone validation in the workspace without sendin
   const form = screen.getByRole('form', { name: 'Submit application' });
   for (const [label, value] of [['First name', 'Siti'], ['Last name', 'Demo'], ['Phone', '0'.repeat(21)], ['National ID', 'SIM-INVALID-PHONE']])
     fireEvent.change(within(form).getByLabelText(label), { target: { value } });
-  fireEvent.change(within(form).getByLabelText('Date of birth'), { target: { value: '1990-01-01' } });
+  fireEvent.change(within(form).getByLabelText('Age group'), { target: { value: '18_29' } });
   fireEvent.submit(form);
   expect(await screen.findByRole('alert')).toHaveTextContent('Check the participant fields and their maximum lengths.');
   expect(fetch.mock.calls.some(([, options]) => options?.method === 'POST')).toBe(false);
@@ -88,7 +88,7 @@ it('submits all six admitted fields and explicit Direct source through the real 
       phone: '00000001',
       national_id: 'SIM-0001',
       gender: 'male',
-      date_of_birth: '1990-01-01'
+      age_group_code: '18_29'
     },
     source: {
       kind: 'direct',
@@ -276,7 +276,7 @@ it('clears private registration content immediately on actor change and ignores 
 });
 it('resolves an active public referral and sends it independently of the entry operator',async()=>{
  const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async(path,options)=>{if(path.includes('/referrals/'))return response({event_public_id:'123456789012345678901',active:true,leader_display_name:'Synthetic Leader'});const body=JSON.parse(options.body);return response({contract_version:body.contract_version,operation_id:body.operation_id,outcome:'applied',kind:'application_create',resource_id:applicationReference,effects:{registration_id:applicationReference,status:'pending'}});});
- render(<JourneyWorkspace runtime={{}} auth={{user:null,revision:1}} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} initialRef="opaque-ref" navigate={()=>{}}/>);await screen.findByText(/Synthetic Leader/);const form=screen.getByRole('form',{name:'Submit application'});expect(within(form).queryByRole('group',{name:'Source'})).not.toBeInTheDocument();const user=userEvent.setup();for(const [label,value] of [['First name','Siti'],['Last name','Demo'],['Phone','00000001'],['National ID','SIM-0001']])await user.type(within(form).getByLabelText(label),value);fireEvent.change(within(form).getByLabelText('Date of birth'),{target:{value:'1990-01-01'}});await user.click(within(form).getByRole('radio',{name:'Female'}));await user.click(within(form).getByRole('button',{name:'Submit application'}));await screen.findByText('Application recorded — pending review');const body=JSON.parse(fetch.mock.calls.find(([,options])=>options.method==='POST')[1].body);expect(body.data.source).toEqual({kind:'leader_referral',referral_code:'opaque-ref'});expect(body.data.application).not.toHaveProperty('operator_id');expect(within(screen.getByRole('dialog')).getByText(applicationReference)).toBeInTheDocument();
+ render(<JourneyWorkspace runtime={{}} auth={{user:null,revision:1}} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} initialRef="opaque-ref" navigate={()=>{}}/>);await screen.findByText(/Synthetic Leader/);const form=screen.getByRole('form',{name:'Submit application'});expect(within(form).queryByRole('group',{name:'Source'})).not.toBeInTheDocument();const user=userEvent.setup();for(const [label,value] of [['First name','Siti'],['Last name','Demo'],['Phone','00000001'],['National ID','SIM-0001']])await user.type(within(form).getByLabelText(label),value);fireEvent.change(within(form).getByLabelText('Age group'),{target:{value:'18_29'}});await user.click(within(form).getByRole('radio',{name:'Female'}));await user.click(within(form).getByRole('button',{name:'Submit application'}));await screen.findByText('Application recorded — pending review');const body=JSON.parse(fetch.mock.calls.find(([,options])=>options.method==='POST')[1].body);expect(body.data.source).toEqual({kind:'leader_referral',referral_code:'opaque-ref'});expect(body.data.application).not.toHaveProperty('operator_id');expect(within(screen.getByRole('dialog')).getByText(applicationReference)).toBeInTheDocument();
 });
 it('does not fall back to Guest after a failed authenticated identity',()=>{render(<JourneyWorkspace runtime={{}} auth={{user:null,hasToken:true,identityBlocked:true,revision:1}} initialEvent="123456789012345678901" initialPublicEvent={publicEvent} navigate={()=>{}}/>);expect(within(screen.getByRole('form',{name:'Submit application'})).getByRole('button',{name:'Submit application'})).toBeDisabled();expect(screen.queryByRole('form',{name:'Request Demo OTP'})).not.toBeInTheDocument();});
 

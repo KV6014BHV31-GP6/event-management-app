@@ -1,6 +1,7 @@
 import { demoTransport, DEMO_PROFILE } from "../demo-transport.js";
 import { tr } from "../i18n/index.js";
 import React, { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { RegistrationGroups } from "../RegistrationGroups.jsx";
 import { DemoFormTemplate } from "../ApplicationFields.jsx";
 import { createJourneyClient } from "../journey-api.js";
 import { minimumRegistrationPayload } from "../minimum-registration.js";
@@ -409,10 +410,7 @@ export default function OfflineWorkspace({
                         <option value="male">{tr("Male")}</option>
                       </select>
                     </label>
-                    <label className="field">
-                      <span>{tr("Date of birth")}</span>
-                      <input name="date_of_birth" type="date" required />
-                    </label>
+                    <RegistrationGroups />
                   </div>
                   <label className="field">
                     <span>{tr("Local retention")}</span>

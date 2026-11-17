@@ -1,8 +1,8 @@
 from datetime import datetime, date, timezone
 import enum
 from typing import Optional
-from sqlalchemy import String, DateTime, Date, Integer, BigInteger, ForeignKey, UniqueConstraint, Enum as SQLEnum, Text
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy import String, DateTime, Date, Integer, BigInteger, ForeignKey, UniqueConstraint, Enum as SQLEnum, Text, Boolean
+from sqlalchemy.orm import Mapped, mapped_column, relationship, foreign
 from src.core.database import Base
 
 
@@ -33,6 +33,23 @@ class UserGenderEnum(enum.Enum):
     female = "female"
 
 
+# Targeted reuse: Austin b9dca01d29d7a1b36dbbf5a43bfed06863550e34.
+class AgeGroupModel(Base):
+    __tablename__ = "age_groups"
+    code: Mapped[str] = mapped_column(String(20), primary_key=True)
+    name: Mapped[str] = mapped_column(String(50), nullable=False)
+    min_age: Mapped[int] = mapped_column(Integer, nullable=False)
+    max_age: Mapped[Optional[int]] = mapped_column(Integer, nullable=True)
+
+
+class IncomeBandModel(Base):
+    __tablename__ = "income_bands"
+    code: Mapped[str] = mapped_column(String(20), primary_key=True)
+    name: Mapped[str] = mapped_column(String(100), nullable=False)
+    display_order: Mapped[int] = mapped_column(Integer, nullable=False)
+    is_active: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+
+
 class RegistrationModel(Base):
     __tablename__ = "registrations"
     __table_args__ = (UniqueConstraint("event_id", "participant_id", name="uq_registration_event_participant"),)
@@ -60,11 +77,18 @@ class RegistrationModel(Base):
     last_name: Mapped[str] = mapped_column(String(20), nullable=False)
     gender: Mapped[UserGenderEnum] = mapped_column(
         SQLEnum(UserGenderEnum, name="user_gender", native_enum=True), nullable=False)
-    date_of_birth: Mapped[date] = mapped_column(Date, nullable=False)
+    # Read-only historical data; new applications never collect or fabricate DOB.
+    date_of_birth: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
+    age_group_code: Mapped[Optional[str]] = mapped_column(String(20), ForeignKey("age_groups.code"), nullable=True)
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
     address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     national_id: Mapped[str] = mapped_column(String(50), nullable=False)
     income_band_code: Mapped[Optional[str]] = mapped_column(String(20), nullable=True)
+    age_group: Mapped[Optional[AgeGroupModel]] = relationship(AgeGroupModel, lazy="raise")
+    # Historical free-text income values remain intact; validate NEW writes in service.
+    income_band: Mapped[Optional[IncomeBandModel]] = relationship(IncomeBandModel,
+        primaryjoin=lambda: foreign(RegistrationModel.income_band_code) == IncomeBandModel.code,
+        viewonly=True, lazy="raise")
     medical_record: Mapped[Optional[str]] = mapped_column(Text, nullable=True)
     marriage_status: Mapped[Optional[MarriageStatusTypeEnum]] = mapped_column(
         SQLEnum(MarriageStatusTypeEnum, name="marriage_status_type", native_enum=True), nullable=True

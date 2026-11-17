@@ -87,7 +87,7 @@ async def add_registration(db, case, status=Status.pending, leader=None, source=
                            correction=False):
     event = event or case['event']
     form = {'first_name': 'Synthetic', 'last_name': 'Attribution', 'gender': 'female',
-            'date_of_birth': '1990-01-01', 'phone': 'SYNTHETIC', 'national_id': 'ATTR-' + str(uuid4())}
+            'age_group_code': '18_29', 'phone': 'SYNTHETIC', 'national_id': 'ATTR-' + str(uuid4())}
     actor = case['users'].get(operator)
     src = {'kind': 'leader_referral' if leader else source,
            'referral_code': event.public_id + '-' + leader if leader else None}

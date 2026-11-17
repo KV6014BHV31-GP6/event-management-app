@@ -18,7 +18,7 @@ const application = {
   address: "Synthetic only",
   national_id: "SYNTHETIC-001",
   gender: "female",
-  date_of_birth: "1990-01-01",
+  age_group_code: "18_29",
 };
 const store = () =>
   createOfflineStore({ name: `synthetic-${crypto.randomUUID()}` });

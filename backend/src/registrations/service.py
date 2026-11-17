@@ -14,6 +14,7 @@ from src.participants.models import ParticipantModel
 from src.registrations.models import RegistrationModel, RegistrationStatusEnum, RegistrationChannelEnum, UserGenderEnum, MarriageStatusTypeEnum
 from src.registrations.schemas import RegistrationCreate, RegistrationStatus
 from src.phase2 import assets
+from src.registrations.options import validate_groups
 from src.journey import policy as journey
 from src.journey import allocation as allocator
 
@@ -61,6 +62,7 @@ class RegistrationService:
         """
         Executes the online registration business workflow within an atomic database transaction context.
         """
+        await validate_groups(db, form_in.age_group_code, form_in.income_band_code)
         await assets.validate(db,form_in.file_ids,current_user_id,'supporting_document')
         # 1. Validate Event Entity Existence
         event_stmt = select(EventModel).where(
@@ -97,7 +99,7 @@ class RegistrationService:
             if duplicate:
                 raise HTTPException(status_code=400, detail=DUPLICATE)
             # Only a verified owner may change demographics, after duplicate checks.
-            for field in ("first_name", "last_name", "date_of_birth", "phone", "address"):
+            for field in ("first_name", "last_name", "phone", "address"):
                 if field=='address' and field not in form_in.model_fields_set:
                     continue  # Omission stores NULL in this snapshot without erasing a legacy participant address.
                 setattr(db_participant, field, getattr(form_in, field))
@@ -107,7 +109,7 @@ class RegistrationService:
             db_participant = ParticipantModel(
                 id=str(ulid.ULID()), user_id=current_user_id,
                 first_name=form_in.first_name, last_name=form_in.last_name,
-                gender=UserGenderEnum(form_in.gender.value), date_of_birth=form_in.date_of_birth,
+                gender=UserGenderEnum(form_in.gender.value),
                 phone=form_in.phone, address=form_in.address, national_id=form_in.national_id)
             db.add(db_participant)
         await db.flush()  # FK target must exist; the session intentionally has autoflush=False.
@@ -124,7 +126,7 @@ class RegistrationService:
             first_name=form_in.first_name,
             last_name=form_in.last_name,
             gender=UserGenderEnum(form_in.gender.value),
-            date_of_birth=form_in.date_of_birth,
+            age_group_code=form_in.age_group_code,
             phone=form_in.phone,
             address=form_in.address,
             national_id=form_in.national_id,
@@ -425,6 +427,7 @@ class RegistrationService:
         now_utc = datetime.now(timezone.utc)
 
         for app in applications:
+            await validate_groups(db, app.age_group_code, app.income_band_code)
             # Step 3: Search the participants table via national_id
             part_stmt = select(ParticipantModel).where(
                 ParticipantModel.national_id == app.national_id)
@@ -442,7 +445,6 @@ class RegistrationService:
                     first_name=app.first_name,
                     last_name=app.last_name,
                     gender=app.gender,
-                    date_of_birth=app.date_of_birth,
                     phone=app.phone,
                     address=app.address,
                     national_id=app.national_id,
@@ -466,11 +468,11 @@ class RegistrationService:
                 first_name=app.first_name,
                 last_name=app.last_name,
                 gender=app.gender,
-                date_of_birth=app.date_of_birth,
+                age_group_code=app.age_group_code,
                 phone=app.phone,
                 address=app.address,
                 national_id=app.national_id,
-                income_band_code=app.income_level,  # Field maps to schema storage row definitions
+                income_band_code=app.income_band_code,  # Field maps to schema storage row definitions
                 medical_record=app.medical_record,
                 marriage_status=app.marriage_status
             )
@@ -488,6 +490,7 @@ class RegistrationService:
     async def create_offline_v2_item(db,event,form,actor_id):
         """Domain write inside caller transaction; no commit and never mutate an existing identity."""
         await journey.admission(db,event,actor_id,staff=True)
+        await validate_groups(db, form.age_group_code, form.income_band_code)
         person=await db.scalar(select(ParticipantModel).where(ParticipantModel.national_id==form.national_id))
         if person:
             existing=await db.scalar(select(RegistrationModel).where(RegistrationModel.event_id==event.id,RegistrationModel.participant_id==person.id))
@@ -495,18 +498,18 @@ class RegistrationService:
                 own=existing.created_by_user_id==actor_id
                 return None,{'outcome':'duplicate','code':'ALREADY_REGISTERED','registration_id':existing.id if own else None,'registration_status_at_recording':existing.status.value if own else None}
             previous=(await db.scalars(select(RegistrationModel).where(RegistrationModel.participant_id==person.id))).all()
-            fields=['first_name','last_name','date_of_birth','phone','address','national_id']
+            fields=['first_name','last_name','phone','address','national_id']
             exact=all(getattr(person,key)==getattr(form,key) for key in fields) and person.gender.value==form.gender.value
             if person.user_id is not None or not previous or any(r.created_by_user_id!=actor_id or r.channel!=RegistrationChannelEnum.offline for r in previous) or not exact:
                 raise HTTPException(409,'IDENTITY_CONFLICT')
         else:
-            person=ParticipantModel(id=str(ulid.ULID()),user_id=None,first_name=form.first_name,last_name=form.last_name,gender=UserGenderEnum(form.gender.value),date_of_birth=form.date_of_birth,phone=form.phone,address=form.address,national_id=form.national_id)
+            person=ParticipantModel(id=str(ulid.ULID()),user_id=None,first_name=form.first_name,last_name=form.last_name,gender=UserGenderEnum(form.gender.value),phone=form.phone,address=form.address,national_id=form.national_id)
             db.add(person); await db.flush()
         await assets.validate(db,form.file_ids,actor_id,'supporting_document')
         registration=RegistrationModel(id=str(ulid.ULID()),event_id=event.id,participant_id=person.id,created_by_user_id=actor_id,
             channel=RegistrationChannelEnum.offline,status=RegistrationStatusEnum.pending,first_name=form.first_name,last_name=form.last_name,
-            gender=UserGenderEnum(form.gender.value),date_of_birth=form.date_of_birth,phone=form.phone,address=form.address,national_id=form.national_id,
-            income_band_code=form.income_band_code,medical_record=form.medical_record,marriage_status=MarriageStatusTypeEnum(form.marriage_status.value) if form.marriage_status else None)
+            gender=UserGenderEnum(form.gender.value),phone=form.phone,address=form.address,national_id=form.national_id,
+            age_group_code=form.age_group_code,income_band_code=form.income_band_code,medical_record=form.medical_record,marriage_status=MarriageStatusTypeEnum(form.marriage_status.value) if form.marriage_status else None)
         db.add(registration); await db.flush(); await assets.attach_documents(db,registration.id,form.file_ids,actor_id)
         if await journey.workflow(db,event):
             await allocator.meta(db,registration);await journey.bump(db,event)

@@ -35,7 +35,7 @@ const PARTICIPANT = {
   first_name: "Synthetic",
   last_name: "Example",
   gender: "female",
-  date_of_birth: "1990-01-01",
+  age_group_code: "18_29",
   phone: "TEST",
   address: "",
   national_id: "SYNTHETIC-ONLY-001",

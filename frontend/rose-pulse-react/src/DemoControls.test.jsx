@@ -162,6 +162,8 @@ it('uses one managed submit to attach the bundled file, then retains its referen
   await user.click(submit);
   expect(uploadFile).not.toHaveBeenCalled();
   await user.click(within(form).getByRole('button', {name: 'Fill synthetic demo details'}));
+  expect(within(form).getByLabelText('Age group')).toHaveValue('');
+  await user.selectOptions(within(form).getByLabelText('Age group'), '18_29');
   await user.click(submit);
   await waitFor(() => expect(uploadFile).toHaveBeenCalledTimes(1));
   fireEvent.submit(form);

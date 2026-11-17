@@ -4,12 +4,18 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.auth.deps import get_current_user, get_optional_current_user
 from src.core.database import get_async_db
-from src.registrations.schemas import RegistrationCreate, RegistrationResponse, RegistrationStatus
+from src.registrations.schemas import RegistrationCreate, RegistrationResponse, RegistrationStatus, RegistrationOptions
 from src.registrations.service import RegistrationService
 from src.users.models import UserModel
 from src.phase2.assets import registration_payload
 
 router = APIRouter(tags=["Registrations"])
+
+
+@router.get('/registration-options', response_model=RegistrationOptions)
+async def get_registration_options(db: AsyncSession = Depends(get_async_db)):
+    from src.registrations.options import registration_options
+    return await registration_options(db)
 
 
 @router.post(

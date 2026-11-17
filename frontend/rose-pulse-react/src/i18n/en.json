@@ -1015,5 +1015,14 @@
   "Your application": "Your application",
   "Device storage and retention": "Device storage and retention",
   "Applications & check-in": "Applications & check-in",
-  "Review applications": "Review applications"
+  "Review applications": "Review applications",
+  "Age group": "Age group",
+  "Income group (optional)": "Income group (optional)",
+  "Not provided": "Not provided",
+  "Options have not been configured.": "Options have not been configured.",
+  "Options could not be loaded.": "Options could not be loaded.",
+  "Loading options…": "Loading options…",
+  "Select your age group.": "Select your age group.",
+  "You may leave this blank.": "You may leave this blank.",
+  "Retry options": "Retry options"
 }

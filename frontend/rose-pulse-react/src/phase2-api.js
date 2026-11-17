@@ -261,7 +261,7 @@ export function createPhase2Api({
         "first_name",
         "last_name",
         "gender",
-        "date_of_birth",
+        "age_group_code",
         "phone",
         "national_id",
         "address",

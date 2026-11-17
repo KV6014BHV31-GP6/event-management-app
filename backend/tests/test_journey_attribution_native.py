@@ -40,6 +40,10 @@ async def attribution_native_sessions():
             assert row[0] == target.database and row[1] // 10000 == 17
             assert row[2] in {'127.0.0.1', '::1'} and row[3] is False
             await connection.run_sync(Base.metadata.create_all)
+        async with async_sessionmaker(engine, expire_on_commit=False)() as fixture_db:
+            from tests.group_fixtures import seed_group_options
+            await seed_group_options(fixture_db)
+            await fixture_db.commit()
         yield async_sessionmaker(engine, expire_on_commit=False, autoflush=False)
     finally:
         await engine.dispose()

@@ -19,7 +19,7 @@ const event = {
   created_at: '2026-10-20T00:00:00Z', updated_at: '2026-10-20T00:00:00Z', image_path: null,
 };
 const values = {
-  first_name: 'SYNTHETIC', last_name: 'W7 Participant', gender: 'female', date_of_birth: '1990-01-01',
+  first_name: 'SYNTHETIC', last_name: 'W7 Participant', gender: 'female', age_group_code: '18_29',
   phone: 'SYNTH-NO-PHONE', address: 'SYNTHETIC TEST ADDRESS ONLY', national_id: 'SYNTH-W7-UNIT',
   income_band_code: 'SYNTH_TEST_ONLY', marriage_status: 'single',
 };
@@ -173,21 +173,22 @@ test('W7 participant validation follows schema length, enum and date boundaries'
   for (const patch of [
     { first_name: 'a'.repeat(21) }, { last_name: 'a'.repeat(21) }, { phone: 'a'.repeat(21) },
     { national_id: 'a'.repeat(51) }, { income_band_code: 'a'.repeat(21) },
-    { gender: 'other' }, { marriage_status: 'unknown' }, { date_of_birth: '1990-02-30' },
-    { date_of_birth: '2027-02-29' }, { date_of_birth: '1990-01-01T00:00:00Z' }, { phone: 12345 },
+    { gender: 'other' }, { marriage_status: 'unknown' }, { age_group_code: '' },
+    { age_group_code: 'a'.repeat(21) }, { phone: 12345 },
   ]) assert.throws(() => registrationPayload({ ...values, ...patch }), error => error.kind === 'validation');
-  for (const key of Object.keys(values)) {
+  for (const key of Object.keys(values).filter(key => !['income_band_code', 'medical_record'].includes(key))) {
     const missing = { ...values }; delete missing[key];
     assert.throws(() => registrationPayload(missing), error => error.kind === 'validation');
   }
-  assert.equal(registrationPayload({ ...values, date_of_birth: '1992-02-29' }).date_of_birth, '1992-02-29');
+  assert.equal(registrationPayload({ ...values, age_group_code: '18_29' }).age_group_code, '18_29');
 });
 
 test('W7 does not invent approved income codes, phone syntax or age eligibility', () => {
   assert.equal(registrationPayload({ ...values, income_band_code: 'UNAPPROVED_TEXT', phone: 'x', date_of_birth: '2027-01-01' }).income_band_code, 'UNAPPROVED_TEXT');
   for (const marriage_status of ['single', 'married', 'divorced', 'widowed']) assert.equal(registrationPayload({ ...values, marriage_status }).marriage_status, marriage_status);
   for (const gender of ['male', 'female']) assert.equal(registrationPayload({ ...values, gender }).gender, gender);
-  for (const key of ['first_name', 'last_name', 'phone', 'address', 'national_id', 'income_band_code']) assert.equal(registrationPayload({ ...values, [key]: '' })[key], '');
+  for (const key of ['first_name', 'last_name', 'phone', 'address', 'national_id']) assert.equal(registrationPayload({ ...values, [key]: '' })[key], '');
+  assert.equal(registrationPayload({ ...values, income_band_code: '' }).income_band_code, null);
   assert.equal(registrationPayload({ ...values, first_name: '🌱'.repeat(20) }).first_name, '🌱'.repeat(20));
   assert.throws(() => registrationPayload({ ...values, first_name: '🌱'.repeat(21) }), error => error.kind === 'validation');
 });
@@ -387,7 +388,7 @@ test('W7 invalid registration form and logged-out user never send a POST', async
   await controller.submit(values);
   assert.equal(controller.state.status, 'error');
   session.user = profile;
-  await controller.submit({ ...values, date_of_birth: 'bad-date' });
+  await controller.submit({ ...values, age_group_code: '' });
   assert.equal(controller.state.status, 'error');
   assert.equal(posts, 0);
 });

@@ -33,14 +33,15 @@ class UserGender(str, Enum):
 
 
 class RegistrationCreate(BaseModel):
+    model_config = ConfigDict(extra='forbid')
     first_name: str = Field(..., max_length=20)
     last_name: str = Field(..., max_length=20)
     gender: UserGender
-    date_of_birth: date
+    age_group_code: str = Field(..., min_length=1, max_length=20)
     phone: str = Field(..., max_length=20)
     address: Optional[str] = None
     national_id: str = Field(..., max_length=50)
-    income_band_code: Optional[str] = Field(None, max_length=20)
+    income_band_code: Optional[str] = Field(None, min_length=1, max_length=20)
     medical_record: Optional[str] = None
     marriage_status: Optional[MarriageStatusType] = None
     file_ids: list[str] = Field(default_factory=list, max_length=3)
@@ -56,7 +57,8 @@ class RegistrationResponse(BaseModel):
     first_name: str
     last_name: str
     gender: UserGender
-    date_of_birth: date
+    date_of_birth: Optional[date]  # Historical readback only.
+    age_group_code: Optional[str]
     phone: str
     address: Optional[str]
     national_id: str
@@ -68,3 +70,15 @@ class RegistrationResponse(BaseModel):
     updated_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+# Austin's code/name response shapes, retained without changing existing receipts.
+class GroupOption(BaseModel):
+    code: str
+    name: str
+    model_config = ConfigDict(from_attributes=True)
+
+
+class RegistrationOptions(BaseModel):
+    age_groups: list[GroupOption]
+    income_bands: list[GroupOption]

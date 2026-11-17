@@ -1,3 +1,32 @@
+# Current successor: registration Age Group / optional Income Group, 2026-11-17
+
+Owner explicitly replaces DOB in NEW registration input with required
+`age_group_code`; `income_band_code` remains optional. This is an Owner engineering
+successor, not teacher/NGO approval of classification or income policy. Existing
+working-baseline / original-source acceptance boundaries remain unchanged.
+
+One isolated writer branches from `dev_demo@eb770465220e9d415a6ee75ee4f188b920fec79e`.
+Targeted Austin reuse is pinned to `b9dca01d29d7a1b36dbbf5a43bfed06863550e34`;
+no whole-branch merge or takeover of Austin Backend. New submissions reject DOB;
+historical participant/registration DOB, IDs, free-text income and immutable receipts
+remain intact. A separate explicit development migration keeps history nullable and
+adds the age lookup relationship without assigning fabricated historical groups.
+
+Options are actual database rows, with active income bands only. No runtime policy
+seed is added. An environment with no configured age options displays EN/BM
+“Options have not been configured.” and cannot submit a new application. The
+formal classification-source / activation gate is **BLOCKED** until approved
+reference data is supplied through the existing ownership process. Synthetic test
+fixtures are not approved taxonomy. Income omission remains real NULL.
+
+Local React 371/371, legacy callers 61/61 and production build PASS; affected native PostgreSQL 17.11
+31/31 PASS; separate real migration history / first-repeat / fault-rollback / guarded
+reverse rehearsal PASS. Successor/classification/legacy unknown-ACK focused checks 17/17 PASS.
+These are LOCAL_VERIFIED, not full AC40, UAT, physical-device, production or teacher
+acceptance. Hosted fixed-Head CI and independent review remain pending. No Railway,
+production DB, video, merge or deployment in this candidate-writing stage.
+See [task](tasks/REGISTRATION-GROUPS-20261117.md).
+
 # Current successor: V2 registration navigation label repair, 2026-11-16
 
 Native Browser CI on `5cd95a1d412d3330e36cc5f3fa262239e7008294` failed at

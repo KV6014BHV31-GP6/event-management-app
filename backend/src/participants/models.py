@@ -19,7 +19,7 @@ class ParticipantModel(Base):
 
     gender: Mapped[UserGenderEnum] = mapped_column(
         SQLEnum(UserGenderEnum, name="user_gender", native_enum=True), nullable=False)
-    date_of_birth: Mapped[date] = mapped_column(Date, nullable=False)
+    date_of_birth: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
 
     phone: Mapped[str] = mapped_column(String(20), nullable=False)
     address: Mapped[Optional[str]] = mapped_column(Text, nullable=True)

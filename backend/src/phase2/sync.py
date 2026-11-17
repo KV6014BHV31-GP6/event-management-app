@@ -85,7 +85,7 @@ async def submit(db,public,payload,actor_id):
                             else:outcome.update(outcome='accepted',code='RECORDED',registration_id=registration.id,registration_status_at_recording='pending')
                         except HTTPException as exc:
                             detail=exc.detail if isinstance(exc.detail,dict) else {}
-                            outcome['code']='EVENT_CLOSED' if detail.get('code') in {'WINDOW_CLOSED','EVENT_CLOSED'} else 'FILE_NOT_OWNED' if exc.status_code in {403,422} else 'IDENTITY_CONFLICT'
+                            outcome['code']='INVALID_APPLICATION' if detail.get('code')=='INVALID_CLASSIFICATION' else 'EVENT_CLOSED' if detail.get('code') in {'WINDOW_CLOSED','EVENT_CLOSED'} else 'FILE_NOT_OWNED' if exc.status_code in {403,422} else 'IDENTITY_CONFLICT'
                         except IntegrityError:
                             # The savepoint is rolled back. Inspect the winner from a new READ COMMITTED statement;
                             # never retry the domain insert after an ambiguous uniqueness race.

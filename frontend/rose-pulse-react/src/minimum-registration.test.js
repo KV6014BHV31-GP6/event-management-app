@@ -6,7 +6,7 @@ const valid = {
   phone: "TEST",
   national_id: "SYNTHETIC-ONLY",
   gender: "female",
-  date_of_birth: "1990-01-01",
+  age_group_code: "18_29",
 };
 describe("explicit required-field correction", () => {
   for (const field of ["first_name", "last_name", "phone", "national_id"])

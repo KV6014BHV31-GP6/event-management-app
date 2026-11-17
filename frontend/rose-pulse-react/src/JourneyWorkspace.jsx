@@ -1,3 +1,4 @@
+import { RegistrationGroups } from './RegistrationGroups.jsx';
 import {downloadApprovedFlyer} from "./flyer.js";
 import AttendanceWorkspace from "./AttendanceWorkspace.jsx";
 import {createAttendanceStore} from "./offline/attendance.js";
@@ -36,7 +37,7 @@ function ActionForm({
 }
 const applicationFields = [field('first_name', 'First name'), field('last_name', 'Last name'), field('gender', 'Gender', 'text', {
   options: ['male', 'female']
-}), field('date_of_birth', 'Date of birth', 'date'), field('phone', 'Phone'), field('national_id', 'National ID')];
+}), field('phone', 'Phone'), field('national_id', 'National ID')];
 const appCopy = v => minimumRegistrationPayload(v);
 const notificationState = message => message.delivery_status || message.state;
 function notificationStatus(message) {
@@ -535,7 +536,7 @@ function JourneySession({
           application: appCopy(v),
           eligibility_confirmed: true,
           eligibility_note: v.eligibility_note
-        }), eventVersion)}><p>{tr('Submitting explicitly confirms synthetic eligibility review. A cancelled booking is not reused.')}</p></ActionForm><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('closeout', root + '/closeout'))}>{tr('Read closeout preview')}</button>{loaded.closeout && <Closeout data={loaded.closeout} actor={staffActor} />} <ActionForm title="Finalize completed event" busy={busy || !loaded.closeout || attendanceBlocked || pending.some(row=>row.path.startsWith(root+"/attendance"))} fields={[field('attestation', 'Local attendance reconciliation', 'text', {
+        }), eventVersion)}><RegistrationGroups /><p>{tr('Submitting explicitly confirms synthetic eligibility review. A cancelled booking is not reused.')}</p></ActionForm><button className="button button-quiet" disabled={busy} onClick={() => run(() => read('closeout', root + '/closeout'))}>{tr('Read closeout preview')}</button>{loaded.closeout && <Closeout data={loaded.closeout} actor={staffActor} />} <ActionForm title="Finalize completed event" busy={busy || !loaded.closeout || attendanceBlocked || pending.some(row=>row.path.startsWith(root+"/attendance"))} fields={[field('attestation', 'Local attendance reconciliation', 'text', {
           options: ['not confirmed', 'all local actions reconciled']
         })]} submit={v => run(async()=>{
           const attendanceStore=createAttendanceStore();

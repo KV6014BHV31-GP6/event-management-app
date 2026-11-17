@@ -195,3 +195,18 @@ In the synthetic build, open **Demo tools · Synthetic data** on a form or use i
 Organizers can open **Review application** from a pending row in **Manage registrations** or its details. The `?view=operations&registration=<ULID>` route reads the selected managed application with existing Organizer permissions. Approval, rejection and correction still require an explicit action. Legacy registrations retain their existing management controls.
 
 The local queue offers **Sync this event** on an unbatched queued row. The same manual sync runs for that row's event. For a managed event, a signed-in Leader checks the existing event assignment before creating a batch. A refusal keeps the queued drafts on the device. In Simulated Offline, use **Restore Connection** in Demo tools before selecting Sync this event. Existing batches still use Reconcile.
+
+### Owner Age Group successor (2026-11-17)
+
+Registration, managed application, assisted offline and walk-in forms now collect
+required Age Group and optional Income Group from `/api/v1/registration-options`.
+No DOB or fabricated DOB/default group is submitted. EN/BM controls have explicit
+blank choices; empty age options show “Options have not been configured.” and
+block new application submission. Income stays optional. Labels/codes are backend
+reference data, never a locally invented taxonomy. The synthetic filler does not
+select age/income for the participant. Options loaded in the current page may be
+used while offline; a fresh offline page without loaded options cannot invent new
+choices. Existing saved drafts/batches are preserved byte-for-byte for reconciliation;
+legacy DOB requests without receipts need explicit review, never auto-conversion.
+Formal taxonomy activation, physical-device certification and full AC40 remain
+separate from local component/API/migration checks.

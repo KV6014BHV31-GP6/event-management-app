@@ -35,7 +35,8 @@ CONTRACTS = ["docs/dev/phase2/API_CONTRACT.json", "docs/dev/demo-journey/API_CON
              "docs/dev/demo-journey/ACCOUNT_CONTRACT_R3.md"]
 MIGRATIONS = {"backend/scripts/migrate_phase2.py": "rose_phase2_20261102_v1",
               "backend/scripts/migrate_demo_journey.py": "rose_demo_journey_20261103_v1",
-              "backend/scripts/migrate_accounts.py": "rose_account_recovery_20261103_v1"}
+              "backend/scripts/migrate_accounts.py": "rose_account_recovery_20261103_v1",
+              "backend/scripts/migrate_registration_groups.py": "registration_groups_20261117_v1"}
 SECRETS: list[str] = []
 OUT: Path
 REPORT: dict
@@ -341,7 +342,7 @@ async def browser_readback(database_url: str, database: str, role: str, private_
                 'private_file_linkage': linkage == 1, 'browser_batch_count': len(batches), 'browser_submission_count': len(submissions),
                 'pending_offline_registrations': len(pending), 'duplicate_effect_count': abs(len(rows)-4),
                 'immutable_batch_match': bool(immutable), 'batch_id': envelope['batch_id'],
-                'migrations': [row['migration_id'] for table in ['phase2_schema_migrations', 'journey_schema_migrations', 'accounts_schema_migrations'] for row in await connection.fetch('SELECT migration_id FROM '+table)]}
+                'migrations': [row['migration_id'] for table in ['phase2_schema_migrations', 'journey_schema_migrations', 'accounts_schema_migrations', 'registration_group_schema_migrations'] for row in await connection.fetch('SELECT migration_id FROM '+table)]}
     finally:
         await connection.close()
 
@@ -370,7 +371,8 @@ def native_browser(build_input: Path) -> None:
     migration_database = database.removesuffix("_be_test") + "_migration_be_test"
     shape_database = database.removesuffix("_be_test") + "_shape_be_test"
     browser_database = database.removesuffix("_be_test") + "_browser_be_test"
-    if any(len(name) > 63 for name in [database, migration_database, shape_database, browser_database]):
+    groups_database = database.removesuffix("_be_test") + "_groups_migration_be_test"
+    if any(len(name) > 63 for name in [database, migration_database, shape_database, browser_database, groups_database]):
         raise RuntimeError("Native test database name exceeds PostgreSQL limit")
     env = os.environ.copy() | {"PYTHONIOENCODING": "utf-8", "PYTHONDONTWRITEBYTECODE": "1",
         "DATABASE_URL": f"postgresql://nu_ci_app:{password}@127.0.0.1:{pgport}/{database}",
@@ -421,17 +423,18 @@ def native_browser(build_input: Path) -> None:
         psql = [pg / "psql.exe", "-X", "-h", "127.0.0.1", "-p", pgport, "-U", "nu_ci_admin", "-d", "postgres", "-v", "ON_ERROR_STOP=1"]
         sql = work / "create.sql"
         sql.write_text(f"CREATE ROLE nu_ci_app LOGIN PASSWORD '{password}' NOSUPERUSER NOCREATEDB NOCREATEROLE;\n" +
-                       "".join(f"CREATE DATABASE {name} OWNER nu_ci_app;\n" for name in [database, migration_database, shape_database, browser_database]), encoding="utf-8")
+                       "".join(f"CREATE DATABASE {name} OWNER nu_ci_app;\n" for name in [database, migration_database, shape_database, browser_database, groups_database]), encoding="utf-8")
         run([*psql, "-f", sql], "isolated-database-create", env=env)
         sql.unlink()
         # Require password authentication after bootstrap; never alter an installed service.
         (data / "pg_hba.conf").write_text("host all all 127.0.0.1/32 scram-sha-256\n", encoding="utf-8")
         run([pg / "pg_ctl.exe", "-D", data, "reload"], "postgres-auth-reload")
         run([sys.executable, "-B", "-m", "scripts.dev_bootstrap", "--acknowledge-development"], "synthetic-bootstrap", cwd=ROOT / "backend", env=env)
-        for module in ["migrate_phase2", "migrate_demo_journey", "migrate_accounts"]:
+        for module in ["migrate_phase2", "migrate_demo_journey", "migrate_accounts", "migrate_registration_groups"]:
             for attempt in ["first", "repeat"]:
                 run([sys.executable, "-B", "-m", "scripts." + module, "--acknowledge-development", "--database", database], module + "-" + attempt, cwd=ROOT / "backend", env=env)
         env["NU_NATIVE_TEST_DATABASE_URL"] = env["DATABASE_URL"].replace("postgresql://", "postgresql+asyncpg://", 1)
+        env["NU_GROUPS_MIGRATION_TEST_URL"] = env["NU_NATIVE_TEST_DATABASE_URL"].rsplit("/",1)[0] + "/" + groups_database
         native = [p.relative_to(ROOT / "backend") for p in tests if "native" in p.stem]
         if not {"test_phase2_native.py", "test_journey_native.py", "test_accounts_native.py"}.issubset({p.name for p in native}):
             raise RuntimeError("Required native regression suites missing")
@@ -442,7 +445,7 @@ def native_browser(build_input: Path) -> None:
         # Browser fixtures never inherit native-suite leftovers, roles or mutations.
         env['DATABASE_URL'] = env['DATABASE_URL'].rsplit('/', 1)[0] + '/' + browser_database
         run([sys.executable, '-B', '-m', 'scripts.dev_bootstrap', '--acknowledge-development'], 'browser-bootstrap', cwd=ROOT / 'backend', env=env)
-        for module in ['migrate_phase2', 'migrate_demo_journey', 'migrate_accounts']:
+        for module in ['migrate_phase2', 'migrate_demo_journey', 'migrate_accounts', 'migrate_registration_groups']:
             for attempt in ['first', 'repeat']:
                 run([sys.executable, '-B', '-m', 'scripts.' + module, '--acknowledge-development', '--database', browser_database], 'browser-' + module + '-' + attempt, cwd=ROOT / 'backend', env=env)
         dist = build_input.resolve()
@@ -472,6 +475,9 @@ def native_browser(build_input: Path) -> None:
                    NU_SMOKE_USERNAME=username, NU_SMOKE_PASSWORD=smoke_password, NU_CI_OUTPUT=str(OUT),
                    NU_BROWSER_PRIVATE=str(work / 'browser-private'), NU_BROWSER_SOURCE_SHA=REPORT['source_sha'],
                    NU_BROWSER_EXECUTION_MODE='GITHUB_HOSTED')
+        run(["node", ROOT / "scripts/registration_groups_browser.cjs", "--empty"], "classification-empty-browser", env=env, timeout=180)
+        run([sys.executable, '-B', '-m', 'tests.group_fixtures', '--acknowledge-isolated-browser'], 'isolated-browser-classification-fixture', cwd=ROOT / 'backend', env=env)
+        run(["node", ROOT / "scripts/registration_groups_browser.cjs"], "classification-configured-browser", env=env, timeout=180)
         run(["node", ROOT / 'scripts/demo_browser_e2e.cjs'], "browser-e2e", env=env, timeout=300)
         REPORT["database"] = asyncio.run(browser_readback(env['DATABASE_URL'], browser_database, 'nu_ci_app', work / 'browser-private'))
         write_json(OUT / 'browser-native-readback.json', REPORT['database'])

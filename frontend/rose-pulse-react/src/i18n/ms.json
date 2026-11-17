@@ -1015,5 +1015,14 @@
   "Your application": "Permohonan anda",
   "Device storage and retention": "Storan peranti dan tempoh penyimpanan",
   "Applications & check-in": "Permohonan & daftar masuk",
-  "Review applications": "Semak permohonan"
+  "Review applications": "Semak permohonan",
+  "Age group": "Kumpulan umur",
+  "Income group (optional)": "Kumpulan pendapatan (pilihan)",
+  "Not provided": "Tidak diberikan",
+  "Options have not been configured.": "Pilihan belum ditetapkan.",
+  "Options could not be loaded.": "Pilihan tidak dapat dimuatkan.",
+  "Loading options…": "Memuatkan pilihan…",
+  "Select your age group.": "Pilih kumpulan umur anda.",
+  "You may leave this blank.": "Anda boleh membiarkan ruangan ini kosong.",
+  "Retry options": "Cuba semula pilihan"
 }

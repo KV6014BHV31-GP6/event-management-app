@@ -30,7 +30,7 @@ async function setup({ failReadback = false, managed = false, restored = false }
         first_name: "Synthetic",
         last_name: "Example",
         gender: "female",
-        date_of_birth: "1990-01-01",
+        age_group_code: "18_29",
         phone: "TEST",
         national_id: `SYNTHETIC-${index}`,
       },
@@ -158,9 +158,10 @@ describe("managed Leader manual sync after restoring a saved token", () => {
     try {
       await user.click(screen.getByRole("button", { name: "Manually sync selected event" }));
       expect(await screen.findByRole("alert")).toHaveTextContent(unknown);
-      expect(read).toHaveBeenCalledTimes(1);
-      expect(read.mock.calls[0][0]).toBe("/api/v2/operations/events/" + event.public_id);
-      expect(read.mock.calls[0][1].headers.Authorization).toBe("Bearer synthetic-token");
+      const assignmentCalls = read.mock.calls.filter(([path]) => path !== "/api/v1/registration-options");
+      expect(assignmentCalls).toHaveLength(1);
+      expect(assignmentCalls[0][0]).toBe("/api/v2/operations/events/" + event.public_id);
+      expect(assignmentCalls[0][1].headers.Authorization).toBe("Bearer synthetic-token");
       expect(runtime.withVerifiedAccount).not.toHaveBeenCalled();
       expect(verifyIdentity).toHaveBeenCalledTimes(2);
       expect(api.submitOfflineBatch).toHaveBeenCalledTimes(1);
@@ -180,7 +181,8 @@ describe("managed Leader manual sync after restoring a saved token", () => {
     try {
       await user.click(screen.getAllByRole("button", { name: "Sync this event" })[0]);
       expect(await screen.findByRole("alert")).toHaveTextContent("Your Leader account is not assigned");
-      expect(read).toHaveBeenCalledTimes(1);
+      const assignmentCalls = read.mock.calls.filter(([path]) => path !== "/api/v1/registration-options");
+      expect(assignmentCalls).toHaveLength(1);
       expect(verifyIdentity).toHaveBeenCalledTimes(1);
       expect(api.submitOfflineBatch).not.toHaveBeenCalled();
       expect(api.getOfflineBatch).not.toHaveBeenCalled();
@@ -198,7 +200,7 @@ describe("managed Leader manual sync after restoring a saved token", () => {
     try {
       await user.click(screen.getByRole("button", { name: "Manually sync selected event" }));
       expect(await screen.findByRole("alert")).toHaveTextContent("The selected account or permissions changed");
-      expect(read).not.toHaveBeenCalled();
+      expect(read.mock.calls.filter(([path]) => path !== "/api/v1/registration-options")).toHaveLength(0);
       expect(api.submitOfflineBatch).not.toHaveBeenCalled();
       expect((await store.drafts(actor)).every((row) => row.state === "pending_sync")).toBe(true);
     } finally {

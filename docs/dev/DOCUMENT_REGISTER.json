@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-15T21:06:10.851724+00:00",
-  "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證",
-  "document_count": 433,
+  "reviewed_at": "2026-11-17T08:11:31.183900+00:00",
+  "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard",
+  "document_count": 442,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -107,7 +107,7 @@
     {
       "document_id": "PUB-DOC-SPLIT-002",
       "path": "backend/README.md",
-      "revision": 9,
+      "revision": 10,
       "owner": "Benjamin Dev workflow",
       "status": "draft",
       "revision_history": [
@@ -166,13 +166,20 @@
           "size_bytes": 30919,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 9,
+          "sha256": "9c905d996f4f34fe6a97ef42c54d45f0b148abe467cf3371e84a8a8cb8c3c583",
+          "size_bytes": 32615,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "9c905d996f4f34fe6a97ef42c54d45f0b148abe467cf3371e84a8a8cb8c3c583",
-      "size_bytes": 32615
+      "sha256": "f89ff678476c95336f6c8aa8438c11bc18bc3b62ea0d815354e442ed9672ca54",
+      "size_bytes": 35271
     },
     {
       "document_id": "DOC-06",
@@ -309,7 +316,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 54,
+      "revision": 55,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -653,6 +660,13 @@
           "size_bytes": 46541,
           "superseded_at": "2026-11-15T21:06:10.851724+00:00",
           "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
+        },
+        {
+          "revision": 54,
+          "sha256": "8284aaae701003a04465173d376cd2a484ce02f837f8d072227c9ec11b4dc24c",
+          "size_bytes": 47330,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "import_lineage": {
@@ -665,8 +679,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "8284aaae701003a04465173d376cd2a484ce02f837f8d072227c9ec11b4dc24c",
-      "size_bytes": 47330,
+      "sha256": "a0b2898fea307a264401d8769fdbdfe3d9482ecb92d55b0e74b02b01855247fa",
+      "size_bytes": 49271,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -2897,7 +2911,7 @@
     {
       "document_id": "FE-LIVE-20261014-021",
       "path": "backend/src/participants/models.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
       "revision_history": [
@@ -2914,14 +2928,21 @@
           "size_bytes": 1712,
           "superseded_at": "2026-11-01T22:33:44.186890+00:00",
           "reason": "Record repaired Phase2 Backend acceptance, native evidence and separate Frontend dependency"
+        },
+        {
+          "revision": 3,
+          "sha256": "207520ff04a7ae35ff138f8fe1eb1b091ed9d65f405badd83fda96701670fba4",
+          "size_bytes": 1721,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "207520ff04a7ae35ff138f8fe1eb1b091ed9d65f405badd83fda96701670fba4",
-      "size_bytes": 1721
+      "sha256": "8ec5710e4f58e01128bdcee5bffacfdea814131a40f6a606349eeda555f2536e",
+      "size_bytes": 1730
     },
     {
       "document_id": "FE-LIVE-20261014-022",
@@ -3099,16 +3120,24 @@
     {
       "document_id": "FE-LIVE-20261014-031",
       "path": "backend/tests/conftest.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Austin backend source; Benjamin contract-test correction",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "4a642c7e37bbce4f37152ce361aa44cb3979346bcad67ab8bfea1b5d607ad74e",
+          "size_bytes": 2027,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "BACKEND-CODE-20261013",
         "USER-FE-LIVE-20261014"
       ],
-      "sha256": "4a642c7e37bbce4f37152ce361aa44cb3979346bcad67ab8bfea1b5d607ad74e",
-      "size_bytes": 2027
+      "sha256": "919979c1e67e695e67355f489d5ca4c0dd82fd352fbacb3831302376c95d1a29",
+      "size_bytes": 2198
     },
     {
       "document_id": "FE-LIVE-20261014-032",
@@ -3405,7 +3434,7 @@
     {
       "document_id": "FE-LIVE-20261014-045",
       "path": "frontend/live/api.mjs",
-      "revision": 8,
+      "revision": 9,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -3457,14 +3486,21 @@
           "size_bytes": 18145,
           "superseded_at": "2026-10-27T06:50:48.566718+00:00",
           "reason": "Record bounded PR38 repair and normalize touched Python CRLF so strict git diff checks pass"
+        },
+        {
+          "revision": 8,
+          "sha256": "6ef01bc022400f92122de320be9e55915d44a0b974f9448f27b654213f4eca33",
+          "size_bytes": 18394,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-FE-LIVE-20261014",
         "BACKEND-CODE-20261013"
       ],
-      "sha256": "6ef01bc022400f92122de320be9e55915d44a0b974f9448f27b654213f4eca33",
-      "size_bytes": 18394
+      "sha256": "89a1d1cd7bfbf99950d5b819034b6a54b3d81aa3e61caff46c9ca608415c8596",
+      "size_bytes": 18395
     },
     {
       "document_id": "FE-LIVE-20261014-046",
@@ -4141,7 +4177,7 @@
     {
       "document_id": "FE-W7-20261020-005",
       "path": "frontend/live/registration.html",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -4158,17 +4194,24 @@
           "size_bytes": 6201,
           "superseded_at": "2026-10-27T02:46:10.262483+00:00",
           "reason": "Record authorized Austin-only Frontend integration, native successes and Backend blockers; retain UI_ONLY history and reviewed merged payload"
+        },
+        {
+          "revision": 3,
+          "sha256": "6a3baa989a162683b3cb3523d8108038350298d438380c2ea1e6fdcee780ffae",
+          "size_bytes": 6311,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [],
-      "sha256": "6a3baa989a162683b3cb3523d8108038350298d438380c2ea1e6fdcee780ffae",
-      "size_bytes": 6311,
+      "sha256": "e0bbf1ec894b3f641dc656865e00a97fcb1b743f328aeffcb3361a40aceec2b9",
+      "size_bytes": 6312,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
       "document_id": "FE-W7-20261020-006",
       "path": "frontend/live/registration.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -4178,23 +4221,38 @@
           "size_bytes": 6602,
           "superseded_at": "2026-10-20T06:38:57.718672+00:00",
           "reason": "Add explicit no-account Guest registration and bounded author UI API DB evidence without changing Backend"
+        },
+        {
+          "revision": 2,
+          "sha256": "1f47d9feb38441db98ce71ff0f19592e87bc245717aa1df19d7f4dd48e55922b",
+          "size_bytes": 12450,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [],
-      "sha256": "1f47d9feb38441db98ce71ff0f19592e87bc245717aa1df19d7f4dd48e55922b",
-      "size_bytes": 12450,
+      "sha256": "bdfb7a0dc00610cd086b95730d53618227d120c8a09b606f5ed7eb07a58a73a6",
+      "size_bytes": 13245,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
       "document_id": "FE-W7-20261020-007",
       "path": "frontend/live/tests/w7.test.mjs",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin frontend",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "73ce5070ad1d7c7223f95b35ec5bdfef3e1a805e0d9e252c7a76f01e772c0b38",
+          "size_bytes": 24360,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [],
-      "sha256": "73ce5070ad1d7c7223f95b35ec5bdfef3e1a805e0d9e252c7a76f01e772c0b38",
-      "size_bytes": 24360,
+      "sha256": "c29a1b31516b19577009e32de99ecbac91e11b9433c1db8c3c139ee9f82e8280",
+      "size_bytes": 24438,
       "source_note": "User W7 stage-2 bounded frontend authorization; source/dependency versions in active task. No approval inferred."
     },
     {
@@ -4369,7 +4427,7 @@
     {
       "document_id": "FE-P1-20261020-167",
       "path": "frontend/live/tests/guest-registration.test.mjs",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Frontend",
       "status": "working-baseline",
       "revision_history": [
@@ -4379,13 +4437,20 @@
           "size_bytes": 30461,
           "superseded_at": "2026-10-27T06:50:48.566718+00:00",
           "reason": "Record bounded PR38 repair and normalize touched Python CRLF so strict git diff checks pass"
+        },
+        {
+          "revision": 2,
+          "sha256": "5ed1e9d194a52cae287e2163f12e76c32d5fe14c25ebedfd64280cf8a2ac2c54",
+          "size_bytes": 30871,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-FE-P0-P1-20261020"
       ],
-      "sha256": "5ed1e9d194a52cae287e2163f12e76c32d5fe14c25ebedfd64280cf8a2ac2c54",
-      "size_bytes": 30871
+      "sha256": "0e1ceee1a9c5ba7ed5cd991d40a620afe173174a30a0bfe0cae1d446401f6555",
+      "size_bytes": 31375
     },
     {
       "document_id": "FE-P1-20261020-168",
@@ -4528,7 +4593,7 @@
     {
       "document_id": "AUSTIN27-005",
       "path": "backend/src/offline_sync/schemas.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Austin Backend",
       "status": "working-baseline",
       "revision_history": [
@@ -4538,13 +4603,20 @@
           "size_bytes": 1316,
           "superseded_at": "2026-11-01T22:33:44.186890+00:00",
           "reason": "Record repaired Phase2 Backend acceptance, native evidence and separate Frontend dependency"
+        },
+        {
+          "revision": 2,
+          "sha256": "a568cac7ed5910aa63d150ab552ce6834da23446d8aca4939d47796aae8e0381",
+          "size_bytes": 1339,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
       ],
-      "sha256": "a568cac7ed5910aa63d150ab552ce6834da23446d8aca4939d47796aae8e0381",
-      "size_bytes": 1339
+      "sha256": "c66e49388dec5aa6c44e82d77ac1d51eda9fc418d39c14caf51da4440c738e6d",
+      "size_bytes": 1555
     },
     {
       "document_id": "AUSTIN27-006",
@@ -4575,7 +4647,7 @@
     {
       "document_id": "AUSTIN27-008",
       "path": "backend/src/registrations/models.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Austin Backend",
       "status": "working-baseline",
       "revision_history": [
@@ -4592,18 +4664,25 @@
           "size_bytes": 3998,
           "superseded_at": "2026-11-01T22:33:44.186890+00:00",
           "reason": "Record repaired Phase2 Backend acceptance, native evidence and separate Frontend dependency"
+        },
+        {
+          "revision": 3,
+          "sha256": "0479a532d418bd9c596451a465f337c924ae4cf5d4f0aa8210f5ee7f41db22f3",
+          "size_bytes": 4025,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
       ],
-      "sha256": "0479a532d418bd9c596451a465f337c924ae4cf5d4f0aa8210f5ee7f41db22f3",
-      "size_bytes": 4025
+      "sha256": "ae80f0318bfad584e8b5f8d35eeb05d212868f8e197d6162dabc5dd81bee70b6",
+      "size_bytes": 5420
     },
     {
       "document_id": "AUSTIN27-009",
       "path": "backend/src/registrations/router.py",
-      "revision": 5,
+      "revision": 6,
       "owner": "Austin Backend",
       "status": "working-baseline",
       "revision_history": [
@@ -4634,18 +4713,25 @@
           "size_bytes": 8209,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 5,
+          "sha256": "d851163e1d70acef4d722f6c218aec9b45910a424633dd0bee20a92a27f068b5",
+          "size_bytes": 8269,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
       ],
-      "sha256": "d851163e1d70acef4d722f6c218aec9b45910a424633dd0bee20a92a27f068b5",
-      "size_bytes": 8269
+      "sha256": "942a7b5004cdfefa11f1bd9da21557782d8a79fb11fd12df6ec5aa218df52506",
+      "size_bytes": 8548
     },
     {
       "document_id": "AUSTIN27-010",
       "path": "backend/src/registrations/schemas.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Austin Backend",
       "status": "working-baseline",
       "revision_history": [
@@ -4662,18 +4748,25 @@
           "size_bytes": 1597,
           "superseded_at": "2026-11-01T22:33:44.186890+00:00",
           "reason": "Record repaired Phase2 Backend acceptance, native evidence and separate Frontend dependency"
+        },
+        {
+          "revision": 3,
+          "sha256": "2ff7f726c17cfca33b3fc2b081207e68b89f14791717c8e4fa86836b250558c5",
+          "size_bytes": 1860,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
       ],
-      "sha256": "2ff7f726c17cfca33b3fc2b081207e68b89f14791717c8e4fa86836b250558c5",
-      "size_bytes": 1860
+      "sha256": "5c956573d75125aff89766f82647620048396fab68456f9eb0abb351f05a9046",
+      "size_bytes": 2340
     },
     {
       "document_id": "AUSTIN27-011",
       "path": "backend/src/registrations/service.py",
-      "revision": 6,
+      "revision": 7,
       "owner": "Austin Backend",
       "status": "working-baseline",
       "revision_history": [
@@ -4711,13 +4804,20 @@
           "size_bytes": 24666,
           "superseded_at": "2026-11-03T08:30:08.732383+00:00",
           "reason": "R3 整合已交權帳戶 FE/BE、proxy、CI 隔離修復、撤權及 migration guard；原件證據已對帳，獨立 native GREEN 仍受阻"
+        },
+        {
+          "revision": 6,
+          "sha256": "1e37c3b1bcca3118246ebcdcdf6df4b85d3146db9181924b647bfc44ab03eed4",
+          "size_bytes": 24803,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ASTRA-AUSTIN-INTEGRATION-20261027"
       ],
-      "sha256": "1e37c3b1bcca3118246ebcdcdf6df4b85d3146db9181924b647bfc44ab03eed4",
-      "size_bytes": 24803
+      "sha256": "7348b4830d7ca2efeb935e14ea3d39e5421d9ea85474d95aeebce302f5e167cd",
+      "size_bytes": 24953
     },
     {
       "document_id": "AUSTIN27-012",
@@ -4873,28 +4973,44 @@
     {
       "document_id": "PR38-READINESS-02",
       "path": "backend/tests/test_demo_readiness.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra authorized Demo repair",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d6178b5f7fb3949c52133a1ff7394407e671bdd66bce5bfcf0b51ed29d378f11",
+          "size_bytes": 10968,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-PR38-DEMO-READINESS-20261027"
       ],
-      "sha256": "d6178b5f7fb3949c52133a1ff7394407e671bdd66bce5bfcf0b51ed29d378f11",
-      "size_bytes": 10968
+      "sha256": "4c5fab867e58f048b8371431e8a027e57fd0d35320083befdacc2f07dfa06f04",
+      "size_bytes": 10964
     },
     {
       "document_id": "PR38-READINESS-03",
       "path": "backend/tests/test_demo_readiness_native.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra authorized Demo repair",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "829ea5c129fc875f41b7a8a12acc621e03e48764344fa3ea3979e2cf1c5aeecf",
+          "size_bytes": 5781,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-PR38-DEMO-READINESS-20261027"
       ],
-      "sha256": "829ea5c129fc875f41b7a8a12acc621e03e48764344fa3ea3979e2cf1c5aeecf",
-      "size_bytes": 5781
+      "sha256": "e9e44b4b1d59b836dd7c3fcf8c72b7dc931e055a98e7a18587ff46ebc4261536",
+      "size_bytes": 5999
     },
     {
       "document_id": "PR38-READINESS-04",
@@ -4954,7 +5070,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 15,
+      "revision": 16,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5055,13 +5171,20 @@
           "size_bytes": 49101,
           "superseded_at": "2026-11-15T20:51:28.224492+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 15,
+          "sha256": "ae8bc5915389fe5ef5af87def4e946752e918ec4aa8782f15fc101614c23221b",
+          "size_bytes": 49267,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "ae8bc5915389fe5ef5af87def4e946752e918ec4aa8782f15fc101614c23221b",
-      "size_bytes": 49267
+      "sha256": "c2e480adb0a9b7f0636ea39aa3174e8adb7cb646b8aaf538ef1425de6bd71a62",
+      "size_bytes": 50266
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -5219,7 +5342,7 @@
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 7,
+      "revision": 8,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5264,13 +5387,20 @@
           "size_bytes": 37302,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 7,
+          "sha256": "8cc5c407ce971b1af59a0a3ec04a26367fc3c700aea9b540a44a052baf05cf49",
+          "size_bytes": 39050,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "8cc5c407ce971b1af59a0a3ec04a26367fc3c700aea9b540a44a052baf05cf49",
-      "size_bytes": 39050
+      "sha256": "d856ec2847c49fb864f0d10eb8b6319e5247e773992dc6d43389dc9933f1d762",
+      "size_bytes": 39032
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -5331,7 +5461,7 @@
     {
       "document_id": "ROSE-V2-8b91d6743535",
       "path": "frontend/rose-pulse-react/src/service.test.js",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5348,13 +5478,20 @@
           "size_bytes": 15165,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 3,
+          "sha256": "07fcad72191be6ac5603d44a0134677f5bdea5573602ae8bcb1c023d6dc6d4ac",
+          "size_bytes": 35749,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "07fcad72191be6ac5603d44a0134677f5bdea5573602ae8bcb1c023d6dc6d4ac",
-      "size_bytes": 35749
+      "sha256": "91a5da70a02cfbf1e5c6c560922492df5cbb2c1b8159006b31916c1e0f3bd621",
+      "size_bytes": 35745
     },
     {
       "document_id": "ROSE-V2-592e6fa111ee",
@@ -5429,7 +5566,7 @@
     {
       "document_id": "ROSE-V2-227b578be09b",
       "path": "frontend/rose-pulse-react/src/test-setup.js",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5446,13 +5583,20 @@
           "size_bytes": 508,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 3,
+          "sha256": "435f03dca16cc393f13b8c7a35f4f0089e1f5d96f16b385bba634b1bdd36bf29",
+          "size_bytes": 798,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "435f03dca16cc393f13b8c7a35f4f0089e1f5d96f16b385bba634b1bdd36bf29",
-      "size_bytes": 798
+      "sha256": "55a5809b0ce18b3fee60710cb9c249cba7aa6e038ddc37c83751d90a187dd2d5",
+      "size_bytes": 1423
     },
     {
       "document_id": "ROSE-V2-07f1f563f112",
@@ -5610,7 +5754,7 @@
     {
       "document_id": "ROSE-P2-5b05cf1fff2a",
       "path": "backend/src/phase2/sync.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5620,13 +5764,20 @@
           "size_bytes": 7976,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "12c1df166db0a2ff9bd663d4f3da967d260a6bfc9939c4afd21eda2e5829fcf6",
+          "size_bytes": 8537,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "12c1df166db0a2ff9bd663d4f3da967d260a6bfc9939c4afd21eda2e5829fcf6",
-      "size_bytes": 8537
+      "sha256": "c6cdb90e67699c2895f6b7e92889ee089eead9301fd4d813eb5950f3c7a2c606",
+      "size_bytes": 8612
     },
     {
       "document_id": "ROSE-P2-1e4601d87d7f",
@@ -5644,15 +5795,23 @@
     {
       "document_id": "ROSE-P2-2d407f07a3a8",
       "path": "backend/tests/test_phase2_native.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1c277142465fd6962cf52267fc5753736bbfa0cd414bfcd2e37f745b46790bab",
+          "size_bytes": 15697,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "1c277142465fd6962cf52267fc5753736bbfa0cd414bfcd2e37f745b46790bab",
-      "size_bytes": 15697
+      "sha256": "217c65fcc22c21af9e4ffad48583a69774630aad25b4c30b9118acce280a93c3",
+      "size_bytes": 15915
     },
     {
       "document_id": "ROSE-P2-2f116a184a87",
@@ -5722,15 +5881,23 @@
     {
       "document_id": "ROSE-P2-1091cd01ccc7",
       "path": "docs/dev/phase2/API_CONTRACT.json",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "e1643e47a78a5f6c04f9411e9193d39fe4b65c9d071a6a7d2aa8026f1fba1764",
+          "size_bytes": 12266,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "e1643e47a78a5f6c04f9411e9193d39fe4b65c9d071a6a7d2aa8026f1fba1764",
-      "size_bytes": 12266
+      "sha256": "f62a56deb560f579077ebfbe49e01d36e517e95a96dfdac1a86ff0f6a49208c1",
+      "size_bytes": 13162
     },
     {
       "document_id": "ROSE-P2-905e01a0036f",
@@ -6473,7 +6640,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 14,
+      "revision": 15,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6567,13 +6734,20 @@
           "size_bytes": 84249,
           "superseded_at": "2026-11-15T21:06:10.851724+00:00",
           "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
+        },
+        {
+          "revision": 14,
+          "sha256": "88ba4b5e25157ce841d6231d34dcbfc8f6612950b2928ac7a8756681b94fbf6f",
+          "size_bytes": 84297,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "88ba4b5e25157ce841d6231d34dcbfc8f6612950b2928ac7a8756681b94fbf6f",
-      "size_bytes": 84297
+      "sha256": "997e31ef0725de87b3f034d5a3d836ac0816627fce598140d5a072d25d94884e",
+      "size_bytes": 84753
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6626,7 +6800,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 14,
+      "revision": 15,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6720,44 +6894,67 @@
           "size_bytes": 87296,
           "superseded_at": "2026-11-15T21:06:10.851724+00:00",
           "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
+        },
+        {
+          "revision": 14,
+          "sha256": "20dc931f08d2150b70dc4928dfda4dfcc65ccb62e5892570d2551414aa58cf70",
+          "size_bytes": 87341,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "20dc931f08d2150b70dc4928dfda4dfcc65ccb62e5892570d2551414aa58cf70",
-      "size_bytes": 87341
+      "sha256": "90bbd1883e11005431d836adf3c0c462bc9072a443260129e5a85d775ccef513",
+      "size_bytes": 87831
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
       "path": "frontend/rose-pulse-react/src/minimum-registration.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "edc583d4e08819bc9a71b91235b1a53df847a23d8db89a536f3c8f6de90129a4",
+          "size_bytes": 4220,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "edc583d4e08819bc9a71b91235b1a53df847a23d8db89a536f3c8f6de90129a4",
-      "size_bytes": 4220
+      "sha256": "72d6b05a1c106d4f2fe69ec6cca2e2e88438c74b585b6aaf3c9f1c79f75823e8",
+      "size_bytes": 4381
     },
     {
       "document_id": "ROSE-P2-a30383c34683",
       "path": "frontend/rose-pulse-react/src/minimum-registration.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "5d2e8340d93c1efcfac484071f569be2a836df952b03d0b9e122e8ff99f96514",
+          "size_bytes": 1033,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "5d2e8340d93c1efcfac484071f569be2a836df952b03d0b9e122e8ff99f96514",
-      "size_bytes": 1033
+      "sha256": "7059295db8a0fa7a2adb02aebdd15dbc4ab5fa5ffb21b690a57c33441277f9d2",
+      "size_bytes": 1029
     },
     {
       "document_id": "ROSE-P2-4d5ba300321d",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
-      "revision": 5,
+      "revision": 6,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6788,18 +6985,25 @@
           "size_bytes": 28693,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 5,
+          "sha256": "ddba0a40f1b20998e143ac28df9826295b542c9b4aa400382cef244d1a0411dd",
+          "size_bytes": 28780,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "ddba0a40f1b20998e143ac28df9826295b542c9b4aa400382cef244d1a0411dd",
-      "size_bytes": 28780
+      "sha256": "7e8fdd8e394d6aec85490d0afd4e7b26b380e2d6bfc4fb37564fc73a75649572",
+      "size_bytes": 28681
     },
     {
       "document_id": "ROSE-P2-a74207d91712",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.test.jsx",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6823,13 +7027,20 @@
           "size_bytes": 6455,
           "superseded_at": "2026-11-15T01:52:33.556490+00:00",
           "reason": "Independent PR66 review found managed Leader manual-sync read regression after restoring a valid bearer; use existing freshOfflineIdentity guard and add no-replay and role-assignment tests"
+        },
+        {
+          "revision": 4,
+          "sha256": "6df9637ab3e742e96fa8092a5734ea0c7437ad36465e0eaf04c7d8279436c53e",
+          "size_bytes": 9882,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "6df9637ab3e742e96fa8092a5734ea0c7437ad36465e0eaf04c7d8279436c53e",
-      "size_bytes": 9882
+      "sha256": "d07d619507714cbbbff6516c41800f5d6f7ba23f89adc6c445b47ab5f88d7a6d",
+      "size_bytes": 10160
     },
     {
       "document_id": "ROSE-P2-7d0ca7caa536",
@@ -6860,7 +7071,7 @@
     {
       "document_id": "ROSE-P2-86fc1a8cec1e",
       "path": "frontend/rose-pulse-react/src/offline/queue.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6870,26 +7081,41 @@
           "size_bytes": 15459,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "e9cd73065b6b4d8714f7405a607882a0f61165a8540c5f12b6ec9d4e2e1d7d73",
+          "size_bytes": 17215,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "e9cd73065b6b4d8714f7405a607882a0f61165a8540c5f12b6ec9d4e2e1d7d73",
-      "size_bytes": 17215
+      "sha256": "126d07e96885804556f408ec77233b076ea8fffde1a9cc2ba8718189e5434ddc",
+      "size_bytes": 17325
     },
     {
       "document_id": "ROSE-P2-94b0d36b0565",
       "path": "frontend/rose-pulse-react/src/offline/queue.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c70b28784df6723521923386d06dc5fd8ee704cda0395e409fb329de56e33e5d",
+          "size_bytes": 7625,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "c70b28784df6723521923386d06dc5fd8ee704cda0395e409fb329de56e33e5d",
-      "size_bytes": 7625
+      "sha256": "0821bed0f5df9a7bb2526128743700fb49e8f04132ff88d5c8d2cfe4028e05c6",
+      "size_bytes": 7621
     },
     {
       "document_id": "ROSE-P2-b7b597a64062",
@@ -6920,7 +7146,7 @@
     {
       "document_id": "ROSE-P2-43290066b2df",
       "path": "frontend/rose-pulse-react/src/phase2-api.js",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6937,26 +7163,41 @@
           "size_bytes": 18246,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 3,
+          "sha256": "a9a4a55a39666bf61bc835e3a6ed62f43bb26de6212882da0143adfbc474eba0",
+          "size_bytes": 18982,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "a9a4a55a39666bf61bc835e3a6ed62f43bb26de6212882da0143adfbc474eba0",
-      "size_bytes": 18982
+      "sha256": "c5d24c52c0d8be2d12d14f7a24e4bf3c8ce452edc2ad3c51c353f90bf35917b4",
+      "size_bytes": 18983
     },
     {
       "document_id": "ROSE-P2-b56089bda207",
       "path": "frontend/rose-pulse-react/src/phase2-api.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "3e53dde7c6e7af3b4e06df00150e34779beeb907cd819c3f54ab6ed4e1926e40",
+          "size_bytes": 5559,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "3e53dde7c6e7af3b4e06df00150e34779beeb907cd819c3f54ab6ed4e1926e40",
-      "size_bytes": 5559
+      "sha256": "d137b962af22c696654704313f4346d31694332aa4599a0150f82d51241f6030",
+      "size_bytes": 5555
     },
     {
       "document_id": "ROSE-P2-fb47741f4205",
@@ -7416,7 +7657,7 @@
     {
       "document_id": "DEMO-DOC-6532F7F07E4BB796",
       "path": "backend/src/journey/router.py",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7440,13 +7681,20 @@
           "size_bytes": 51382,
           "superseded_at": "2026-11-15T17:04:48.072661+00:00",
           "reason": "整合已停止 Sol writers 的 R4 及 Austin notification 成果，記錄原始失敗和範圍證據；未升格 accepted"
+        },
+        {
+          "revision": 4,
+          "sha256": "a26f5dad9e79f2b844d712a7cfbf7f22affbeeecf0d44a2d013a520a3c3965cd",
+          "size_bytes": 52774,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a26f5dad9e79f2b844d712a7cfbf7f22affbeeecf0d44a2d013a520a3c3965cd",
-      "size_bytes": 52774
+      "sha256": "3bdc86c1c1111e55e86b3dd26db6b65748d1738adc216cccd278f5a32a1d870e",
+      "size_bytes": 52885
     },
     {
       "document_id": "DEMO-DOC-807252A5DD52CAE8",
@@ -7540,7 +7788,7 @@
     {
       "document_id": "DEMO-DOC-DEECC58DE1D1D511",
       "path": "docs/dev/demo-journey/API_CONTRACT.md",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7564,13 +7812,20 @@
           "size_bytes": 23923,
           "superseded_at": "2026-11-08T19:12:46.213071+00:00",
           "reason": "Record bounded W9 identity refusal repair, source-qualified evidence and unchanged acceptance gaps"
+        },
+        {
+          "revision": 4,
+          "sha256": "5e79a4da3679672bac6ed8891e2408b8dffb6bfe9717cd95a5f9f837cfe43161",
+          "size_bytes": 24553,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5e79a4da3679672bac6ed8891e2408b8dffb6bfe9717cd95a5f9f837cfe43161",
-      "size_bytes": 24553
+      "sha256": "da1a3c4b3a94147fae6baf7902209d26e0c4a3acf51caafd6aab1e3131ee9410",
+      "size_bytes": 25501
     },
     {
       "document_id": "DEMO-DOC-E16B1F8BCCCAA68A",
@@ -7727,7 +7982,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 11,
+      "revision": 12,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7800,18 +8055,25 @@
           "size_bytes": 49274,
           "superseded_at": "2026-11-15T21:06:10.851724+00:00",
           "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
+        },
+        {
+          "revision": 11,
+          "sha256": "a946609fb10e069cdea6f2aa01ec3a7b38ac50ad11a673c58defa13477db8b6a",
+          "size_bytes": 49262,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a946609fb10e069cdea6f2aa01ec3a7b38ac50ad11a673c58defa13477db8b6a",
-      "size_bytes": 49262
+      "sha256": "9742d4482a7656ced9390a45a36f53409ed5cc232494f98261186b1da8722ff7",
+      "size_bytes": 49298
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 7,
+      "revision": 8,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7856,13 +8118,20 @@
           "size_bytes": 32183,
           "superseded_at": "2026-11-15T21:06:10.851724+00:00",
           "reason": "修正 V2 registration 快捷按鈕與 disclosure 同名，記錄原生 Browser CI 失敗及針對驗證"
+        },
+        {
+          "revision": 7,
+          "sha256": "316c1ee65e22970904d8d1ab711565ccc09b66e836f33be0954c3bbd2aef68b1",
+          "size_bytes": 32845,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "316c1ee65e22970904d8d1ab711565ccc09b66e836f33be0954c3bbd2aef68b1",
-      "size_bytes": 32845
+      "sha256": "f73283dfa5f2e0e41858aabb0b898387e2773ea45a20519ad06c1d564403927f",
+      "size_bytes": 32814
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -8065,7 +8334,7 @@
     {
       "document_id": "DEMO-DOC-D79E0FEF840573FD",
       "path": "scripts/demo_ci.py",
-      "revision": 7,
+      "revision": 10,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8110,13 +8379,34 @@
           "size_bytes": 43166,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 7,
+          "sha256": "5c3c40845a6661c8fbceb847f17d24f8ee96b7bab3ebdf55c2323c8879efacec",
+          "size_bytes": 43221,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 8,
+          "sha256": "20abdc943f4342af471d800ab63babb0f1b456db9168a55d14a071f0646775fc",
+          "size_bytes": 44047,
+          "superseded_at": "2026-11-17T07:55:40.855847+00:00",
+          "reason": "補真實 Browser 分類選單 EN BM 與空碼表阻擋驗證，保留原必要 CI gates"
+        },
+        {
+          "revision": 9,
+          "sha256": "6742888270d4fba9e94083b63180dafe82d67cf35510e27633af57ddc97ab252",
+          "size_bytes": 44315,
+          "superseded_at": "2026-11-17T08:11:31.183900+00:00",
+          "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "5c3c40845a6661c8fbceb847f17d24f8ee96b7bab3ebdf55c2323c8879efacec",
-      "size_bytes": 43221
+      "sha256": "d0268b67946cdbff406ef64970c25f4df106b00ddec32ea89f336ab4509ea3f2",
+      "size_bytes": 44106
     },
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
@@ -8259,15 +8549,23 @@
     {
       "document_id": "DEMO-DOC-B7C627704688A7CA",
       "path": "backend/tests/test_accounts_native.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "7791574e99db8b2f39771a8b9e538e433f6e4dd09d18a97f179dcacd99125cc5",
+          "size_bytes": 20201,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "7791574e99db8b2f39771a8b9e538e433f6e4dd09d18a97f179dcacd99125cc5",
-      "size_bytes": 20201
+      "sha256": "4dcbba3f9736461f96a58ca6643eecbcf34cbbdf8e9620c682d61b55e68081bb",
+      "size_bytes": 20423
     },
     {
       "document_id": "DEMO-DOC-D63EF9396F976165",
@@ -8419,7 +8717,7 @@
     {
       "document_id": "DEMO-DOC-580A20D516BCA136",
       "path": "scripts/demo_browser_e2e.cjs",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8443,13 +8741,20 @@
           "size_bytes": 21077,
           "superseded_at": "2026-11-14T14:40:55.367332+00:00",
           "reason": "PR65 second hosted CI proved collapsed Demo tools also block original offline controls; reusable visible-summary reveal with all business assertions retained"
+        },
+        {
+          "revision": 4,
+          "sha256": "a496ecd62cf4fced2d0308fc637934f53f398334bf918efc6543fa2bb46990ae",
+          "size_bytes": 21294,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a496ecd62cf4fced2d0308fc637934f53f398334bf918efc6543fa2bb46990ae",
-      "size_bytes": 21294
+      "sha256": "4aa2e51351511b49552e98e20b6e0b5aa8b6eca682da81cdbe494adbbaa66463",
+      "size_bytes": 21316
     },
     {
       "document_id": "DEMO-DOC-E37020DE44D2D004",
@@ -8467,7 +8772,7 @@
     {
       "document_id": "DEMO-DOC-B62952E8790263E9",
       "path": "backend/tests/test_journey_attribution.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8477,18 +8782,25 @@
           "size_bytes": 19680,
           "superseded_at": "2026-11-03T14:04:15.594891+00:00",
           "reason": "R3 修正 PostgreSQL fixture username 長度；保留原52失敗及74 controlled結果，對帳8項獨立反例與來源關口"
+        },
+        {
+          "revision": 2,
+          "sha256": "d92bb9f8a415edab1398d552590b13d967bcf05f2b53f4818dcb44be6d5bc29c",
+          "size_bytes": 19745,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d92bb9f8a415edab1398d552590b13d967bcf05f2b53f4818dcb44be6d5bc29c",
-      "size_bytes": 19745
+      "sha256": "9716eee1f0500093884a297511fb84f27ad9908593ea67690fb1664ecd57c9a9",
+      "size_bytes": 19741
     },
     {
       "document_id": "DEMO-DOC-8563497029E7B33E",
       "path": "backend/tests/test_journey_attribution_native.py",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8498,26 +8810,41 @@
           "size_bytes": 11809,
           "superseded_at": "2026-11-03T13:16:58.174118+00:00",
           "reason": "R3 整合已交權身份隔離、Leader 統計、native fixture及synthetic CI；收斂 review test 查詢，保留40AC及原失敗，記錄 Owner 英文女聲樣本認可"
+        },
+        {
+          "revision": 2,
+          "sha256": "06ee909d5c9bdcb314f554e6c0325dc5a75f7b6faef82aab79acb3f368becce4",
+          "size_bytes": 11809,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "06ee909d5c9bdcb314f554e6c0325dc5a75f7b6faef82aab79acb3f368becce4",
-      "size_bytes": 11809
+      "sha256": "fb02cd1e8c37e207ac46d44dca477162ddf593824dff50db71ce28d04e4a6745",
+      "size_bytes": 12047
     },
     {
       "document_id": "DEMO-DOC-84DA8C07B56159D3",
       "path": "backend/tests/test_journey_acceptance_edges.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b2e9c5746490f5d5301d1d50eadcc8d04252a0b90b68c6d9cef026376e260053",
+          "size_bytes": 26375,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "b2e9c5746490f5d5301d1d50eadcc8d04252a0b90b68c6d9cef026376e260053",
-      "size_bytes": 26375
+      "sha256": "0d4aca4a6e95fdc392b52955f5fd1bcd90611277f0e917c65def212ae70078d1",
+      "size_bytes": 26371
     },
     {
       "document_id": "DEMO-DOC-D4BD4DCE4C474466",
@@ -8871,7 +9198,7 @@
     {
       "document_id": "FE-DEMO-V2-APPLICATION-FIELDS",
       "path": "frontend/rose-pulse-react/src/ApplicationFields.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -8881,13 +9208,20 @@
           "size_bytes": 4129,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "8b367164882e5ca325bfc1b8a0420fb386278adb889616a74d0476d5ad3acaf5",
+          "size_bytes": 6534,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8b367164882e5ca325bfc1b8a0420fb386278adb889616a74d0476d5ad3acaf5",
-      "size_bytes": 6534
+      "sha256": "8a7a744a091818fbeef83b420273306c1012ce13e970cf22d650cf5374683f02",
+      "size_bytes": 6694
     },
     {
       "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS",
@@ -8913,7 +9247,7 @@
     {
       "document_id": "FE-DEMO-V2-CONTROLS-TEST",
       "path": "frontend/rose-pulse-react/src/DemoControls.test.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -8923,13 +9257,20 @@
           "size_bytes": 2200,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "87d4b0dff9735350c6d05e21fd8d57c1015d87e8815fe6e3c0f93c0073f5a7f8",
+          "size_bytes": 11095,
+          "superseded_at": "2026-11-17T07:50:18.008318+00:00",
+          "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "87d4b0dff9735350c6d05e21fd8d57c1015d87e8815fe6e3c0f93c0073f5a7f8",
-      "size_bytes": 11095
+      "sha256": "3fb9694a285ffddbdffb7f633a079f01c0a25afd55b13e6c4268c804364f277a",
+      "size_bytes": 11242
     },
     {
       "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS-TEST-20261115",
@@ -9684,6 +10025,146 @@
       ],
       "sha256": "685c580d906d0043389826c62f2ff9799df81c83b7a602f5b0477ef91670b267",
       "size_bytes": 3900
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-8ED9482E90AB2469",
+      "path": "backend/scripts/migrate_registration_groups.py",
+      "revision": 1,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "d11a399c89473d08a6693b61a1462c440bee353870769905ae528b4ee4797de8",
+      "size_bytes": 3935
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-952A08D0965FAFB9",
+      "path": "backend/src/registrations/options.py",
+      "revision": 1,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "ecc3ad6b9cb8217b0e752ffa47e49041dba92c1ca6d04ee67976d37bab12c803",
+      "size_bytes": 1028
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-12BCB910585D1830",
+      "path": "backend/tests/group_fixtures.py",
+      "revision": 2,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "864ac6edc6851f2b4a8bc03a6c990e5b54352a40249f0016c5c08643919fa6ea",
+          "size_bytes": 599,
+          "superseded_at": "2026-11-17T08:11:31.183900+00:00",
+          "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "93eb0f2258dd5e81283802cc4504d8235d11c39143ac0920d39c93505ec8ba54",
+      "size_bytes": 2026
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-E5C15E0C58663F6F",
+      "path": "backend/tests/test_registration_groups.py",
+      "revision": 1,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "e06ad60da5fa7e219cf9bcdf5b233935f363dfd17d50de446b1e9761690c61e7",
+      "size_bytes": 5683
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-2299500FF44B9E29",
+      "path": "backend/tests/test_registration_groups_native.py",
+      "revision": 1,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "5362696a0ac6046077fb9b02c1d3ff5eda47565f2db5e19efb0087e68000a01a",
+      "size_bytes": 6510
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-35CAB442BC7B8763",
+      "path": "docs/dev/tasks/REGISTRATION-GROUPS-20261117.md",
+      "revision": 3,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "90abf5b775220e16a03b10c74f137c5fd20f847a3d3e03c337ce0c2721bdc7b5",
+          "size_bytes": 6671,
+          "superseded_at": "2026-11-17T07:55:40.855847+00:00",
+          "reason": "補真實 Browser 分類選單 EN BM 與空碼表阻擋驗證，保留原必要 CI gates"
+        },
+        {
+          "revision": 2,
+          "sha256": "d15abd98ef6dba64c632b856bc1172ecbbf025b14ee9851d223af2d9de643c4a",
+          "size_bytes": 7630,
+          "superseded_at": "2026-11-17T08:11:31.183900+00:00",
+          "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard"
+        }
+      ],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "65f13e0ce19737cb6c9566b8dd13028f7b72a419bef84fb6c2a78281ebaddf51",
+      "size_bytes": 8608
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-500AD0B0F853EA69",
+      "path": "frontend/rose-pulse-react/src/RegistrationGroups.jsx",
+      "revision": 1,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "9fa3fa99ccd31fb5ee551f1068e4425448c4350d4a3a6f5cc6c848f31bfd8499",
+      "size_bytes": 2387
+    },
+    {
+      "document_id": "PUB-GROUPS-20261117-B6D6D32D5A23E731",
+      "path": "frontend/rose-pulse-react/src/RegistrationGroups.test.jsx",
+      "revision": 1,
+      "owner": "NU Owner classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "538e5e6fea93afeef4f952a107ac67e48113cfcf03097c886ca986cb57931189",
+      "size_bytes": 2141
+    },
+    {
+      "document_id": "PUB-GROUPS-BROWSER-20261117",
+      "path": "scripts/registration_groups_browser.cjs",
+      "revision": 1,
+      "owner": "NU classification successor / sole Sol writer",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-PR-SCOPE"
+      ],
+      "sha256": "0746518daffb6b90d924f8b8f5c1026d130b0baae139621ce69cdc8fbed6de91",
+      "size_bytes": 5393
     }
   ]
 }

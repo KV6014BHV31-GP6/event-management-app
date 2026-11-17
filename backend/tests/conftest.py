@@ -28,6 +28,10 @@ async def setup_database():
     async with test_engine.begin() as conn:
         # Since the models are imported above, this will now successfully create 'users' and 'events'
         await conn.run_sync(Base.metadata.create_all)
+    async with TestingSessionLocal() as db:
+        from tests.group_fixtures import seed_group_options
+        await seed_group_options(db)
+        await db.commit()
     yield
     async with test_engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)

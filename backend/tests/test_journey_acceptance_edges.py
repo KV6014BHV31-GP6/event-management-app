@@ -232,7 +232,7 @@ async def window_case(client, db, monkeypatch, operation, edge):
     work = await state(db, 'event:' + case['event'].public_id)
     work.data = {**work.data, 'registration_opens_at': iso(opening), 'registration_closes_at': iso(closing),
                  'policy': {**work.data['policy'], 'checkin_opens_at': iso(opening), 'checkin_closes_at': iso(closing)}}
-    form = {'first_name': 'Synthetic', 'last_name': 'Window', 'gender': 'female', 'date_of_birth': '1990-01-01',
+    form = {'first_name': 'Synthetic', 'last_name': 'Window', 'gender': 'female', 'age_group_code': '18_29',
             'phone': 'SYNTHETIC', 'national_id': 'EDGE-' + str(uuid4())}
     attendance_id = str(uuid4())
     if operation == 'applications':
