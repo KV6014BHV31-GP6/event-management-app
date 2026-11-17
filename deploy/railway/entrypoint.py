@@ -135,6 +135,10 @@ def main():
     env = validate_environment()
     os.environ.update(env)
     sys.path.insert(0, str(ROOT / "backend"))
+    # Explicit, one-time staging-only Schema migration; never run it by default.
+    from registration_groups_staging import apply_registration_groups
+    result = asyncio.run(apply_registration_groups(env))
+    print('NU registration group staging: ' + result['status'], flush=True)
     asyncio.run(verify_or_initialize_fresh_db())
     # This explicit release operation is idempotent and keeps its immutable DB receipt.
     # The default remains no seed. Credentials never enter Node or request handlers.

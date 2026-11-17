@@ -32,6 +32,7 @@ COPY deploy/railway/seed-assets /opt/nu/deploy/railway/seed-assets
 COPY frontend/dev-server.mjs /opt/nu/frontend/dev-server.mjs
 COPY --from=web_build /build/frontend/rose-pulse-react/dist /opt/nu/web
 COPY deploy/railway/entrypoint.py /opt/nu/deploy/railway/entrypoint.py
+COPY deploy/railway/registration_groups_staging.py /opt/nu/deploy/railway/registration_groups_staging.py
 COPY deploy/railway/gateway.mjs /opt/nu/deploy/railway/gateway.mjs
 COPY deploy/railway/start.sh /opt/nu/deploy/railway/start.sh
 RUN chmod 755 /opt/nu/deploy/railway/start.sh \

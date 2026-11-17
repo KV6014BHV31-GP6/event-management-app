@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-17T08:11:31.183900+00:00",
-  "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard",
-  "document_count": 442,
+  "reviewed_at": "2026-11-17T11:55:01.986381+00:00",
+  "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB",
+  "document_count": 445,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -316,7 +316,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 55,
+      "revision": 56,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -667,6 +667,13 @@
           "size_bytes": 47330,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 55,
+          "sha256": "a0b2898fea307a264401d8769fdbdfe3d9482ecb92d55b0e74b02b01855247fa",
+          "size_bytes": 49271,
+          "superseded_at": "2026-11-17T11:55:01.986381+00:00",
+          "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
         }
       ],
       "import_lineage": {
@@ -679,8 +686,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "a0b2898fea307a264401d8769fdbdfe3d9482ecb92d55b0e74b02b01855247fa",
-      "size_bytes": 49271,
+      "sha256": "27e1ee46a81865dfca8aa0aaadc91d7cd19e33bedb261b5a7fbd664fc943a994",
+      "size_bytes": 50460,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -9327,7 +9334,7 @@
     {
       "document_id": "NU-RAILWAY-APP-DOCKERFILE-20261115",
       "path": "deploy/railway/Dockerfile",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -9337,13 +9344,20 @@
           "size_bytes": 1875,
           "superseded_at": "2026-11-15T17:02:31.271603+00:00",
           "reason": "本輪 NU Web release：整合 R4 視覺、source identity 及可對帳 synthetic staging seed；所有新增記錄維持 working-baseline"
+        },
+        {
+          "revision": 2,
+          "sha256": "142172b8663d9e09c989d6f2830896056d24c62dd9c39acf78ac2b3c8fb7da9b",
+          "size_bytes": 2269,
+          "superseded_at": "2026-11-17T11:55:01.986381+00:00",
+          "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
         }
       ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "142172b8663d9e09c989d6f2830896056d24c62dd9c39acf78ac2b3c8fb7da9b",
-      "size_bytes": 2269
+      "sha256": "1ec1e7a7b919b50bbe0f4bfaff7666d634b5f05f7b8aa1612fda63363ca4ae65",
+      "size_bytes": 2374
     },
     {
       "document_id": "NU-RAILWAY-DB-DOCKERFILE-20261115",
@@ -9361,7 +9375,7 @@
     {
       "document_id": "NU-RAILWAY-ENTRYPOINT-20261115",
       "path": "deploy/railway/entrypoint.py",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -9378,13 +9392,20 @@
           "size_bytes": 6860,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 3,
+          "sha256": "02e53940475771908c6cf770f472be7d98d87136545245e05016f7e68153a8b2",
+          "size_bytes": 6857,
+          "superseded_at": "2026-11-17T11:55:01.986381+00:00",
+          "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
         }
       ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "02e53940475771908c6cf770f472be7d98d87136545245e05016f7e68153a8b2",
-      "size_bytes": 6857
+      "sha256": "39c2487ffd53d0cad6902dec3083d26ba491cbe56d453c151ce256dcb93302e9",
+      "size_bytes": 7141
     },
     {
       "document_id": "NU-RAILWAY-HTTPS-GATEWAY-20261115",
@@ -9528,7 +9549,7 @@
     {
       "document_id": "PUB-WEB-20261116-4D23DD24FFB31466",
       "path": "deploy/railway/README.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9538,13 +9559,20 @@
           "size_bytes": 3834,
           "superseded_at": "2026-11-15T17:13:26.640466+00:00",
           "reason": "修正 seed public ID 契約、保留通知審查修復及原生審批阻塞界線"
+        },
+        {
+          "revision": 2,
+          "sha256": "202e53ea4c7b5e870430e5cf8034b4bb8afd83dc63753b2f2a035ad1c6b82707",
+          "size_bytes": 4161,
+          "superseded_at": "2026-11-17T11:55:01.986381+00:00",
+          "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "202e53ea4c7b5e870430e5cf8034b4bb8afd83dc63753b2f2a035ad1c6b82707",
-      "size_bytes": 4161
+      "sha256": "d2bd06ba9efb835e7394c2698ccee947a45797936792f182903643ad4564a1f1",
+      "size_bytes": 6712
     },
     {
       "document_id": "PUB-WEB-20261116-78E669006797B772",
@@ -10165,6 +10193,48 @@
       ],
       "sha256": "0746518daffb6b90d924f8b8f5c1026d130b0baae139621ce69cdc8fbed6de91",
       "size_bytes": 5393
+    },
+    {
+      "document_id": "REG-GROUP-STAGING-01",
+      "path": "deploy/railway/registration_groups_staging.py",
+      "revision": 1,
+      "owner": "Benjamin Developer / NU staging integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115",
+        "USER-ROSE-PULSE-V2-20261102"
+      ],
+      "sha256": "cb4dcabef62dd11a98a82438974d6ca08975a0e9a1650948c326a95897c4d326",
+      "size_bytes": 10131
+    },
+    {
+      "document_id": "REG-GROUP-STAGING-02",
+      "path": "deploy/railway/tests/test_registration_groups_staging.py",
+      "revision": 1,
+      "owner": "Benjamin Developer / NU staging integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115",
+        "USER-ROSE-PULSE-V2-20261102"
+      ],
+      "sha256": "1317c388e6d79e57dc89c39ad25b0c5f02db9641a45522dc64d8584eb3543b20",
+      "size_bytes": 4153
+    },
+    {
+      "document_id": "REG-GROUP-STAGING-03",
+      "path": "docs/dev/tasks/REGISTRATION-GROUPS-STAGING-20261117.md",
+      "revision": 1,
+      "owner": "Benjamin Developer / NU staging integration",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "USER-RAILWAY-DEPLOY-20261115",
+        "USER-ROSE-PULSE-V2-20261102"
+      ],
+      "sha256": "b884cade20e5f4625015a99f5395eee9924cf2c73f1a205e04ac28d46fe98ee1",
+      "size_bytes": 2378
     }
   ]
 }

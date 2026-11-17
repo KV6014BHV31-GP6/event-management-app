@@ -63,3 +63,45 @@ changes require no schema migration and the new records use existing tables.
 Do not restore the whole snapshot over newer legitimate writes. Investigate the
 specific stable IDs and original receipt before any data repair. The restricted
 snapshot is recovery evidence, not a public artifact.
+
+## One-time Age/Income Group activation for existing synthetic staging
+
+PR #70 changes NEW applications to a required age group and optional income
+group. An existing nonempty Railway database still has the legacy DOB NOT NULL
+columns and no lookup tables. Redeploying that code alone is not a migration:
+the launcher refuses partial schema rather than guessing or clearing data.
+
+The explicit staging successor is `registration_groups_staging.py`, invoked
+by the launcher **only** when
+`NU_STAGING_GROUPS_OPERATION=nu-staging-registration-groups-20261117-v1`.
+It additionally checks Railway staging identity, synthetic profile, existing
+database `nu_staging`, current non-superuser role, trusted HTTPS origin,
+no empty-DB initialization, and original legacy tables.
+
+The first invocation writes a private, mode-0600 **scoped legacy-column
+snapshot** under the existing mounted upload volume
+`/data/release-backups/registration-groups-20261117-before.json` with
+a SHA-256 readback. It is NOT a full PostgreSQL or provider-volume backup.
+The migration then takes short database locks, creates the two Austin lookup
+tables, adds nullable age FK, makes legacy DOB columns nullable without
+changing historical rows, and records a durable operation ID. The code
+fails closed on unknown schema, pre-existing reference taxonomy, changed
+legacy counts or missing backup. Receipt-proven repeats verify the stored
+backup/schema and do not reinsert any records.
+
+Only the isolated **synthetic staging environment** installs five explicitly
+labelled demo age groups and three illustrative income groups. These are
+not teacher, NGO or medical eligibility policy and must not be used to infer
+real-world qualification; Income remains optional. Backend still validates
+codes on every NEW registration. Historical DOB and free-text income are
+retained. Do not run the original development-only migration against staging
+or set ENVIRONMENT=development to bypass its guard.
+
+Release requires a fresh fixed-SHA build, mandatory CI, isolated PostgreSQL
+rehearsal, readback of the exact Railway source identity and private database
+volumes, then public dropdown and one bounded synthetic transaction. Previous
+Web deployment and both volumes are retained. Roll back the Web image only
+before new no-DOB registration records are accepted; after that, retain the
+additive schema and fix forward rather than force NOT NULL or erase history.
+Uninstalling or leaving the trigger blank makes future startup refuse an
+incomplete schema, rather than installing a hidden default.
