@@ -21,6 +21,8 @@ SCOPED_ENV = {
     "RAILWAY_SERVICE_NAME": "rose-pulse-web",
     "NU_TRUSTED_HTTPS_ORIGIN": "https://rosepulse.up.railway.app",
     "NU_INIT_EMPTY_DB": "no",
+    "DATABASE_URL": "postgresql+asyncpg://local-synthetic@postgres17.railway.internal/nu_staging",
+    **module.TARGET,
 }
 
 
@@ -28,7 +30,9 @@ def test_staging_operation_explicit_and_environment_pinned():
     assert module.require_staging_env({}) is False
     assert module.require_staging_env(SCOPED_ENV) is True
     for key in ("RAILWAY_ENVIRONMENT_NAME", "NU_DEMO_PROFILE",
-                "NU_TRUSTED_HTTPS_ORIGIN", "RAILWAY_SERVICE_NAME"):
+                "NU_TRUSTED_HTTPS_ORIGIN", "RAILWAY_SERVICE_NAME",
+                "RAILWAY_PROJECT_ID", "RAILWAY_ENVIRONMENT_ID",
+                "RAILWAY_SERVICE_ID", "DATABASE_URL"):
         bad = dict(SCOPED_ENV)
         bad[key] = "wrong"
         with pytest.raises(ValueError):
@@ -89,4 +93,7 @@ def test_real_postgresql_migration_repeated_without_changing_legacy_data(tmp_pat
             ))
             assert await conn.scalar(text(
                 "SELECT COUNT(*) FROM registrations")) == 2
+        module.BACKUP_PATH.write_bytes(module.BACKUP_PATH.read_bytes() + b"TAMPER")
+        with pytest.raises(ValueError, match="RECEIPT_BACKUP_DIGEST_MISMATCH"):
+            await module.apply_registration_groups(SCOPED_ENV)
     asyncio.run(check())

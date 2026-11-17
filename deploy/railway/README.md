@@ -74,8 +74,10 @@ the launcher refuses partial schema rather than guessing or clearing data.
 The explicit staging successor is `registration_groups_staging.py`, invoked
 by the launcher **only** when
 `NU_STAGING_GROUPS_OPERATION=nu-staging-registration-groups-20261117-v1`.
-It additionally checks Railway staging identity, synthetic profile, existing
-database `nu_staging`, current non-superuser role, trusted HTTPS origin,
+It additionally checks the exact observed Railway project/environment/web
+service IDs (source-pinned to this one-time operation), the private
+`postgres17.railway.internal/nu_staging` connection endpoint, synthetic
+profile, current non-superuser role, trusted HTTPS origin,
 no empty-DB initialization, and original legacy tables.
 
 The first invocation writes a private, mode-0600 **scoped legacy-column
@@ -84,10 +86,11 @@ snapshot** under the existing mounted upload volume
 a SHA-256 readback. It is NOT a full PostgreSQL or provider-volume backup.
 The migration then takes short database locks, creates the two Austin lookup
 tables, adds nullable age FK, makes legacy DOB columns nullable without
-changing historical rows, and records a durable operation ID. The code
-fails closed on unknown schema, pre-existing reference taxonomy, changed
-legacy counts or missing backup. Receipt-proven repeats verify the stored
-backup/schema and do not reinsert any records.
+changing historical rows, and records a durable operation ID plus the backup's SHA-256 digest in the same
+transaction. The code fails closed on wrong Railway target, unknown schema,
+pre-existing reference taxonomy, changed legacy counts or missing backup.
+Receipt-proven repeats recompute and verify the stored backup digest/schema
+before proceeding; they do not reinsert any records.
 
 Only the isolated **synthetic staging environment** installs five explicitly
 labelled demo age groups and three illustrative income groups. These are

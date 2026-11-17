@@ -18,7 +18,7 @@ against the hosted database to make that script run.
 five-line launcher integration and one Docker copy; one focused migration
 regression test. Activation requires explicit
 `NU_STAGING_GROUPS_OPERATION=nu-staging-registration-groups-20261117-v1`,
-scope-locked stage identity, DB name and non-superuser role. Scoped legacy
+scope-locked exact Railway IDs, private DB endpoint, DB name and non-superuser role. Scoped legacy
 DOB/income data snapshot is mode 0600 inside existing private upload volume;
 it is not a full backup. DDL is transactional/idempotent; historical row counts,
 DOB and income are preserved. Only the new synthetic demo stage receives

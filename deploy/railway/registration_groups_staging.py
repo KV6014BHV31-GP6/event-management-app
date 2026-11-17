@@ -11,6 +11,15 @@ import hashlib
 import json
 import os
 from pathlib import Path
+from urllib.parse import urlsplit
+
+# One-time target identity read from the authorized Railway project on 2026-11-17.
+# This operation must not silently migrate another Railway project/environment.
+TARGET = {
+    "RAILWAY_PROJECT_ID": "9ce0925e-48c0-4cd5-acfa-435b3c36a43e",
+    "RAILWAY_ENVIRONMENT_ID": "66480b30-9ef9-4af5-a8e3-69f4ae16ad98",
+    "RAILWAY_SERVICE_ID": "047e8599-7b6d-4dfb-8596-d4dc3ca09c3c",
+}
 
 from sqlalchemy import text
 
@@ -40,6 +49,16 @@ def require_staging_env(env):
         or env.get("NU_TRUSTED_HTTPS_ORIGIN") != "https://rosepulse.up.railway.app"
         or env.get("NU_INIT_EMPTY_DB", "no") != "no"):
         raise ValueError("REFUSE_NON_SYNTHETIC_OR_WRONG_STAGING")
+    if any(env.get(key) != value for key, value in TARGET.items()):
+        raise ValueError("REFUSE_WRONG_RAILWAY_TARGET")
+    # Only the scoped private Postgres service in the same Railway project.
+    # A second database named nu_staging must never satisfy this operation.
+    parsed = urlsplit(env.get("DATABASE_URL", ""))
+    if (parsed.scheme not in {"postgresql", "postgresql+asyncpg"}
+        or parsed.hostname != "postgres17.railway.internal"
+        or parsed.port not in {None, 5432}
+        or parsed.path != "/nu_staging" or parsed.query or parsed.fragment):
+        raise ValueError("REFUSE_WRONG_DATABASE_ENDPOINT")
     return True
 
 
@@ -103,7 +122,11 @@ async def apply_registration_groups(env):
             await conn.execute(text(
                 "CREATE TABLE IF NOT EXISTS registration_group_schema_migrations "
                 "(migration_id VARCHAR(80) PRIMARY KEY, applied_at TIMESTAMPTZ "
-                "NOT NULL DEFAULT CURRENT_TIMESTAMP)"
+                "NOT NULL DEFAULT CURRENT_TIMESTAMP, backup_sha256 VARCHAR(64))"
+            ))
+            await conn.execute(text(
+                "ALTER TABLE registration_group_schema_migrations "
+                "ADD COLUMN IF NOT EXISTS backup_sha256 VARCHAR(64)"
             ))
             already = await conn.scalar(text(
                 "SELECT EXISTS(SELECT 1 FROM registration_group_schema_migrations "
@@ -121,7 +144,13 @@ async def apply_registration_groups(env):
                     raise ValueError("RECEIPT_COLUMN_MISMATCH")
                 if not BACKUP_PATH.is_file() or BACKUP_PATH.is_symlink():
                     raise ValueError("RECEIPT_BACKUP_MISSING")
-                return {"status": "ALREADY_APPLIED", "operation": OPERATION}
+                digest = await conn.scalar(text(
+                    "SELECT backup_sha256 FROM registration_group_schema_migrations "
+                    "WHERE migration_id = :k"), {"k": OPERATION})
+                if not digest or hashlib.sha256(BACKUP_PATH.read_bytes()).hexdigest() != digest:
+                    raise ValueError("RECEIPT_BACKUP_DIGEST_MISMATCH")
+                return {"status": "ALREADY_APPLIED", "operation": OPERATION,
+                        "backup_sha256": digest}
 
             # Lock first, so that both the scoped snapshot and DDL see one baseline.
             await conn.execute(text(
@@ -187,8 +216,9 @@ async def apply_registration_groups(env):
                 or await conn.scalar(text("SELECT COUNT(*) FROM participants")) != len(participants)):
                 raise ValueError("LEGACY_ROW_COUNT_DRIFT")
             await conn.execute(text(
-                "INSERT INTO registration_group_schema_migrations(migration_id) VALUES(:k)"
-            ), {"k": OPERATION})
+                "INSERT INTO registration_group_schema_migrations"
+                "(migration_id,backup_sha256) VALUES(:k,:digest)"
+            ), {"k": OPERATION, "digest": backup_hash})
         return {"status": "APPLIED", "operation": OPERATION,
                 "backup_sha256": backup_hash, "ages": len(AGES), "income_bands": len(INCOMES)}
     finally:

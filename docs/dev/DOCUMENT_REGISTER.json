@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-17T11:55:01.986381+00:00",
-  "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB",
+  "reviewed_at": "2026-11-17T12:08:29.964972+00:00",
+  "reason": "P1 exact Railway target/private endpoint guard and P2 durable backup digest verification after independent review",
   "document_count": 445,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -9549,7 +9549,7 @@
     {
       "document_id": "PUB-WEB-20261116-4D23DD24FFB31466",
       "path": "deploy/railway/README.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU Web release Astra integration",
       "status": "working-baseline",
       "revision_history": [
@@ -9566,13 +9566,20 @@
           "size_bytes": 4161,
           "superseded_at": "2026-11-17T11:55:01.986381+00:00",
           "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
+        },
+        {
+          "revision": 3,
+          "sha256": "d2bd06ba9efb835e7394c2698ccee947a45797936792f182903643ad4564a1f1",
+          "size_bytes": 6712,
+          "superseded_at": "2026-11-17T12:08:29.964972+00:00",
+          "reason": "P1 exact Railway target/private endpoint guard and P2 durable backup digest verification after independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d2bd06ba9efb835e7394c2698ccee947a45797936792f182903643ad4564a1f1",
-      "size_bytes": 6712
+      "sha256": "43c764bb962cff2f8fdb54f5e8645d89692d3fa69bcba24b8b255934ebad4532",
+      "size_bytes": 6955
     },
     {
       "document_id": "PUB-WEB-20261116-78E669006797B772",
@@ -10197,44 +10204,68 @@
     {
       "document_id": "REG-GROUP-STAGING-01",
       "path": "deploy/railway/registration_groups_staging.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer / NU staging integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "cb4dcabef62dd11a98a82438974d6ca08975a0e9a1650948c326a95897c4d326",
+          "size_bytes": 10131,
+          "superseded_at": "2026-11-17T12:08:29.964972+00:00",
+          "reason": "P1 exact Railway target/private endpoint guard and P2 durable backup digest verification after independent review"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115",
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "cb4dcabef62dd11a98a82438974d6ca08975a0e9a1650948c326a95897c4d326",
-      "size_bytes": 10131
+      "sha256": "beb9eac107c72a6e3b01a52fdd43063bb71c12d9ce0cb1366ba342f2dc7ce776",
+      "size_bytes": 11874
     },
     {
       "document_id": "REG-GROUP-STAGING-02",
       "path": "deploy/railway/tests/test_registration_groups_staging.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer / NU staging integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "1317c388e6d79e57dc89c39ad25b0c5f02db9641a45522dc64d8584eb3543b20",
+          "size_bytes": 4153,
+          "superseded_at": "2026-11-17T12:08:29.964972+00:00",
+          "reason": "P1 exact Railway target/private endpoint guard and P2 durable backup digest verification after independent review"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115",
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "1317c388e6d79e57dc89c39ad25b0c5f02db9641a45522dc64d8584eb3543b20",
-      "size_bytes": 4153
+      "sha256": "e61933d1fb62e77a4585d3cd33185b87f2a44e7014064e59f0d0585420c382bb",
+      "size_bytes": 4618
     },
     {
       "document_id": "REG-GROUP-STAGING-03",
       "path": "docs/dev/tasks/REGISTRATION-GROUPS-STAGING-20261117.md",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer / NU staging integration",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b884cade20e5f4625015a99f5395eee9924cf2c73f1a205e04ac28d46fe98ee1",
+          "size_bytes": 2378,
+          "superseded_at": "2026-11-17T12:08:29.964972+00:00",
+          "reason": "P1 exact Railway target/private endpoint guard and P2 durable backup digest verification after independent review"
+        }
+      ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115",
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "b884cade20e5f4625015a99f5395eee9924cf2c73f1a205e04ac28d46fe98ee1",
-      "size_bytes": 2378
+      "sha256": "815a9d99f629dda3511eaeb8aacd33cdb971df81d0d71a0c46e996a7bb42d45b",
+      "size_bytes": 2402
     }
   ]
 }
