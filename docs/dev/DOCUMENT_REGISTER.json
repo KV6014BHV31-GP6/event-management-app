@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-17T07:55:40.855847+00:00",
-  "reason": "補真實 Browser 分類選單 EN BM 與空碼表阻擋驗證，保留原必要 CI gates",
+  "reviewed_at": "2026-11-17T08:11:31.183900+00:00",
+  "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard",
   "document_count": 442,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -8334,7 +8334,7 @@
     {
       "document_id": "DEMO-DOC-D79E0FEF840573FD",
       "path": "scripts/demo_ci.py",
-      "revision": 9,
+      "revision": 10,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8393,13 +8393,20 @@
           "size_bytes": 44047,
           "superseded_at": "2026-11-17T07:55:40.855847+00:00",
           "reason": "補真實 Browser 分類選單 EN BM 與空碼表阻擋驗證，保留原必要 CI gates"
+        },
+        {
+          "revision": 9,
+          "sha256": "6742888270d4fba9e94083b63180dafe82d67cf35510e27633af57ddc97ab252",
+          "size_bytes": 44315,
+          "superseded_at": "2026-11-17T08:11:31.183900+00:00",
+          "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "6742888270d4fba9e94083b63180dafe82d67cf35510e27633af57ddc97ab252",
-      "size_bytes": 44315
+      "sha256": "d0268b67946cdbff406ef64970c25f4df106b00ddec32ea89f336ab4509ea3f2",
+      "size_bytes": 44106
     },
     {
       "document_id": "DEMO-DOC-776BA0D7E15572BF",
@@ -10048,15 +10055,23 @@
     {
       "document_id": "PUB-GROUPS-20261117-12BCB910585D1830",
       "path": "backend/tests/group_fixtures.py",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Owner classification successor / sole Sol writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "864ac6edc6851f2b4a8bc03a6c990e5b54352a40249f0016c5c08643919fa6ea",
+          "size_bytes": 599,
+          "superseded_at": "2026-11-17T08:11:31.183900+00:00",
+          "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "864ac6edc6851f2b4a8bc03a6c990e5b54352a40249f0016c5c08643919fa6ea",
-      "size_bytes": 599
+      "sha256": "93eb0f2258dd5e81283802cc4504d8235d11c39143ac0920d39c93505ec8ba54",
+      "size_bytes": 2026
     },
     {
       "document_id": "PUB-GROUPS-20261117-E5C15E0C58663F6F",
@@ -10087,7 +10102,7 @@
     {
       "document_id": "PUB-GROUPS-20261117-35CAB442BC7B8763",
       "path": "docs/dev/tasks/REGISTRATION-GROUPS-20261117.md",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU Owner classification successor / sole Sol writer",
       "status": "working-baseline",
       "revision_history": [
@@ -10097,13 +10112,20 @@
           "size_bytes": 6671,
           "superseded_at": "2026-11-17T07:55:40.855847+00:00",
           "reason": "補真實 Browser 分類選單 EN BM 與空碼表阻擋驗證，保留原必要 CI gates"
+        },
+        {
+          "revision": 2,
+          "sha256": "d15abd98ef6dba64c632b856bc1172ecbbf025b14ee9851d223af2d9de643c4a",
+          "size_bytes": 7630,
+          "superseded_at": "2026-11-17T08:11:31.183900+00:00",
+          "reason": "保留真 Browser 空選項 PASS 及 CI RED，修正 isolated fixture module 呼叫並加 exact test DB guard"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d15abd98ef6dba64c632b856bc1172ecbbf025b14ee9851d223af2d9de643c4a",
-      "size_bytes": 7630
+      "sha256": "65f13e0ce19737cb6c9566b8dd13028f7b72a419bef84fb6c2a78281ebaddf51",
+      "size_bytes": 8608
     },
     {
       "document_id": "PUB-GROUPS-20261117-500AD0B0F853EA69",

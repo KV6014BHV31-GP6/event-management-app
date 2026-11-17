@@ -476,7 +476,7 @@ def native_browser(build_input: Path) -> None:
                    NU_BROWSER_PRIVATE=str(work / 'browser-private'), NU_BROWSER_SOURCE_SHA=REPORT['source_sha'],
                    NU_BROWSER_EXECUTION_MODE='GITHUB_HOSTED')
         run(["node", ROOT / "scripts/registration_groups_browser.cjs", "--empty"], "classification-empty-browser", env=env, timeout=180)
-        run([sys.executable, '-B', '-c', 'import asyncio; from src.core.database import AsyncSessionLocal; from tests.group_fixtures import seed_group_options; exec("async def fixture():\n async with AsyncSessionLocal() as db:\n  await seed_group_options(db)\n  await db.commit()"); asyncio.run(fixture())'], 'isolated-browser-classification-fixture', cwd=ROOT / 'backend', env=env)
+        run([sys.executable, '-B', '-m', 'tests.group_fixtures', '--acknowledge-isolated-browser'], 'isolated-browser-classification-fixture', cwd=ROOT / 'backend', env=env)
         run(["node", ROOT / "scripts/registration_groups_browser.cjs"], "classification-configured-browser", env=env, timeout=180)
         run(["node", ROOT / 'scripts/demo_browser_e2e.cjs'], "browser-e2e", env=env, timeout=300)
         REPORT["database"] = asyncio.run(browser_readback(env['DATABASE_URL'], browser_database, 'nu_ci_app', work / 'browser-private'))

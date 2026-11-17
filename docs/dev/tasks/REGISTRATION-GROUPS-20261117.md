@@ -111,3 +111,19 @@ Age plus optional Income/blank and form validity. The main document/offline E2E 
 all original receipt/DB checks still run. No route interception, mock API, runtime
 policy seed or AC40 expansion. Script syntax and CI process regressions pass;
 actual Browser execution remains pending the fixed-Head native job.
+
+
+### Original fixed-Head CI RED and minimal fixture caller repair
+
+Run 44042522316 on test-merge f0fe616e3f911ee1d021be55e75f0f1caa330f92
+(candidate f6ba06aeea651e21421016fc756833c58df17d61) passed source/frontend,
+controlled Backend, native Backend, every migration first/repeat, and the actual empty
+EN/BM Browser check at desktop/390. It failed at the isolated synthetic fixture
+caller's nested inline Python string (unterminated literal), before configured/main
+Browser. Original logs/artifacts including four empty-state screenshots are retained.
+
+The caller now uses `python -B -m tests.group_fixtures --acknowledge-isolated-browser`
+with explicit development, loopback, *_browser_be_test and exact non-superuser DB
+guards. The exact module command passed against a fresh task-owned PostgreSQL17.11
+browser test DB; task cluster stopped afterward. No product, schema, workflow or
+required assertion is removed. New fixed-Head required CI remains pending.
