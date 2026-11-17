@@ -1,3 +1,11 @@
+# Current successor: PR70 Age/Income Group synthetic Railway staging activation, 2026-11-17
+
+The PR70 new registration contract has merged to `dev_demo@88dc0b39efbc3822f6eae1cf432d1d721ff8c9a9`; its fixed SHA CI is complete. The existing Railway synthetic staging still serves the previous commit `eb770465220e9d415a6ee75ee4f188b920fec79e`, with original DB and upload volumes preserved.
+
+A narrowly scoped **explicit staging** migration candidate adapts the legacy nonempty database without fabricating DOB or rewriting participant data. Activation uses a guarded one-time operation plus private scoped-column snapshot, reversible additive table changes, and explicitly marked synthetic-only Age/Income demonstration options. These are not approved age/income eligibility classifications. The development-only migration remains blocked from staging. See [task](tasks/REGISTRATION-GROUPS-STAGING-20261117.md) and [Railway runbook](../../deploy/railway/README.md).
+
+Check actual GitHub/Railway and runtime receipts to determine whether this successor has been promoted. This source entry alone is **not** deployment evidence; full production/UAT and official taxonomy remain not accepted.
+
 # Current successor: registration Age Group / optional Income Group, 2026-11-17
 
 Owner explicitly replaces DOB in NEW registration input with required
