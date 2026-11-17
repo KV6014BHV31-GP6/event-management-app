@@ -1,8 +1,8 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-17T22:28:34.941036+00:00",
-  "reason": "Correct the five independent Draft PR 72 review findings and record verification scope",
+  "reviewed_at": "2026-11-17T22:58:28.830199+00:00",
+  "reason": "Correct guest offer receipt recovery following S1 independent review",
   "document_count": 448,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
@@ -316,7 +316,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 58,
+      "revision": 59,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -688,6 +688,13 @@
           "size_bytes": 51335,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 58,
+          "sha256": "d2c1c46e87480ee50893114937ad05c102e4258404920fb960aa80396f211488",
+          "size_bytes": 51717,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "import_lineage": {
@@ -700,8 +707,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "d2c1c46e87480ee50893114937ad05c102e4258404920fb960aa80396f211488",
-      "size_bytes": 51717,
+      "sha256": "e24bb97ad442f2c33c38fa1f1c624801368de6328beb9c4c1a3da458b31f0d32",
+      "size_bytes": 52005,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -6752,7 +6759,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 18,
+      "revision": 19,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6874,13 +6881,20 @@
           "size_bytes": 88175,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 18,
+          "sha256": "fa372b6a3e01758abed13f741c10326e3f1ab63072df8653434d0c44cd420976",
+          "size_bytes": 88401,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "fa372b6a3e01758abed13f741c10326e3f1ab63072df8653434d0c44cd420976",
-      "size_bytes": 88401
+      "sha256": "b3d82dfb656a9c64e8b8d32ff3405cff49067e5b1ceacef80502945ebfd84685",
+      "size_bytes": 88769
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6933,7 +6947,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 18,
+      "revision": 19,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -7055,13 +7069,20 @@
           "size_bytes": 91231,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 18,
+          "sha256": "ca19952c7538b01ab8974a4f431aed870d85e91793c395f91e73297e3c549764",
+          "size_bytes": 91470,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "ca19952c7538b01ab8974a4f431aed870d85e91793c395f91e73297e3c549764",
-      "size_bytes": 91470
+      "sha256": "414f71e3c80240021c42c358bd82d2edbc43e32a90ebbcecd5474aecc3d4d59e",
+      "size_bytes": 91857
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -8165,7 +8186,7 @@
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 14,
+      "revision": 15,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8259,18 +8280,25 @@
           "size_bytes": 52961,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 14,
+          "sha256": "2e7f615bf06c331d60220c3b0e3ed88eed29bfe28ff7725701c83b642ad480f5",
+          "size_bytes": 55761,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "2e7f615bf06c331d60220c3b0e3ed88eed29bfe28ff7725701c83b642ad480f5",
-      "size_bytes": 55761
+      "sha256": "9acee66705360762594b231234aff766be84dc6c33bdcf292c65a350ac8f31b0",
+      "size_bytes": 56816
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 10,
+      "revision": 11,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8336,13 +8364,20 @@
           "size_bytes": 32823,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 10,
+          "sha256": "4de51173763c1a4547f8cd2b66345eaaefa68f8d32a7d6d16e06bfd59b009df3",
+          "size_bytes": 42108,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4de51173763c1a4547f8cd2b66345eaaefa68f8d32a7d6d16e06bfd59b009df3",
-      "size_bytes": 42108
+      "sha256": "b8f582509eb8b097c4259aff95c08ea38a1081f591925d9e1c9c8f93d3fc80d7",
+      "size_bytes": 49251
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
@@ -8480,7 +8515,7 @@
     {
       "document_id": "DEMO-DOC-5A1D8022DD23E165",
       "path": "frontend/rose-pulse-react/src/journey-api.js",
-      "revision": 4,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8504,18 +8539,25 @@
           "size_bytes": 6697,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 4,
+          "sha256": "941f67e3d244b493bf6165722e317255f924267a18493ecded75dd3fdb393801",
+          "size_bytes": 6701,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "941f67e3d244b493bf6165722e317255f924267a18493ecded75dd3fdb393801",
-      "size_bytes": 6701
+      "sha256": "0ab52de1c41f6d9d452049197c017ea5bc98e1c85a7d44f12c59bfc2d5f6df8c",
+      "size_bytes": 8808
     },
     {
       "document_id": "DEMO-DOC-055E7FEBAF328681",
       "path": "frontend/rose-pulse-react/src/journey-api.test.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8525,13 +8567,20 @@
           "size_bytes": 5161,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "60cb00ffdff29e1a75d4f25efa02db9149b3323477e3295e28a2b8c16140e3ab",
+          "size_bytes": 6559,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "60cb00ffdff29e1a75d4f25efa02db9149b3323477e3295e28a2b8c16140e3ab",
-      "size_bytes": 6559
+      "sha256": "a64a2e13864d78dabe22571e9e9e905e2488f3714e38a79832d7c9c212d4a05f",
+      "size_bytes": 10411
     },
     {
       "document_id": "DEMO-DOC-AA71BA408012FF59",
@@ -10600,7 +10649,7 @@
     {
       "document_id": "ROSE-CHALLENGE5-20261118",
       "path": "docs/dev/tasks/ROSE-CHALLENGE5-20261118.md",
-      "revision": 3,
+      "revision": 4,
       "owner": "Sol / NU frontend author",
       "status": "working-baseline",
       "revision_history": [
@@ -10617,14 +10666,21 @@
           "size_bytes": 3007,
           "superseded_at": "2026-11-17T22:28:34.941036+00:00",
           "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 3,
+          "sha256": "1a39cce25e06f86512373f600aabb06fd13e7c996b95b422db4b8f9cd2a54036",
+          "size_bytes": 3776,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "SP-OVERVIEW-20261012",
         "SP-FEATURES-20261012"
       ],
-      "sha256": "1a39cce25e06f86512373f600aabb06fd13e7c996b95b422db4b8f9cd2a54036",
-      "size_bytes": 3776
+      "sha256": "9937a2e3ddb2d4d888752efde8bf8ba11c9d42223cb961dab2aab25e634a1a29",
+      "size_bytes": 4569
     },
     {
       "document_id": "ROSE-EVENT-CALENDAR",

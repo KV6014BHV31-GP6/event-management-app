@@ -723,3 +723,128 @@ it.each(['success','failure','late'])('R5 refreshes the scoped list after a conf
   const methods=fetch.mock.calls.filter(([p])=>p.endsWith('/events/'+outreachEventId+'/outreach')).map(([,r])=>r.method);
   expect(methods).toEqual(mode==='failure'?['GET','POST','GET','GET']:['GET','POST','GET']);
 });
+
+
+async function readGuest(user, ref, name) {
+  fireEvent.change(screen.getByLabelText('Registration reference'),{target:{value:ref}});
+  fireEvent.change(screen.getByLabelText('Phone'),{target:{value:'0000000001'}});
+  await user.click(screen.getByRole('button',{name:'Request verification code'}));
+  await screen.findByRole('form',{name:'Verify code'});
+  fireEvent.change(screen.getByLabelText('Verification code'),{target:{value:'123456'}});
+  await user.click(screen.getByRole('button',{name:'Verify code'}));
+  await user.click(await screen.findByRole('button',{name:'Read registration'}));
+  await screen.findByText(name+' Guest');
+}
+
+it.each(['accept','decline'])('S1 recovers a consumed guest %s using the original operation receipt', async decision => {
+  const a=applicationReference;
+  const b='01K00000000000000000000002';
+  const offer='test-held-offer';
+  const journal=()=>JSON.parse(localStorage.getItem('rose.demo.synthetic.operations.guest')||'[]');
+  let intent, granted, consumed=false;
+  const calls=[];
+  const fetch=vi.spyOn(globalThis,'fetch').mockImplementation(async (path,request) => {
+    if(path.endsWith('/guest-access/challenges'))
+      return response({challenge_id:JSON.parse(request.body).registration_id,demo_access_token:'test-challenge'});
+    if(path.endsWith('/verify')) {
+      granted=path.split('/').at(-2);
+      return response({registration_id:granted,grant_token:'test-grant-'+granted});
+    }
+    expect(request.headers['X-Guest-Grant']).toBe('test-grant-'+granted);
+    if(path.endsWith('/registrations/'+granted)) {
+      const data=booking(granted,granted===a?'First':'Second');
+      if(granted===a&&!consumed)
+        return response({...data,booking_state:'offered',offer:{id:offer,state:'offered',version:3},
+          allowed_actions:['cancel','accept_offer','decline_offer']});
+      if(granted===a&&decision==='decline') data.booking_state='cancelled';
+      return response(data);
+    }
+    if(path.endsWith('/offers/'+offer+'/'+decision)) {
+      intent=JSON.parse(request.body);
+      calls.push(['POST',intent.operation_id]);
+      consumed=true;
+      return {ok:true,status:200,json:async()=>{throw new Error('unreadable acknowledgement');}};
+    }
+    if(path.endsWith('/receipts/'+intent?.operation_id)) {
+      expect(granted).toBe(a);
+      calls.push(['GET',intent.operation_id]);
+      return response({contract_version:intent.contract_version,operation_id:intent.operation_id,outcome:'applied',
+        kind:'offer_'+decision,resource_id:offer,effects:{registration_id:a,status:decision==='accept'?'approved':'cancelled'}});
+    }
+    throw new Error('Unexpected request '+path);
+  });
+  const view=render(<JourneyWorkspace runtime={{}} auth={{user:null,revision:1}} initialGuestLookup navigate={vi.fn()} />);
+  const user=userEvent.setup();
+  await readGuest(user, a,'First');
+  await user.click(screen.getByRole('button',{name:decision==='accept'?'Accept held offer':'Decline offer'}));
+  await screen.findByRole('alert');
+  const saved=journal()[0];
+  expect(saved.body).toEqual(intent);
+  await user.click(screen.getByRole('button',{name:'Read registration'}));
+  await screen.findByText(decision==='accept'?'confirmed':'cancelled',{exact:true});
+  expect(screen.queryByRole('button',{name:'Retry exact saved action'})).not.toBeInTheDocument();
+  expect(screen.getByRole('button',{name:'Reconcile'})).toBeVisible();
+  expect(saved.guest_registration_id).toBe(a);
+  if(decision==='accept') {
+    await readGuest(user, b,'Second');
+    expect(view.container).not.toHaveTextContent(intent.operation_id);
+    expect(screen.queryByRole('button',{name:'Reconcile'})).not.toBeInTheDocument();
+    await readGuest(user, a,'First');
+  }
+  await user.click(screen.getByRole('button',{name:'Reconcile'}));
+  await screen.findByText('Original receipt recovered. Read the current resource.');
+  expect(calls).toEqual([['POST',intent.operation_id],['GET',intent.operation_id]]);
+  expect(journal()).toHaveLength(0);
+  expect(fetch.mock.calls.filter(([p,r])=>p.includes('/offers/')&&r.method==='POST')).toHaveLength(1);
+});
+
+it('S1 hides legacy offer identifiers and ignores a late receipt after a grant change', async () => {
+  const a = applicationReference;
+  const b = '01K00000000000000000000002';
+  const row = {
+    path: '/offers/legacy-held-a/accept', missing_receipts: 2,
+    body: {contract_version: 'rose.demo-journey.v1', operation_id: 'legacy-operation-a', data: {}, expected_version: 3},
+  };
+  const journalKey = 'rose.demo.synthetic.operations.guest';
+  localStorage.setItem(journalKey, JSON.stringify([row]));
+  let deliverReceipt;
+  const fetch = vi.spyOn(globalThis, 'fetch').mockImplementation((path, request) => {
+    if (path.endsWith('/challenges')) return Promise.resolve(response({
+      challenge_id: JSON.parse(request.body).registration_id, demo_access_token: 'controlled-challenge',
+    }));
+    if (path.endsWith('/verify')) {
+      const ref = path.split('/').at(-2);
+      return Promise.resolve(response({registration_id: ref, grant_token: 'controlled-grant-' + ref}));
+    }
+    if (path.endsWith('/registrations/' + a)) return Promise.resolve(response(booking(a, 'First')));
+    if (path.endsWith('/registrations/' + b)) return Promise.resolve(response(booking(b, 'Second')));
+    if (path.endsWith('/receipts/' + row.body.operation_id) && request.method === 'GET') {
+      expect(request.headers['X-Guest-Grant']).toBe('controlled-grant-' + a);
+      return new Promise(resolve => { deliverReceipt = () => resolve(response({
+        contract_version: row.body.contract_version, operation_id: row.body.operation_id, outcome: 'applied',
+        kind: 'offer_accept', resource_id: 'legacy-held-a', effects: {registration_id: a, status: 'approved'},
+      })); });
+    }
+    throw new Error('Unexpected request ' + path);
+  });
+  const props = {runtime: {}, auth: {user: null, revision: 1}, initialGuestLookup: true, navigate: vi.fn()};
+  const view = render(<JourneyWorkspace {...props} />);
+  const user = userEvent.setup();
+  await readGuest(user, a, 'First');
+  expect(view.container).not.toHaveTextContent('legacy-held-a');
+  expect(view.container).not.toHaveTextContent('legacy-operation-a');
+  expect(screen.queryByRole('button', {name: 'Retry exact saved action'})).not.toBeInTheDocument();
+  await user.click(screen.getByRole('button', {name: 'Check saved offer receipts'}));
+  await waitFor(() => expect(deliverReceipt).toBeTypeOf('function'));
+
+  view.rerender(<JourneyWorkspace {...props} auth={{user: null, revision: 2}} />);
+  await readGuest(user, b, 'Second');
+  await act(async () => deliverReceipt());
+  expect(screen.getByText('Second Guest')).toBeVisible();
+  expect(screen.queryByText('First Guest')).not.toBeInTheDocument();
+  expect(screen.queryByText('Original receipt recovered. Read the current resource.')).not.toBeInTheDocument();
+  expect(JSON.parse(localStorage.getItem(journalKey))).toEqual([]);
+  expect(fetch.mock.calls.filter(([path]) => /\/(offers|receipts)\//.test(path))
+    .map(([path, request]) => [path, request.method]))
+    .toEqual([['/api/v2/operations/receipts/' + row.body.operation_id, 'GET']]);
+});

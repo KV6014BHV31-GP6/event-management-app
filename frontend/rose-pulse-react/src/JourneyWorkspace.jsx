@@ -4,7 +4,7 @@ import AttendanceWorkspace from "./AttendanceWorkspace.jsx";
 import {createAttendanceStore} from "./offline/attendance.js";
 import React, { useMemo, useState, useRef, useCallback, useEffect, useId } from 'react';
 import { tr,locale } from './i18n/index.js';
-import { createJourneyClient } from './journey-api.js';
+import { createJourneyClient, offerDecision } from './journey-api.js';
 import { minimumRegistrationPayload } from './minimum-registration.js';
 import { FilePicker, PrivateDocuments } from './FilePicker.jsx';
 import ApplicationSuccess from './ApplicationSuccess.jsx';
@@ -112,21 +112,26 @@ function JourneySession({
     errorRef.current?.scrollIntoView?.({block: 'center'});
   }, [applicationAttention]);
   const guestAllowed=!auth.user&&!auth.hasToken&&!auth.identityBlocked&&!auth.checking;
+  const guestReference = guestAllowed && grant?.registration_id === registrationId ? registrationId : null;
   const client = useMemo(() => createJourneyClient({
+    guestReference,
     authorize: fn => (auth.user||auth.offlineActor) ? runtime.withVerifiedAccount((token,actor)=>{if(actor?.id!==(auth.user?.id||auth.offlineActor?.id))throw new Error('The selected account or record changed.');return fn(token,actor);}) : guestAllowed ? fn(null, {id:'guest'}) : Promise.reject(new Error('Verify your account or explicitly log out before Guest access.')),
     guestHeaders: path => grant && !path.startsWith('/guest-access/') ? {
       'X-Guest-Grant': grant.grant_token
     } : {}
-  }), [runtime, auth.user?.id, auth.offlineActor?.id, auth.revision, guestAllowed, grant]);
-  const guestReference = guestAllowed && grant?.registration_id === registrationId ? registrationId : null;
+  }), [runtime, auth.user?.id, auth.offlineActor?.id, auth.revision, guestAllowed, grant, guestReference]);
   const registration = (!guestAllowed || guestReference) && loaded.registration?.registration?.id === registrationId
     ? loaded.registration : null;
-  const guestOperationAllowed = path => {
+  const guestWriteAllowed = path => {
     if (!guestAllowed) return true;
     if (path.startsWith('/registrations/')) return !!guestReference && path.startsWith('/registrations/' + guestReference + '/');
-    if (path.startsWith('/offers/')) return !!registration?.offer?.id && path.startsWith('/offers/' + registration.offer.id + '/');
+    if (path.startsWith('/offers/')) return registration?.offer?.state === 'offered' &&
+      registration.offer.id === offerDecision(path)?.[1];
     return true;
   };
+  const guestReceiptAllowed = row => guestAllowed && offerDecision(row.path)
+    ? !!guestReference && row.guest_registration_id === guestReference
+    : guestWriteAllowed(row.path);
   const staffActor=auth.user||auth.offlineActor;
   const owner = staffActor?.role === 'organizer',
     staff = owner || staffActor?.role === 'leader';
@@ -174,7 +179,7 @@ function JourneySession({
   };
   const mutate = (path, data, version) => {
     const isApplication = path.endsWith('/applications');
-    if (!guestOperationAllowed(path)) return;
+    if (!guestWriteAllowed(path)) return;
     return run(async () => {
       const mutationEpoch=recordEpoch.current;
       const targetRegistration=registrationId;
@@ -272,20 +277,34 @@ function JourneySession({
       details.querySelector('summary')?.focus();
     }
   };
-  const recoverOperation = (row, replay = false) => guestOperationAllowed(row.path) && run(async () => {
-    const epoch = recordEpoch.current;
-    const operationId = row.body.operation_id;
-    const recovered = await (replay ? client.replayExact(operationId) : client.reconcile(operationId));
-    if (!active.current || epoch !== recordEpoch.current) return;
-    if (recovered.effects?.registration_id) {
-      setRegistrationId(recovered.effects.registration_id);
-      if (row.path === root + '/applications')
-        setLoaded(old => ({...old, applicationReceipt: {...recovered.effects, historical: true}}));
-    }
-    setMessage(tr(replay
-      ? 'Original immutable action recovered. Read the current record.'
-      : 'Original receipt recovered. Read the current resource.'));
-  });
+  const recoverOperation = (row, replay = false) => {
+    if (row && (!guestReceiptAllowed(row) || (replay && !guestWriteAllowed(row.path)))) return;
+    if (!row && !guestReference) return;
+    const guestOffer = guestAllowed && (!row || offerDecision(row.path));
+    return run(async () => {
+      const epoch = recordEpoch.current;
+      const operationId = row?.body.operation_id;
+      let recovered;
+      try {
+        recovered = await (!row ? client.reconcileLegacyGuestOffers() :
+          replay ? client.replayExact(operationId) : client.reconcile(operationId));
+      } catch (error) {
+        if (!guestOffer || replay) throw error;
+        throw new Error(row
+          ? 'The original offer receipt could not be verified. The saved request is still pending.'
+          : 'No saved offer receipt could be verified for this booking.');
+      }
+      if (!active.current || epoch !== recordEpoch.current) return;
+      if (!guestOffer && recovered.effects?.registration_id) {
+        setRegistrationId(recovered.effects.registration_id);
+        if (row.path === root + '/applications')
+          setLoaded(old => ({...old, applicationReceipt: {...recovered.effects, historical: true}}));
+      }
+      setMessage(tr(replay
+        ? 'Original immutable action recovered. Read the current record.'
+        : 'Original receipt recovered. Read the current resource.'));
+    });
+  };
   const promotionRaw = loaded.promotion;
   const ownAssignment=loaded.leaders?.leaders.find(row=>row.leader_id===auth.user?.id&&row.active);
   const publicLink=auth.user?.role==='leader'?ownAssignment?.public_url:promotionRaw?.public_url;
@@ -299,7 +318,7 @@ function JourneySession({
     attachmentChanged = useCallback(setAttachmentBlocked, []);
   const pending = (() => {
     try {
-      return client.pending(actorId).filter(row => guestOperationAllowed(row.path) &&
+      return client.pending(actorId).filter(row => guestReceiptAllowed(row) &&
         (!initialRegistration || row.path.startsWith(`/registrations/${initialRegistration}/`)));
     } catch {
       return [];
@@ -312,7 +331,7 @@ function JourneySession({
        <div key={row.body.operation_id}>
          <p>{row.path} · {row.body.operation_id}</p>
          <button disabled={busy} className="button button-small" onClick={() => recoverOperation(row)}>{tr('Reconcile')}</button>
-         {row.missing_receipts >= 2 && !row.sensitive && !row.immutable_conflict && (
+         {row.missing_receipts >= 2 && !row.sensitive && !row.immutable_conflict && guestWriteAllowed(row.path) && (
            <button className="button button-quiet button-small" disabled={busy} onClick={() => recoverOperation(row, true)}>
              {tr('Retry exact saved action')}
            </button>
@@ -332,7 +351,11 @@ function JourneySession({
               ...old,
               registration: null
             }));
-          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || readingGuest || !registrationId || (guestAllowed && !guestReference)} onClick={refreshRegistration}>{tr('Read registration')}</button>{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: <strong>{tr(registration.booking_state)}</strong></p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
+          }}><option value="">{tr('Select registration')}</option>{registrationId && !loaded.registrationOptions?.some(r => r.id === registrationId) && <option value={registrationId}>{tr('Selected registration')}</option>}{loaded.registrationOptions?.filter(r => !current || r.event_id === current.event.id).map(r => <option value={r.id} key={r.id}>{r.first_name} {r.last_name} · {tr(r.status)}</option>)}</select></label></> : <p>{tr('Use Demo OTP below to access your booking.')}</p>)}<button className="button button-quiet" disabled={busy || readingGuest || !registrationId || (guestAllowed && !guestReference)} onClick={refreshRegistration}>{tr('Read registration')}</button>{guestReference && (
+      <button className="button button-quiet" disabled={busy} onClick={() => recoverOperation(null)}>
+        {tr('Check saved offer receipts')}
+      </button>
+    )}{registration && <><h3>{registration.registration.first_name} {registration.registration.last_name}</h3><p>{tr('Booking')}: <strong>{tr(registration.booking_state)}</strong></p><p>{tr('Review')}: {tr(registration.review.state)} · {registration.review.reason}</p>{registration.offer && <p>{tr('Offer expires')}: {registration.offer.expires_at}</p>}<PrivateDocuments runtime={runtime} recordId={registrationId} files={registration.registration.supporting_documents || []} />{owner && registration.allowed_actions?.some(a => ['approve', 'reject', 'request_correction'].includes(a)) && <ActionForm title="Review application" busy={busy} fields={[field('decision', 'Decision', 'text', {
           options: ['approve', 'reject', 'request_correction'].filter(a => registration.allowed_actions.includes(a))
         }), field('reason', 'Review reason', 'textarea', {
           required: false

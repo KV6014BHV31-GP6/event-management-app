@@ -107,3 +107,80 @@ it.each([
   await expect(client.mutate(path, {})).rejects.toThrow(/unresolved reference/);
   expect(fetchImpl).toHaveBeenCalledTimes(1);
 });
+
+
+const guestA='01K00000000000000000000001';
+const guestB='01K00000000000000000000002';
+const savedOffer='/offers/held-a/accept';
+const receiptFor=(id,extra={})=>({
+  contract_version:'rose.demo-journey.v1',operation_id:id,kind:'offer_accept',resource_id:'held-a',
+  outcome:'applied',effects:{registration_id:guestA,status:'approved'},...extra,
+});
+const jsonResponse=(body,status=200)=>({ok:status===200,status,json:async()=>body});
+function guestOfferClient(fetchImpl, guestReference=guestA) {
+  return createJourneyClient({fetchImpl,guestReference,authorize:fn=>fn(null,{id:'guest'}),
+    guestHeaders:()=>({'X-Guest-Grant':'test-grant-'+guestReference})});
+}
+function storedOffer(binding, id='old-operation') {
+  localStorage.setItem('rose.demo.synthetic.operations.guest',JSON.stringify([{
+    path:savedOffer,body:{contract_version:'rose.demo-journey.v1',operation_id:id,expected_version:3,data:{}},
+    fingerprint:'saved-fingerprint',missing_receipts:2,...binding,
+  }]));
+}
+
+it('S1 keeps unbound legacy offer rows receipt-only without guessing the registration',async()=>{
+  storedOffer({});
+  const fetch=vi.fn(async (path,options)=>{
+    expect(path).toBe('/api/v2/operations/receipts/old-operation');
+    expect(options.method).toBe('GET');
+    return options.headers['X-Guest-Grant']==='test-grant-'+guestA
+      ? jsonResponse(receiptFor('old-operation')) : jsonResponse({},403);
+  });
+  const a=guestOfferClient(fetch), b=guestOfferClient(fetch,guestB);
+  const before=a.pending('guest');
+  await expect(a.replayExact('old-operation')).rejects.toThrow();
+  expect(fetch).not.toHaveBeenCalled();
+  await expect(b.reconcileLegacyGuestOffers()).rejects.toThrow();
+  expect(b.pending('guest')).toEqual(before);
+  await a.reconcileLegacyGuestOffers();
+  expect(a.pending('guest')).toHaveLength(0);
+  expect(fetch.mock.calls.map(([,options])=>options.method)).toEqual(['GET','GET']);
+});
+
+it.each([403,503,'wrong resource','wrong booking'])('S1 keeps a bound original offer row after %s', async failure=>{
+  storedOffer({guest_registration_id:guestA});
+  const fetch=vi.fn(async()=>typeof failure==='number'?jsonResponse({},failure):
+    jsonResponse(receiptFor('old-operation',failure==='wrong resource'
+      ? {resource_id:'held-b'} : {effects:{registration_id:guestB,status:'approved'}})));
+  const a=guestOfferClient(fetch), b=guestOfferClient(fetch,guestB);
+  const before=a.pending('guest');
+  await expect(b.reconcile('old-operation')).rejects.toThrow();
+  expect(fetch).not.toHaveBeenCalled();
+  await expect(a.reconcile('old-operation')).rejects.toThrow();
+  expect(a.pending('guest')).toEqual(before);
+  expect(fetch.mock.calls.map(([,options])=>options.method)).toEqual(['GET']);
+});
+
+it.each([savedOffer,'/registrations/'+guestA+'/cancel'])('S1 retains exact same-ID replay for an eligible bound decision %s',async path=>{
+  let request;
+  const fetch=vi.fn(async (_url,options)=>{
+    if(options.method==='GET') return jsonResponse({},404);
+    const next=JSON.parse(options.body);
+    if(!request) {
+      request=next;
+      return {ok:true,status:200,json:async()=>{throw new Error('unreadable');}};
+    }
+    expect(next).toEqual(request);
+    return jsonResponse(receiptFor(request.operation_id,path===savedOffer?{}:{
+      kind:'registration_cancel',resource_id:guestA,effects:{registration_id:guestA,status:'cancelled'},
+    }));
+  });
+  const c=guestOfferClient(fetch);
+  await expect(c.mutate(path,{},3)).rejects.toThrow();
+  const saved=c.pending('guest')[0];
+  if(path===savedOffer) expect(saved.guest_registration_id).toBe(guestA);
+  for(let i=0;i<2;i++) await expect(c.reconcile(saved.body.operation_id)).rejects.toThrow();
+  await c.replayExact(saved.body.operation_id);
+  expect(c.pending('guest')).toHaveLength(0);
+  expect(fetch.mock.calls.map(([,o])=>o.method)).toEqual(['POST','GET','GET','GET','POST']);
+});

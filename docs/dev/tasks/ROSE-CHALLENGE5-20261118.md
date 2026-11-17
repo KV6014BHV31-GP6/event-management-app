@@ -65,3 +65,17 @@ failed refresh can be retried by reading the list.
 The external review-fixes handoff records the preserved failing checks,
 controlled Chromium and connected local evidence. The existing API and
 database contracts continue to govern access and writes.
+## S1 guest offer receipt recovery
+
+After an unreadable accept or decline acknowledgement, the verified guest
+can reconcile the original receipt after reading the updated booking.
+New journal rows record the verified registration separately from the
+immutable request. Exact retries retain the active-offer requirement.
+Older unbound rows can be checked using the verified grant through a
+receipt-only action that hides their identifiers. Failed or mismatched
+reads leave the original request pending. The existing server still
+requires the original valid grant for guest offer receipts.
+
+The external S1 handoff records old and new public-bundle comparisons
+with a simulated unreadable response and no backend mutation. See
+the earlier connected evidence for the unaffected native workflows.

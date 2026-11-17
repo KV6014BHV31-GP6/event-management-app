@@ -20,6 +20,11 @@ the approved referral address, and refreshes the outreach list after a
 confirmed save. New independent review and fixed-head hosted checks remain
 release gates.
 
+The independent S1 follow-up allows the same verified guest booking to
+recover its original offer receipt after the offer is consumed. New
+decisions still require an active offer. Legacy saved offer requests have
+a receipt-only check through the existing grant and server authorization.
+
 # Current successor: PR70 Age/Income Group synthetic Railway staging activation, 2026-11-17
 
 The PR70 new registration contract has merged to `dev_demo@88dc0b39efbc3822f6eae1cf432d1d721ff8c9a9`; its fixed SHA CI is complete. The existing Railway synthetic staging still serves the previous commit `eb770465220e9d415a6ee75ee4f188b920fec79e`, with original DB and upload volumes preserved.
