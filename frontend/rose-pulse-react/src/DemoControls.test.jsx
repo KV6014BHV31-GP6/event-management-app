@@ -24,6 +24,7 @@ vi.mock('./demo-transport.js', async (importOriginal) => {
   return {
     ...original,
     DEMO_PROFILE: true,
+    PRESENTER_TOOLS: true,
     demoTransport: original.createDemoTransport({ enabled: true, storage: null }),
   };
 });
@@ -113,10 +114,10 @@ it('preselects the bundled PDF from Demo tools without uploading or consenting',
   await user.click(screen.getByText('Demo tools · Synthetic data'));
   const tools = screen.getByText('Demo tools · Synthetic data').closest('details');
   await user.click(within(tools).getByRole('button', {name: 'Select synthetic demo document'}));
-  expect(screen.getByText('synthetic-demo-supporting-document.pdf')).toBeVisible();
+  expect(screen.getByText('sample-supporting-document.pdf')).toBeVisible();
   expect(screen.getByText('Selected file — awaiting upload')).toBeVisible();
-  expect(screen.getByRole('link', {name: 'Download to view PDF'})).toHaveAttribute('download', 'synthetic-demo-supporting-document.pdf');
-  expect(screen.getByRole('checkbox', {name: /synthetic test data only/})).not.toBeChecked();
+  expect(screen.getByRole('link', {name: 'Download to view PDF'})).toHaveAttribute('download', 'sample-supporting-document.pdf');
+  expect(screen.getByRole('checkbox', {name: /fictional information only/})).not.toBeChecked();
   expect(screen.getByRole('button', {name: 'Upload selected files'})).toBeDisabled();
   expect(onChange.mock.lastCall[0]).toEqual([]);
   expect(uploadFile).not.toHaveBeenCalled();
@@ -139,7 +140,7 @@ it('uses one managed submit to attach the bundled file, then retains its referen
   const user = userEvent.setup();
   const event = {public_id: 'ABCDEFGHIJKLMNOPQRSTU', title: 'Synthetic form event'};
   const actor = {id: 'demo-participant', username: 'ac40s1_px', role: 'user'};
-  const file = {id: '01K00000000000000000000001', name: 'synthetic-demo-supporting-document.pdf'};
+  const file = {id: '01K00000000000000000000001', name: 'sample-supporting-document.pdf'};
   const reference = '01K00000000000000000000002';
   let releaseUpload;
   const uploadFile = vi.fn(() => new Promise(resolve => { releaseUpload = resolve; }));
@@ -188,7 +189,7 @@ it('blocks a filename lookalike and prevents a second upload after an unknown ac
   render(<FilePicker runtime={runtime} ref={picker} purpose="supporting_document" allowDemoSample
     onChange={vi.fn()} onBlocked={vi.fn()} />);
   await user.upload(screen.getByLabelText(/Supporting documents/), new File(
-    ['%PDF-'], 'synthetic-demo-supporting-document.pdf', {type: 'application/pdf'},
+    ['%PDF-'], 'sample-supporting-document.pdf', {type: 'application/pdf'},
   ));
   expect(picker.current.hasDemoUpload).toBe(false);
   expect(await picker.current.prepareSubmission()).toBeNull();

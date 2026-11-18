@@ -47,7 +47,7 @@ describe("three-file gallery and authenticated supporting documents", () => {
       new File(["abc"], "synthetic-replacement.png", { type: "image/png" }),
     );
     await user.click(
-      screen.getByRole("checkbox", { name: /synthetic test data only/ }),
+      screen.getByRole("checkbox", { name: /fictional information only/ }),
     );
     await user.click(
       screen.getByRole("button", { name: "Upload selected files" }),
@@ -79,7 +79,7 @@ describe("three-file gallery and authenticated supporting documents", () => {
       new File(["abc"], "synthetic.pdf", { type: "application/pdf" }),
     );
     await user.click(
-      screen.getByRole("checkbox", { name: /synthetic test data only/ }),
+      screen.getByRole("checkbox", { name: /fictional information only/ }),
     );
     await user.click(
       screen.getByRole("button", { name: "Upload selected files" }),
@@ -147,7 +147,7 @@ it("previews chosen documents and replaces a rejected file while retaining succe
   expect(screen.getByRole("link", {name: "Download to view PDF"})).toHaveAttribute("download", "reject.pdf");
   expect(screen.getByText(/application\/pdf · 3/)).toBeVisible();
   expect(onBlocked.mock.lastCall[0]).toBe(true);
-  await user.click(screen.getByRole("checkbox", {name: /synthetic test data only/}));
+  await user.click(screen.getByRole("checkbox", {name: /fictional information only/}));
   await user.click(screen.getByRole("button", {name: "Upload selected files"}));
   expect(await screen.findByText("Upload failed")).toBeVisible();
   expect(onChange.mock.lastCall[0].map((file) => file.name)).toEqual(["good.png"]);

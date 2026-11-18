@@ -1,4 +1,4 @@
-import { DEMO_PROFILE } from "./demo-transport.js";
+import { PRESENTER_TOOLS } from "./demo-transport.js";
 import { createSyntheticDemoPdfBytes } from "./demo-assets/synthetic-demo-pdf.js";
 import { DemoImage, useDemoTool } from "./DemoControls.jsx";
 import { locale, tr } from "./i18n/index.js";
@@ -51,7 +51,7 @@ export function FilePicker({
   const useCamera = navigator.maxTouchPoints > 0 && "capture" in HTMLInputElement.prototype;
   const pendingEntries = entries.filter((entry) => !entry.reference);
   const pending = pendingEntries.length > 0;
-  const demoSubmitEnabled = DEMO_PROFILE && Boolean(ref) && allowDemoSample &&
+  const demoSubmitEnabled = PRESENTER_TOOLS && Boolean(ref) && allowDemoSample &&
     purpose === "supporting_document" &&
     ["localhost", "127.0.0.1", "[::1]"].includes(globalThis.location.hostname);
   const hasDemoUpload = demoSubmitEnabled && pendingEntries.length === 1 &&
@@ -115,8 +115,8 @@ export function FilePicker({
     selectFiles(files, key);
   };
 
-  const demoName = "synthetic-demo-supporting-document.pdf";
-  const demoSampleEnabled = allowDemoSample && purpose === "supporting_document";
+  const demoName = "sample-supporting-document.pdf";
+  const demoSampleEnabled = PRESENTER_TOOLS && allowDemoSample && purpose === "supporting_document";
   const canChooseDemo = demoSampleEnabled && canChoose &&
     !entries.some((entry) => entry.bundledDemo);
   const chooseDemoDocument = () => {
@@ -246,7 +246,7 @@ export function FilePicker({
         id={inputId} type="file" multiple accept={image ? imageFileAccept : documentFileAccept}
         disabled={!canChoose} onChange={select}
       />
-      {DEMO_PROFILE && demoSampleEnabled && (
+      {PRESENTER_TOOLS && demoSampleEnabled && (
         <div className="form-inline-actions">
           <button type="button" className="button button-quiet button-small"
             disabled={!canChooseDemo}

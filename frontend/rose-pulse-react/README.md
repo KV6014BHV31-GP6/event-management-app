@@ -2,6 +2,25 @@
 
 This additive frontend preserves the Phase 1 layout and legacy frontend/live files. Phase 2 uses the admitted contracts in ../../docs/dev/phase2/ and isolated services. Unit/component results below are controlled synthetic evidence. The controller and independent reviewer record native Browser/API/PostgreSQL acceptance separately.
 
+## Challenge 5 public profile (2026-11-18)
+
+The public staging image uses `VITE_DEMO_PROFILE=synthetic` with
+`VITE_DEMO_PRESENTER=off`. The second setting disables presenter controls,
+form/file samples and transport fault toggles. It retains the existing
+synthetic draft database and scoped guest verification and recovery. An
+isolated presenter or existing CI build can continue to set only
+`VITE_DEMO_PROFILE=synthetic`. Server authorization and data contracts stay
+the same in both profiles.
+
+The public catalogue excludes only the explicitly identified exercises and
+retains unknown legitimate records. Event details support an iCalendar
+download containing the actual event schedule. Guests can copy the pending
+reference and open scoped lookup. Members go to their registration history.
+Organizer event actions lead to scoped review and capacity. The Leader
+workspace starts with named event selection and assigned outreach, with
+offline drafts accessible from the workspace. Check-in distinguishes
+device-saved actions from confirmed arrival.
+
 ## V2 light polish (2026-11-16)
 
 Discovery uses explicit source IDs from the release `EVENT_SOURCE_MANIFEST.json` and two explicit exercise IDs in `src/event-discovery.js`; titles never determine classification. All events remains the default and includes unclassified future records. Community events and Demo exercises are optional query views (`group=community` / `group=demo`). Matching API pages are read before source-priority ordering, collection counts and client pagination; keyword filtering remains server-side. A failed page remains a visible read error, with no partial-success fallback. Home features upcoming community/other records ahead of exercises; all records remain reachable through Events. Source API dates, quotas, status and image associations are unchanged. Categories remain absent because there is no category contract field.

@@ -301,7 +301,7 @@ it('discovers assisted account recovery from Login and keeps its code out of the
   expect(await screen.findByRole('heading', { name: 'Recover account access' })).toBeInTheDocument();
   expect(screen.getByLabelText('Recovery code')).toHaveAttribute('type', 'password');
   expect(window.location.search).toBe('?view=recovery');
-  expect(screen.getByText(/No real message or identity verification is provided/)).toBeInTheDocument();
+  expect(screen.getByText(/No message is sent and identity is not verified/)).toBeInTheDocument();
 });
 it('keeps verified Profile identity and local Logout alongside the real own-profile form', async () => {
   vi.spyOn(globalThis, 'fetch').mockResolvedValue({ ok: true, status: 200, json: async () => ({
@@ -508,7 +508,7 @@ describe("React application workflows (controlled API fixtures)", () => {
     expect(api.login).toHaveBeenCalledTimes(1);
     expect(window.location.search).toContain("view=apply");
   });
-  it("blocks leader create without sending a write and opens the synthetic local workspace", async () => {
+  it("blocks a Leader write and keeps offline drafts reachable from the Leader workspace", async () => {
     const createEvent = vi.fn();
     const { user } = await setup({
       view: "create",
@@ -522,10 +522,10 @@ describe("React application workflows (controlled API fixtures)", () => {
     ).toBeVisible();
     expect(screen.queryByLabelText("Event title")).not.toBeInTheDocument();
     expect(createEvent).not.toHaveBeenCalled();
-    await user.click(screen.getByRole("link", { name: "Leader workspace" }));
-    expect(
-      screen.getByRole("heading", { name: "Offline registration drafts" }),
-    ).toBeVisible();
+    await user.click(within(screen.getByRole("navigation", { name: "Main navigation" })).getByRole("link", { name: "Leader workspace" }));
+    expect(screen.getByRole("heading", { name: "Leader event workspace" })).toBeVisible();
+    await user.click(screen.getByRole("button", { name: "Offline drafts" }));
+    expect(await screen.findByRole("heading", { name: "Offline registration drafts" })).toBeVisible();
   });
   it("clears a selected upload before Create and enables an explicit second event after success", async () => {
     const createEvent = vi.fn().mockResolvedValue(event);
@@ -723,7 +723,7 @@ describe("React application workflows (controlled API fixtures)", () => {
   });
 });
 it('shows safe managed workflow state and registration window instead of legacy Active',async()=>{await setup({view:'events',methods:{getEvents:vi.fn(async()=>({data:[{...event,workflow:{state:'postponed',timezone:'Asia/Kuala_Lumpur',registration_opens_at:'2026-11-01T00:00:00Z',registration_closes_at:'2027-03-14T00:00:00Z'}}],page:1,page_size:6,total_count:1,total_pages:1}))}});expect(await screen.findByText('Postponed')).toBeInTheDocument();expect(screen.queryByText('Active')).not.toBeInTheDocument();expect(screen.getByText(/Registration closes/)).toBeInTheDocument();});
-it('home selects upcoming published events and excludes cancelled, completed and postponed records',async()=>{const upcoming={...event,title:'Upcoming published',workflow:{state:'published'}};await setup({methods:{getEvents:vi.fn(async()=>({data:[{...event,title:'Cancelled should not feature',status:'cancelled'}, {...event,title:'Postponed should not feature',workflow:{state:'postponed'}},upcoming],page:1,page_size:24,total_count:3,total_pages:1}))}});expect(await screen.findByText('Upcoming published')).toBeInTheDocument();expect(screen.queryByText('Cancelled should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Postponed should not feature')).not.toBeInTheDocument();});
+it('home selects upcoming published events and excludes cancelled, completed and postponed records',async()=>{const upcoming={...event,title:'Upcoming published',workflow:{state:'published'}};await setup({methods:{getEvents:vi.fn(async()=>({data:[{...event,public_id:'BCDEFGHIJKLMNOPQRSTUV',title:'Cancelled should not feature',status:'cancelled'}, {...event,public_id:'CDEFGHIJKLMNOPQRSTUVW',title:'Postponed should not feature',workflow:{state:'postponed'}}, {...event,public_id:'DEFGHIJKLMNOPQRSTUVWX',title:'Completed should not feature',status:'completed'},upcoming],page:1,page_size:24,total_count:4,total_pages:1}))}});expect(await screen.findByText('Upcoming published')).toBeInTheDocument();expect(screen.queryByText('Cancelled should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Postponed should not feature')).not.toBeInTheDocument();expect(screen.queryByText('Completed should not feature')).not.toBeInTheDocument();});
 it('primary Apply opens the managed Guest form and hands the confirmed reference to Guest booking access', async () => {
   const managed = {...event, workflow: {state: 'published', timezone: 'Asia/Kuala_Lumpur',
     registration_opens_at: '2026-11-01T00:00:00Z', registration_closes_at: '2027-03-14T00:00:00Z'}};
@@ -751,34 +751,75 @@ it('primary Apply opens the managed Guest form and hands the confirmed reference
   await user.click(within(form).getByRole('button', {name: 'Submit application'}));
   const dialog = await screen.findByRole('dialog', {name: 'Application submitted successfully'});
   expect(dialog).toHaveTextContent(ID);
-  await user.click(within(dialog).getByRole('button', {name: 'View application'}));
+  await user.click(within(dialog).getByRole('button', {name: 'Check my application'}));
   expect(screen.queryByRole('dialog')).not.toBeInTheDocument();
   expect(fetch.mock.calls[0][0]).toBe('/api/v2/operations/events/' + event.public_id + '/applications');
   expect(fetch.mock.calls[0][1].headers['X-Application-Key']).toMatch(/^[A-Za-z0-9_-]{43}$/);
   expect(screen.getByLabelText('Registration reference')).toHaveValue(ID);
-  expect(screen.getByText('Guest booking access — DEMO OTP')).toHaveFocus();
+  expect(screen.getByText('Guest verification')).toHaveFocus();
   expect(fetch).toHaveBeenCalledTimes(1);
 });
 
 
-it('keeps six source events and both exercises reachable with truthful collection counts and pagination', async () => {
+it('keeps all six source events and an unknown listing, with correct public page counts', async () => {
   const ids = ['nu26_9e2df27817a19d6a','nu26_f8eddfff6a6f9f0c','nu26_a3be1706dde219c3','nu26_5f4182417579f5e0','nu26_d45df20b703e6a31','nu26_2e5bc6a07cdb4f66'];
   const source = ids.map((public_id,index) => ({...event,public_id,title:`Source activity ${index}`}));
   const exercise = ['-AmZswKlKz_Z5Qrzir9US','G-jh8E9o09Kb6IeT_rBK8'].map((public_id,index) => ({...event,public_id,title:`Exercise activity ${index}`}));
-  const rows = [...exercise,...source];
-  const getEvents = vi.fn(async ({page,pageSize}) => ({data:rows.slice((page-1)*pageSize,page*pageSize),page,page_size:pageSize,total_count:8,total_pages:Math.ceil(8/pageSize)}));
+  const rows = [...exercise,...source,{...event,title:'New neighbourhood workshop'}];
+  const getEvents = vi.fn(async ({page,pageSize}) => ({data:rows.slice((page-1)*pageSize,page*pageSize),page,
+    page_size:pageSize,total_count:rows.length,total_pages:Math.ceil(rows.length/pageSize)}));
   const {user} = await setup({view:'events', methods:{getEvents}});
   await screen.findByRole('heading',{name:'Source activity 5'});
   expect(screen.queryByRole('heading',{name:'Exercise activity 0'})).not.toBeInTheDocument();
-  expect(screen.getByText('8 events')).toBeInTheDocument();
+  expect(screen.queryByRole('link',{name:/practice activities|demo exercises/i})).not.toBeInTheDocument();
+  expect(screen.getByText('7 events')).toBeInTheDocument();
   await user.click(screen.getByRole('button',{name:'Next page'}));
-  await screen.findByRole('heading',{name:'Exercise activity 1'});
-  await user.click(screen.getByRole('link',{name:'Demo exercises 2'}));
-  await screen.findByRole('heading',{name:'Exercise activity 0'});
-  expect(screen.getByText('2 events')).toBeInTheDocument();
-  expect(screen.queryByRole('heading',{name:'Source activity 0'})).not.toBeInTheDocument();
+  await screen.findByRole('heading',{name:'New neighbourhood workshop'});
+  expect(screen.queryByRole('heading',{name:'Exercise activity 1'})).not.toBeInTheDocument();
+  expect(screen.getByRole('button',{name:'Next page'})).toBeDisabled();
   await user.click(screen.getByRole('link',{name:'Community events 6'}));
   await screen.findByRole('heading',{name:'Source activity 5'});
   expect(screen.getByText('6 events')).toBeInTheDocument();
   expect(screen.getByRole('button',{name:'Next page'})).toBeDisabled();
+});
+
+
+it.each([
+  [undefined,'apply'], ['user','apply'], ['leader','leader'], ['organizer','operations'],
+])('R2 routes a %s event selection to %s with the same event', async (role,destination) => {
+  const catalogue={page:1,page_size:24,total_pages:1,total_count:1,data:[event]};
+  const pool={available:1,approved:0,capacity:1,offer_holds:0};
+  vi.spyOn(globalThis,'fetch').mockImplementation(async path => ({
+    ok:true, status:200, json:async()=>path.endsWith('/stats') ? {
+      counts:{pending:0,approved:0,waiting:0,offer_holds:0,applications:0},
+      quota:{online:pool,offline:pool},attribution:{direct:0,leader_referral:0,unknown:0},
+      alert:{state:'normal'},instruction:{text:''},
+    } : {
+      event, workflow:{state:'published',version:1,registration_opens_at:event.created_at,registration_closes_at:event.start_time},
+      leaders:[], reports:[],
+    },
+  }));
+  const {user}=await setup({view:'operations',role,methods:{
+    getOrganizerEvents:vi.fn(async()=>catalogue),
+    getOrganizerRegistrations:vi.fn(async()=>[]),
+  }});
+  if(role!=='leader') await user.click(screen.getByRole('button',{name:'Choose an event'}));
+  await screen.findByRole('option',{name:event.title});
+  await user.selectOptions(screen.getByRole('combobox',{name:'Event'}),event.public_id);
+  const query=new URLSearchParams(window.location.search);
+  expect(query.get('view')).toBe(destination);
+  expect(query.get('event')).toBe(event.public_id);
+  if(destination==='apply') {
+    expect(await screen.findByRole('heading',{name:'Join this event'})).toBeVisible();
+    expect(screen.queryByRole('heading',{name:'Log in to continue'})).not.toBeInTheDocument();
+  }
+});
+
+it('R2 opens the existing accountless lookup from the desktop guest sidebar', async()=>{
+  const {user}=await setup();
+  const sidebar=screen.getByRole('navigation',{name:'Main navigation'});
+  await user.click(within(sidebar).getByRole('link',{name:'My registrations'}));
+  expect(new URLSearchParams(window.location.search).get('booking')).toBe('1');
+  expect(screen.getByRole('heading',{name:'Check my application'})).toBeVisible();
+  expect(screen.getByRole('form',{name:'Request verification code'})).toBeVisible();
 });

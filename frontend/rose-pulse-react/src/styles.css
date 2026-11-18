@@ -3100,3 +3100,51 @@ summary:focus-visible { outline: 3px solid #bd8d3c; outline-offset: 4px; }
   .journey-section { padding: 16px; }
   .offline-privacy { padding: 14px 16px; }
 }
+
+/* Event operations use the same responsive shell as discovery. */
+.capacity-overview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px 24px;
+  margin: 12px 0 0;
+}
+.capacity-overview > div {
+  flex: 1 0 100px;
+  border-top: 1px solid var(--line);
+  padding: 8px 0;
+}
+.capacity-overview dd {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 650;
+}
+.footer > span:nth-child(2) {
+  max-width: 52ch;
+  line-height: 1.5;
+}
+.approved-flyer a, .receipt dd {
+  overflow-wrap: anywhere;
+}
+@media (max-width: 700px) {
+  .detail-action > a, .journey-task-actions > button { min-height: 44px; }
+  .journey-task-actions > button { max-width: 100%; white-space: normal; }
+}
+
+.application-event-context > p { margin: 8px 0; }
+.application-event-context > details > summary {
+  font-size: 1rem;
+  padding: 4px 0;
+}
+@media (max-width: 420px) {
+  .journey-workspace .page-heading { flex-wrap: wrap; }
+  .application-primary > form { padding: 12px; }
+}
+
+.approved-flyer .flyer-print-url { display: none; overflow-wrap: anywhere; }
+.approved-flyer .flyer-share { overflow-wrap: normal; white-space: normal; }
+@media (max-width: 480px) {
+  .approved-flyer .flyer-share { flex: 1 0 100%; text-align: center; }
+}
+@media print {
+  .approved-flyer .flyer-print-url { display: block; }
+}

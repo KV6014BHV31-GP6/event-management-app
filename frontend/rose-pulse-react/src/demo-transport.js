@@ -1,6 +1,10 @@
 export const DEMO_PROFILE = import.meta.env.VITE_DEMO_PROFILE === 'synthetic';
+// CI and the local presenter keep their existing profile. Public staging retains
+// the same draft data and server contract, but cannot arm transport simulations.
+export const PRESENTER_TOOLS = DEMO_PROFILE && import.meta.env.VITE_DEMO_PRESENTER !== 'off';
+
 export function createDemoTransport({
-  enabled = DEMO_PROFILE,
+  enabled = PRESENTER_TOOLS,
   fetchImpl = (...args) => globalThis.fetch(...args),
   storage = globalThis.sessionStorage
 } = {}) {

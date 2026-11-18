@@ -32,3 +32,20 @@ it('drops only a successful sync acknowledgement, preserving auth failures', asy
     method: 'POST'
   })).rejects.toThrow(/acknowledgement/);
 });
+
+it('keeps synthetic draft profile but cannot arm public presenter transport', async () => {
+  vi.stubEnv('VITE_DEMO_PROFILE', 'synthetic');
+  vi.stubEnv('VITE_DEMO_PRESENTER', 'off');
+  vi.resetModules();
+  try {
+    const { DEMO_PROFILE, PRESENTER_TOOLS, demoTransport } = await import('./demo-transport.js');
+    expect(DEMO_PROFILE).toBe(true);
+    expect(PRESENTER_TOOLS).toBe(false);
+    demoTransport.offline();
+    demoTransport.loseNextAck();
+    expect(demoTransport.getSnapshot()).toMatchObject({enabled:false, mode:'connected', loseAck:false});
+  } finally {
+    vi.unstubAllEnvs();
+    vi.resetModules();
+  }
+});

@@ -1,25 +1,26 @@
-import React, { useEffect, useId, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useId, useRef, useState } from "react";
 import { tr } from "./i18n/index.js";
 import { PrivateDocuments } from "./PrivateDocuments.jsx";
 
-export default function ApplicationSuccess({ eventTitle, reference, runtime, files = [], onDismiss, onView, onDone }) {
+export default function ApplicationSuccess({ eventTitle, reference, runtime, files = [], onDismiss, onView, onDone, nextLabel = "View application" }) {
   const dialog = useRef(null);
   const closeButton = useRef(null);
-  const timer = useRef(null);
   const finished = useRef(false);
-  const latestDone = useRef(onDone);
+  const [copyStatus, setCopyStatus] = useState("");
   const titleId = useId();
   const descriptionId = useId();
-  const returnId = useId();
-
-  useLayoutEffect(() => {
-    latestDone.current = onDone;
-  }, [onDone]);
+  const copyReference = async () => {
+    try {
+      await navigator.clipboard.writeText(reference);
+      setCopyStatus("Reference copied.");
+    } catch {
+      setCopyStatus("Copy is unavailable. Select and copy the reference above.");
+    }
+  };
 
   const close = (action) => {
     if (finished.current) return;
     finished.current = true;
-    window.clearTimeout(timer.current);
     if (dialog.current?.open) dialog.current.close();
     action();
   };
@@ -33,12 +34,10 @@ export default function ApplicationSuccess({ eventTitle, reference, runtime, fil
     finished.current = false;
     panel.showModal();
     closeButton.current?.focus();
-    timer.current = window.setTimeout(() => close(latestDone.current), 5000);
     const overflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     return () => {
       finished.current = true;
-      window.clearTimeout(timer.current);
       if (panel.open) panel.close();
       document.body.style.overflow = overflow;
     };
@@ -51,7 +50,7 @@ export default function ApplicationSuccess({ eventTitle, reference, runtime, fil
       className="document-viewer application-success"
       aria-modal="true"
       aria-labelledby={titleId}
-      aria-describedby={`${descriptionId} ${returnId}`}
+      aria-describedby={descriptionId}
       onCancel={(event) => {
         event.preventDefault();
         close(onDismiss);
@@ -77,7 +76,7 @@ export default function ApplicationSuccess({ eventTitle, reference, runtime, fil
         <dd><span className="status status-pending">{tr("Pending")}</span></dd>
       </dl>
       <p id={descriptionId}>{tr("Awaiting organiser review. A place is not confirmed.")}</p>
-      <p id={returnId}>{tr("Returning to the event in 5 seconds.")}</p>
+      {copyStatus && <p role="status">{tr(copyStatus)}</p>}
       {runtime && files.length > 0 && (
         <section>
           <h3>{tr("Supporting documents")}</h3>
@@ -85,8 +84,11 @@ export default function ApplicationSuccess({ eventTitle, reference, runtime, fil
         </section>
       )}
       <div className="form-actions">
+        <button className="button button-quiet" type="button" onClick={copyReference}>
+          {tr("Copy reference")}
+        </button>
         <button className="button" type="button" onClick={() => close(onView)}>
-          {tr("View application")}
+          {tr(nextLabel)}
         </button>
         <button className="button button-quiet" type="button" onClick={() => close(onDone)}>
           {tr("Back to event")}

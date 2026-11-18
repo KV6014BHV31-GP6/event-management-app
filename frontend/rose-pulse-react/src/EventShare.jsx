@@ -1,6 +1,7 @@
 import { locale, tr } from "./i18n/index.js";
 import React, { useId, useRef, useState } from "react";
-import { DEMO_PROFILE } from "./demo-transport.js";
+import { downloadEventCalendar, canAddToCalendar } from './event-calendar.js';
+import { PRESENTER_TOOLS } from "./demo-transport.js";
 
 function shareOrigin(value) {
   try {
@@ -21,23 +22,24 @@ function shareOrigin(value) {
   return "";
 }
 
-function eventLink(publicId, origin) {
+function eventLink(publicId, origin, referralCode) {
   if (!origin || !/^[A-Za-z0-9_-]{21}$/.test(publicId)) return "";
   const url = new URL("/", origin);
   url.search = new URLSearchParams({ view: "event", event: publicId });
+  if (/^[A-Za-z0-9_-]{24}$/.test(referralCode || "")) url.searchParams.set("ref", referralCode);
   return url.href;
 }
 
-function localDemoLink(event) {
+function localDemoLink(event, referralCode) {
   const { origin, protocol, hostname } = globalThis.location;
   const loopback = hostname === "localhost" || hostname === "[::1]" ||
     /^127(?:\.\d{1,3}){3}$/.test(hostname);
-  return DEMO_PROFILE && loopback && ["http:", "https:"].includes(protocol)
-    ? eventLink(event.public_id, origin)
+  return PRESENTER_TOOLS && loopback && ["http:", "https:"].includes(protocol)
+    ? eventLink(event.public_id, origin, referralCode)
     : "";
 }
 
-export function publicShare(event, origin = globalThis.location.origin) {
+export function publicShare(event, origin = globalThis.location.origin, referralCode) {
   const title = event.title;
   const zone = event.workflow?.timezone || "UTC";
   let schedule = "";
@@ -54,7 +56,7 @@ export function publicShare(event, origin = globalThis.location.origin) {
   }
   const text = [title, schedule, event.location].filter(Boolean).join("\n");
   const url = title?.trim() && schedule && event.location?.trim()
-    ? eventLink(event.public_id, shareOrigin(origin))
+    ? eventLink(event.public_id, shareOrigin(origin), referralCode)
     : "";
   return { title, text, url, message: url ? `${text}\n${url}` : text };
 }
@@ -114,12 +116,12 @@ function WhatsAppDemo({ text, url }) {
   );
 }
 
-export default function EventShare({ event }) {
+export default function EventShare({ event, referralCode }) {
   const [message, setMessage] = useState("");
   const previewId = useId();
   const demoLinkId = useId();
-  const demoUrl = localDemoLink(event);
-  const { title, text, url, message: preview } = publicShare(event);
+  const demoUrl = localDemoLink(event, referralCode);
+  const { title, text, url, message: preview } = publicShare(event, undefined, referralCode);
   const data = { title, text, url };
   let canShare = false;
   try {
@@ -152,6 +154,10 @@ export default function EventShare({ event }) {
   return (
     <section className="event-share">
       <h3>{tr("Share this event")}</h3>
+      {canAddToCalendar(event) && <button type="button" className="button button-quiet button-small"
+        onClick={() => downloadEventCalendar(event, url)}>
+        {tr("Add to calendar")}
+      </button>}
       {!url && <p className="small muted">
         {tr(demoUrl
           ? "This local demo link opens on this computer while the demo is running. Another phone cannot open it."

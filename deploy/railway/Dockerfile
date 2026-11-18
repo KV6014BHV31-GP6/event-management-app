@@ -11,7 +11,7 @@ ARG NU_PRODUCT_SHA
 RUN source_sha="${RAILWAY_GIT_COMMIT_SHA:-${NU_PRODUCT_SHA}}" \
     && printf '%s' "$source_sha" | grep -Eq '^[0-9a-f]{40}$' \
     && test "$source_sha" != 0000000000000000000000000000000000000000 \
-    && VITE_DEMO_PROFILE=synthetic VITE_DEMO_BUILD_SHA="$source_sha" npm run build \
+    && VITE_DEMO_PROFILE=synthetic VITE_DEMO_PRESENTER=off VITE_DEMO_BUILD_SHA="$source_sha" npm run build \
     && printf '{"source_sha":"%s","profile":"synthetic-staging"}\n' "$source_sha" > dist/nu-source.json
 
 FROM python:3.14.8-slim-bookworm AS runtime

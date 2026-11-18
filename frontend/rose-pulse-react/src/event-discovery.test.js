@@ -59,3 +59,35 @@ it.each([
   await expect(readDiscovery(api,{page:1,pageSize:1})).rejects.toThrow('complete');
   expect(api.getEvents).toHaveBeenCalledTimes(3);
 });
+
+it('keeps known exercises out of public results while retaining every unknown event', async () => {
+  const { publicDiscovery } = await import('./event-discovery.js');
+  const newEvent = {public_id:'new-id', title:'New community workshop'};
+  expect(publicDiscovery([...exercises, ...community, newEvent])).toEqual([...community, newEvent]);
+  expect(publicDiscovery(exercises)).toEqual([]);
+  expect(discoveryView(exercises, 'demo')).toEqual(exercises);
+});
+
+
+it('R3 retrieves the remaining listing when a bookmark outlives page two', async () => {
+  const options={page:2,pageSize:6,keyword:'workshop',signal:new AbortController().signal};
+  const api={getEvents:vi.fn(async ({page})=>({
+    page, total_pages:1, total_count:1, data:page===1?[community[0]]:[],
+  }))};
+  const result=await readDiscovery(api,options);
+  expect(result).toMatchObject({records:[community[0]],total_count:1,complete:true});
+  expect(api.getEvents.mock.calls).toEqual([[options],[{...options,page:1}]]);
+});
+
+it('R3 accepts a truly empty result without requesting another page', async () => {
+  const api={getEvents:vi.fn(async ()=>({page:2,total_pages:0,total_count:0,data:[]}))};
+  await expect(readDiscovery(api,{page:2,pageSize:6})).resolves.toMatchObject({records:[],complete:true});
+  expect(api.getEvents).toHaveBeenCalledTimes(1);
+});
+
+it('R3 rejects an incomplete one-page collection after only one bounded recovery', async () => {
+  const options={page:1,pageSize:6,keyword:'workshop',signal:new AbortController().signal};
+  const api={getEvents:vi.fn(async ()=>({page:1,total_pages:1,total_count:1,data:[]}))};
+  await expect(readDiscovery(api,options)).rejects.toThrow('complete');
+  expect(api.getEvents.mock.calls).toEqual([[options],[{...options,pageSize:100}]]);
+});

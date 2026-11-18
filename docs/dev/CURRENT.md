@@ -1,3 +1,30 @@
+# Current successor: ROSE PULSE Challenge 5 public experience, 2026-11-18
+
+Branch `feat/rose-challenge5-20261118` starts from
+`27f1a1c5bade55304c60d4e133980c34b2031c2d`. This working-baseline author
+candidate improves public discovery and receipts, owned applications and
+capacity, assigned-leader outreach, and connected check-in. Existing APIs
+continue to enforce permissions, places and operation receipts. Event details
+can export their published schedule as a calendar file.
+
+Railway's public frontend build disables the presenter controls while keeping
+the synthetic journey and draft profile. The release still requires a
+fixed-source independent review, hosted checks, staging classification readback
+and a separately authorized promotion. Author evidence is under the external
+ROSE task evidence directory. See the [scoped task](tasks/ROSE-CHALLENGE5-20261118.md).
+
+The additive review follow-up addresses findings R1–R5 on Draft PR 72.
+It binds guest detail and actions to the verified booking, restores the
+public and member event routes, recovers a shrunken catalogue page, prints
+the approved referral address, and refreshes the outreach list after a
+confirmed save. New independent review and fixed-head hosted checks remain
+release gates.
+
+The independent S1 follow-up allows the same verified guest booking to
+recover its original offer receipt after the offer is consumed. New
+decisions still require an active offer. Legacy saved offer requests have
+a receipt-only check through the existing grant and server authorization.
+
 # Current successor: PR70 Age/Income Group synthetic Railway staging activation, 2026-11-17
 
 The PR70 new registration contract has merged to `dev_demo@88dc0b39efbc3822f6eae1cf432d1d721ff8c9a9`; its fixed SHA CI is complete. The existing Railway synthetic staging still serves the previous commit `eb770465220e9d415a6ee75ee4f188b920fec79e`, with original DB and upload volumes preserved.

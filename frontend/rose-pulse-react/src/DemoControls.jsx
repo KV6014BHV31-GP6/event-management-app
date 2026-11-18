@@ -1,5 +1,5 @@
 import React, { createContext, useCallback, useContext, useEffect, useRef, useState, useSyncExternalStore } from 'react';
-import { demoTransport, DEMO_PROFILE } from './demo-transport.js';
+import { demoTransport, PRESENTER_TOOLS } from './demo-transport.js';
 import { tr } from './i18n/index.js';
 const DemoToolsContext = createContext(null);
 
@@ -18,13 +18,13 @@ export function useDemoTool(name, action, enabled = true) {
   const current = useRef(action);
   current.current = action;
   useEffect(() => {
-    if (DEMO_PROFILE && enabled && register) return register(name, () => current.current());
+    if (PRESENTER_TOOLS && enabled && register) return register(name, () => current.current());
   }, [enabled, name, register]);
 }
 
 export function DemoImage(props) {
   const state = useSyncExternalStore(demoTransport.subscribe, demoTransport.getSnapshot);
-  if (DEMO_PROFILE && state.mode === 'offline' && props.src && !/^(blob:|data:|\/images\/)/.test(props.src)) return <span role="img" aria-label={props.alt} className="image-fallback">{tr('Image unavailable in simulated offline mode')}</span>;
+  if (PRESENTER_TOOLS && state.mode === 'offline' && props.src && !/^(blob:|data:|\/images\/)/.test(props.src)) return <span role="img" aria-label={props.alt} className="image-fallback">{tr('Image unavailable in simulated offline mode')}</span>;
   return <img {...props} />;
 }
 export function DemoControls({
@@ -32,7 +32,7 @@ export function DemoControls({
 }) {
   const actions = useContext(DemoToolsContext)?.actions || {};
   const s = useSyncExternalStore(demoTransport.subscribe, demoTransport.getSnapshot);
-  if (!DEMO_PROFILE) return null;
+  if (!PRESENTER_TOOLS) return null;
   return (
     <details className="demo-tools" aria-label={tr('Synthetic demo controls')}>
       <summary tabIndex={0}>{tr('Demo tools · Synthetic data')}</summary>

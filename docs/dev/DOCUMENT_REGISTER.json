@@ -1,9 +1,9 @@
 {
   "schema": "nu-public-document-register/1",
   "package_version": "repo-docs/0.3.0",
-  "reviewed_at": "2026-11-17T12:08:29.964972+00:00",
-  "reason": "P1 exact Railway target/private endpoint guard and P2 durable backup digest verification after independent review",
-  "document_count": 445,
+  "reviewed_at": "2026-11-17T22:58:28.830199+00:00",
+  "reason": "Correct guest offer receipt recovery following S1 independent review",
+  "document_count": 448,
   "scope": "All payload files except this self-excluded register; Git directory and Python caches are not payload.",
   "documents": [
     {
@@ -316,7 +316,7 @@
     {
       "document_id": "DOC-01",
       "path": "docs/dev/CURRENT.md",
-      "revision": 56,
+      "revision": 59,
       "owner": "Benjamin Dev workflow",
       "status": "working-baseline",
       "revision_history": [
@@ -674,6 +674,27 @@
           "size_bytes": 49271,
           "superseded_at": "2026-11-17T11:55:01.986381+00:00",
           "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
+        },
+        {
+          "revision": 56,
+          "sha256": "27e1ee46a81865dfca8aa0aaadc91d7cd19e33bedb261b5a7fbd664fc943a994",
+          "size_bytes": 50460,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 57,
+          "sha256": "1e8823f1953549e3057bf5e956a14a7c9aadedd318acbd899c749ff059573a88",
+          "size_bytes": 51335,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 58,
+          "sha256": "d2c1c46e87480ee50893114937ad05c102e4258404920fb960aa80396f211488",
+          "size_bytes": 51717,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "import_lineage": {
@@ -686,8 +707,8 @@
         "USER-NATIVE-ACCEPTANCE-20261014",
         "USER-PR3-MERGE-20261014"
       ],
-      "sha256": "27e1ee46a81865dfca8aa0aaadc91d7cd19e33bedb261b5a7fbd664fc943a994",
-      "size_bytes": 50460,
+      "sha256": "e24bb97ad442f2c33c38fa1f1c624801368de6328beb9c4c1a3da458b31f0d32",
+      "size_bytes": 52005,
       "upstream_revision_lineage": {
         "source_commit": "46e77c023d72426859e587aff7afa4db8b4c0027",
         "entry": {
@@ -5077,7 +5098,7 @@
     {
       "document_id": "ROSE-V2-90611dc6391e",
       "path": "frontend/rose-pulse-react/README.md",
-      "revision": 16,
+      "revision": 17,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5185,13 +5206,20 @@
           "size_bytes": 49267,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 16,
+          "sha256": "c2e480adb0a9b7f0636ea39aa3174e8adb7cb646b8aaf538ef1425de6bd71a62",
+          "size_bytes": 50266,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "c2e480adb0a9b7f0636ea39aa3174e8adb7cb646b8aaf538ef1425de6bd71a62",
-      "size_bytes": 50266
+      "sha256": "d1403c317d0c508b0a69fe5d25579cff9c743c793ef47875daeb76921aa46ffc",
+      "size_bytes": 51317
     },
     {
       "document_id": "ROSE-V2-2e86f1b3e705",
@@ -5272,7 +5300,7 @@
     {
       "document_id": "ROSE-V2-7bae697b5dd8",
       "path": "frontend/rose-pulse-react/src/App.jsx",
-      "revision": 10,
+      "revision": 13,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5338,18 +5366,39 @@
           "size_bytes": 92587,
           "superseded_at": "2026-11-15T20:51:28.224492+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 10,
+          "sha256": "ae21387bdeb3db863f8fd342515108acf56e63113486d694036620444eb609ac",
+          "size_bytes": 92594,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 11,
+          "sha256": "68a57ec67367e7488edd5780dbe3852c039963542e881b7557f98ea71971e3e9",
+          "size_bytes": 94182,
+          "superseded_at": "2026-11-17T21:47:00.965236+00:00",
+          "reason": "ROSE Challenge 5 connected mobile refinement and final wording"
+        },
+        {
+          "revision": 12,
+          "sha256": "7d2c6470d8d4ceaf5e6745d2ba35e10896a25ab8fc54d51568cc57cb7a367144",
+          "size_bytes": 94194,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "ae21387bdeb3db863f8fd342515108acf56e63113486d694036620444eb609ac",
-      "size_bytes": 92594
+      "sha256": "5b7af6b1294a18564c17be545b1cf2be6a01574afe433ff57d894786c34f1061",
+      "size_bytes": 94491
     },
     {
       "document_id": "ROSE-V2-9d5b331fb52d",
       "path": "frontend/rose-pulse-react/src/App.test.jsx",
-      "revision": 8,
+      "revision": 10,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5401,13 +5450,27 @@
           "size_bytes": 39050,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 8,
+          "sha256": "d856ec2847c49fb864f0d10eb8b6319e5247e773992dc6d43389dc9933f1d762",
+          "size_bytes": 39032,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 9,
+          "sha256": "a07f3d4245d51b19e5e0607e71f5081217ede98eaf3b58578427905d3d1e3166",
+          "size_bytes": 39282,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "d856ec2847c49fb864f0d10eb8b6319e5247e773992dc6d43389dc9933f1d762",
-      "size_bytes": 39032
+      "sha256": "f71e3fdb57373b5d35f1815d943e63f93360354f01340ddef35ab1b048cc4bba",
+      "size_bytes": 41725
     },
     {
       "document_id": "ROSE-V2-180cd65ab8ee",
@@ -5503,7 +5566,7 @@
     {
       "document_id": "ROSE-V2-592e6fa111ee",
       "path": "frontend/rose-pulse-react/src/styles.css",
-      "revision": 9,
+      "revision": 11,
       "owner": "NU ROSE PULSE V2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -5562,13 +5625,27 @@
           "size_bytes": 64040,
           "superseded_at": "2026-11-15T20:37:33.128842+00:00",
           "reason": "精修 V2 活動展示、角色操作及真實分頁，保留既有契約與 V1"
+        },
+        {
+          "revision": 9,
+          "sha256": "43a2e476e2f009cf3049707337bbf02a44be43a2db2dcadf6896c098a138e12e",
+          "size_bytes": 66384,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 10,
+          "sha256": "bc3b0af666641e8cab2555e47efbce8f9389c4e3d174b87915da3ad9161711ac",
+          "size_bytes": 67320,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-ROSE-PULSE-V2-20261102"
       ],
-      "sha256": "43a2e476e2f009cf3049707337bbf02a44be43a2db2dcadf6896c098a138e12e",
-      "size_bytes": 66384
+      "sha256": "5e215e3b8e86931083c69c67d1caf253ab2f8b875ee4b01293ecc687e2f9d7f8",
+      "size_bytes": 67648
     },
     {
       "document_id": "ROSE-V2-227b578be09b",
@@ -6494,7 +6571,7 @@
     {
       "document_id": "ROSE-P2-370e9c1895ba",
       "path": "frontend/rose-pulse-react/src/EventShare.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6511,18 +6588,25 @@
           "size_bytes": 4990,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 3,
+          "sha256": "4f92811249426c9d78a6c95708a51d2db7c6d53db8f449f2576ba41f22a9d84b",
+          "size_bytes": 8467,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "4f92811249426c9d78a6c95708a51d2db7c6d53db8f449f2576ba41f22a9d84b",
-      "size_bytes": 8467
+      "sha256": "9b2c4836df6696ba26f3280446f0b9fb554af5fee83cadf20b7c5a4f8723d30d",
+      "size_bytes": 8981
     },
     {
       "document_id": "ROSE-P2-8d511394a1a5",
       "path": "frontend/rose-pulse-react/src/EventShare.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6539,18 +6623,25 @@
           "size_bytes": 4159,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 3,
+          "sha256": "d75eaf1a7a7663c9ea28b1d6c851a251e16557e5a3ac2b4d545cf233fd4efe8b",
+          "size_bytes": 8478,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "d75eaf1a7a7663c9ea28b1d6c851a251e16557e5a3ac2b4d545cf233fd4efe8b",
-      "size_bytes": 8478
+      "sha256": "cee81c365a040bc111c814954cf7c080e3b84bdce384cbbe197c2b411aaaf664",
+      "size_bytes": 8754
     },
     {
       "document_id": "ROSE-P2-650d560abc95",
       "path": "frontend/rose-pulse-react/src/FilePicker.jsx",
-      "revision": 4,
+      "revision": 5,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6574,18 +6665,25 @@
           "size_bytes": 10458,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 4,
+          "sha256": "37598e19131b5ce10a72a125610142bea087cce56332abfa4c06a4245b953692",
+          "size_bytes": 13054,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "37598e19131b5ce10a72a125610142bea087cce56332abfa4c06a4245b953692",
-      "size_bytes": 13054
+      "sha256": "e83d14fe985b3015dc385c637a99089589b09ca2490389e5c4e552b269fc53e7",
+      "size_bytes": 13074
     },
     {
       "document_id": "ROSE-P2-78e229b4c24d",
       "path": "frontend/rose-pulse-react/src/FilePicker.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6602,18 +6700,25 @@
           "size_bytes": 4595,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 3,
+          "sha256": "e786f2c8c8313b219ec804d1385aec634209e3c80d929b9122b58c3808f2bb3a",
+          "size_bytes": 7844,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "e786f2c8c8313b219ec804d1385aec634209e3c80d929b9122b58c3808f2bb3a",
-      "size_bytes": 7844
+      "sha256": "0052e7c38fb96616bed13bceb5d02224168acf069ba0e13cc63cdae06903a2ac",
+      "size_bytes": 7850
     },
     {
       "document_id": "ROSE-P2-28e512608732",
       "path": "frontend/rose-pulse-react/src/OrganizerWorkspace.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6623,13 +6728,20 @@
           "size_bytes": 10180,
           "superseded_at": "2026-11-03T06:23:45.486467+00:00",
           "reason": "整合完整 Demo 前後端、原件 AC 對帳、受限 proxy 與固定版本 CI 候選；不提升驗收狀態"
+        },
+        {
+          "revision": 2,
+          "sha256": "197685a9ed83a0bf06f4e184797f3509856e7907e5cef1dee125fc13d6b64a1f",
+          "size_bytes": 10331,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "197685a9ed83a0bf06f4e184797f3509856e7907e5cef1dee125fc13d6b64a1f",
-      "size_bytes": 10331
+      "sha256": "f34228a17913b01f73285867195dee3e54ac4d198a15b53cb39b25ff881a225a",
+      "size_bytes": 10340
     },
     {
       "document_id": "ROSE-P2-3f53d6ed49f4",
@@ -6647,7 +6759,7 @@
     {
       "document_id": "ROSE-P2-7132da30064e",
       "path": "frontend/rose-pulse-react/src/i18n/en.json",
-      "revision": 15,
+      "revision": 19,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6748,13 +6860,41 @@
           "size_bytes": 84297,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 15,
+          "sha256": "997e31ef0725de87b3f034d5a3d836ac0816627fce598140d5a072d25d94884e",
+          "size_bytes": 84753,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 16,
+          "sha256": "650a22d2e167d3ed23e53fcf6f44f2f4c5c735ed195c6242dad853b29c640a7f",
+          "size_bytes": 88067,
+          "superseded_at": "2026-11-17T21:48:33.093849+00:00",
+          "reason": "Preserve the existing isolated presenter confirmation selector while localizing public drafts"
+        },
+        {
+          "revision": 17,
+          "sha256": "6e6c6e64936b993424fc775943176207d645bee560cdab3dbeb88e35247aae2d",
+          "size_bytes": 88175,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 18,
+          "sha256": "fa372b6a3e01758abed13f741c10326e3f1ab63072df8653434d0c44cd420976",
+          "size_bytes": 88401,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "997e31ef0725de87b3f034d5a3d836ac0816627fce598140d5a072d25d94884e",
-      "size_bytes": 84753
+      "sha256": "b3d82dfb656a9c64e8b8d32ff3405cff49067e5b1ceacef80502945ebfd84685",
+      "size_bytes": 88769
     },
     {
       "document_id": "ROSE-P2-79c57f8a6fe4",
@@ -6807,7 +6947,7 @@
     {
       "document_id": "ROSE-P2-c434e275cd26",
       "path": "frontend/rose-pulse-react/src/i18n/ms.json",
-      "revision": 15,
+      "revision": 19,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6908,13 +7048,41 @@
           "size_bytes": 87341,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 15,
+          "sha256": "90bbd1883e11005431d836adf3c0c462bc9072a443260129e5a85d775ccef513",
+          "size_bytes": 87831,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 16,
+          "sha256": "3fc0d9524040fc4aec529d5fa668467ec01596f244d235c19caf9745b1f359e2",
+          "size_bytes": 91107,
+          "superseded_at": "2026-11-17T21:48:33.093849+00:00",
+          "reason": "Preserve the existing isolated presenter confirmation selector while localizing public drafts"
+        },
+        {
+          "revision": 17,
+          "sha256": "5a6bfde1a7640b8b380f358b3c3ef3c7b087d1fa2352f5840d9831cc2f8599dc",
+          "size_bytes": 91231,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 18,
+          "sha256": "ca19952c7538b01ab8974a4f431aed870d85e91793c395f91e73297e3c549764",
+          "size_bytes": 91470,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "90bbd1883e11005431d836adf3c0c462bc9072a443260129e5a85d775ccef513",
-      "size_bytes": 87831
+      "sha256": "414f71e3c80240021c42c358bd82d2edbc43e32a90ebbcecd5474aecc3d4d59e",
+      "size_bytes": 91857
     },
     {
       "document_id": "ROSE-P2-cc4c1302c538",
@@ -6961,7 +7129,7 @@
     {
       "document_id": "ROSE-P2-4d5ba300321d",
       "path": "frontend/rose-pulse-react/src/offline/OfflineWorkspace.jsx",
-      "revision": 6,
+      "revision": 7,
       "owner": "NU ROSE PULSE Phase2 workstream",
       "status": "working-baseline",
       "revision_history": [
@@ -6999,13 +7167,20 @@
           "size_bytes": 28780,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 6,
+          "sha256": "7e8fdd8e394d6aec85490d0afd4e7b26b380e2d6bfc4fb37564fc73a75649572",
+          "size_bytes": 28681,
+          "superseded_at": "2026-11-17T21:48:33.093849+00:00",
+          "reason": "Preserve the existing isolated presenter confirmation selector while localizing public drafts"
         }
       ],
       "dependencies": [
         "USER-ROSE-PHASE2-20261102"
       ],
-      "sha256": "7e8fdd8e394d6aec85490d0afd4e7b26b380e2d6bfc4fb37564fc73a75649572",
-      "size_bytes": 28681
+      "sha256": "0cd92b587af82a05939857c75819f3c12edee4ad35ef94f3acd99e579aa544d7",
+      "size_bytes": 28818
     },
     {
       "document_id": "ROSE-P2-a74207d91712",
@@ -7927,7 +8102,7 @@
     {
       "document_id": "DEMO-DOC-221BA25A62E6FB8E",
       "path": "frontend/rose-pulse-react/src/AttendanceWorkspace.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7937,31 +8112,46 @@
           "size_bytes": 5286,
           "superseded_at": "2026-11-03T06:57:18.799558+00:00",
           "reason": "R3 整合已保留 FE/BE 反例修正及 CI inventory 修正；未宣稱獨立驗收通過"
+        },
+        {
+          "revision": 2,
+          "sha256": "e07e92134e11747607487e851f210d575045d4e85d75b02a8d0d68cb25a3e6d5",
+          "size_bytes": 4502,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "e07e92134e11747607487e851f210d575045d4e85d75b02a8d0d68cb25a3e6d5",
-      "size_bytes": 4502
+      "sha256": "db849ef6542728ec3e8feb694884e749780e681ca0698d3b9967dbc40dc57306",
+      "size_bytes": 5901
     },
     {
       "document_id": "DEMO-DOC-702C37C02953C5D5",
       "path": "frontend/rose-pulse-react/src/AttendanceWorkspace.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b98506fcd18c6dfef7522062706e25dd136b5dca3ef82a956e7a23df24676870",
+          "size_bytes": 1670,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "b98506fcd18c6dfef7522062706e25dd136b5dca3ef82a956e7a23df24676870",
-      "size_bytes": 1670
+      "sha256": "2d1339bac256c5b25a311339ba4145966ff4ddb31d128825b25ac3d65d48c3f1",
+      "size_bytes": 1776
     },
     {
       "document_id": "DEMO-DOC-E44721AB8360969D",
       "path": "frontend/rose-pulse-react/src/DemoControls.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -7978,18 +8168,25 @@
           "size_bytes": 2093,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 3,
+          "sha256": "4b8dab0fc3ec40abea17dcf68579f3319e0bb0ee510c54e2ee09a2dde016b2d7",
+          "size_bytes": 3284,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "4b8dab0fc3ec40abea17dcf68579f3319e0bb0ee510c54e2ee09a2dde016b2d7",
-      "size_bytes": 3284
+      "sha256": "11bf84cd0a4c04325518c822585040cc03a72bdae86b43e027ead27049af7ec3",
+      "size_bytes": 3296
     },
     {
       "document_id": "DEMO-DOC-8E02567F21C1D730",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.jsx",
-      "revision": 12,
+      "revision": 15,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8069,18 +8266,39 @@
           "size_bytes": 49262,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 12,
+          "sha256": "9742d4482a7656ced9390a45a36f53409ed5cc232494f98261186b1da8722ff7",
+          "size_bytes": 49298,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 13,
+          "sha256": "64d61259279d8ecf0581cd1b63c31798b6c1d82e7efc5e0a84974ea0baed4792",
+          "size_bytes": 52961,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 14,
+          "sha256": "2e7f615bf06c331d60220c3b0e3ed88eed29bfe28ff7725701c83b642ad480f5",
+          "size_bytes": 55761,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "9742d4482a7656ced9390a45a36f53409ed5cc232494f98261186b1da8722ff7",
-      "size_bytes": 49298
+      "sha256": "9acee66705360762594b231234aff766be84dc6c33bdcf292c65a350ac8f31b0",
+      "size_bytes": 56816
     },
     {
       "document_id": "DEMO-DOC-8067F1FBADF70CC3",
       "path": "frontend/rose-pulse-react/src/JourneyWorkspace.test.jsx",
-      "revision": 8,
+      "revision": 11,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8132,18 +8350,39 @@
           "size_bytes": 32845,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 8,
+          "sha256": "f73283dfa5f2e0e41858aabb0b898387e2773ea45a20519ad06c1d564403927f",
+          "size_bytes": 32814,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 9,
+          "sha256": "4407b5c8b1213eeda678ebbbdcc62e4d396268ac0949aa3c29f0215e48ea2468",
+          "size_bytes": 32823,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 10,
+          "sha256": "4de51173763c1a4547f8cd2b66345eaaefa68f8d32a7d6d16e06bfd59b009df3",
+          "size_bytes": 42108,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "f73283dfa5f2e0e41858aabb0b898387e2773ea45a20519ad06c1d564403927f",
-      "size_bytes": 32814
+      "sha256": "b8f582509eb8b097c4259aff95c08ea38a1081f591925d9e1c9c8f93d3fc80d7",
+      "size_bytes": 49251
     },
     {
       "document_id": "DEMO-DOC-0BE31B8D84278C30",
       "path": "frontend/rose-pulse-react/src/PrivateDocuments.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8153,13 +8392,20 @@
           "size_bytes": 6485,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "40411287590756ae1b0a5acaab87796eeba6c6a21fec91199c5e61a3b57a32c6",
+          "size_bytes": 7374,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "40411287590756ae1b0a5acaab87796eeba6c6a21fec91199c5e61a3b57a32c6",
-      "size_bytes": 7374
+      "sha256": "378101b8026b0c77a2f8a6069cf987da375a0f31c03337736e3e87b40647e719",
+      "size_bytes": 7557
     },
     {
       "document_id": "DEMO-DOC-84C1EC662C97296B",
@@ -8185,59 +8431,91 @@
     {
       "document_id": "DEMO-DOC-278A3947E34F49D9",
       "path": "frontend/rose-pulse-react/src/demo-transport.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "30e5e1c8fd8c26568285ae15c81056f2013b470e427ef3a9f9d87152f5c523e6",
+          "size_bytes": 2174,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "30e5e1c8fd8c26568285ae15c81056f2013b470e427ef3a9f9d87152f5c523e6",
-      "size_bytes": 2174
+      "sha256": "4fd9a83f513b9e826e53745f5ae8dfec34a50fce3e885e739dccf05c6b3805bc",
+      "size_bytes": 2436
     },
     {
       "document_id": "DEMO-DOC-3AC9B6710CDD8A4A",
       "path": "frontend/rose-pulse-react/src/demo-transport.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "d404d441a8b03fb62e87678284b0e2aeba9842db901e81e79fb9d88e70c9d0d6",
+          "size_bytes": 1081,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "d404d441a8b03fb62e87678284b0e2aeba9842db901e81e79fb9d88e70c9d0d6",
-      "size_bytes": 1081
+      "sha256": "83e712ece2e9f0e3829554e1da7ba1c445ad8b0f838b214630f2c5755bb8b3e5",
+      "size_bytes": 1707
     },
     {
       "document_id": "DEMO-DOC-5A349A419E6B6AE9",
       "path": "frontend/rose-pulse-react/src/flyer.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "b950d6c05a6f6f621523167799aa8c2eeecac928d9bee8369e4d53386dca0486",
+          "size_bytes": 2350,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "b950d6c05a6f6f621523167799aa8c2eeecac928d9bee8369e4d53386dca0486",
-      "size_bytes": 2350
+      "sha256": "c86225cba2247442846b7ff8d45def0121ce04a6977680475cf8a3c68593d146",
+      "size_bytes": 3282
     },
     {
       "document_id": "DEMO-DOC-D40313D98FE269E8",
       "path": "frontend/rose-pulse-react/src/flyer.test.js",
-      "revision": 1,
+      "revision": 2,
       "owner": "Astra Demo integration",
       "status": "draft",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "a4fb67b0ee72ad22a57c7e7b9a3820517d6e0910d3f3e2325c82193975e301d9",
+          "size_bytes": 812,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a4fb67b0ee72ad22a57c7e7b9a3820517d6e0910d3f3e2325c82193975e301d9",
-      "size_bytes": 812
+      "sha256": "cbff63517f8e9762b7b8884e907e2a1716787d7e748c7faff56b4c2343abd37c",
+      "size_bytes": 936
     },
     {
       "document_id": "DEMO-DOC-5A1D8022DD23E165",
       "path": "frontend/rose-pulse-react/src/journey-api.js",
-      "revision": 3,
+      "revision": 5,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8254,18 +8532,32 @@
           "size_bytes": 6178,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 3,
+          "sha256": "a2937d7139f86a2045f0daeac928f9bc57b1c8431be5e482e6ce37d6bbc34aae",
+          "size_bytes": 6697,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 4,
+          "sha256": "941f67e3d244b493bf6165722e317255f924267a18493ecded75dd3fdb393801",
+          "size_bytes": 6701,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "a2937d7139f86a2045f0daeac928f9bc57b1c8431be5e482e6ce37d6bbc34aae",
-      "size_bytes": 6697
+      "sha256": "0ab52de1c41f6d9d452049197c017ea5bc98e1c85a7d44f12c59bfc2d5f6df8c",
+      "size_bytes": 8808
     },
     {
       "document_id": "DEMO-DOC-055E7FEBAF328681",
       "path": "frontend/rose-pulse-react/src/journey-api.test.js",
-      "revision": 2,
+      "revision": 3,
       "owner": "Astra Demo integration",
       "status": "draft",
       "revision_history": [
@@ -8275,13 +8567,20 @@
           "size_bytes": 5161,
           "superseded_at": "2026-11-10T10:07:01.943892+00:00",
           "reason": "Record bounded Demo V2 form, accepted receipt Modal, private document UX and collapsed tools; retain local and phone gate boundaries"
+        },
+        {
+          "revision": 2,
+          "sha256": "60cb00ffdff29e1a75d4f25efa02db9149b3323477e3295e28a2b8c16140e3ab",
+          "size_bytes": 6559,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "60cb00ffdff29e1a75d4f25efa02db9149b3323477e3295e28a2b8c16140e3ab",
-      "size_bytes": 6559
+      "sha256": "a64a2e13864d78dabe22571e9e9e905e2488f3714e38a79832d7c9c212d4a05f",
+      "size_bytes": 10411
     },
     {
       "document_id": "DEMO-DOC-AA71BA408012FF59",
@@ -9205,7 +9504,7 @@
     {
       "document_id": "FE-DEMO-V2-APPLICATION-FIELDS",
       "path": "frontend/rose-pulse-react/src/ApplicationFields.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -9222,18 +9521,25 @@
           "size_bytes": 6534,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 3,
+          "sha256": "8a7a744a091818fbeef83b420273306c1012ce13e970cf22d650cf5374683f02",
+          "size_bytes": 6694,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "8a7a744a091818fbeef83b420273306c1012ce13e970cf22d650cf5374683f02",
-      "size_bytes": 6694
+      "sha256": "24c0256dd1f28886938bd88467a9961bd3c40cd85f9d07adcd778741fa983a42",
+      "size_bytes": 6703
     },
     {
       "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS",
       "path": "frontend/rose-pulse-react/src/ApplicationSuccess.jsx",
-      "revision": 2,
+      "revision": 3,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -9243,18 +9549,25 @@
           "size_bytes": 2186,
           "superseded_at": "2026-11-14T17:01:07.198594+00:00",
           "reason": "Integrate nine retained synthetic Demo V2 commits with the verified dev_demo baseline, bounded CI branch trigger and generated fictional PDF; preserve original acceptance limits"
+        },
+        {
+          "revision": 2,
+          "sha256": "31d470927cfee61f370452fc49bcfa650a00050e59f56a6b2e5b0005aa0c67da",
+          "size_bytes": 3120,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "31d470927cfee61f370452fc49bcfa650a00050e59f56a6b2e5b0005aa0c67da",
-      "size_bytes": 3120
+      "sha256": "c33f4f8e4acbc50da922ad7c4905e64e97e5a2276dc69f3617c66cc0f81bf426",
+      "size_bytes": 3217
     },
     {
       "document_id": "FE-DEMO-V2-CONTROLS-TEST",
       "path": "frontend/rose-pulse-react/src/DemoControls.test.jsx",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -9271,26 +9584,41 @@
           "size_bytes": 11095,
           "superseded_at": "2026-11-17T07:50:18.008318+00:00",
           "reason": "按 Owner 明示改 DOB 為必填 Age Group、保持 Income optional，保留歷史資料與 receipt 並加入受影響驗證"
+        },
+        {
+          "revision": 3,
+          "sha256": "3fb9694a285ffddbdffb7f633a079f01c0a25afd55b13e6c4268c804364f277a",
+          "size_bytes": 11242,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "3fb9694a285ffddbdffb7f633a079f01c0a25afd55b13e6c4268c804364f277a",
-      "size_bytes": 11242
+      "sha256": "3a1d632882b22d5a80231ee98320e8ced7b087deb976308ddb0e3b28d044ced0",
+      "size_bytes": 11239
     },
     {
       "document_id": "FE-DEMO-V2-APPLICATION-SUCCESS-TEST-20261115",
       "path": "frontend/rose-pulse-react/src/ApplicationSuccess.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "66f117f616d1d39d81d3d47c11d994f8ac8007ad2f2344a7a2ab55031f55ec80",
+          "size_bytes": 2164,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "66f117f616d1d39d81d3d47c11d994f8ac8007ad2f2344a7a2ab55031f55ec80",
-      "size_bytes": 2164
+      "sha256": "1214965b3932f42f1171662a40b446f3faa26fb53536c23fb5982f8873105d3a",
+      "size_bytes": 1921
     },
     {
       "document_id": "FE-DEMO-V2-SYNTHETIC-PDF-GENERATOR-20261115",
@@ -9334,7 +9662,7 @@
     {
       "document_id": "NU-RAILWAY-APP-DOCKERFILE-20261115",
       "path": "deploy/railway/Dockerfile",
-      "revision": 3,
+      "revision": 4,
       "owner": "Benjamin Developer",
       "status": "working-baseline",
       "revision_history": [
@@ -9351,13 +9679,20 @@
           "size_bytes": 2269,
           "superseded_at": "2026-11-17T11:55:01.986381+00:00",
           "reason": "Guarded staging migration and synthetic-only classification lookup without altering historical DOB"
+        },
+        {
+          "revision": 3,
+          "sha256": "1ec1e7a7b919b50bbe0f4bfaff7666d634b5f05f7b8aa1612fda63363ca4ae65",
+          "size_bytes": 2374,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
         }
       ],
       "dependencies": [
         "USER-RAILWAY-DEPLOY-20261115"
       ],
-      "sha256": "1ec1e7a7b919b50bbe0f4bfaff7666d634b5f05f7b8aa1612fda63363ca4ae65",
-      "size_bytes": 2374
+      "sha256": "1a4d1d901dd419416492c78b83ec8b188fb567e649b00780365784b354000e57",
+      "size_bytes": 2398
     },
     {
       "document_id": "NU-RAILWAY-DB-DOCKERFILE-20261115",
@@ -10015,7 +10350,7 @@
     {
       "document_id": "PUB-DOC-V2-EVENT-DISCOVERY",
       "path": "frontend/rose-pulse-react/src/event-discovery.js",
-      "revision": 2,
+      "revision": 4,
       "owner": "NU Frontend / Sol product V2",
       "status": "working-baseline",
       "revision_history": [
@@ -10025,18 +10360,32 @@
           "size_bytes": 1588,
           "superseded_at": "2026-11-15T20:46:53.386937+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 2,
+          "sha256": "c5571d2fff5fdb138230cbf4a793d06131c81e52f81714222c7de98b86faf361",
+          "size_bytes": 2339,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 3,
+          "sha256": "1f0eeb84cc441792b7494c9b7907d60a8fb19a05fd5deec9ed35dd68bed446a8",
+          "size_bytes": 3226,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "c5571d2fff5fdb138230cbf4a793d06131c81e52f81714222c7de98b86faf361",
-      "size_bytes": 2339
+      "sha256": "f0d2eecd62d4282548dce00fd610f492589c09a69d29e5c1ccb15333ccee3ae3",
+      "size_bytes": 3244
     },
     {
       "document_id": "PUB-DOC-V2-EVENT-DISCOVERY-TEST",
       "path": "frontend/rose-pulse-react/src/event-discovery.test.js",
-      "revision": 3,
+      "revision": 5,
       "owner": "NU Frontend / Sol product V2",
       "status": "working-baseline",
       "revision_history": [
@@ -10053,13 +10402,27 @@
           "size_bytes": 2492,
           "superseded_at": "2026-11-15T20:46:53.386937+00:00",
           "reason": "V2 product polish and stable grouped pagination; retain contracts and V1"
+        },
+        {
+          "revision": 3,
+          "sha256": "685c580d906d0043389826c62f2ff9799df81c83b7a602f5b0477ef91670b267",
+          "size_bytes": 3900,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        },
+        {
+          "revision": 4,
+          "sha256": "299b99387f93430009ed21b5bdb2e95b4c9bd203d7e8d873f29fb460aa77fd86",
+          "size_bytes": 4360,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
         }
       ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "685c580d906d0043389826c62f2ff9799df81c83b7a602f5b0477ef91670b267",
-      "size_bytes": 3900
+      "sha256": "e2cab635d9483e6ab10ce6f68e7d3738d2f9db07eb87199f3ae2134e28657a9a",
+      "size_bytes": 5665
     },
     {
       "document_id": "PUB-GROUPS-20261117-8ED9482E90AB2469",
@@ -10165,28 +10528,44 @@
     {
       "document_id": "PUB-GROUPS-20261117-500AD0B0F853EA69",
       "path": "frontend/rose-pulse-react/src/RegistrationGroups.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Owner classification successor / sole Sol writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "9fa3fa99ccd31fb5ee551f1068e4425448c4350d4a3a6f5cc6c848f31bfd8499",
+          "size_bytes": 2387,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "9fa3fa99ccd31fb5ee551f1068e4425448c4350d4a3a6f5cc6c848f31bfd8499",
-      "size_bytes": 2387
+      "sha256": "b4ad9068129db21db7e689633929b5ad3904e69e7231aace84075ea56c22983d",
+      "size_bytes": 3256
     },
     {
       "document_id": "PUB-GROUPS-20261117-B6D6D32D5A23E731",
       "path": "frontend/rose-pulse-react/src/RegistrationGroups.test.jsx",
-      "revision": 1,
+      "revision": 2,
       "owner": "NU Owner classification successor / sole Sol writer",
       "status": "working-baseline",
-      "revision_history": [],
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "538e5e6fea93afeef4f952a107ac67e48113cfcf03097c886ca986cb57931189",
+          "size_bytes": 2141,
+          "superseded_at": "2026-11-17T21:45:28.214042+00:00",
+          "reason": "ROSE Challenge 5 public presentation, role workflows and verified source additions"
+        }
+      ],
       "dependencies": [
         "USER-PR-SCOPE"
       ],
-      "sha256": "538e5e6fea93afeef4f952a107ac67e48113cfcf03097c886ca986cb57931189",
-      "size_bytes": 2141
+      "sha256": "af07b05941c1df1d048c726ead9247337ce30acd461082a2e104d2b116474fc3",
+      "size_bytes": 3090
     },
     {
       "document_id": "PUB-GROUPS-BROWSER-20261117",
@@ -10266,6 +10645,68 @@
       ],
       "sha256": "815a9d99f629dda3511eaeb8aacd33cdb971df81d0d71a0c46e996a7bb42d45b",
       "size_bytes": 2402
+    },
+    {
+      "document_id": "ROSE-CHALLENGE5-20261118",
+      "path": "docs/dev/tasks/ROSE-CHALLENGE5-20261118.md",
+      "revision": 4,
+      "owner": "Sol / NU frontend author",
+      "status": "working-baseline",
+      "revision_history": [
+        {
+          "revision": 1,
+          "sha256": "c2ea496d89a0baa1ce22fc222a59b79b8d1fb55ac10616d929a76e4a33bdd2ac",
+          "size_bytes": 3002,
+          "superseded_at": "2026-11-17T21:47:00.965236+00:00",
+          "reason": "ROSE Challenge 5 connected mobile refinement and final wording"
+        },
+        {
+          "revision": 2,
+          "sha256": "e85fcf09b313689a5809087bc1f3219b549ff52b25835e78f83e0f01e687e21a",
+          "size_bytes": 3007,
+          "superseded_at": "2026-11-17T22:28:34.941036+00:00",
+          "reason": "Correct the five independent Draft PR 72 review findings and record verification scope"
+        },
+        {
+          "revision": 3,
+          "sha256": "1a39cce25e06f86512373f600aabb06fd13e7c996b95b422db4b8f9cd2a54036",
+          "size_bytes": 3776,
+          "superseded_at": "2026-11-17T22:58:28.830199+00:00",
+          "reason": "Correct guest offer receipt recovery following S1 independent review"
+        }
+      ],
+      "dependencies": [
+        "SP-OVERVIEW-20261012",
+        "SP-FEATURES-20261012"
+      ],
+      "sha256": "9937a2e3ddb2d4d888752efde8bf8ba11c9d42223cb961dab2aab25e634a1a29",
+      "size_bytes": 4569
+    },
+    {
+      "document_id": "ROSE-EVENT-CALENDAR",
+      "path": "frontend/rose-pulse-react/src/event-calendar.js",
+      "revision": 1,
+      "owner": "Sol / NU frontend author",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "SP-FEATURES-20261012"
+      ],
+      "sha256": "4c6771009144443121dfa70e5e8e7a97bd7c41156c9ebc61b0c4f20627f0fe87",
+      "size_bytes": 1902
+    },
+    {
+      "document_id": "ROSE-EVENT-CALENDAR-TEST",
+      "path": "frontend/rose-pulse-react/src/event-calendar.test.js",
+      "revision": 1,
+      "owner": "Sol / NU frontend author",
+      "status": "working-baseline",
+      "revision_history": [],
+      "dependencies": [
+        "SP-FEATURES-20261012"
+      ],
+      "sha256": "ac4116679db0e2334838a5a1cdffbdc4af7aa732e32b8c2f517feb8731d200ab",
+      "size_bytes": 1315
     }
   ]
 }
